@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practical 15: Computing EVSI using regression | Bayesian methods in health economics</title>
+    <link>/practical/15_evsi_regression/</link>
+      <atom:link href="/practical/15_evsi_regression/index.xml" rel="self" type="application/rss+xml" />
+    <description>Practical 15: Computing EVSI using regression</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Practical 15: Computing EVSI using regression</title>
+      <link>/practical/15_evsi_regression/</link>
+    </image>
+    
+  </channel>
+</rss>

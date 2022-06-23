@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>⁣4. Individual level data in health economic evaluation</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Anna Heath" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <script src="libs/freezeframe/freezeframe.min.js"></script>
+    <script src="libs/xaringanExtra-freezeframe/freezeframe-init.js"></script>
+    <script id="xaringanExtra-freezeframe-options" type="application/json">{"selector":"img[src$=\"gif\"]","trigger":"click","overlay":false,"responsive":true,"warnings":true}</script>
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
+    <!-- (Re)Defines a bunch of LaTeX commands that can then be used directly in the .Rmd file as '\command{...}' -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: {
+        /* This enables color macros */
+        extensions: ["color.js"],
+        Macros: {
+          /* Probability & mathematical symbols */
+          Pr: "{\\style{font-family:inherit; font-size: 110%;}{\\text{Pr}}}",
+          exp: "{\\style{font-family:inherit; font-size: 105%;}{\\text{exp}}}",
+          log: "{\\style{font-family:inherit; font-size: 105%;}{\\text{log}}}",
+          ln: "{\\style{font-family:inherit; font-size: 105%;}{\\text{ln}}}",
+          logit: "{\\style{font-family:inherit; font-size: 100%;}{\\text{logit}}}",
+          HR: "{\\style{font-family:inherit; font-size: 105%;}{\\text{HR}}}",
+          OR: "{\\style{font-family:inherit; font-size: 105%;}{\\text{OR}}}",
+          E: "{\\style{font-family:inherit; font-size: 105%;}{\\text{E}}}",
+          Var: "{\\style{font-family:inherit; font-size: 105%;}{\\text{Var}}}",
+          Cov: "{\\style{font-family:inherit; font-size: 105%;}{\\text{Cov}}}",
+          Corr: "{\\style{font-family:inherit; font-size: 105%;}{\\text{Corr}}}",
+          DIC: "{\\style{font-family:inherit; font-size: 105%;}{\\text{DIC}}}",
+          se: "{\\style{font-family:inherit; font-size: 100%;}{\\text{se}}}",
+          sd: "{\\style{font-family:inherit; font-size: 100%;}{\\text{sd}}}",
+          kld: "{\\style{font-family:inherit; font-size: 100%;}{\\text{KLD}}}",
+          /* Distributions */
+          dnorm: "{\\style{font-family:inherit;}{\\text{Normal}}}",
+          dt: "{\\style{font-family:inherit;}{\\text{t}}}",
+          ddirch: "{\\style{font-family:inherit;}{\\text{Dirichlet}}}",
+          dmulti: "{\\style{font-family:inherit;}{\\text{Multinomial}}}",
+          dbeta: "{\\style{font-family:inherit;}{\\text{Beta}}}",
+          dgamma: "{\\style{font-family:inherit;}{\\text{Gamma}}}",
+          dbern: "{\\style{font-family:inherit;}{\\text{Bernoulli}}}",
+          dbin: "{\\style{font-family:inherit;}{\\text{Binomial}}}",
+          dpois: "{\\style{font-family:inherit;}{\\text{Poisson}}}",
+          dweib: "{\\style{font-family:inherit;}{\\text{Weibull}}}",
+          dexp: "{\\style{font-family:inherit;}{\\text{Exponential}}}",
+          dlnorm: "{\\style{font-family:inherit;}{\\text{logNormal}}}",
+          dunif: "{\\style{font-family:inherit;}{\\text{Uniform}}}",
+          /* LaTeX formatting */
+          bm: ["{\\boldsymbol #1}",1],
+          /* These create macros to typeset numbers in maths with the basic font */
+          0: "{\\style{font-family:inherit; font-size: 105%;}{\\text{0}}}",
+          1: "{\\style{font-family:inherit; font-size: 105%;}{\\text{1}}}",
+          2: "{\\style{font-family:inherit; font-size: 105%;}{\\text{2}}}",
+          3: "{\\style{font-family:inherit; font-size: 105%;}{\\text{3}}}",
+          4: "{\\style{font-family:inherit; font-size: 105%;}{\\text{4}}}",
+          5: "{\\style{font-family:inherit; font-size: 105%;}{\\text{5}}}",
+          6: "{\\style{font-family:inherit; font-size: 105%;}{\\text{6}}}",
+          7: "{\\style{font-family:inherit; font-size: 105%;}{\\text{7}}}",
+          8: "{\\style{font-family:inherit; font-size: 105%;}{\\text{8}}}",
+          9: "{\\style{font-family:inherit; font-size: 105%;}{\\text{9}}}",
+          /* Health economics quantities */
+          icer: "{\\style{font-family:inherit; font-size: 100%;}{\\text{ICER}}}",
+          nb: "{\\style{font-family:inherit; font-size: 100%;}{\\text{NB}}}",
+          ib: "{\\style{font-family:inherit; font-size: 100%;}{\\text{IB}}}",
+          eib: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EIB}}}",
+          ol: "{\\style{font-family:inherit; font-size: 100%;}{\\text{OL}}}",
+          ceac: "{\\style{font-family:inherit; font-size: 100%;}{\\text{CEAC}}}",
+          evpi: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EVPI}}}",
+          evppi: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EVPPI}}}",
+          evsi: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EVSI}}}"
+        }
+      }
+    });
+    </script>
+    <link rel="stylesheet" href="../assets/beamer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+class: title-slide
+
+# &amp;#8291;4. Individual level data in health economic evaluation
+
+## Anna Heath
+
+### [Sick Kids Hospital](https://www.sickkids.ca/) &amp; [Dalla Lana School of Public Health](https://www.dlsph.utoronto.ca/) | University of Toronto    
+
+.title-small[
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#00acee;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"&gt;&lt;/path&gt;&lt;/svg&gt;  [anna.heath@sickkids.ca](mailto:anna.heath@sickkids.ca)
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#EA7600;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://sites.google.com/site/annaheathstats/](https://sites.google.com/site/annaheathstats/)
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#EA7600;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://egon.stats.ucl.ac.uk/research/statistics-health-economics/](https://egon.stats.ucl.ac.uk/research/statistics-health-economics/)
+&lt;svg viewBox="0 0 496 512" style="position:relative;display:inline-block;top:.1em;fill:black;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://github.com/annaheath](https://github.com/annaheath)
+&lt;svg viewBox="0 0 496 512" style="position:relative;display:inline-block;top:.1em;fill:black;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://github.com/StatisticsHealthEconomics](https://github.com/StatisticsHealthEconomics)
+]
+
+### Bayesian Methods in Health Economics, Lausanne
+
+---
+
+layout: true
+
+.my-footer[ 
+.alignleft[
+&amp;nbsp; &amp;copy; Anna Heath (Sick Kids) &amp;nbsp;&lt;a href="https://github.com/annaheath"; title="Check out my repos"&gt;&lt;svg viewBox="0 0 496 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp; &amp;nbsp;&lt;a href="mailto:anna.heath@sickkids.ca"; title="Email me"&gt;&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp; &amp;nbsp;&lt;a href="https://sites.google.com/site/annaheathstats/"; title="Visit my website"&gt;&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp;
+]
+.aligncenter[
+.mydropdown[ 
+.mydropbtn[
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M504 256c0 137-111 248-248 248S8 393 8 256 119 8 256 8s248 111 248 248zM273 369.9l135.5-135.5c9.4-9.4 9.4-24.6 0-33.9l-17-17c-9.4-9.4-24.6-9.4-33.9 0L256 285.1 154.4 183.5c-9.4-9.4-24.6-9.4-33.9 0l-17 17c-9.4 9.4-9.4 24.6 0 33.9L239 369.9c9.4 9.4 24.6 9.4 34 0z"&gt;&lt;/path&gt;&lt;/svg&gt; 
+]
+.mydropdown-content[
+[1. Introduction](../01_Intro/index.html)
+[2. MCMC](../02_MCMC/index.html)
+[3. Intro HTA](../03_Intro_HE/index.html)
+[4. ILD](../04_ILD/index.html)
+[5. ALD](../05_ALD/index.html)
+[6. NMA](../06_NMA/index.html)
+[7. Model uncertainty](../07_Model_uncertainty/index.html)
+[8. Survival](../06_Survival/index.html)
+[9. Markov models](../09_MM/index.html)
+[10. Missing data](../10_Missing/index.html)
+[11. VoI](../11_VoI/index.html)
+[12. EVPPI](../12_EVPPI/index.html)
+[13. Intro EVSI](../13_EVSI/index.html)
+[14. Data EVSI](../14_Data_EVSI/index.html)
+[15. EVSI MC](../15_EVSI_MC/index.html)
+[16. EVSI Regression](../16_EVSI_regression/index.html)
+]
+]
+&amp;#8291;4. Individual level data in health economic evaluation 
+]
+.alignright[
+&amp;nbsp;&lt;a target="_self" href="../../index.html"; title="Back to the summer school website"&gt;&lt;svg viewBox="0 0 576 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:1em;bottom:1em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp; &amp;nbsp; BMHE 
+]
+] 
+
+---
+
+# Summary
+
+- Data &amp; "standard" analysis 
+
+- Example: UK700
+
+- Analysis of cost data
+   - Alternative models
+   - Goodness of fit
+   
+- Analysis of cost-effectiveness data
+  - General structure
+  - Alternative models
+  
+&lt;span style="display:block; margin-top: 3em ;"&gt;&lt;/span&gt;
+
+.content-box-beamer[
+### **References** 
+
+&lt;span style="display:block; margin-top: 20px ;"&gt;&lt;/span&gt;
+
+&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;
+  [ comment ]
+  &lt;path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"&gt;&lt;/path&gt;
+&lt;/svg&gt; &lt;i&gt;Bayesian Methods in Health Economics&lt;/i&gt;, chapters 5.1, 5.2 .button[&lt;img src="../img/routledge.png" width="7%"&gt; [Book website (CRC)](https://www-taylorfrancis-com.libproxy.ucl.ac.uk/books/9780429111396)] .button[&lt;i class="fab fa-firefox"&gt;&lt;/i&gt; [Book website](https://gianluca.statistica.it/bmhe)] .button[&lt;i class="fab fa-github"&gt;&lt;/i&gt; [Code](https://github.com/giabaio/BCEA)]
+]
+
+---
+
+# Individual level data 
+
+### HTA alongside RCTs
+
+- The available data usually look something like this
+
+
+
+&lt;table class=" lightable-classic table" style="font-family: Ubuntu; font-size: 14px; margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;"&gt;
+ &lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="empty-cells: hide;" colspan="2"&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-weight: bold; color: orange !important;" colspan="3"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;Demographics&lt;/div&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-weight: bold; color: olive !important;" colspan="4"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;Clinical outcomes&lt;/div&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-weight: bold; color: blue !important;" colspan="4"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;HRQL data&lt;/div&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-weight: bold; color: red !important;" colspan="4"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;Resource use data&lt;/div&gt;&lt;/th&gt;
+&lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:center;color: black !important; font-weight: bold;"&gt; ID &lt;/th&gt;
+   &lt;th style="text-align:center;color: black !important; font-weight: bold"&gt; Trt &lt;/th&gt;
+   &lt;th style="text-align:center;color: orange !important;"&gt; Sex &lt;/th&gt;
+   &lt;th style="text-align:center;color: orange !important;"&gt; Age &lt;/th&gt;
+   &lt;th style="text-align:center;color: orange !important;"&gt; ... &lt;/th&gt;
+   &lt;th style="text-align:center;color: blue !important;"&gt; \(\color{olive}{y_0}\) &lt;/th&gt;
+   &lt;th style="text-align:center;color: blue !important;"&gt; \(\color{olive}{y_1}\) &lt;/th&gt;
+   &lt;th style="text-align:center;color: blue !important;"&gt; \(\color{olive}{\ldots}\) &lt;/th&gt;
+   &lt;th style="text-align:center;color: blue !important;"&gt; \(\color{olive}{y_J}\) &lt;/th&gt;
+   &lt;th style="text-align:center;color: blue !important;"&gt; \(\color{blue}{u_0}\) &lt;/th&gt;
+   &lt;th style="text-align:center;color: blue !important;"&gt; \(\color{blue}{u_1}\) &lt;/th&gt;
+   &lt;th style="text-align:center;color: blue !important;"&gt; ... &lt;/th&gt;
+   &lt;th style="text-align:center;color: red !important;"&gt; \(\color{blue}{u_J}\) &lt;/th&gt;
+   &lt;th style="text-align:center;color: red !important;"&gt; \(\color{red}{c_0}\) &lt;/th&gt;
+   &lt;th style="text-align:center;color: red !important;"&gt; \(\color{red}{c_1}\) &lt;/th&gt;
+   &lt;th style="text-align:center;color: red !important;"&gt; ... &lt;/th&gt;
+   &lt;th style="text-align:center;color: red !important;"&gt; \(\color{red}{c_J}\) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;color: orange !important;"&gt; M &lt;/td&gt;
+   &lt;td style="text-align:center;color: orange !important;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:center;color: orange !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; \(y_{10}\) &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; \(y_{11}\) &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; \(y_{1J}\) &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; 0.32 &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; 0.66 &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; 0.44 &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; 103 &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; 241 &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; 80 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;color: orange !important;"&gt; M &lt;/td&gt;
+   &lt;td style="text-align:center;color: orange !important;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:center;color: orange !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; \(y_{20}\) &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; \(y_{21}\) &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; \(y_{2J}\) &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; 0.12 &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; 0.16 &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; 0.38 &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; 1204 &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; 1808 &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; 877 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:center;color: orange !important;"&gt; F &lt;/td&gt;
+   &lt;td style="text-align:center;color: orange !important;"&gt; 19 &lt;/td&gt;
+   &lt;td style="text-align:center;color: orange !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; \(y_{30}\) &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; \(y_{31}\) &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; \(y_{3J}\) &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; 0.49 &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; 0.55 &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; 0.88 &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; 16 &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; 23 &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; 22 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: orange !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: orange !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: orange !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: olive !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: blue !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; ... &lt;/td&gt;
+   &lt;td style="text-align:center;color: red !important;"&gt; ... &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; font-weight: bold; color: black !important;" colspan="17"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;&lt;/div&gt;&lt;/th&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p style="margin-left: 2em; margin-top: 10px"&gt;– \(\class{olive}{y_{ij}}=\) Survival time, event indicator (eg CVD), number of events, continuous measurement (eg blood pressure), ...&lt;/p&gt;
+&lt;p style="margin-left: 2em;"&gt;– \(\class{blue}{u_{ij}}=\) Utility-based score to value health (eg &lt;a href="https://euroqol.org/"&gt;EQ-5D&lt;/a&gt;, &lt;a href="https://www.rand.org/health-care/surveys_tools/mos/36-item-short-form/scoring.html"&gt;SF-36&lt;/a&gt;, &lt;a href="https://en.wikipedia.org/wiki/Hospital_Anxiety_and_Depression_Scale"&gt;Hospital &amp; Anxiety Depression Scale)&lt;/a&gt;, ...&lt;/p&gt;
+&lt;p style="margin-left: 2em;"&gt;– \(\class{red}{c_{ij}}=\) Use of resources (drugs, hospital, GP appointments), ...&lt;/p&gt;
+
+&lt;span style="display:block; margin-top: 10px ;"&gt;&lt;/span&gt;
+
+- Usually aggregate longitudinal measurements into a cross-sectional summary and for each individual consider the pair `\(\class{myblue}{(e_i,c_i)}\)`
+
+&lt;span style="display:block; margin-top: 20px ;"&gt;&lt;/span&gt;
+
+--
+
+- HTA preferably based on .red[**utility-based**] measures of effectiveness
+
+- Quality Adjusted Life Years (QALYs) are a measure of disease burden combining
+   - .blue90red60[**Quantity**] of life (the amount of time spent in a given health state)
+   - .blue60red90[**Quality**] of life (the utility attached to that state)
+   
+---
+
+# ("Standard") Statistical modelling 
+
+&lt;span style="display:block; margin-top: -10pt ;"&gt;&lt;/span&gt;
+
+### **See BMHE, pp. 23-25**
+
+1. Compute individual QALYs and total costs as 
+`$$\class{myblue}{e_i = \displaystyle\sum_{j=1}^{J} \left(u_{ij}+u_{i\hspace{.5pt}j-1}\right) \frac{\delta_{j}}{2}} \qquad \style{font-family:inherit;}{\text{ and }} \class{myblue}{\qquad c_i = \sum_{j=0}^J c_{ij}} \qquad \left[\style{font-family:inherit;}{\text{with: }} \class{myblue}{\delta_j = \frac{\style{font-family:inherit;}{\text{Time}}_j - \style{font-family:inherit;}{\text{Time}}_{j-1}}{\style{font-family:inherit;}{\text{Unit of time}}}}\right]$$`
+
+&lt;span style="display:block; margin-top: -1.5em ;"&gt;&lt;/span&gt;
+
+
+
+&lt;center&gt;&lt;img src=./img/qalys.png width='65%' title='The QALYs can be computed as the area under the curve, where the x-axis represents the time spent in each health state and the y-axis represents the health value associated with a given state'&gt;&lt;/center&gt;
+
+---
+
+count: false
+
+# A QALY is a QALY is a QALY(?)...
+
+&lt;center&gt;&lt;img src=./img/map_opportunity_cost.png width='80%' title='This world map shows the different monetary values associated with a QALY'&gt;&lt;/center&gt; 
+
+.center[.small[&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"&gt;&lt;/path&gt;&lt;/svg&gt; [https://twitter.com/mikepaulden/status/1333467554317156353](https://twitter.com/mikepaulden/status/1333467554317156353)]]
+---
+
+count: false
+
+# ("Standard") Statistical modelling 
+
+&lt;span style="display:block; margin-top: -10pt ;"&gt;&lt;/span&gt;
+
+### **See BMHE, pp. 23-25**
+
+1. Compute individual QALYs and total costs as 
+`$$\class{myblue}{e_i = \displaystyle\sum_{j=1}^{J} \left(u_{ij}+u_{i\hspace{.5pt}j-1}\right) \frac{\delta_{j}}{2}} \qquad \style{font-family:inherit;}{\text{ and }} \class{myblue}{\qquad c_i = \sum_{j=0}^J c_{ij}} \qquad \left[\style{font-family:inherit;}{\text{with: }} \class{myblue}{\delta_j = \frac{\style{font-family:inherit;}{\text{Time}}_j - \style{font-family:inherit;}{\text{Time}}_{j-1}}{\style{font-family:inherit;}{\text{Unit of time}}}}\right]$$`
+
+2. (Often implicitly) assume normality and linearity and model .olive[**independently**] individual QALYs and total costs by controlling for (**centered**) baseline values, eg
+`\(\class{myblue}{u^∗  = (u − \bar{u} )}\)` and  `\(\class{myblue}{c^∗  = (c − \bar{c} )}\)`
+`\begin{align}
+e_i &amp; = \alpha_{e0} + \alpha_{e1} u^*_{0i} + \alpha_{e2} \style{font-family:inherit;}{\text{Trt}}_i + \varepsilon_{ei}\, [+ \ldots], \qquad \varepsilon_{ei} \sim \dnorm(0,\sigma_e) \\
+c_i &amp; = \alpha_{c0} + \alpha_{c1} c^*_{0i} + \alpha_{c2} \style{font-family:inherit;}{\text{Trt}}_i + \varepsilon_{ci}\, [+ \ldots], \qquad\hspace{2pt} \varepsilon_{ci} \sim \dnorm(0,\sigma_c) 
+\end{align}`
+
+--
+
+3. Estimate population average cost and effectiveness differentials 
+   - **Under this model specification**, these are `\(\class{myblue}{\Delta_e=\alpha_{e2}}\)` and `\(\class{myblue}{\Delta_c=\alpha_{c2}}\)`
+   
+4. Quantify impact of uncertainty in model parameters on the decision making process
+    - In a fully frequentist analysis, this is done using resampling methods (eg bootstrap)
+
+
+.content-box-beamer[
+## 
+&lt;span style="display:block; margin-top: 40px ;"&gt;&lt;/span&gt;
+&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;position:relative;display:inline-block;top:.1em;fill:blue;"&gt;  [ comment ]  &lt;path d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"&gt;&lt;/path&gt;&lt;/svg&gt; See discussion [**here**](https://gianluca.statistica.it/teaching/intro-stats/regression-to-the-mean.html) for the interpretation of "centered" covariates + **BMHE pp 68-73** for a discussion on the impact of centering for Bayesian modelling (autocorrelation)
+]
+---
+
+# What's wrong with this?... 
+
+.lightgray[
+- Potential correlation between costs &amp; clinical benefits .alignright[.lightgray[[**Individual level + Aggregated level Data**]]]
+   - Strong positive correlation &amp;ndash; effective treatments are innovative and result from intensive and lengthy research `\(\Rightarrow\)` are associated with higher unit costs
+   - Negative correlation &amp;ndash; more effective treatments may reduce total care pathway costs e.g. by reducing hospitalisations, side effects, etc.
+   - Because of the way in which standard models are set up, bootstrapping generally only approximates the underlying level of correlation &amp;ndash; .lightgray[**MCMC does a better job!**]
+]
+
+
+- Joint/marginal normality not realistic .alignright[.orange[[**Mainly ILD**]]]
+   - Costs usually skewed and benefits may be bounded in `\([0; 1]\)` 
+   - Can use transformation (e.g. logs) &amp;ndash; but care is needed when back transforming to the natural scale
+   - Should use more suitable models (e.g. Beta, Gamma or log-Normal) &amp;ndash; .olive[**generally easier under a Bayesian framework**]
+   - Particularly relevant in presence of partially observed data &amp;ndash; more on this later!
+
+
+.lightgray[
+- Particularly as the focus is on decision-making (rather than just inference), we need to use **all** available evidence to fully characterise current uncertainty on the model parameters and outcomes .alignright[.lightgray[[**Mainly ALD**]]]
+   - A Bayesian approach is helpful in combining different sources of information 
+   - .lightgray[**Propagating uncertainty is a fundamentally Bayesian operation!**]
+]
+
+---
+
+# Example: UK700 data
+
+- RCT of patients with severe psychosis
+
+   - 281 standard case management
+   - 272 intensive case management
+   
+
+- Effectiveness: Days in hospital for psychiatric problems
+
+
+- Cost: Cost to society
+
+
+- Baseline data: Days in hospital pre-intervention
+
+
+- Subgroup data: Normal or borderline intelligence
+
+---
+
+count: false
+
+# Example UK700 data 
+### Raw data plots
+
+&lt;center&gt;&lt;img src=./img/UK700_rawdata.png width='45%' title='The density plots show the raw distribution of costs and QALYs'&gt;&lt;/center&gt;
+
+---
+
+# Estimating the **population average** outcome 
+
+## Dealing with skewness
+
+1. Transform the scale of data (e.g. take logs)
+
+   - Models the re-scaled observed data
+   - **But**: simple re-scaling does not provide quantity of interest, if transformation is non-linear:
+   `$$\class{red}{\style{font-family:inherit;}{\text{median}}}\class{myblue}{(Y) = \exp\!\left(\E[\log(Y)]\right) \neq \E[\exp\left(\log(Y)\right)] = }\class{blue}{\style{font-family:inherit;}{\text{mean}}}[Y]$$`
+
+--
+
+2. Use non-parametric methods (e.g.central limit theorem or bootstrap)
+   - Uses empirical distribution to make inferences about the uncertainty of the sample mean
+   - Theoretically, CLT holds for `\(n\rightarrow\infty\)` and implies that the sample mean is .blue[**approximately**] well described by a Normal distribution
+   - **But**: when data are very skewed in the first place, approximation is much rougher and unsatisfactory
+   - Bootstrap still relies on underlying assumptions based on some kind of Normality - may not be most efficient
+
+--
+
+3. Parametric methods
+   - Builds a model for the observed data, in order to estimate **specifically** (directly or indirectly) the main parameter of interest
+
+---
+
+# Fit parametric models
+
+Data `\(y_i: i=1,\ldots,n\)`
+
+&lt;table class=" lightable-classic table" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto; font-size: 22px; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:left;border-top: 1px solid;"&gt; Distribution &lt;/th&gt;
+   &lt;th style="text-align:center;border-top: 1px solid;"&gt; Density &lt;/th&gt;
+   &lt;th style="text-align:center;border-top: 1px solid;"&gt; Population average &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Normal &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; \(\displaystyle\frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{(y-\mu)}{2\sigma^2}\right)\) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; \(\mu\) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Gamma &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; \(\displaystyle\frac{1}{\Gamma (\rho )}\lambda^{\rho }y^{\rho -1}\exp\left( -\lambda y\right)\) &lt;/td&gt;
+   &lt;td style="text-align:center;"&gt; \(\displaystyle\frac{\rho}{\lambda}\) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;border-bottom: 1px solid;"&gt; logNormal &lt;/td&gt;
+   &lt;td style="text-align:center;border-bottom: 1px solid;"&gt; \(\displaystyle\frac{1}{y\sqrt{2\pi \sigma^2}}\exp\left( -\frac{(\log y-\mu)^2}{2\sigma ^2}\right)\) &lt;/td&gt;
+   &lt;td style="text-align:center;border-bottom: 1px solid;"&gt; \(\displaystyle\exp \left( \mu +\frac{\sigma ^{2}}{2}\right)\) &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;span style="display:block; margin-top: 2em ;"&gt;&lt;/span&gt;
+
+**NB**: In `BUGS` the Gamma distribution is parameterized in terms of .blue[**shape**] `\(\rho\)` and .blue[**rate**] `\(\lambda\)` where `\(\mu = \frac{\rho}{\lambda}\)` (see **&lt;a href="../01_Intro/#gamma-distribution"&gt;Lecture 1&lt;/a&gt;**). However, confusingly, in the `OpenBUGS` and `WinBUGS` manuals `\(\lambda\)` is called `\(\mu\)`.
+
+&lt;span style="display:block; margin-top: 1em ;"&gt;&lt;/span&gt;
+
+Also, other parameterisations exist, e.g. in terms of shape and *scale* `\(=1/\style{font-family:inherit;}{\text{rate}}\)`, so care is needed!
+
+---
+
+count: false
+
+# Fit parametric models
+
+&lt;img src="./img/unnamed-chunk-5-1.png" style="display: block; margin: auto;" width="60%" title="This plot shows the density for three models, the Normal, log-Normal and Gamma distributions used to model the observed data"&gt;
+
+---
+name: gamma-lognormal
+# Example: UK700 data 
+### Fit parametric model to costs
+&lt;span style="display:block; margin-top: -10pt ;"&gt;&lt;/span&gt;
+
+&lt;center&gt;&lt;img src=./img/UK700_fit_costs.png width='40%' title='The top panel shows that the three distributions give substantially different fit to the observed data, with the Normal clearly off. The bottom panel shows that the log-Normal has a much heavier tail than the Gamma, which may have substantial repercussions in terms of the estimates - more on this later'&gt;&lt;/center&gt;
+
+**NB**  Tail of the log-Normal distribution is heavier than the Normal and Gamma!
+
+---
+
+name: model-selection
+# Model selection: goodness of fit
+ 
+## See BMHE Section 3.6
+
+- The **Deviance** is a measure of goodness of fit 
+   - It is defined as -2 log likelihood
+   
+- For example, if the data are associated with a Normal distribution, the likelihood function is
+
+`$$\class{myblue}{\mathcal{L}(\mu,\sigma) = \displaystyle\prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}\exp\left(-\frac{(y_i-\mu)^2}{2\sigma^2}\right)}$$`
+
+&lt;p style="margin-left: 2em;"&gt; &lt;svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;position:relative;display:inline-block;top:.1em;fill:red;"&gt;  [ comment ]  &lt;path d="M569.517 440.013C587.975 472.007 564.806 512 527.94 512H48.054c-36.937 0-59.999-40.055-41.577-71.987L246.423 23.985c18.467-32.009 64.72-31.951 83.154 0l239.94 416.028zM288 354c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"&gt;&lt;/path&gt;&lt;/svg&gt; see &lt;a href=""&gt;https://gianluca.statistica.it/teaching/intro-stats/estimation.html&lt;/a&gt;&lt;/p&gt;
+
+- So, for this model, the deviance is 
+
+&lt;span style="display:block; margin-top: -10px ;"&gt;&lt;/span&gt;
+
+`$$\class{myblue}{D(\mu, \sigma) = -2 \sum_{i=1}^n \log\, \mathcal{L}(\mu,\sigma)}$$`
+
+&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;where `\(i=1,\ldots,n\)` is the number of observations
+
+- We measure goodness of fit by the posterior mean deviance `\(\color{myblue}{\bar{D}(\boldsymbol\theta)}\)`
+
+- Lower deviance `\(\Rightarrow\)` better fit
+
+(More on this in &lt;a href="../05_ALD/#dic-definition"&gt;Lecture 5&lt;/a&gt;)
+
+---
+
+count: false
+
+# Model selection: goodness of fit
+
+## How to do this in `BUGS`
+
+- Monitor the node .olive[`deviance`], which is automatically defined for each model (with observed data!) 
+
+- Press buttons
+   - **Update**
+   - **Inference `\(&gt;\)` DIC `\(&gt;\)` set**
+   - **Update**
+   - **Inference `\(&gt;\)` DIC `\(&gt;\)` stats**
+   
+- Or code the deviance explicitly in the model
+
+```r
+for (i in 1:N1) {
+  logL[i] &lt;- log(exp(-pow(cost1[i] - mu[1],2)/(2*ss[1])) /
+             (sqrt(2*3.1415927*ss[1])))      
+}
+dev[1] &lt;- -2*sum(logL[])
+```
+
+- **NB**  When calling `BUGS` from `R`, **assuming there are observed data**, the deviance is monitored by default
+
+---
+
+count: false
+
+# Model selection: goodness of fit
+
+## Fit parametric models to costs
+
+&lt;center&gt;&lt;img src=./img/parametric_models_costs.png width='70%' title='These plots show that the three models tend to give different estimates of the main parameters. However, the Gamma and Normal give reasonably close estimates in terms of the differential costs (although the Gamma has a much better fit to the observed data). The log-Normal has much more uncertainty, due to the heavier tails'&gt;&lt;/center&gt;
+
+- Gamma model associated with smaller deviance for both intervention and control arms
+
+- Gamma model best fitting also for the incremental costs (lower deviance)
+
+- Normal model much worse fitting especially for incremental costs - but numerical results almost identical to Gamma!
+
+---
+
+# What's wrong with this?... 
+
+- Potential correlation between costs &amp; clinical benefits .alignright[.orange[[**Individual level + Aggregated level Data**]]]
+   - Strong positive correlation - effective treatments are innovative and result from intensive and lengthy research `\(\Rightarrow\)` are associated with higher unit costs
+   - Negative correlation - more effective treatments may reduce total care pathway costs e.g. by reducing hospitalisations, side effects, etc.
+   - Because of the way in which standard models are set up, bootstrapping generally only approximates the underlying level of correlation - .olive[**MCMC does a better job!**]
+
+
+
+.lightgray[
+- Joint/marginal normality not realistic .alignright[.lightgray[[**Mainly ILD**]]]
+   - Costs usually skewed and benefits may be bounded in `\([0; 1]\)` 
+   - Can use transformation (e.g. logs) - but care is needed when back transforming to the natural scale
+   - Should use more suitable models (e.g. Beta, Gamma or log-Normal) - .lightgray[**generally easier under a Bayesian framework**]
+   - Particularly relevant in presence of partially observed data - more on this later!
+]
+
+
+.lightgray[
+- Particularly as the focus is on decision-making (rather than just inference), we need to use **all** available evidence to fully characterise current uncertainty on the model parameters and outcomes .alignright[.lightgray[[**Mainly ALD**]]]
+   - A Bayesian approach is helpful in combining different sources of information 
+   - .lightgray[**Propagating uncertainty is a fundamentally Bayesian operation!**]
+]
+
+---
+
+name: factorisation
+# Bayesian HTA in action
+
+- In general, can represent the joint distribution as `\(\class{myblue}{p(e,c) = p(e)p(c\mid e) = p(c)p(e\mid c)}\)`
+
+---
+
+count: false
+
+# Bayesian HTA in action
+
+- In general, can represent the joint distribution as `\(\class{myblue}{p(e,c) = }\class{blue}{p(e)}\class{myblue}{p(c\mid e) = p(c)p(e\mid c)}\)`
+
+&lt;center&gt;&lt;img src=./img/bayesian_hta1-1.png width='75%' title='TEXT HERE'&gt;&lt;/center&gt;
+
+
+
+---
+
+count: false
+
+# Bayesian HTA in action
+
+- In general, can represent the joint distribution as `\(\class{myblue}{p(e,c) = }\class{blue}{p(e)}\class{red}{p(c\mid e)}\class{myblue}{ = p(c)p(e\mid c)}\)`
+
+&lt;center&gt;&lt;img src=./img/bayesian_hta2-1.png width='75%' title='TEXT HERE'&gt;&lt;/center&gt;
+
+
+
+---
+
+count: false
+
+# Bayesian HTA in action
+
+- In general, can represent the joint distribution as `\(\class{myblue}{p(e,c) = p(e)p(c\mid e) = p(c)p(e\mid c)}\)`
+
+&lt;center&gt;&lt;img src=./img/bayesian_hta3-1.png width='75%' title='TEXT HERE'&gt;&lt;/center&gt;
+
+
+
+&lt;span style="display:block; margin-top: -20px ;"&gt;&lt;/span&gt;
+
+- For example:
+`\begin{align}
+\class{blue}{e_i \sim \style{font-family:inherit;}{\text{Normal}}(\phi_{ei},\tau_e)} &amp;&amp; \class{blue}{\phi_{ei}} &amp;\class{blue}{= \alpha_0 [+ \ldots]} &amp;&amp; \class{blue}{\mu_e = \alpha_0} \\
+\class{red}{c_i\mid e_i \sim \style{font-family:inherit;}{\text{Normal}}(\phi_{ci},\tau_c)} &amp;&amp; \class{red}{\phi_{ci}} &amp;\class{red}{= \beta_0 + \beta_1(e_i -\mu_e)[+\ldots]} &amp;&amp; \class{red}{\mu_ c = \beta_0}
+\end{align}`
+
+---
+
+count: false
+
+# Bayesian HTA in action
+
+- In general, can represent the joint distribution as `\(\class{myblue}{p(e,c) = p(e)p(c\mid e) = p(c)p(e\mid c)}\)` 
+
+&lt;center&gt;&lt;img src=./img/bayesian_hta4-1.png width='75%' title='TEXT HERE'&gt;&lt;/center&gt;
+
+
+
+&lt;span style="display:block; margin-top: -20px ;"&gt;&lt;/span&gt;
+
+- For example:
+&lt;span style="display:block; margin-top: -30px ;"&gt;&lt;/span&gt;
+`\begin{align}
+\class{blue}{e_{i} \sim \style{font-family:inherit;}{\text{Beta}}(\phi_{ei}\tau_e,(1-\phi_{ei})\tau_e)} &amp;&amp; \class{blue}{\style{font-family:inherit;}{\text{logit}}(\phi_{ei})} &amp;\class{blue}{= \alpha_0 [+ \ldots]} &amp;&amp; \class{blue}{\mu_e = \frac{\style{font-family:inherit;}{\text{exp}}(\alpha_0)}{1+\style{font-family:inherit;}{\text{exp}}(\alpha_0)}} \\
+\class{red}{c_i\mid e_i \sim \style{font-family:inherit;}{\text{Gamma}}(\tau_c,\tau_c/\phi_{ci})} &amp;&amp; \class{red}{\style{font-family:inherit;}{\text{log}}(\phi_{ci})} &amp;\class{red}{= \beta_0 + \beta_1(e_i -\mu_e)[+\ldots]} &amp;&amp; \class{red}{\mu_ c = \style{font-family:inherit;}{\text{exp}}(\beta_0)}
+\end{align}`
+
+---
+
+count: false
+
+# Bayesian HTA in action
+
+- In general, can represent the joint distribution as `\(\class{myblue}{p(e,c) = p(e)p(c\mid e) = p(c)p(e\mid c)}\)` 
+
+&lt;center&gt;&lt;img src=./img/bayesian_hta4-1.png width='75%' title='TEXT HERE'&gt;&lt;/center&gt;
+
+&lt;span style="display:block; margin-top: -20px ;"&gt;&lt;/span&gt;
+- For example:
+&lt;span style="display:block; margin-top: -30px ;"&gt;&lt;/span&gt;
+`\begin{align}
+\class{blue}{e_{i} \sim \style{font-family:inherit;}{\text{Beta}}(\phi_{ei}\tau_e,(1-\phi_{ei})\tau_e)} &amp;&amp; \class{blue}{\style{font-family:inherit;}{\text{logit}}(\phi_{ei})} &amp;\class{blue}{= \alpha_0 [+ \ldots]} &amp;&amp; \class{blue}{\mu_e = \frac{\style{font-family:inherit;}{\text{exp}}(\alpha_0)}{1+\style{font-family:inherit;}{\text{exp}}(\alpha_0)}} \\
+\class{red}{c_i\mid e_i \sim \style{font-family:inherit;}{\text{Gamma}}(\tau_c,\tau_c/\phi_{ci})} &amp;&amp; \class{red}{\style{font-family:inherit;}{\text{log}}(\phi_{ci})} &amp;\class{red}{= \beta_0 + \beta_1(e_i -\mu_e)[+\ldots]} &amp;&amp; \class{red}{\mu_ c = \style{font-family:inherit;}{\text{exp}}(\beta_0)}
+\end{align}`
+
+&lt;span style="display:block; margin-top: -10px ;"&gt;&lt;/span&gt;
+
+-  Combining "modules" and fully characterising uncertainty about deterministic functions of random quantities is relatively straightforward using MCMC 
+
+- Prior information can help stabilise inference (especially with sparse data!), eg
+   - Cancer patients are unlikely to survive as long as the general population
+   - ORs are unlikely to be greater than `\(\pm \style{font-family:inherit;}{\text{5}}\)`
+
+---
+
+# Model 1: 
+
+`\(\small p(e)\sim \style{font-family:inherit;}{\text{Normal}}, p(c\mid e)\sim \style{font-family:inherit;}{\text{Normal}}\)`
+&lt;span style="display:block; margin-top: -15px ;"&gt;&lt;/span&gt;
+
+```r
+model {
+  for (i in 1:N1) {
+    eff1[i] ~ dnorm(phi.e1[i],tau.e[1]);    phi.e1[i] &lt;- mu.e[1]
+    cost1[i] ~ dnorm(phi.c1[i],tau.c[1]);   phi.c1[i] &lt;- mu.c[1]+beta[1]*(eff1[i]-mu.e[1])
+  }
+  for (i in 1:N2) {
+    eff2[i] ~ dnorm(phi.e2[i],tau.e[2]);    phi.e2[i] &lt;- mu.e[2]
+    cost2[i] ~ dnorm(phi.c2[i],tau.c[2]);   phi.c2[i] &lt;- mu.c[2]+beta[2]*(eff2[i]-mu.e[2])
+  }
+  # Node transformations for variances
+  for (t in 1:2) {
+    tau.e[t] &lt;- 1/ss.e[t];    ss.e[t] &lt;- s.e[t]*s.e[t];   s.e[t] &lt;- exp(ls.e[t])
+    tau.c[t] &lt;- 1/ss.c[t];    ss.c[t] &lt;- s.c[t]*s.c[t];   s.c[t] &lt;- exp(ls.c[t])
+    marg.ss.c[t] &lt;- ss.c[t] + ss.e[t]*beta[t]*beta[t]     # Marginal cost variance
+    # Prior distributions
+    ls.c[t] ~ dunif(-5, 10)
+    mu.c[t] ~ dnorm(0, 1.0E-6)
+    beta[t] ~ dunif(-5, 5)
+    ls.e[t] ~ dunif(-5, 10)
+    mu.e[t] ~ dnorm(0, 1.0E-6)
+  }
+  # HE outcomes
+  delta.c &lt;- mu.c[2]-mu.c[1]
+  delta.e &lt;- -(mu.e[2] - mu.e[1])   # NB: negative as days in hospital is a bad thing
+}
+```
+
+---
+
+# Model 2: 
+
+`\(\small p(e)\sim \style{font-family:inherit;}{\text{Gamma}}, p(c\mid e)\sim \style{font-family:inherit;}{\text{Gamma – (specification 1)}}\)`
+&lt;span style="display:block; margin-top: -15px ;"&gt;&lt;/span&gt;
+
+
+```r
+model {
+  for (i in 1:N1) {                           # Conditional mean on the `log scale`
+    eff1[i] ~ dgamma(shape.e[1],rate.e1[i]);  log(phi.e1[i]) &lt;- lm.e[1]
+    cost1[i] ~ dgamma(shape.c[1],rate.c1[i]); log(phi.c1[i]) &lt;- lm.c[1]+beta[1]*(eff1[i]-mu.e[1])
+    rate.e1[i] &lt;- shape.e[1]/phi.e1[i]
+    rate.c1[i] &lt;- shape.c[1]/phi.c1[i] 
+  }
+  for (i in 1:N2) {                           # Conditional mean on the `log scale`
+    eff2[i] ~ dgamma(shape.e[2],rate.e2[i]);  log(phi.e2[i]) &lt;- lm.e[2] 
+    cost2[i] ~ dgamma(shape.c[2],rate.c2[i]); log(phi.c2[i]) &lt;- lm.c[2]+beta[2]*(eff2[i]-mu.e[2])
+    rate.e2[i] &lt;- shape.e[2]/phi.e2[i]
+    rate.c2[i] &lt;- shape.c[2]/phi.c2[i] 
+  }
+  # Prior distributions
+  for (t in 1:2) {
+    shape.e[t] ~ dunif(0,10)
+    shape.c[t] ~ dunif(0,10)
+    lm.e[t] ~ dnorm(0, 1.0E-6);  mu.e[t] &lt;- exp(lm.e[t])     # Prior on `log(mu) and then rescale`
+    lm.c[t] ~ dnorm(0, 1.0E-6);  mu.c[t] &lt;- exp(lm.c[t])
+    beta[t] ~ dunif(-5, 5)
+  }
+  # HE outcomes
+  delta.c &lt;- mu.c[2]-mu.c[1]
+  delta.e &lt;- -(mu.e[2] - mu.e[1])   # NB: negative as days in hospital is a bad thing
+}
+```
+
+---
+
+count: false
+
+# Model 2: 
+
+`\(\small p(e)\sim \style{font-family:inherit;}{\text{Gamma}}, p(c\mid e)\sim \style{font-family:inherit;}{\text{Gamma – (specification 2)}}\)`
+&lt;span style="display:block; margin-top: -15px ;"&gt;&lt;/span&gt;
+
+```r
+model {
+  for (i in 1:N1) {                           # Conditional mean on the `linear scale`
+    eff1[i] ~ dgamma(shape.e[1],rate.e1[i]);  phi.e1[i] &lt;- mu.e[1]
+    cost1[i] ~ dgamma(shape.c[1],rate.c1[i]); phi.c1[i] &lt;- mu.c[1]+beta[1]*(eff1[i]-mu.e[1])
+    rate.e1[i] &lt;- shape.e[1]/phi.e1[i]
+    rate.c1[i] &lt;- shape.c[1]/phi.c1[i] 
+  }
+  for (i in 1:N2) {                           # Conditional mean on the `linear scale`
+    eff2[i] ~ dgamma(shape.e[2],rate.e2[i]);  phi.e2[i] &lt;- mu.e[2]
+    cost2[i] ~ dgamma(shape.c[2],rate.c2[i]); phi.c2[i] &lt;- mu.c[2]+beta[2]*(eff2[i]-mu.e[2])
+    rate.e2[i] &lt;- shape.e[2]/phi.e2[i]
+    rate.c2[i] &lt;- shape.c[2]/phi.c2[i] 
+  }
+  # Prior distributions
+  for (t in 1:2) {
+    shape.e[t] ~ dunif(0,10)
+    shape.c[t] ~ dunif(0,10)
+    mu.e[t] ~ dunif(0, K)   # Prior `directly on mu` (NB: needs to be positive!)
+    mu.c[t] ~ dunif(0, K)   # (for some large constant threshold K)
+    beta[t] ~ dunif(-5, 5)
+  }
+  # HE outcomes
+  delta.c &lt;- mu.c[2]-mu.c[1]
+  delta.e &lt;- -(mu.e[2] - mu.e[1])   # NB: negative as days in hospital is a bad thing
+}
+```
+
+---
+
+# Model 3: 
+
+`\(\small p(c) \sim \style{font-family:inherit;}{\text{logNormal}}, p(e\mid c)\sim \style{font-family:inherit;}{\text{Normal}}\)`
+&lt;span style="display:block; margin-top: -8px ;"&gt;&lt;/span&gt;
+
+`\begin{align}
+c_i \sim \style{font-family:inherit;}{\text{logNormal}}(\phi_{ci},\tau_c), &amp; \qquad \exp\left(\phi_{ci}+\frac{\sigma_{c}^2}{2}\right) = \mu_c \Rightarrow \phi_{ci}=\log(\mu_c) -\frac{1}{2\tau_c} \\[-2pt]
+e_i \mid c_i \sim \style{font-family:inherit;}{\text{Normal}}(\phi_{ei},\tau_e), &amp; \qquad \phi_{ei} = \mu_e + \beta\left(c_i-\mu_c\right) \\
+\end{align}`
+
+
+```r
+model {
+  for(i in 1:N1) {
+     eff1[i] ~ dnorm(phi.e1[i],tau.e[1]);     phi.e1[i] &lt;- mu.e[1]+beta[1]*(cost1[i]-mu.c[1])
+     cost1[i] ~ dlnorm(phi.c1[i],tau.c[1]);   phi.c1[i] &lt;- log(mu.c[1])-0.5*ss.c[1]
+  }
+  for(i in 1:N2) {
+     eff2[i] ~ dnorm(phi.e2[i],tau.e[2]);     phi.e2[i] &lt;- mu.e[1]+beta[1]*(cost2[i]-mu.c[2])
+     cost2[i] ~ dlnorm(phi.c2[i],tau.c[2]);   phi.c2[i] &lt;- log(mu.c[1])-0.5*ss.c[2]
+  }
+  # Node transformations for variances
+  for(t in 1:2) {
+     tau.e[t] &lt; 1/ss.e[t];    ss.e[t] &lt;- s.e[t]*s.e[t];    s.e[t] &lt;- exp(ls.e[t])
+     tau.c[t] &lt; 1/ss.c[t];    ss.c[t] &lt;- s.c[t]*s.c[t];    s.c[t] &lt;- exp(ls.c[t])
+  # Prior distributions
+    mu.e[t] ~ dnorm(0, 1.0E-6);      mu.c[t] ~ dnorm(0, 1.0E-6);      beta[t] ~ dunif(-5, 5)
+    ls.e[t] ~ dunif(-5, 10);         ls.c[t] ~ dunif(-5, 10)
+  }
+  
+  ...
+}
+```
+
+---
+
+# Results
+
+&lt;center&gt;&lt;img src=./img/uk-mod-3dist-contour.png width='85%' title='This reiterates the results shown before - the Normal and Gamma models have similar results and implications. The log-Normal seems to artificially inflate the range of the costs, due to its sensitivity to large values'&gt;&lt;/center&gt;
+
+&lt;span style="display:block; margin-top: 2em ;"&gt;&lt;/span&gt;
+
+.small[.alignright[&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M256 8c137 0 248 111 248 248S393 504 256 504 8 393 8 256 119 8 256 8zm-28.9 143.6l75.5 72.4H120c-13.3 0-24 10.7-24 24v16c0 13.3 10.7 24 24 24h182.6l-75.5 72.4c-9.7 9.3-9.9 24.8-.4 34.3l11 10.9c9.4 9.4 24.6 9.4 33.9 0L404.3 273c9.4-9.4 9.4-24.6 0-33.9L271.6 106.3c-9.4-9.4-24.6-9.4-33.9 0l-11 10.9c-9.5 9.6-9.3 25.1.4 34.4z"&gt;&lt;/path&gt;&lt;/svg&gt; [Next lecture](../05_ALD/index.html)]]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<style>
+.logo {
+  background-image: url("../assets/beamer/sk.png");
+  background-size: 14% 7%;
+  background-repeat: no-repeat;
+  position: absolute;
+  top:  2.625%; /* 2.65%em */
+  left: 85%;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)' +
+    ':not(.thankyou-michelle)' +
+    ':not(.thankyou-barney)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

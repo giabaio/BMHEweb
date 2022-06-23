@@ -1,0 +1,144 @@
+.empty-slide {
+  background-color: var(--title-slide-background-color);
+  background-image: url("");
+  text-align: center;
+  vertical-align: middle;
+}
+.empty-slide h1 {
+  color: #FFFFFF;
+  font-family: 'Ubuntu';
+  font-size: 50px!important;
+  font-weight: 400;
+  box-sizing: border-box;
+  border-radius: 15px;
+  background-color: #002855;
+  padding: 35px 30px 35px 30px;
+  margin-left: 3%;
+  margin-right: 3%;
+}
+
+/* Creates animation to scroll up text like rolling credits */
+.scroll-up {
+  background-color: black;
+  background-image: url("");
+  text-align: center;
+  vertical-align: top;
+  color: white;
+  font-size: 110%;
+  overflow: hidden;
+}
+.scroll-up huge {
+  font-size: 200%!important;
+}
+.scroll-up p {
+ position: absolute;
+ line-height: 25px;
+ width: 75%;
+ height: 100%;
+ margin-right: 0%;
+ margin-left: 10%;
+ /* Starting position */
+ -moz-transform:translateY(100%);
+ -webkit-transform:translateY(100%);	
+ transform:translateY(100%);
+ /* Apply animation to this element */	
+ -moz-animation: scroll-up 10s linear infinite;
+ -webkit-animation: scroll-up 10s linear infinite;
+ animation: scroll-up 20s linear infinite;
+}
+/* Move it (define the animation) */
+@-moz-keyframes scroll-up {
+ 0%   { -moz-transform: translateY(100%); }
+ 100% { -moz-transform: translateY(-100%); }
+}
+@-webkit-keyframes scroll-up {
+ 0%   { -webkit-transform: translateY(100%); }
+ 100% { -webkit-transform: translateY(-100%); }
+}
+@keyframes scroll-up {
+ 0%   { 
+ -moz-transform: translateY(100%); /* Browser bug fix */
+ -webkit-transform: translateY(100%); /* Browser bug fix */
+ transform: translateY(100%); 		
+ }
+ 100% { 
+ -moz-transform: translateY(-100%); /* Browser bug fix */
+ -webkit-transform: translateY(-100%); /* Browser bug fix */
+ transform: translateY(-100%); 
+ }
+}
+/* This prevents the footers from showing in the "scroll-up" page */
+.scroll-up .footer-left,
+.scroll-up .footer-center,
+.scroll-up .footer-right,
+.scroll-up .footer-social {
+  display: none;
+}
+
+/* Some ad-hoc text boxes */
+.box-left {
+    position: fixed;
+    /* if I leave the top spacing then Chrome cuts out the bottom-left part of the footer
+    top: 96.6%;
+    */
+    bottom: 52.8%;
+    left: 43%;
+    text-align: left;
+    width: 12%;
+    font-size: 60%;
+    text-align: center;
+    color: blue;
+}
+
+.box-right {
+    position: fixed;
+    /* if I leave the top spacing then Chrome cuts out the bottom-left part of the footer
+    top: 96.6%;
+    */
+    bottom: 53.0%;
+    left: 60%;
+    text-align: left;
+    width: 12%;
+    font-size: 60%;
+    text-align: center;
+    color: magenta;
+}
+
+.arrow1 {
+  position: fixed;
+  top: 20.0%;
+  left: 25%;
+  width: 12%;
+  text-align: center;
+  color: black;
+}
+
+.arrow2 {
+  position: fixed;
+  top: 20.0%;
+  left: 60%;
+  width: 12%;
+  text-align: center;
+  color: black;
+}
+
+/* Two-column layout */
+.left25 {
+  width: 25%;
+  height: 92%;
+  float: left;
+  margin-right: 50px;
+}
+.right75 {
+  width: 95%;
+}
+.right25 {
+  width: 25%;
+  height: 92%;
+  float: right;
+  margin-left: 50px;
+}
+.left75 {
+  text-align: center;
+  width: 95%;
+}

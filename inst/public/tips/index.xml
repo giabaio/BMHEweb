@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bayesian methods in health economics</title>
+    <link>/tips/</link>
+      <atom:link href="/tips/index.xml" rel="self" type="application/rss+xml" />
+    <description>Bayesian methods in health economics</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 15 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Bayesian methods in health economics</title>
+      <link>/tips/</link>
+    </image>
+    
+    <item>
+      <title>Computer specification</title>
+      <link>/tips/computer-specification/</link>
+      <pubDate>Tue, 15 Dec 2020 00:00:00 +0000</pubDate>
+      <guid>/tips/computer-specification/</guid>
+      <description>&lt;h2 id=&#34;on-your-own-machine&#34;&gt;On your own machine&lt;/h2&gt;
+&lt;p&gt;Since both &lt;code&gt;R&lt;/code&gt; and &lt;code&gt;BUGS&lt;/code&gt; (or &lt;code&gt;JAGS&lt;/code&gt;, which is an alternative Bayesian software) are free, you can install them on your own laptop/desktop, if you want.&lt;/p&gt;
+&lt;p&gt;The following gives you a quick guide on how you install the software that is required for the analyses that we will go through in the practicals:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;OpenBUGS&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;JAGS&lt;/code&gt; (optional)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;R&lt;/code&gt; and specifically the packages &lt;code&gt;R2OpenBUGS&lt;/code&gt; and &lt;code&gt;BCEA&lt;/code&gt;. Other optional packages (e.g. &lt;code&gt;reshape&lt;/code&gt;, &lt;code&gt;dplyr&lt;/code&gt;, &lt;code&gt;INLA&lt;/code&gt; and &lt;code&gt;R2jags&lt;/code&gt;) may need to be installed&lt;/li&gt;
+&lt;li&gt;The &lt;code&gt;R&lt;/code&gt; front-end &lt;code&gt;Rstudio&lt;/code&gt; (optional)&lt;/li&gt;
+&lt;li&gt;A spreadsheet calculator; if you have a valid license for &lt;code&gt;MS Excel&lt;/code&gt; on your machine that is OK. If not, you can download the freely available &lt;code&gt;LibreOffice&lt;/code&gt;, which is a decent surrogate (at least for the tasks that we will require in the practicals).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    &lt;p&gt;The file &lt;a href=&#34;install.R&#34;&gt;&lt;code&gt;install.R&lt;/code&gt;&lt;/a&gt; can be used to install &lt;em&gt;&lt;strong&gt;all&lt;/strong&gt;&lt;/em&gt; the necessary packages (in line with the specification of the &lt;a href=&#34;#virtual-machine&#34;&gt;Binder Virtual Machine&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;You can also download a &lt;code&gt;.zip&lt;/code&gt; file with the code and scripts for &lt;strong&gt;all&lt;/strong&gt; the practicals, &lt;a href=&#34;practicals.zip&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;alert alert-warning&#34;&gt;
+  &lt;div&gt;
+    Notice that you don&amp;rsquo;t have to install both &lt;code&gt;OpenBUGS&lt;/code&gt; &lt;strong&gt;and&lt;/strong&gt; &lt;code&gt;JAGS&lt;/code&gt; &amp;mdash; the former is sufficient for the purposes of this course.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;h3 id=&#34;specific-installation-instructions&#34;&gt;Specific installation instructions&lt;/h3&gt;
+&lt;div class=&#34;alert alert-help&#34;&gt;
+  &lt;div&gt;
+    &lt;details class=&#34;spoiler &#34;  id=&#34;spoiler-0&#34;&gt;
+  &lt;summary&gt;&lt;strong&gt;MS Windows users&lt;/strong&gt;&lt;/summary&gt;
+  &lt;p&gt;&lt;p&gt;If you are a &lt;code&gt;Windows&lt;/code&gt; user, your setting should be fairly easy.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Download the file &lt;code&gt;OpenBUGS323setup.exe&lt;/code&gt; from the webpage &lt;a href=&#34;https://www.mrc-bsu.cam.ac.uk/wp-content/uploads/2014/07/OpenBUGS323setup.zip&#34;&gt;https://www.mrc-bsu.cam.ac.uk/wp-content/uploads/2014/07/OpenBUGS323setup.zip&lt;/a&gt;, extract the &lt;code&gt;exe&lt;/code&gt; file from the downloaded &lt;code&gt;zip&lt;/code&gt; file and run it by double-clicking on it.&lt;/li&gt;
+&lt;li&gt;Download &lt;code&gt;R&lt;/code&gt; from &lt;a href=&#34;http://cran.r-project.org/bin/windows/&#34;&gt;http://cran.r-project.org/bin/windows/&lt;/a&gt; (click on the link &amp;ldquo;install R for the first time&amp;rdquo;&amp;quot;).&lt;/li&gt;
+&lt;li&gt;Once you have installed &lt;code&gt;R&lt;/code&gt;, open it and type in the terminal the command &lt;code&gt;install.packages(&amp;quot;R2OpenBUGS&amp;quot;)&lt;/code&gt;. This command will download the package &lt;code&gt;R2OpenBUGS&lt;/code&gt;, which is needed to interface &lt;code&gt;OpenBUGS&lt;/code&gt; with &lt;code&gt;R&lt;/code&gt;. Follow the on-screen instructions (you will be asked to select a &amp;ldquo;mirror from which to obtain the file).&lt;/li&gt;
+&lt;li&gt;Make sure that the download has worked by typing in the terminal the command &lt;code&gt;library(R2OpenBUGS)&lt;/code&gt;. If you do not see any error message, then the package has been successfully installed.&lt;/li&gt;
+&lt;li&gt;Install the &lt;code&gt;BCEA&lt;/code&gt; package that we will use throughout the practicals, by typing &lt;code&gt;install.packages(&amp;quot;BCEA&amp;quot;)&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Repeat the installation process for the other packages that are used in the practicals (e.g. &lt;code&gt;reshape&lt;/code&gt; and &lt;code&gt;dplyr&lt;/code&gt;). Since this is optional, you can leave this final step to when it is actually needed.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If you like, you can also install &lt;code&gt;JAGS&lt;/code&gt;, following these steps.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Go to &lt;a href=&#34;http://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/&#34;&gt;http://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/&lt;/a&gt; and click on the latest available executable file (currently, &lt;a href=&#34;https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/JAGS-4.3.0.exe/download&#34;&gt;&lt;code&gt;JAGS-4.3.0.exe&lt;/code&gt;&lt;/a&gt;). Running this file will install &lt;code&gt;JAGS&lt;/code&gt; on your machine.&lt;/li&gt;
+&lt;li&gt;If you do so, then in the &lt;code&gt;R&lt;/code&gt; terminal type the command &lt;code&gt;install.packages(&amp;quot;R2jags&amp;quot;)&lt;/code&gt;. This will allow you to use &lt;code&gt;JAGS&lt;/code&gt; (instead of &lt;code&gt;OpenBUGS&lt;/code&gt;) when doing the practicals &amp;mdash; notice that to make a package available you will have to load it to the workspace by using the &lt;code&gt;library(name_package)&lt;/code&gt; command.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/p&gt;
+&lt;/details&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;br&gt;
+&lt;div class=&#34;alert alert-help&#34;&gt;
+  &lt;div&gt;
+    &lt;details class=&#34;spoiler &#34;  id=&#34;spoiler-0&#34;&gt;
+  &lt;summary&gt;&lt;strong&gt;Linux or Mac OS users&lt;/strong&gt;&lt;/summary&gt;
+  &lt;p&gt;&lt;h3 id=&#34;installing-r-and-bcea&#34;&gt;Installing &lt;code&gt;R&lt;/code&gt; and &lt;code&gt;BCEA&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;Linux&lt;/code&gt; or &lt;code&gt;Mac OS&lt;/code&gt; users should follow slightly different approaches. The installation of &lt;code&gt;R&lt;/code&gt; is pretty much the same as for &lt;code&gt;MS WIndows&lt;/code&gt; users. From the webpage &lt;a href=&#34;http://cran.r-project.org/&#34;&gt;http://cran.r-project.org/&lt;/a&gt; select your operating system (&lt;code&gt;Linux&lt;/code&gt; or &lt;code&gt;Mac OS&lt;/code&gt;) and then your version (eg &lt;code&gt;debian&lt;/code&gt;, &lt;code&gt;redhat&lt;/code&gt;, &lt;code&gt;suse&lt;/code&gt; or &lt;code&gt;ubuntu&lt;/code&gt;, for &lt;code&gt;Linux&lt;/code&gt;). Follow the instructions to install the software. Once this is done, open &lt;code&gt;R&lt;/code&gt; and install the package &lt;code&gt;BCEA&lt;/code&gt; by typing at the terminal the command &lt;code&gt;install.packages(&amp;quot;BCEA&amp;quot;)&lt;/code&gt;. You can use similar commands to install other packages.&lt;/p&gt;
+&lt;h3 id=&#34;installing-openbugs-and-jags-in-linux&#34;&gt;Installing &lt;code&gt;OpenBUGS&lt;/code&gt; and &lt;code&gt;JAGS&lt;/code&gt; in &lt;code&gt;Linux&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;While both &lt;code&gt;OpenBUGS&lt;/code&gt; and &lt;code&gt;JAGS&lt;/code&gt; run natively in &lt;code&gt;Linux&lt;/code&gt; (see below for details on how to install them directly), the graphical interface is not available for &lt;code&gt;OpenBUGS&lt;/code&gt;. Because we will use it for at least the first few practicals, it is advisable to install &lt;code&gt;wine&lt;/code&gt;, a &amp;ldquo;compatibility layer&amp;rdquo;&amp;quot; that allows to run &lt;code&gt;Windows&lt;/code&gt; applications from &lt;code&gt;Linux&lt;/code&gt; or &lt;code&gt;Mac&lt;/code&gt;. Instructions are available at &lt;a href=&#34;https://www.winehq.org/download/&#34;&gt;https://www.winehq.org/download/&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;When you have installed &lt;code&gt;wine&lt;/code&gt;, you can also install &lt;code&gt;OpenBUGS&lt;/code&gt;, which you will be then able to access using the graphical interface, by following these steps.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Go to the webpage &lt;a href=&#34;https://www.mrc-bsu.cam.ac.uk/wp-content/uploads/2014/07/OpenBUGS323setup.zip&#34;&gt;https://www.mrc-bsu.cam.ac.uk/wp-content/uploads/2014/07/OpenBUGS323setup.zip&lt;/a&gt;, extract from the &lt;code&gt;.zip&lt;/code&gt; file the windows executable file &lt;code&gt;OpenBUGS323setup.exe&lt;/code&gt; and place it in your default directory for &lt;code&gt;wine&lt;/code&gt; programs (usually &lt;code&gt;~/.wine/drive_c&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Run the &lt;code&gt;OpenBUGS&lt;/code&gt; installer
+&lt;ul&gt;
+&lt;li&gt;Open a terminal window;&lt;/li&gt;
+&lt;li&gt;Move to the directory where you placed the &lt;code&gt;OpenBUGS&lt;/code&gt; executable you downloaded in step 1, something like: &lt;code&gt;cd ~/.wine/drive_c&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Type: &lt;code&gt;wine OpenBUGS323setup.exe&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;Wait for a while and then follow the prompts to install &amp;mdash; by default, the installation folder is &lt;code&gt;~/.wine/drive_c/Program Files/OpenBUGS323&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;NB: There may be an error at the end, this is OK. Close down the Terminal Window&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Test &lt;code&gt;OpenBUGS&lt;/code&gt; by opening a new terminal window typing the command: &lt;code&gt;wine ~/.wine/drive_c/Program Files/OpenBUGS323/OpenBUGS.exe&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Download the &lt;code&gt;R2OpenBUGS&lt;/code&gt; package from &lt;a href=&#34;http://www.openbugs.info/w/UserContributedCode&#34;&gt;http://www.openbugs.info/w/UserContributedCode&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Open &lt;code&gt;R&lt;/code&gt; and install &lt;code&gt;R2OpneBUGS&lt;/code&gt; by typing the command &lt;code&gt;install.packages(&amp;quot;R2OpenBUGS&amp;quot;)&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;You can also install the &lt;code&gt;Linux&lt;/code&gt; version of &lt;code&gt;OpenBUGS&lt;/code&gt; (available from &lt;a href=&#34;https://www.mrc-bsu.cam.ac.uk/wp-content/uploads/2018/04/OpenBUGS-3.2.3.tar.gz&#34;&gt;here&lt;/a&gt;) by following the instructions given at &lt;a href=&#34;https://www.mrc-bsu.cam.ac.uk/software/bugs/openbugs/building-and-packaging-openbugs/openbugs-linux-installation/&#34;&gt;https://www.mrc-bsu.cam.ac.uk/software/bugs/openbugs/building-and-packaging-openbugs/openbugs-linux-installation/&lt;/a&gt;. This will work just as well, but you won&amp;rsquo;t be able to access the graphical interface.&lt;/p&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    &lt;p&gt;&lt;strong&gt;NB&lt;/strong&gt;: Under &lt;code&gt;Linux&lt;/code&gt;, you may need to also install additional packages to support the &lt;code&gt;OpenBUGS&lt;/code&gt; installation. For instance, under &lt;code&gt;Debian&lt;/code&gt; or &lt;code&gt;Ubuntu&lt;/code&gt;, you may need to also run in your terminal&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;sudo apt-get install g++-multilib
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;to install the library &lt;code&gt;g++multilib&lt;/code&gt;.&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;In addition, you can also install &lt;code&gt;JAGS&lt;/code&gt;, following these steps.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Go to &lt;a href=&#34;http://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Source/&#34;&gt;http://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Source/&lt;/a&gt; and download the latest &lt;code&gt;tar.gz&lt;/code&gt; file (currently, &lt;a href=&#34;https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Source/JAGS-4.3.0.tar.gz/download&#34;&gt;&lt;code&gt;JAGS-4.3.0.tar.gz&lt;/code&gt;&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Open a terminal window and extract the content of the archive file by typing the command &lt;code&gt;tar xzvf JAGS-4.3.0.tar.gz&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Move to the directory (which has just been created) using the command &lt;code&gt;cd JAGS-4.3.0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Run the configuration by typing &lt;code&gt;sudo ./configure --prefix=/us &amp;amp;&amp;amp; sudo make &amp;amp;&amp;amp; sudo make install&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Clean up the unnecessary files and folder by typing &lt;code&gt;cd .. &amp;amp;&amp;amp; sudo rm -fr JAGS-4.3.0 &amp;amp;&amp;amp; rm JAGS-4.3.0.tar.gz&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;If you decide to do so, then open &lt;code&gt;R&lt;/code&gt; and install the package &lt;code&gt;R2JAGS&lt;/code&gt; (using the same command as for the installation of the package &lt;code&gt;R2OpneBUGS&lt;/code&gt;). Notice that you don&amp;rsquo;t have to install both &lt;code&gt;OpenBUGS&lt;/code&gt; and &lt;code&gt;JAGS&lt;/code&gt; &amp;mdash; the former is sufficient for the purposes of this course.&lt;/p&gt;
+&lt;h3 id=&#34;installing-openbugs-and-jags-in-mac-os&#34;&gt;Installing &lt;code&gt;OpenBUGS&lt;/code&gt; and &lt;code&gt;JAGS&lt;/code&gt; in &lt;code&gt;Mac OS&lt;/code&gt;&lt;/h3&gt;
+&lt;p&gt;While similar in spirit, installation under &lt;code&gt;Mac OS&lt;/code&gt; is slightly more complex, because the process requires some extra software that is not automatically installed. Basically, you need to follow this procedure, as detailed at the website &lt;a href=&#34;http://www.jkarreth.net/bayes-icpsr.html#bugsmac&#34;&gt;http://www.jkarreth.net/bayes-icpsr.html#bugsmac&lt;/a&gt;.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Update your &lt;code&gt;Mac OS&lt;/code&gt; to the newest version.&lt;/li&gt;
+&lt;li&gt;Install &lt;code&gt;Xcode&lt;/code&gt; through the &lt;a href=&#34;https://apps.apple.com/us/app/xcode/id497799835?mt=12&#34;&gt;App Store&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Check if you have &lt;code&gt;X11&lt;/code&gt; installed (this is a a windowing system, common on &lt;code&gt;Unix&lt;/code&gt;-like operating systems, which, believe it or not, &lt;code&gt;MaxOs&lt;/code&gt; is!): hit Command-Space, type &lt;code&gt;X11&lt;/code&gt;, and see if the program shows up. If not, install it from &lt;a href=&#34;http://xquartz.macosforge.org/&#34;&gt;here&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Download a the stable pre-compiled version of &lt;a href=&#34;https://dl.winehq.org/wine-builds/macosx/download.html&#34;&gt;&lt;code&gt;wine&lt;/code&gt;&lt;/a&gt;. Instructions to install &lt;code&gt;wine&lt;/code&gt; on &lt;code&gt;Mac OS&lt;/code&gt; are available &lt;a href=&#34;https://www.embird.net/sw/embird/tutorial/wine/wine.htm&#34;&gt;here&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Download &lt;code&gt;OpenBUGS323setup.exe&lt;/code&gt; (windows executable) and place it in your default directory for &lt;code&gt;wine&lt;/code&gt; programs (usually &lt;code&gt;~/.wine/drive_c&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Run the &lt;code&gt;OpenBUGS&lt;/code&gt; installer:
+&lt;ul&gt;
+&lt;li&gt;Open &lt;code&gt;XQuartz&lt;/code&gt; and a Terminal Window;&lt;/li&gt;
+&lt;li&gt;Move to the directory where you placed the &lt;code&gt;OpenBUGS&lt;/code&gt; executable you downloaded in step 2;&lt;/li&gt;
+&lt;li&gt;Type: &lt;code&gt;wine OpenBUGS323setup.exe&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;Wait for a while and then follow the prompts to install &amp;mdash; remember the directory you created to install it (default is &lt;code&gt;~/[username]/.wine/drive_c/Program Files/OpenBUGS323&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;NB: There may be an error at the end, this is OK. Close down the Terminal Window&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;It is possible that you need to specify the installation directory to tell your system specifically where to look for &lt;code&gt;BUGS&lt;/code&gt;. Typically this will mean adding the option &lt;code&gt;bugs.directory = &amp;quot;/Users/yourusername/.wine/drive_c/Program Files/OpenBUGS232&amp;quot;&lt;/code&gt; (or similar, depending on where you have installed the software!) to the call to the &lt;code&gt;bugs&lt;/code&gt; function under &lt;code&gt;R2OpenBUGS&lt;/code&gt;. Note that you need to replace &amp;ldquo;yourusername&amp;rdquo; with your Mac&amp;rsquo;s user name.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Notice that, if you like, you can install &lt;code&gt;R&lt;/code&gt; under &lt;code&gt;wine&lt;/code&gt; (rather than natively in &lt;code&gt;Mac OS&lt;/code&gt;).  Download the &lt;code&gt;MS Windows&lt;/code&gt; executable file from &lt;code&gt;CRAN&lt;/code&gt; and repeat the instructions above, replacing the command &lt;code&gt;wine OpenBUGS323setup.exe&lt;/code&gt; with the command &lt;code&gt;wine R-XXXX.exe&lt;/code&gt;, where &lt;code&gt;R-XXXX.exe&lt;/code&gt; is the name of the executable file.&lt;/p&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    &lt;p&gt;There are some reports that &lt;code&gt;OpenBUGS&lt;/code&gt; may fail to work on some &lt;code&gt;Mac OS&lt;/code&gt; versions. Sometimes, when trying to use &lt;code&gt;OpenBUGS&lt;/code&gt; from &lt;code&gt;R&lt;/code&gt;, it will complain that it can&amp;rsquo;t find the programme. The &lt;code&gt;bugs&lt;/code&gt; function in the &lt;code&gt;R2OpenBUGS&lt;/code&gt; package takes an additional input &lt;code&gt;OpenBUGS.pgm&lt;/code&gt;, which should be set to the full path to the &lt;code&gt;OpenBUGS&lt;/code&gt; executable file. You can try and issue the &lt;code&gt;R&lt;/code&gt; command &lt;code&gt;Sys.which(&amp;quot;OpenBUGS&amp;quot;)&lt;/code&gt; at a &lt;code&gt;R&lt;/code&gt; terminal and see whether it returns a full path and then pass &lt;em&gt;that&lt;/em&gt; string as value for &lt;code&gt;OpenBUGS.pgm&lt;/code&gt;, eg if &lt;code&gt;Sys.which(&amp;quot;OpenBUGS&amp;quot;)&lt;/code&gt; returns the string &lt;code&gt;/usr/local/bin/OpenBUGS&lt;/code&gt;, then set&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-{r&#34;&gt;bugs(..., OpenBUGS.pgm=&amp;quot;/usr/local/bin/OpenBUGS&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;In addition, you can also install &lt;code&gt;JAGS&lt;/code&gt;, following these steps, as detailed at the webpage &lt;a href=&#34;http://www.jkarreth.net/bayes-icpsr.html#jagsmac&#34;&gt;http://www.jkarreth.net/bayes-icpsr.html#jagsmac&lt;/a&gt;.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install the most recent version of &lt;code&gt;R&lt;/code&gt; from the &lt;a href=&#34;https://cran.r-project.org/bin/macosx/&#34;&gt;&lt;code&gt;CRAN&lt;/code&gt; website&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;(Optional) Download and install &lt;a href=&#34;https://rstudio.com/products/rstudio/download/#download&#34;&gt;RStudio&lt;/a&gt; (NB: select the version for the your release of &lt;code&gt;MacOS&lt;/code&gt;!).&lt;/li&gt;
+&lt;li&gt;Install &lt;code&gt;Clang&lt;/code&gt; (currently &lt;code&gt;clang-8.0.0.pkg&lt;/code&gt;) and GNU Fortran (currently, &lt;code&gt;gfortran-6.1.pkg.dmg&lt;/code&gt;) from the &lt;a href=&#34;http://cran.r-project.org/bin/macosx/tools/&#34;&gt;CRAN tools directory&lt;/a&gt;. Note that the most updated release for these may vary so check you select the correct one.&lt;/li&gt;
+&lt;li&gt;Now install &lt;code&gt;JAGS&lt;/code&gt; version 4.3.0 (&lt;code&gt;JAGS-4.3.0.dmg&lt;/code&gt;) from &lt;a href=&#34;http://sourceforge.net/projects/mcmc-jags/files/JAGS/&#34;&gt;here&lt;/a&gt;. Detailed instructions quoted from the &lt;code&gt;JAGS&lt;/code&gt; readme file:
+&lt;ul&gt;
+&lt;li&gt;Download the disk image from the &lt;code&gt;JAGS&lt;/code&gt; website.&lt;/li&gt;
+&lt;li&gt;Double click on the disk image to mount (this may not be required).&lt;/li&gt;
+&lt;li&gt;Double click on the &lt;code&gt;JAGS-4.3.0.mpkg&lt;/code&gt; file within the mounted disk image.&lt;/li&gt;
+&lt;li&gt;Follow the instructions in the installer. If you receive a warning that this software cannot be installed because it comes from an unidentified developer, you need to go to &amp;ldquo;System Preferences&amp;rdquo;&amp;quot; &amp;gt; &amp;ldquo;Security &amp;amp; Privacy&amp;rdquo;&amp;quot;, and authorize the installation there before proceeding.&lt;/li&gt;
+&lt;li&gt;Authenticate as the administrative user. The first user you create when setting up &lt;code&gt;Mac OS X&lt;/code&gt; has administrator privileges by default.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Start the Terminal and type &lt;code&gt;jags&lt;/code&gt; to see if you receive the message: Welcome to &lt;code&gt;JAGS 4.3.0&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Open &lt;code&gt;R&lt;/code&gt; and install the packages &lt;code&gt;R2jags&lt;/code&gt;, &lt;code&gt;coda&lt;/code&gt;, &lt;code&gt;R2WinBUGS&lt;/code&gt;, &lt;code&gt;lattice&lt;/code&gt;, and &lt;code&gt;rjags&lt;/code&gt;, by typing &lt;code&gt;install.packages(c(&amp;quot;R2jags&amp;quot;, &amp;quot;coda&amp;quot;, &amp;quot;R2WinBUGS&amp;quot;, &amp;quot;lattice&amp;quot;, &amp;quot;rjags&amp;quot;))&lt;/code&gt; in the &lt;code&gt;R&lt;/code&gt; command line.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&#34;alert alert-warning&#34;&gt;
+  &lt;div&gt;
+    &lt;strong&gt;NB&lt;/strong&gt;: &lt;a href=&#34;https://sourceforge.net/p/mcmc-jags/discussion/610037/thread/07e08a3605/?limit=25#1160&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;This&lt;/a&gt; post may be helpful in finding instructions to install &lt;code&gt;JAGS&lt;/code&gt; under &lt;code&gt;MacOs&lt;/code&gt;. In general, the &lt;a href=&#34;https://sourceforge.net/projects/mcmc-jags/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;&lt;code&gt;JAGS&lt;/code&gt;&lt;/a&gt; &lt;code&gt;sourceforge&lt;/code&gt; page has several posts/requests for help that you may find very similar to your own.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;/details&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;br&gt;
+&lt;h2 id=&#34;virtual-machine&#34;&gt;Virtual machine&lt;/h2&gt;
+&lt;p&gt;It is of course helpful to set up your own machine with all the relevant software, so you can re-use it later in life. However, you can also use a virtual machine (VM) we have created for you (specifically using &lt;a href=&#34;https://mybinder.readthedocs.io/en/latest/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;binder&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;We have set up a VM (if you are interested, it is based on Linux), in which we have installed:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A stable version of &lt;code&gt;R&lt;/code&gt; and &lt;code&gt;Rstudio&lt;/code&gt;. Specifically, the current installation uses &lt;code&gt;R 4.1.2 (2021-11-01)&lt;/code&gt; and &lt;code&gt;Rstudio 2022.02.0 Build 443&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;OpenBUGS 3.2.3;&lt;/li&gt;
+&lt;li&gt;JAGS 4.3.0;&lt;/li&gt;
+&lt;li&gt;The packages &lt;code&gt;R2jags&lt;/code&gt;, &lt;code&gt;R2OpenBUGS&lt;/code&gt;, &lt;code&gt;BCEA&lt;/code&gt;, &lt;code&gt;tidyverse&lt;/code&gt; and all the relevant &amp;ldquo;dependencies&amp;rdquo;.&lt;/li&gt;
+&lt;li&gt;The package &lt;code&gt;bmhe&lt;/code&gt;, which contains a set of utility functions to be used specifically for the practicals.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;alert alert-warning&#34;&gt;
+  &lt;div&gt;
+    &lt;p&gt;If you want to install the package &lt;code&gt;bmhe&lt;/code&gt; so you can use it on your local machine, you need to type the following command on your &lt;code&gt;R&lt;/code&gt; terminal:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;language-{r&#34;&gt;install.packages(&amp;quot;remotes&amp;quot;)
+remotes::install_github(&amp;quot;giabaio/bmhe_utils&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This will first install the package &lt;code&gt;remotes&lt;/code&gt; from the main &lt;code&gt;R&lt;/code&gt; repository (CRAN) and then use it to install &lt;code&gt;bmhe&lt;/code&gt; from its &lt;a href=&#34;https://github.com/giabaio/bmhe_utils&#34;&gt;GitHub repository&lt;/a&gt;. Installing packages from a GitHub repository is becoming a very popular and at times very efficient alternative, so it&amp;rsquo;s helpful to know how to do it&amp;hellip;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;NB&lt;/strong&gt; The full list of packages installed in the binder VM is given in the file &lt;code&gt;install.R&lt;/code&gt; that is available under the root (the main, landing folder: this is your working directory when you switch the binder VM on).&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This means that when you access the VM, you won&amp;rsquo;t have to fiddle with the setting and will be able to use it for the practicals without further issues with installation.&lt;/p&gt;
+&lt;p&gt;To use the binder VM, simply go to the &lt;a href=&#34;https://github.com/StatisticsHealthEconomics/stat0019_binder/tree/bmhe&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;GitHub repository&lt;/a&gt; (note that this is the &amp;ldquo;branch&amp;rdquo; named &lt;code&gt;bmhe&lt;/code&gt; and this is the one you need to use &amp;mdash; not the other branches!) and click on the button in the bottom-left corner (marked with the text &amp;ldquo;launch binder&amp;rdquo;). This will open the &amp;ldquo;BinderHub&amp;rdquo; allowing us to share the GitHub repository in the form of a remote &lt;code&gt;Rstudio&lt;/code&gt; environment, with all the relevant files already installing. Alternatively, simply direct your browser to this &lt;a href=&#34;https://mybinder.org/v2/gh/StatisticsHealthEconomics/stat0019_binder/bmhe?urlpath=rstudio&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;URL&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This should load up fairly quickly (as it&amp;rsquo;s been compiled already &amp;mdash; it is possible, though unlikely, that it may need to recompile the binder VM, but even then, it should not take more than a minute or so&amp;hellip;). Once it&amp;rsquo;s done, your browser will have a &lt;code&gt;Rstudio&lt;/code&gt; instance open.&lt;/p&gt;
+&lt;p&gt;You can use the bottom-right corner window as a file-navigator. The tab labelled as &lt;code&gt;Files&lt;/code&gt; will show the file system for the VM. You don&amp;rsquo;t need to worry about all the files and can click to &lt;code&gt;practical&lt;/code&gt;, which will navigate to the folder containing the files for the various practicals. If you keep navigating the files, you can reach the relevant path and open the various &lt;code&gt;R&lt;/code&gt; scripts, for instance moving to &lt;code&gt;practical/01_monte-carlo/&lt;/code&gt; shows four &lt;code&gt;.R&lt;/code&gt; files that can be used to do the first practical (effectively only using &lt;code&gt;R&lt;/code&gt;).&lt;/p&gt;
+&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    &lt;p&gt;The only drawback of using the binder VM is that &lt;strong&gt;for now&lt;/strong&gt; it is not &amp;ldquo;&lt;em&gt;persistent&lt;/em&gt;&amp;rdquo;. This means that the changes you make to the files are not saved from one session to the next (a &lt;a href=&#34;https://notebooks.gesis.org/&#34;&gt;tool&lt;/a&gt; existed to turn the binder into a persistent VM, but it has been temporarily discontinued).&lt;/p&gt;
+&lt;p&gt;In addition, it can also be a bit slow (it is after all a remote machine&amp;hellip;), although this obviously depends on how fast/powerful your computer is and you need to be online while working on &lt;code&gt;Rstudio&lt;/code&gt;, which you don&amp;rsquo;t on a local installation.&lt;/p&gt;
+&lt;p&gt;For these reasons, I probably would recommend &lt;em&gt;against&lt;/em&gt; using it, if you were doing &amp;ldquo;serious&amp;rdquo; work.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;But&lt;/strong&gt;: it may be very helpful in terms of getting on the right track without having to worry about the subtleties of the software installation. In addition, tools such as &lt;a href=&#34;https://docs.docker.com/&#34;&gt;&lt;code&gt;docker&lt;/code&gt;&lt;/a&gt; and &lt;a href=&#34;https://mybinder.readthedocs.io/en/latest/&#34;&gt;&lt;code&gt;binder&lt;/code&gt;&lt;/a&gt; are generally very helpful to share your work and guarantee reproducible research, so it is probably worth spending a little time investigating how they work&amp;hellip;&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;br&gt;
+&lt;h2 id=&#34;helpful-tools&#34;&gt;Helpful tools&lt;/h2&gt;
+&lt;p&gt;Here&amp;rsquo;s a list of some other helpful tools for (Bayesian) modelling in HTA applications&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://www.jeremy-oakley.staff.shef.ac.uk/shelf/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SHELF&lt;/a&gt;: a package of documents, templates and software to carry out elicitation of probability distributions for uncertain quantities from a group of experts&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://savi.shef.ac.uk/SAVI/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;SAVI&lt;/a&gt;: a web-app to do Value of Information computations&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://egon.stats.ucl.ac.uk/projects/BCEAweb/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;BCEAweb&lt;/a&gt;: a web-app to run &lt;code&gt;BCEA&lt;/code&gt; with PSA and VoI applications&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Using BUGS</title>
+      <link>/tips/using-bugs/</link>
+      <pubDate>Fri, 10 Jan 2020 00:00:00 +0000</pubDate>
+      <guid>/tips/using-bugs/</guid>
+      <description>
+
+
+&lt;div id=&#34;running-a-model-in-openbugs&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Running a model in &lt;code&gt;OpenBUGS&lt;/code&gt;&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;p&gt;Start &lt;code&gt;OpenBUGS&lt;/code&gt; by double clicking on the &lt;code&gt;OpenBUGS&lt;/code&gt; icon (or double click on the file &lt;code&gt;OpenBUGS.exe&lt;/code&gt;, typically in somewhere like the &lt;code&gt;OpenBUGS\OpenBUGS322&lt;/code&gt; directory in &lt;code&gt;C:\Program Files (x86)&lt;/code&gt;).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Open the file containing model code as follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Point to &lt;code&gt;File&lt;/code&gt; on the tool bar and click once with left mouse button (LMB);&lt;/li&gt;
+&lt;li&gt;Highlight &lt;code&gt;Open&lt;/code&gt; option and click once with LMB;&lt;/li&gt;
+&lt;li&gt;Select appropriate directory and double click on file to open. Files for &lt;code&gt;OpenBUGS&lt;/code&gt; input are sometimes in &lt;code&gt;.txt&lt;/code&gt; plain text format rather than the default &lt;code&gt;.odc&lt;/code&gt; “compound document” format — so you may need to select “Files of type” &lt;code&gt;.txt&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Select the &lt;code&gt;Model&lt;/code&gt; menu as follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Point to &lt;code&gt;Model&lt;/code&gt; on the tool bar and click once with LMB.&lt;/li&gt;
+&lt;li&gt;Highlight &lt;code&gt;Specification&lt;/code&gt; option and click once with LMB.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Focus the window containing the model code by clicking the LMB once anywhere in the window — the top panel of the window should then become highlighted in blue to indicate that the window is currently in focus.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Highlight the word &lt;code&gt;model&lt;/code&gt; at the beginning of the code by dragging the mouse over the word whilst holding down the LMB.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Check the model syntax by moving the mouse over the check model box in the &lt;code&gt;Specification Tool&lt;/code&gt; window and clicking once with the LMB.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;A message saying&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;model is syntactically correct&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;should appear in the bottom left of the &lt;code&gt;OpenBUGS&lt;/code&gt; program window. Any error messages will appear in the same place if there is a syntax error.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Open the data, if there are observed data in the model. The data can either be stored in a separate file, in which case open this file (or multiple files), or they may be stored in the same file as the model code.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Load the data as follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Highlight the word &lt;code&gt;list&lt;/code&gt; at the beginning of the data file.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click once with the LMB on the load data box in the &lt;code&gt;Specification Tool&lt;/code&gt; window.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;A message saying&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;data loaded&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;should appear in the bottom left of the &lt;code&gt;OpenBUGS&lt;/code&gt; program window.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Select number of chains (sets of samples to simulate) by typing the number of chains required in the white box in the &lt;code&gt;Specification Tool&lt;/code&gt; window.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The default is 1, but we will typically use 2 or more. Running more than one chain, starting from different initial values, makes convergence checking easier (see later).&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Compile the model by clicking once with the LMB on the &lt;code&gt;compile&lt;/code&gt; box in the &lt;code&gt;Specification Tool&lt;/code&gt; window.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;A message saying&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;model compiled&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;should appear in the bottom left of the &lt;code&gt;OpenBUGS&lt;/code&gt; program window.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Open the initial values files. The initial values can either be stored in separate file(s), in which case open these files, or they may be stored in the same file as the model code.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Load any initial values as follows:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Highlight the word &lt;code&gt;list&lt;/code&gt; at the beginning of the first set of initial values.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Click once with LMB on the load inits box in the &lt;code&gt;Specification Tool&lt;/code&gt; window.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;A message saying&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;initial values loaded: model contains uninitialized nodes (try running gen inits or loading more files)&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;should appear in the bottom left of the &lt;code&gt;OpenBUGS&lt;/code&gt; program window.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Repeat process for the second set of initial values, if running two chains.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;A message saying&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;initial values loaded: model initialized&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;should now appear in the bottom left of the &lt;code&gt;OpenBUGS&lt;/code&gt; program window.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Sometimes we can get away with not supplying any initial values ourselves, and we can just click gen inits to let &lt;code&gt;OpenBUGS&lt;/code&gt; generate these automatically. Though this won’t generally work if any of the priors are vague. Also it is handy to start different chains at widely dispersed initial values to assess convergence.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Close the &lt;code&gt;Specification Tool&lt;/code&gt; window by clicking once with LMB on the &lt;code&gt;X&lt;/code&gt; button in top right corner of window.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;You are now ready to start running the simulation:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Before doing so, you may want to set some monitors to store the sampled values for selected parameters (see section Monitoring parameter values below).&lt;/li&gt;
+&lt;li&gt;To run the simulation, select the &lt;code&gt;Update&lt;/code&gt; option from the &lt;code&gt;Model&lt;/code&gt; menu.&lt;/li&gt;
+&lt;li&gt;Type the number of updates (iterations of the simulation) you require in the appropriate white box (default is 1000).&lt;/li&gt;
+&lt;li&gt;Click once on the &lt;code&gt;update&lt;/code&gt; box. The program will now start simulating values for each parameter in the model. This may take a few seconds — the box marked iteration will tell you how many updates have currently been completed. The number of times this value is revised depends on the value you have set for refresh (see white box above iteration). The default is every 100 iterations. If the model is very fast, you should increase this to, e.g. 1000 or 10000, then the model will run even faster since &lt;code&gt;OpenBUGS&lt;/code&gt; is not unnecessarily redrawing the screen hundreds of times in a split second. If the model is very slow, you may like to decrease it to, e.g. 10 or 1 so that &lt;code&gt;OpenBUGS&lt;/code&gt; does not appear to “freeze” during sampling.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;When the updates are finished, the message&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;updates took *** s&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;will appear in the bottom left of the &lt;code&gt;OpenBUGS&lt;/code&gt; program window (where &lt;code&gt;***&lt;/code&gt; is the number of seconds taking to complete the simulation).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;If you set monitors for any parameters you can now check convergence and view graphical and numerical summaries of the samples (see below).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;To save any files created during your &lt;code&gt;OpenBUGS&lt;/code&gt; run, focus the window containing the information you want to save, and select the &lt;code&gt;Save As&lt;/code&gt; option from the &lt;code&gt;File&lt;/code&gt; menu.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;To quit &lt;code&gt;OpenBUGS&lt;/code&gt;, select the &lt;code&gt;Exit&lt;/code&gt; option from the &lt;code&gt;File&lt;/code&gt; menu.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div id=&#34;monitoring-parameter-values&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Monitoring parameter values&lt;/h2&gt;
+&lt;p&gt;In order to check convergence and obtain posterior summaries of the model parameters, you first need to set monitors for each parameter of interest. This tells &lt;code&gt;OpenBUGS&lt;/code&gt; to store the values sampled for those parameters; otherwise, &lt;code&gt;OpenBUGS&lt;/code&gt; automatically discards the simulated values. There are
+two types of monitors in &lt;code&gt;OpenBUGS&lt;/code&gt;:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Sample monitors
+&lt;ul&gt;
+&lt;li&gt;Setting a sample monitor tells &lt;code&gt;OpenBUGS&lt;/code&gt; to store every value it simulates for that parameter.&lt;/li&gt;
+&lt;li&gt;You will need to set sample monitors if you want to view trace plots of the samples to check convergence (see section Checking convergence below) and if you want to obtain posterior quantiles, for example, the posterior 95% Bayesian credible interval for that parameter.&lt;/li&gt;
+&lt;li&gt;To set a sample monitor:
+&lt;ul&gt;
+&lt;li&gt;Select &lt;code&gt;Samples&lt;/code&gt; from the &lt;code&gt;Inference&lt;/code&gt; menu.&lt;/li&gt;
+&lt;li&gt;Type the name of the parameter to be monitored in the white box marked node.&lt;/li&gt;
+&lt;li&gt;Click once with the LMB on the box marked set&lt;/li&gt;
+&lt;li&gt;Repeat for each parameter to be monitored.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Summary monitors
+&lt;ul&gt;
+&lt;li&gt;Setting a summary monitor tells &lt;code&gt;OpenBUGS&lt;/code&gt; to store the running mean and standard deviation for the parameter.&lt;/li&gt;
+&lt;li&gt;The values saved contain less information than saving each individual sample in the simulation, but require much less storage. This is an important consideration when running long simulations (1000’s of iterations) and storing values for many variables.&lt;/li&gt;
+&lt;li&gt;To set a summary monitor:
+&lt;ul&gt;
+&lt;li&gt;Select &lt;code&gt;Summary&lt;/code&gt; from the &lt;code&gt;Inference&lt;/code&gt; menu.&lt;/li&gt;
+&lt;li&gt;Type the name of the parameter to be monitored in the white box marked node.&lt;/li&gt;
+&lt;li&gt;Click once with the LMB on the box marked set&lt;/li&gt;
+&lt;li&gt;Repeat for each parameter to be monitored.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    &lt;strong&gt;Note&lt;/strong&gt;: you should not set a summary monitor until you are happy that convergence has been reached (see next section), since it is not possible to discard any of the pre-convergence (‘burn-in’) values from the running mean summary once it is set.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;checking-convergence&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Checking convergence&lt;/h2&gt;
+&lt;p&gt;Checking convergence requires considerable care. It is very difficult to say conclusively that a chain (simulation) has converged, only to diagnose when it definitely hasn’t converged. The following are practical guidelines for assessing convergence:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;For models with many parameters, it is impractical to check convergence for every parameter, so just chose a random selection of relevant parameters to monitor.
+&lt;ul&gt;
+&lt;li&gt;For example, rather than checking convergence for every element of a vector of random effects, just chose a random subset (say, the first 5 or 10).&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Examine trace plots of the sample values versus iteration to look for evidence of when the simulation appears to have stabilised:
+&lt;ul&gt;
+&lt;li&gt;To obtain ‘live’ trace plots for a parameter:
+&lt;ul&gt;
+&lt;li&gt;Select &lt;code&gt;Samples&lt;/code&gt; from the &lt;code&gt;Inference&lt;/code&gt; menu.&lt;/li&gt;
+&lt;li&gt;Type the name of the parameter in the white box marked node.&lt;/li&gt;
+&lt;li&gt;Click once with the LMB on the box marked trace: an empty graphics window will appear on screen.&lt;/li&gt;
+&lt;li&gt;Repeat for each parameter required.&lt;/li&gt;
+&lt;li&gt;Once you start running the simulations (using the &lt;code&gt;Update Tool&lt;/code&gt;, trace plots for these parameters will appear ‘live’ in the graphics windows.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;To obtain a trace plot showing the full history of the samples for any parameter for which you have previously set a sample monitor and carried out some updates:
+&lt;ul&gt;
+&lt;li&gt;Select &lt;code&gt;Samples&lt;/code&gt; from the &lt;code&gt;Inference&lt;/code&gt; menu.&lt;/li&gt;
+&lt;li&gt;Type the name of the parameter in the white box marked node (or select name from pull down list).&lt;/li&gt;
+&lt;li&gt;Click once with the LMB on the box marked history: a graphics window showing the sample trace will appear.&lt;/li&gt;
+&lt;li&gt;Repeat for each parameter required.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;In the graph &lt;a href=&#34;../../slides/03_MCMC/#31&#34;&gt;here&lt;/a&gt; (Panel a) the chain converges by about 250 iterations. Running the simulation for longer (5000 iterations) and discarding the first 1000 as a “burn-in” produces the history plot in (Panel b). This looks like a “fat hairy caterpillar”, the typical appearance of a chain which has converged to the target distribution, and can be treated as a sequence of independent samples from that distribution.&lt;/li&gt;
+&lt;li&gt;The graph &lt;a href=&#34;../../slides/03_MCMC/#31&#34;&gt;here&lt;/a&gt; (Panel c), is the typical appearance of a chain which has converged to the target posterior distribution, but is slow to mix around that distribution. That is, the successive draws from the distribution are highly autocorrelated. In this case we should run the chain for longer (as in (Panel d)) to get sufficiently precise summaries of the posterior — see the next section for more advice.&lt;/li&gt;
+&lt;li&gt;If you are running more than 1 chain simultaneously, the trace and history plots will show each chain in a different colour. This is shown in &lt;a href=&#34;../../slides/03_MCMC/#31&#34;&gt;here&lt;/a&gt; (Panel e). We can be reasonably confident that convergence has been achieved when all the chains appear to be overlapping one another.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;how-many-iterations-after-convergence&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;How many iterations after convergence?&lt;/h2&gt;
+&lt;p&gt;Once you are happy that convergence has been achieved, you will need to run the simulation for a further number of iterations to obtain samples that can be used for posterior inference. The more samples you save, the more accurate will be your posterior estimates. Therefore the number of samples to run depends on how many significant figures, for example, you need in your results.&lt;/p&gt;
+&lt;p&gt;To assess the accuracy of the posterior mean for each parameter, you can simply look at the Monte Carlo standard error, which is provided in the summaries given by &lt;code&gt;stats&lt;/code&gt; (see the next section). This is an estimate of the difference between the mean of the sampled values (which we are using as our estimate of the posterior mean for each parameter) and the true posterior mean.&lt;/p&gt;
+&lt;p&gt;To assess the accuracy of the whole distribution, you can compare the Monte Carlo standard error &lt;span class=&#34;math inline&#34;&gt;\(\mbox{SE}(\hat\mu)\)&lt;/span&gt; to the sample standard deviation &lt;span class=&#34;math inline&#34;&gt;\(\hat\sigma\)&lt;/span&gt; (also reported in the summary statistics table given by &lt;code&gt;stats&lt;/code&gt;). There is some theory which suggests that for the reported 95% posterior quantiles to have about 94.5% to 95.5% true coverage, &lt;span class=&#34;math inline&#34;&gt;\(\mbox{SE}(\hat\mu)\)&lt;/span&gt; should be 1% or less of &lt;span class=&#34;math inline&#34;&gt;\(\hat\sigma\)&lt;/span&gt;. Equivalently the effective sample size of the chain&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; should be greater than about 4000.&lt;/p&gt;
+&lt;p&gt;Alternatively you can just take an informal approach, and run a sufficient number of samples to ensure that the posterior summaries of interest don’t appear to change within the desired number of significant figures.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;obtaining-summary-statistics-of-the-posterior-distribution&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Obtaining summary statistics of the posterior distribution&lt;/h2&gt;
+&lt;p&gt;To obtain summaries of the monitored samples, to be used for posterior inference:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Select &lt;code&gt;Samples&lt;/code&gt; from the &lt;code&gt;Inference&lt;/code&gt; menu.&lt;/li&gt;
+&lt;li&gt;Type the name of the parameter to be summarised in the white box marked node (or select name from the pull down list, or type &lt;code&gt;*&lt;/code&gt; to select all monitored parameters).&lt;/li&gt;
+&lt;li&gt;Type the iteration number which you want to start your summary from in the white box marked &lt;code&gt;beg&lt;/code&gt;: this allows the pre-convergence ‘burn-in’ samples to be discarded.&lt;/li&gt;
+&lt;li&gt;Click once with LMB on box marked &lt;code&gt;stats&lt;/code&gt;: a table reporting various summary statistics based on the sampled values of the selected parameter will appear.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;plotting-summaries-of-the-posterior&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Plotting summaries of the posterior&lt;/h2&gt;
+&lt;p&gt;&lt;code&gt;OpenBUGS&lt;/code&gt; includes options for producing various plots of posterior summary statistics. The plot options include:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Kernel density plot: plots an estimate of the shape of the (univariate) marginal posterior distribution of a parameter see online manual for further details (select &lt;code&gt;OpenBUGS User Manual&lt;/code&gt; from the &lt;code&gt;Manuals&lt;/code&gt; menu in &lt;code&gt;OpenBUGS&lt;/code&gt; and then take a look at the subsection on &lt;code&gt;Density plots&lt;/code&gt; in
+the &lt;code&gt;OpenBUGS Graphics&lt;/code&gt; section).&lt;/li&gt;
+&lt;li&gt;Box plots, caterpillar plots or density strips: these plots show a side-by-side comparison of the posterior distributions of each element of a vector of parameters summarised either as a point estimate and 95% interval (caterpillar plot), by the mean, interquartile range and 95% interval
+(box plot), or a representation of the whole distribution using varying shading (density strips). This is often used for random effects parameters. For example, suppose you have a vector of random effects called &lt;code&gt;p&lt;/code&gt; in your model:
+&lt;ul&gt;
+&lt;li&gt;You should have already set a samples monitor on the appropriate vector (p) and carried out a suitable number of updates.&lt;/li&gt;
+&lt;li&gt;Then select &lt;code&gt;Compare&lt;/code&gt; from the &lt;code&gt;Inference&lt;/code&gt; menu.&lt;/li&gt;
+&lt;li&gt;Type the name of the parameter vector to be plotted (in this case &lt;code&gt;p&lt;/code&gt;) in the white box marked node.&lt;/li&gt;
+&lt;li&gt;If you want to discard any pre-convergence burn-in samples before plotting, type the appropriate iteration number in the white box marked &lt;code&gt;beg&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Click once with LMB on the button marked either box plot, caterpillar or density strips
+as required.&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;Model fit: this option produces a ‘time series’ type plot and is suitable for plotting an ordered sequence of parameter estimates against corresponding values of a known variable, e.g. plotting posterior estimates of the fitted values of a growth curve against time. For example, in the &lt;code&gt;rats&lt;/code&gt; model from the &lt;code&gt;OpenBUGS&lt;/code&gt; examples Vol I, you could use this option to produce a plot of the vector of 5 fitted values for the weight of each rat (&lt;code&gt;mu[i,]&lt;/code&gt;) against age (&lt;code&gt;x&lt;/code&gt;), as follows:
+&lt;ul&gt;
+&lt;li&gt;You should have already set a samples monitor on the appropriate vector (i.e. &lt;code&gt;mu&lt;/code&gt;, the mean of the normal distribution assumed for the responses, &lt;code&gt;Y&lt;/code&gt;) and carried out an appropriate number of updates.&lt;/li&gt;
+&lt;li&gt;Then select &lt;code&gt;Compare&lt;/code&gt; from the &lt;code&gt;Inference&lt;/code&gt; menu.&lt;/li&gt;
+&lt;li&gt;Type the name of the (stochastic) parameter vector to be plotted on the vertical axis in the white box marked node (e.g. &lt;code&gt;mu[1,]&lt;/code&gt; to produce the plot for rat 1).&lt;/li&gt;
+&lt;li&gt;Type the name of the known (i.e. not stochastic) variable to be plotted on the horizontal axis in the white box marked axis (in this case, &lt;code&gt;x&lt;/code&gt;, the name of the vector of ages at which each rat was measured).&lt;/li&gt;
+&lt;li&gt;An optional argument is to type the name of another known (i.e. not stochastic) variable in the white box marked other (for example, &lt;code&gt;Y[1,]&lt;/code&gt; — this would plot the observed measurements for rat 1 as well as the fitted values &lt;code&gt;mu[1,]&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;If you want to discard any pre-convergence burn-in samples before plotting, type the appropriate iteration number in the white box marked &lt;code&gt;beg&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Click once with LMB on the button marked model fit. The resulting plot shows the posterior median (solid red line) and posterior 95% interval (dashed blue line) for the values of node (in this case, the fitted values &lt;code&gt;mu[1,]&lt;/code&gt; for rat 1) against the values of the variable specified in
+the axis box (in this case, &lt;code&gt;x&lt;/code&gt;, the age of the rat at each measurement). The black dots show the values of the variable specified in the other box (in this case,&lt;code&gt;Y[1,]&lt;/code&gt;, the observed weights for rat 1).&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;There are various options for customising all these plots (e.g. changing the order in which the elements of the vector are plotted, switching the &lt;span class=&#34;math inline&#34;&gt;\(x\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(y\)&lt;/span&gt; axis, etc.). To access these options, click on the window containing the plot to focus it, then place the mouse somewhere in the plot
+window and click once with the right mouse button. A menu will appear and you should select the &lt;code&gt;Properties&lt;/code&gt; option. This will open another menu called &lt;code&gt;Plot Properties&lt;/code&gt; which provides options for editing plot margins, axis labels and fonts etc. (these are generic options for all &lt;code&gt;OpenBUGS&lt;/code&gt; plots), plus some special options specific only to certain plots (click on the &lt;code&gt;Special&lt;/code&gt; button at the bottom of the &lt;code&gt;Plot Properties&lt;/code&gt; menu). See the online manual for further details (select &lt;code&gt;OpenBUGS User Manual&lt;/code&gt; from the &lt;code&gt;Manuals&lt;/code&gt; menu in &lt;code&gt;OpenBUGS&lt;/code&gt;, then go to &lt;code&gt;OpenBUGS Graphics&lt;/code&gt;, or the &lt;code&gt;Inference&lt;/code&gt; Menu then &lt;code&gt;Compare&lt;/code&gt;).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div id=&#34;some-notes-on-the-bugs-language&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Some notes on the &lt;code&gt;BUGS&lt;/code&gt; language&lt;/h2&gt;
+&lt;div id=&#34;basic-syntax&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Basic syntax&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The symbol &lt;code&gt;&amp;lt;-&lt;/code&gt; represents &lt;em&gt;logical&lt;/em&gt; dependence, ie &lt;code&gt;m &amp;lt;- a + b*x&lt;/code&gt; indicates that &lt;code&gt;m&lt;/code&gt; has the same value as the expression to the right hand side.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The symbol &lt;code&gt;~&lt;/code&gt; represents &lt;em&gt;stochastic&lt;/em&gt; dependence, eg &lt;code&gt;y ~ dunif(a,b)&lt;/code&gt; indicates that the variable &lt;code&gt;y&lt;/code&gt; is modelled using a Uniform(&lt;span class=&#34;math inline&#34;&gt;\(a,b\)&lt;/span&gt;) distribution.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Can use arrays and loops&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;for (i in 1:n){
+   r[i] ~ dbin(p[i],n[i])
+   p[i] ~ dunif(0,1)
+}&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Some functions can appear on left-hand-side of an expression, e.g.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;logit(p[i])&amp;lt;- a + b*x[i]
+log(m[i]) &amp;lt;- c + d*y[i]&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;mean(p[])&lt;/code&gt; to take mean of whole array, or &lt;code&gt;mean(p[m:n])&lt;/code&gt; to take mean of elements &lt;code&gt;m&lt;/code&gt; to &lt;code&gt;n&lt;/code&gt;. Also for &lt;code&gt;sum(p[])&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;dnorm(0,1)I(0,)&lt;/code&gt; means the distribution will be restricted to the range &lt;span class=&#34;math inline&#34;&gt;\((0,\infty)\)&lt;/span&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;functions-in-the-bugs-language&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Functions in the &lt;code&gt;BUGS&lt;/code&gt; language&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;p &amp;lt;- step(x - 0.7)&lt;/code&gt; = 1 if &lt;code&gt;x&lt;/code&gt; &lt;span class=&#34;math inline&#34;&gt;\(geq\)&lt;/span&gt; 0.7 and 0 otherwise. Hence monitoring p and recording its mean will give the probability that &lt;code&gt;x&lt;/code&gt; &lt;span class=&#34;math inline&#34;&gt;\(\geq\)&lt;/span&gt; 0.7.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;p &amp;lt;- equals(x, 0.7)&lt;/code&gt; = 1 if &lt;code&gt;x&lt;/code&gt; = 0.7 and 0 otherwise.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;tau &amp;lt;- 1/pow(s,2)&lt;/code&gt; sets &lt;span class=&#34;math inline&#34;&gt;\(\tau = 1/s^2\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;s &amp;lt;- 1/ sqrt(tau)&lt;/code&gt; sets &lt;span class=&#34;math inline&#34;&gt;\(s=1/\tau\)&lt;/span&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;p[i,k] &amp;lt;- inprod(pi[], Lambda[i,,k])&lt;/code&gt; sets &lt;span class=&#34;math inline&#34;&gt;\(p_{ik} = \sum_{j} \pi_j \Lambda_{ijk}\)&lt;/span&gt;&lt;/li&gt;
+&lt;li&gt;Many other mathematical functions: see &lt;code&gt;Functions&lt;/code&gt; under the &lt;code&gt;Help&lt;/code&gt; menu in &lt;code&gt;OpenBUGS&lt;/code&gt; for full syntax.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;openbugs-data-formats&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;&lt;code&gt;OpenBUGS&lt;/code&gt; data formats&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;OpenBUGS&lt;/code&gt; accepts data files in:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Rectangular format&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;n[] r[]
+47 0
+148 18
+...
+360 24
+END&lt;/code&gt;&lt;/pre&gt;
+&lt;ol start=&#34;2&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;code&gt;R&lt;/code&gt; / &lt;code&gt;S-Plus&lt;/code&gt;-like ‘list’ format:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;list(
+   N=12,
+   n = c(47,148,119,810,211,196,148,215,207,97,256,360),
+   r = c(0,18,8,46,8,13,9,31,14,8,29,24)
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The more flexible ‘list’ format is recommended, since data often consist of mixtures of scalars and vectors/arrays, or vectors/arrays of different lengths.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes footnotes-end-of-document&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt; The Monte Carlo standard error is higher in chains which are autocorrelated (i.e. look less like independent samples from a posterior, and are slower to explore the posterior distribution, so give less accurate estimates of the posterior mean). The “effective sample size” &lt;span class=&#34;math inline&#34;&gt;\(n_{eff}\)&lt;/span&gt; denotes that a chain of &lt;span class=&#34;math inline&#34;&gt;\(n &amp;gt; n_{eff}\)&lt;/span&gt; autocorrelated samples as much information as &lt;span class=&#34;math inline&#34;&gt;\(n_{eff}\)&lt;/span&gt; independent samples. There are several ways of calculating &lt;span class=&#34;math inline&#34;&gt;\(n_{eff}\)&lt;/span&gt; — three different methods are used in Bayesian Methods in Health Economics, The BUGS Book and &lt;code&gt;R2OpenBUGS&lt;/code&gt;!&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

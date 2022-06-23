@@ -1,0 +1,651 @@
+---
+title: "&#8291;12. Expected value of partial information"
+author: Anna Heath
+institute: "[Sick Kids Hospital](https://www.sickkids.ca/) & [Dalla Lana School of Public Health](https://www.dlsph.utoronto.ca/) | University of Toronto"
+params: 
+   - conference: "Bayesian Methods in Health Economics"
+   - location: "Lausanne"
+date: 
+output:
+  xaringan::moon_reader:
+    includes: 
+       in_header: "../assets/latex_macros.html" 
+       ## This line adds a logo based on the format selected in the file 'assets/THEME/include_logo.html'
+       ## NB: the actual options (eg placement of the logo and actual logo file) can be changed there
+       ## There's also a script to manipulate the colouring scheme for the UCL logo (from a basic black/white one)
+       after_body: "../assets/beamer/insert-logo-sk.html"
+    seal: false
+    yolo: no
+    lib_dir: libs
+    nature:
+      beforeInit: ["https://platform.twitter.com/widgets.js"]
+      highlightStyle: github
+      highlightLines: yes
+      highlightSpans: true
+      countIncrementalSlides: no
+      ratio: '16:9'
+      titleSlideClass:
+      - center
+      - middle
+    self_contained: false 
+    css:
+    - "../assets/beamer.css"
+---
+
+```{r echo=F,message=FALSE,warning=FALSE,comment=NA}
+# Sources the R file with all the relevant setup and commands
+source("../assets/setup.R")
+
+# Stuff from 'xaringanExtra' (https://pkg.garrickadenbuie.com/xaringanExtra)
+# This allows the use of panels (from 'xaringanExtra')
+xaringanExtra::use_panelset()
+# This allows to copy code from the slides directly
+xaringanExtra::use_clipboard()
+# This freezes the frame for when there's a gif included
+xaringanExtra::use_freezeframe()
+
+# Defines the path to the file with the .bib entries (in case there are references)
+bibfile=ReadBib("~/Dropbox/Perso/Office/CV/mypubs.bib",check = FALSE)
+
+```
+
+```{r title-page, child="../assets/title-slide-ah.Rmd"}
+```
+
+# Summary
+
+- Formally define the EVPPI
+
+- Estimate the EVPPI by nested MC simulation
+
+- Introduce the regression based EVPPI estimation method
+
+- Computing the EVPPI in R and BCEA
+
+- Online tools for the EVPPI
+   - SAVI
+   - BCEAWeb
+
+`r vspace("4em")`
+
+.content-box-beamer[
+### **References** 
+
+`r vspace("20px")`
+
+`r bmhe(5.4)`
+
+`r esdm(12)`
+
+`r bcea_book(4.3)` 
+
+]
+
+---
+
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- Recall that the model parameters are denoted $\bm\theta$ and have a distribution $p(\bm\theta)$ 
+
+- $\bm\theta=(\theta_1,\ldots,\theta_P) = (\bm\phi,\bm\psi)$
+
+- What is the expected value of learning subset of parameters $\bm\phi$?
+
+- Again, baseline decision &ndash; choose $d$ with largest expected net benefit
+
+$$\class{myblue}{\max_t\E_\bm\theta\left[\nb_t(\bm\theta)\right]}$$
+
+
+---
+
+# Summarising PSA + Research priority
+
+```{css echo=FALSE}
+<!-- https://www.garrickadenbuie.com/blog/better-progressive-xaringan/?panelset=r-markdown -->
+.shading > li {
+  color: gray;
+}
+.shading > li:last-of-type {
+  color: #24568c;
+  font-weight: normal;
+}
+```
+
+## Expected Value of Partial Perfect Information
+
+- $\class{blue}{\bm\theta} =$ all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", $\class{myblue}{\bm\phi}$, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], $\class{olive}{\bm\psi}$, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on $\class{myblue}{\bm\phi}$, while leaving current level of uncertainty on $\class{olive}{\bm\psi}$ unchanged
+
+--
+   
+<ul class="shading">
+<li>First, consider the expected utility (EU) <b>if</b> we were able to learn \(\class{myblue}{\bm\phi}\) but not \(\class{myblue}{\bm\psi}\)</li>
+</ul>
+
+
+`r vspace("3cm")`
+$$\class{myblue}{\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]}$$
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- $\class{blue}{\bm\theta} =$ all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", $\class{myblue}{\bm\phi}$, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], $\class{olive}{\bm\psi}$, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on $\class{myblue}{\bm\phi}$, while leaving current level of uncertainty on $\class{olive}{\bm\psi}$ unchanged
+
+<ul class="shading">
+<li>First, consider the expected utility (EU) <b>if</b> we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)</li>
+<li><b>If</b> we knew \(\class{myblue}{\bm\phi}\) perfectly, best decision = the maximum of this EU</li>
+</ul>
+
+`r vspace("2.25cm")`
+$$\class{myblue}{\max_t}\class{gray}{\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]}$$
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- $\class{blue}{\bm\theta} =$ all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", $\class{myblue}{\bm\phi}$, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], $\class{olive}{\bm\psi}$, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on $\class{myblue}{\bm\phi}$, while leaving current level of uncertainty on $\class{olive}{\bm\psi}$ unchanged
+
+<ul class="shading">
+<li>First, consider the expected utility (EU) <b>if</b> we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)</li>
+<li><b>If</b> we knew \(\class{gray}{\bm\phi}\) perfectly, best decision = the maximum of this EU</li>
+<li>Of course, we cannot know \(\class{myblue}{\bm\phi}\) <b>perfectly</b>, so take the expected value</li>
+</ul>
+
+`r vspace("1.1cm")`
+$$\class{myblue}{\E_{\bm\phi}}\class{myblue}{\left [\class{gray}{\max_t\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]}\right]}$$
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- $\class{blue}{\bm\theta} =$ all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", $\class{myblue}{\bm\phi}$, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], $\class{olive}{\bm\psi}$, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on $\class{myblue}{\bm\phi}$, while leaving current level of uncertainty on $\class{olive}{\bm\psi}$ unchanged
+
+<ul class="shading">
+<li>First, consider the expected utility (EU) <b>if</b> we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)</li>
+<li><b>If</b> we knew \(\class{gray}{\bm\phi}\) perfectly, best decision = the maximum of this EU</li>
+<li>Of course, we cannot know \(\class{gray}{\bm\phi}\) <b>perfectly</b>, so take the expected value</li>
+<li>And compare this with the <b>maximum expected utility overall</b></li>
+</ul>
+
+`r vspace(".5cm")`
+$$\class{gray}{\E_{\bm\phi}\left[\max_t\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]\right]}\class{myblue}{-\max_t \E_{\bm\theta}[\nb_t(\bm\theta)]}$$
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- $\class{blue}{\bm\theta} =$ all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", $\class{myblue}{\bm\phi}$, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], $\class{olive}{\bm\psi}$, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on $\class{myblue}{\bm\phi}$, while leaving current level of uncertainty on $\class{olive}{\bm\psi}$ unchanged
+
+<ul class="shading">
+<li>First, consider the expected utility (EU) <b>if</b> we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)</li>
+<li><b>If</b> we knew \(\class{gray}{\bm\phi}\) perfectly, best decision = the maximum of this EU</li>
+<li>Of course, we cannot know \(\class{gray}{\bm\phi}\) <b>perfectly</b>, so take the expected value</li>
+<li>And compare this with the <b>maximum expected utility overall</b></li>
+<li>This is the EVPPI</li>
+</ul>
+
+`r vspace("-.55cm")`
+$$\class{myblue}{\evppi = \E_{\bm\phi}\left[\max_t\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]\right]-\max_t \E_{\bm\theta}[\nb_t(\bm\theta)]}$$
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- $\class{blue}{\bm\theta} =$ all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", $\class{myblue}{\bm\phi}$, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], $\class{olive}{\bm\psi}$, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on $\class{myblue}{\bm\phi}$, while leaving current level of uncertainty on $\class{olive}{\bm\psi}$ unchanged
+
+<ul class="shading">
+<li>First, consider the expected utility (EU) <b>if</b> we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)</li>
+<li><b>If</b> we knew \(\class{gray}{\bm\phi}\) perfectly, best decision = the maximum of this EU</li>
+<li>Of course, we cannot know \(\class{gray}{\bm\phi}\) <b>perfectly</b>, so take the expected value</li>
+<li>And compare this with the <b>maximum expected utility overall</b></li>
+<li>This is the EVPPI</li>
+</ul>
+
+`r vspace("-.55cm")`
+$$\class{myblue}{\evppi = \E_{\bm\phi}\left[\class{red}{\max_t\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]}\right]-\max_t \E_{\bm\theta}[\nb_t(\bm\theta)]}$$
+
+- .red[**That**] is the difficult part!
+   - Can do nested Monte Carlo, but takes for ever to get accurate results
+   - .orange[**Recent methods**] based on **GAMs**/**Gaussian Process regression**/**spatial modelling** very efficient and quick! 
+   
+`r vspace("-17px")`
+.alignright[.small[`r icon::academicons("doi")` [Strong et al (2014)](https://journals.sagepub.com/doi/full/10.1177/0272989x13505910) and `r icon::academicons("doi")`  [Heath et al (2016)](https://onlinelibrary.wiley.com/doi/full/10.1002/sim.6983)]]
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+$$\class{myblue}{\evppi = \E_{\bm\phi}\left[\max_t\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]\right]-\max_t \E_{\bm\theta}[\nb_t(\bm\theta)]}$$
+
+- Can rewrite as
+\begin{align}
+\class{myblue}{\evppi(\bm\phi)} & \class{myblue}{= \E_\bm\phi\left[\max_t \E_{\bm\psi\mid\bm\phi}\left\{ \nb_t(\bm\phi,\bm\psi) \right\}\right] - \max_t \E_\bm\theta\left[\nb_t(\bm\theta)\right]} \\
+& \class{myblue}{= \E_\bm\phi\left[\max_t \E_{\bm\psi\mid\bm\phi}\left\{ \nb_t(\bm\phi,\bm\psi) \right\}\right] - \max_t \E_\bm\phi\left[\E_{\bm\psi\mid\bm\phi}\left\{\nb_t(\bm\theta)\right\}\right]}
+\end{align}
+
+- Here, the second term is estimated using the same MC simulation as the first
+
+---
+
+# Problems calculating the EVPPI by MC simulation
+
+`r vspace("20pt")`
+
+.content-box-beamer[
+### EVPPI for the parameters of interest $\bm\phi$
+
+$$\evppi(\bm\phi) = \E_\bm\phi\left[\max_t \class{red}{\E_{\bm\psi\mid\bm\phi}\left\{ \nb_t(\bm\phi,\bm\psi) \right\}}\right] - \max_t \E_\bm\phi\left[\class{red}{\E_{\bm\psi\mid\bm\phi}\left\{\nb_t(\bm\theta)\right\}}\right]$$
+
+where the parameters $\bm\theta$ are partitioned into those of interest $\bm\phi$ and the rest $\bm\psi$
+]
+
+`r vspace("40pt")`
+
+- These inner expectations are problematic
+
+   - Nested expectations are potentially slow to evaluate by Monte Carlo
+   - $p(\bm\psi \mid \bm\phi)$ could be a difficult conditional distribution to sample from
+   - May require MCMC (using e.g. `BUGS`, `JAGS`, bespoke code, ...)
+   
+- If $\bm\phi$ and $\bm\psi$ are independent then $p(\bm\psi \mid \bm\phi)= p(\bm\psi)$, which makes things easier
+
+---
+
+# Estimating the EVPPI
+
+1. Use analytic expressions, or approximations, to the inner expectation 
+
+2. Methods that only work for single parameters:
+   - [Strong and Oakley (2013)](journals.sagepub.com/doi/pdf/10.1177/0272989X12465123)
+   - [Sadatsafavi et al (2013)](https://tinyurl.com/sv8yex6k)
+
+--
+
+3. Regression-based methods that work for any number of parameters
+
+.content-box-beamer[
+### EVPPI for the parameters of interest $\bm\phi$
+
+$$\evppi(\bm\phi) = \E_\bm\phi\left[\max_t \class{red}{\E_{\bm\psi\mid\bm\phi}\left\{ \nb_t(\bm\phi,\bm\psi) \right\}}\right] - \max_t \E_\bm\phi\left[\class{red}{\E_{\bm\psi\mid\bm\phi}\left\{\nb_t(\bm\theta)\right\}}\right]$$
+]
+
+.content-box-beamer[
+### Regression equation
+
+\begin{align}
+\nb_t(\bm\theta) & =  \color{red}{\E_{\bm\psi\mid\bm\phi}\left[\nb_t(\bm\phi,\bm\psi)\right]} + \varepsilon \\
+& = \color{red}{g_t(\bm\phi)} + \varepsilon
+\end{align}
+]
+
+`r vspace("15pt")`
+
+--
+
+- $\class{red}{g_t(\bm\phi)}$ is some unknown *smooth* function of $\bm\phi$ and can show that $\E\left[\varepsilon\right] = 0$
+- Treat as non-parametric regression of $\nb_t(\bm\theta)$ on $\bm\phi$ ([Strong et al 2014](https://journals.sagepub.com/doi/full/10.1177/0272989X13505910))
+- The regression fitted values $\color{red}{\hat{g}_t(\bm\phi)}$ are estimates of $\color{red}{\E_{\bm\psi\mid\bm\phi}\left[\nb_t(\bm\phi,\bm\psi)\right]}$
+
+---
+
+# EVPPI &ndash; Brute force/nested MC
+
+Assuming there are only two interventions, can consider $\class{myblue}{\ib(\bm\theta)=\nb_1(\bm\theta)-\nb_0(\bm\theta)}$
+
+`r include_fig("brute-force-1_25.png",width="44%")`
+
+`r vspace("-5px")`
+.small[Slide stolen from [Mark Strong](https://www.sheffield.ac.uk/scharr/people/staff/mark-strong)]
+---
+
+exclude: false
+count: false
+# EVPPI &ndash; Brute force/nested MC
+
+Assuming there are only two interventions, can consider $\class{myblue}{\ib(\bm\theta)=\nb_1(\bm\theta)-\nb_0(\bm\theta)}$
+
+`r include_fig("brute-force-2_26.png",width="44%")`
+
+---
+
+exclude: false
+# EVPPI &ndash; model as a regression problem...
+
+Can model as a **regression** problem
+\begin{align}
+\nb_t(\bm\theta) =& \E_{\bm\psi\mid\bm\theta}[\nb_t(\bm\theta)] + \varepsilon, \qquad `r sftext(" with ")` \varepsilon \sim \dnorm(0,\sigma^2_\varepsilon) \\
+=& \class{olive}{g(\bm\phi)} + \class{myblue}{\varepsilon}
+\end{align}
+`r vspace("-20px")`
+
+"Data" 
+   - **Simulations** for $\nb_t(\bm\theta)$ as ".myblue[response]"
+   - **Simulations** for $\bm\phi$ as ".olive[covariates]"
+   - **NB**: Only need $S$ data points (=PSA simulations), instead of $S_\bm\phi \times S_\bm\psi$!
+   
+.center[
+```{r echo=FALSE}
+library(kableExtra)
+options(knitr.kable.NA = "\\(\\ldots\\)")
+set.seed(140873)
+nb0=9685*round(rnorm(10000,7.5,3))
+nb1=9685*round(rnorm(10000,8,3))
+mnb=pmax(nb1,nb0)
+ol=mnb-nb1
+show.col=4
+tab=tibble(
+   iter=c(format(seq(1,show.col),digits=1),NA,"\\(S\\)"), #format(1000,digits=0)
+   pi0=c(format(rbeta(show.col,1,2),digits=3,nsmall=0),NA,format(rbeta(1,1,2),digits=3,nsmall=0)),
+   rho=c(format(rbeta(show.col,1,2),digits=3,nsmall=0),NA,format(rbeta(1,1,2),digits=3,nsmall=0)),
+   dots=rep("\\(\\ldots\\)",show.col+2),
+   gamma=c(format(rbeta(show.col,1,2),digits=3,nsmall=0),NA,format(rbeta(1,1,2),digits=3,nsmall=0)),
+   nb0=c(nb0[1:show.col],NA,nb0[10000]),
+   nb1=c(nb1[1:show.col],NA,nb1[10000])
+)
+
+
+tab %>% kable(col.names=c(
+   "Iteration","\\(\\pi_0\\)","\\(\\rho\\)","\\(\\ldots\\)","\\(\\gamma\\)",
+   "\\(\\nb_0(\\boldsymbol\\theta)\\)","\\(\\nb_1(\\boldsymbol\\theta)\\)"
+   ), align="c"
+   ) %>% kable_classic() %>%
+   column_spec(1:7,width="2.5cm") %>% 
+   #column_spec(c(8,9), width = "120px") %>% 
+   kable_styling(full_width=F,font_size = 18) %>% 
+   add_header_above(c(" "=1,"Parameter simulations ('covariates')"=4,"'Responses'"=2)) %>% 
+   row_spec(nrow(tab),extra_css="border-bottom: 2px solid;") 
+
+```
+]
+
+---
+
+exclude: false
+count: false
+# EVPPI &ndash; model as a regression problem...
+
+`r include_fig("brute-force-3_28.png",width="48%")`
+
+---
+
+exclude: false
+count: false
+# EVPPI &ndash; model as a regression problem...
+
+`r include_fig("brute-force-4_29.png",width="48%")`
+
+---
+
+exclude: false
+count: false
+# EVPPI &ndash; model as a regression problem...
+
+`r include_fig("brute-force-5_30.png",width="51%")`
+
+---
+
+exclude: false
+count: false
+# EVPPI &ndash; model as a regression problem...
+
+- Once the functions $\class{olive}{g_t(\bm\phi)}$ are estimated, can approximate
+\begin{align}
+\evppi&=\E_\bm\phi \left[ \max_t \E_{\bm\psi\mid\bm\phi} [\nb_t(\bm\theta)] \right] - \max_t \E_\bm\theta [\nb_t(\bm\theta)] \\
+&\approx\frac{1}{S}\sum_{s=1}^S \max_t \hat{g}_t(\bm\phi_s) - \max_t \frac{1}{S}\sum_{s=1}^S \hat{g}_t(\bm\phi_s)
+\end{align}
+
+
+--
+
+exclude: false
+- **NB**: $\class{olive}{g_t(\bm\phi)}$ can be complex, so need to use .orange[**flexible**] regression methods
+   - **GAMs**: $\displaystyle g_t(\bm\phi)=\sum_{q=1}^{Q_\bm\phi} h_t(\phi_{sq})$ with $h_t(\cdot)=$ smooth functions (cubic polynomials) 
+   
+   - very fast, but only if number of important parameters $Q_\bm\phi\leq 5$ (interactions increase model size exponentially)
+   
+   - If $Q_\bm\phi >5$ then use .blue[**Gaussian Process**] regression (GPR)
+   
+      - [Strong et al](https://journals.sagepub.com/doi/full/10.1177/0272989x13505910): original GPR method
+      - [Heath et al](https://onlinelibrary.wiley.com/doi/full/10.1002/sim.6983): based on spatial modelling; can be more computationally efficient
+      
+- Other methods based on alternative approaches 
+   
+   - Most are implemented in the `r icon::fontawesome("r-project")` package [BCEA](http://www.statistica.it/gianluca/software/bcea/)  (see also: `r icon::fontawesome("github")` [https://github.com/giabaio/BCEA](https://github.com/giabaio/BCEA/tree/dev)) 
+
+---
+
+# Computing EVPI via GAM regression in `R` directly
+
+## For example, if we wish to estimate the EVPPI of $\phi = \theta_1$
+
+```{r eval=FALSE}
+library(mgcv)
+model1 <- gam(nb1 ~ s(theta1))
+model2 <- gam(nb2 ~ s(theta1))
+g.hat1 <- fitted(model1)
+g.hat2 <- fitted(model2)
+evppi <- mean(pmax(g.hat1, g.hat2)) - max(mean(g.hat1), mean(g.hat2))
+```
+
+--
+
+## Or the EVPPI for a group $\bm\phi=\{\theta_1,\theta_2,\theta_3\}$
+
+```{r eval=FALSE}
+model1 <- gam(nb1 ~ te(theta1, theta2, theta3))
+model2 <- gam(nb2 ~ te(theta1, theta2, theta3))
+...
+```
+
+- The syntax `s()` in the `gam` function specifies a thin plate regression spline 
+- The syntax `te()` in the `gam` function specifies a cubic spline 
+- Very simple R code, and fast (for further details see [Strong et al 2014](journals.sagepub.com/doi/pdf/10.1177/0272989X13505910))
+
+---
+
+# EVPPI via GAM for groups of inputs
+
+`r icon::icon_style(icon::fontawesome("exclamation-triangle"),fill="red")` We can sometimes run into problems in the case where we wish to estimate EVPPI for a group of inputs and have specified a multivariate smooth term, i.e.
+$$\nb_t(\bm\theta) = s(\theta_1,\ldots,\theta_q)+\varepsilon$$
+
+- If the number of independent variables is even moderately sized (e.g. more than 5 or 6 or so), we can run into computational problems
+
+   - The number of basis functions required to define the multivariate smooth function is $N^q$ , where $N$ is the number of basis functions in each input dimension
+   
+   - This means that it can be difficult to calculate EVPI for groups of inputs where the number of inputs in the group is larger than 5 or 6 or so
+
+---
+
+count: false
+# EVPPI via GAM for groups of inputs
+
+- If we want to estimate the EVPPI for a large group of inputs, we could specify a model in which the smooth terms for each input were additive
+$$\nb_t(\bm\theta) = s(\theta_1)+s(\theta_2)+\ldots+\varepsilon$$
+
+- Or, in which smooth functions of sub-groups of terms were additive
+$$\nb_t(\bm\theta) = s(\theta_1,\theta_2,\theta_3)+s(\theta_4,\theta_5,\theta+6)+\ldots+\varepsilon$$
+
+- How well this approximates the ‘true’ EVPI will depend on the nature of the interaction between variables
+
+- Alternative non-parametric regression approaches include Gaussian Process regression, Multivariate Adaptive Regression Splines (MARS), Neural Networks, Projection Pursuit Regression, Regression Trees
+
+- These all allow for large numbers of interactions
+
+---
+
+# Non-parametric regression approach
+
+- From the $T$ net benefits for $T$ decision options, we can calculate $T − 1$ incremental net benefits against some chosen reference option
+
+- Working with the incremental net benefits allows us to reduce the number of regressions from $T$ to $T − 1$
+
+`r vspace("20pt")`
+--
+
+- For example,  if we wish to estimate the EVPPI of $\phi = \theta_1$:
+
+```{r eval=FALSE}
+## "Old" code
+model1 <- gam(nb1 ~ s(theta1))
+model2 <- gam(nb2 ~ s(theta1))
+g.hat1 <- fitted(model1)
+g.hat2 <- fitted(model2)
+evppi <- mean(pmax(g.hat1, g.hat2)) - max(mean(g.hat1), mean(g.hat2))
+
+# "New" code
+model <- gam(inb ~ s(theta1))
+g.hat <- fitted(model)
+evppi <- mean(pmax(0, g.hat)) - max(0, mean(g.hat))
+```
+
+---
+
+# Calculating the EVPPI in `BCEA`
+
+.panelset[
+.panel[
+.panel-name[Code]
+```{r,eval=FALSE}
+library(BCEA)
+
+# Load the data
+data(Vaccine)
+
+# Runs BCEA to post-process the cost-effectiveness model
+m = bcea(e,c,interventions=treats,ref=2)
+
+# Formats the input
+PSA = createInputs(vaccine_mat,print_is_linear_comb = FALSE)
+
+# Computes the EVPPI using BCEA
+VoI = evppi(m,c("beta.1."),PSA$mat)
+
+# Plots the results
+plot(VoI)
+```
+]
+
+.panel[
+.panel-name[Output]
+```{r,echo=FALSE,warning=FALSE,message=FALSE,include=FALSE}
+library(BCEA)
+data(Vaccine)
+m = bcea(e,c,interventions=treats,ref=2)
+PSA = createInputs(vaccine_mat,print_is_linear_comb = FALSE)
+VoI = evppi(m,c("beta.1."),PSA$mat)
+```
+```{r,echo=FALSE,warning=FALSE,message=FALSE,out.width="65%",opts=list(width="45%")}
+plot(VoI)
+```
+]
+]
+
+---
+
+# Across Willingness-to-Pay
+
+- Notice that BCEA calculates the EVPPI across willingness-to-pay
+
+- In previous lecture, we fit the following regression curve:
+$$\class{myblue}{\nb_t^{(j)} = g_t\left( \bm\phi^{(j)} \right) + \varepsilon^{(j)}}$$
+where
+$$\class{myblue}{\nb_t^{(j)} = k e_t^{(j)} - c_t^{(j)}}$$
+
+- To calculate across $k$, we fit two regression curves &ndash; one for effects and one for costs
+
+- This is important for later...
+
+---
+
+# Calculating EVPPI with larger parameter subsets in `BCEA`
+
+.panelset[
+.panel[
+.panel-name[Code]
+```{r,eval=FALSE}
+VoI = evppi(m, c("beta.1.", "beta.2.", "beta.3.", "beta.4.", "beta.5."),PSA$mat)
+plot(VoI)
+```
+]
+
+.panel[
+.panel-name[Output]
+```{r,echo=FALSE,warning=FALSE,message=FALSE,include=FALSE}
+VoI = evppi(m, c("beta.1.", "beta.2.", "beta.3.", "beta.4.", "beta.5."),PSA$mat)
+```
+```{r,echo=FALSE,warning=FALSE,message=FALSE,out.width="65%",opts=list(width="45%"),cache=TRUE}
+plot(VoI)
+```
+]
+]
+
+---
+
+# Default methods
+
+- When calculating the EVPPI with BCEA the regression method is displayed
+
+- For EVPPI with less than 5 parameters 
+
+   `Calculating fitted values for the GAM regression`
+   
+   Fast and accurate for small numbers of parameters
+
+`r vspace("30pt")`
+
+- For EVPPI with 5 or more parameters    
+
+    `Calculating fitted values for the GP regression using INLA/SPDE`
+   
+   Fast approximation to GP regression &ndash; recommended multi-parameter method
+
+---
+
+# Why `INLA/SPDE`?
+
+`r include_fig("inla.png",width="65%")`
+
+

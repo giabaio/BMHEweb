@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>M Schulpher | Bayesian methods in health economics</title>
+    <link>/author/m-schulpher/</link>
+      <atom:link href="/author/m-schulpher/index.xml" rel="self" type="application/rss+xml" />
+    <description>M Schulpher</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Thu, 01 Jun 2006 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>M Schulpher</title>
+      <link>/author/m-schulpher/</link>
+    </image>
+    
+    <item>
+      <title>Decision Modelling for Health Economic Evaluation</title>
+      <link>/publication/briggs-etal-2006/</link>
+      <pubDate>Thu, 01 Jun 2006 00:00:00 +0000</pubDate>
+      <guid>/publication/briggs-etal-2006/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

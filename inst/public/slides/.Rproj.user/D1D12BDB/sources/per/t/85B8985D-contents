@@ -1,0 +1,1251 @@
+\documentclass[9pt]{beamer}
+
+\usepackage{etex}
+%%% This gets external refs (from other documents)
+\usepackage{xr}
+%% (but needs this fix: https://tex.stackexchange.com/questions/452280/xr-package-not-working-incomplete-ifx/452321#452321)
+\makeatletter
+\long\def\XR@test#1#2#3#4\XR@{%
+  \let\XR@next\@gobbletwo
+  \ifx#1\newlabel
+    \let\XR@next\@firstoftwo%
+  \else\ifx#1\@input
+     \let\XR@next\@secondoftwo
+  \fi\fi
+   \XR@next{\newlabel{\XR@prefix#2}{#3}}{\edef\XR@list{\XR@list#2\relax}}%
+  \ifeof\@inputcheck\expandafter\XR@aux
+  \else\expandafter\XR@read\fi}
+\makeatother
+\externaldocument{../02_Intro_to_MCMC/02_MCMC}
+\externaldocument{../07_Survival_analysis/07_Survival}
+
+\usepackage{graphicx,hyperref,epsfig,bm,xspace}%pst-node,pst-text,pst-3d,pifont,pstricks,
+\usepackage{xcolor}
+\usepackage[UKenglish]{babel}
+\usepackage{tikz,verbatim,inconsolata,listings,marvosym}
+\usepackage[position=top,labelformat=empty]{subfig}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{bigdelim}
+\usepackage{tabto,array}
+\usetikzlibrary{shapes,arrows,decorations.pathreplacing,positioning,calc}
+
+\lstset{basicstyle=\ttfamily\fontsize{6}{7}\selectfont\textcolor[rgb]{0.345,0.345,0.345},breaklines=true,tabsize=2,
+keywords={},linewidth=1\textwidth,backgroundcolor=\color{black!5},
+moredelim=[is][\color{red}]{'*}{'*},
+moredelim=[is][\textbf]{'**}{'**},
+moredelim=[is][\color{blue}]{'*!}{'*!},
+moredelim=[is][\color{green!60!black!80}]{'+}{'+},
+moredelim=[is][\color{red}]{_+}{_+},
+moredelim=[is][\color{green}]{'_}{'_},
+literate=~{$\sim$}2
+}
+
+\newcommand{\UCL}{
+\logo{\includegraphics[height=.37cm]{/home/gianluca/Dropbox/EcSan/ShortCourses/BSU-UCL/LaTeX/UCL.jpg}}
+\setbeamertemplate{sidebar right}{% 
+  \vfill%
+  \llap{\insertlogo\hskip0.0cm}\vskip0.015cm%
+}
+}
+\newcommand{\nologo}{
+\logo{}
+}
+
+\graphicspath{{/home/gianluca/Dropbox/EcSan/ShortCourses/BSU-UCL/LaTeX/}{/home/gianluca/Dropbox/UCL/3021/Lectures/}{/home/gianluca/Dropbox/HE/NICE_workshop/}{/home/gianluca/Dropbox/UCL/Mapi/Projects/Survival/Graphs/}{/home/gianluca/Dropbox/UCL/3021/Lectures/figs/}{/home/gianluca/Dropbox/UCL/Biostats/}{/home/gianluca/Dropbox/EcSan/ShortCourses/Training/}{/home/gianluca/Dropbox/UCL/PhDs/Andrea/workshop/albacete/}{/home/gianluca/Dropbox/HE/RSS/}}
+
+\mode<presentation>
+\usetheme{Boadilla}
+\usecolortheme{whale} 
+\usefonttheme[onlymath]{serif}
+%\setbeamercovered{transparent} %
+\setbeamertemplate{itemize item}{$\bullet$} %
+\setbeamertemplate{itemize subitem}{--} %
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage{etoolbox}
+\makeatletter
+\newcount\beamer@partstartframe
+\beamer@partstartframe=1
+\apptocmd{\beamer@part}{\addtocontents{nav}{\protect\headcommand{%
+        \protect\beamer@partframes{\the\beamer@partstartframe}{\the\c@framenumber}}}}{}{}
+\apptocmd{\beamer@part}{\beamer@partstartframe=\c@framenumber\advance\beamer@partstartframe by1\relax}{}{}
+\AtEndDocument{\immediate\write\@auxout{\string\@writefile{nav}%
+        {\noexpand\headcommand{\noexpand\beamer@partframes{\the\beamer@partstartframe}{\the\c@framenumber}}}}}{}{}
+\def\beamer@startframeofpart{1}
+\def\beamer@endframeofpart{1}
+\def\beamer@partframes#1#2{%
+  \ifnum\c@framenumber<#1%
+  \else%
+    \ifnum\c@framenumber>#2%
+    \else%
+      \gdef\beamer@startframeofpart{#1}%
+      \gdef\beamer@endframeofpart{#2}%
+    \fi%
+  \fi%
+}
+\newcommand\insertpartstartframe{\beamer@startframeofpart}
+\newcommand\insertpartendframe{\beamer@endframeofpart}
+\makeatother
+
+%% customised footline
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.25\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}\insertshorttitle
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.20\paperwidth,ht=2.25ex,dp=1ex,center]{date in head/foot}% original wd=.15
+    \usebeamerfont{date in head/foot}\insertshortdate{}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.40\paperwidth,ht=2.25ex,dp=1ex,center]{section in head/foot}% original wd=.35
+    \usebeamerfont{section in head/foot} \insertpartnumber.\ \insertshortpart 
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.15\paperwidth,ht=2.25ex,dp=1ex,center]{date in head/foot}%
+%    \insertframenumber{}\hspace*{1ex}(\insertpartstartpage--\insertpartendpage)
+    \insertframenumber{}\hspace*{1ex}(\insertpartstartframe--\insertpartendframe)
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+%% This customises the part page to show arabic numbering
+\setbeamertemplate{part page}{
+  \begin{centering}
+    {\usebeamerfont{part name}\usebeamercolor[fg]{part name}\partname~\insertpartnumber}
+    \vskip1em
+    \begin{beamercolorbox}[sep=8pt,center,rounded=true]{part title}
+      \usebeamerfont{part title}\insertpart\par
+    \end{beamercolorbox}
+  \end{centering}
+}
+
+\definecolor{myred}{rgb}{0.9 0.17 0.31}
+\definecolor{myblue}{rgb}{0.14 0.34 0.55}
+\definecolor{olive}{rgb}{.2 .31 .09}
+\definecolor{orange}{rgb}{1 0.5 0}
+\definecolor{mygrey}{rgb}{.94 .94 .94}
+\definecolor{amber}{rgb}{1.0, 0.75, 0.0}
+\definecolor{spanishred}{RGB}{198 11 30}
+\definecolor{spanishyellow}{RGB}{255 196 0}
+\newcommand\myred{\color{myred}}
+\newcommand\myblue{\color{myblue}}
+\newcommand\olive{\color{olive}}
+\newcommand\orange{\color{orange}}
+\newcommand\mygrey{\color{mygrey}}
+\newcommand\amber{\color{amber}}
+\newcommand\red{\color{red}}
+\newcommand\blue{\color{blue}}
+\newcommand\black{\color{black}}
+\newcommand\white{\color{white}}
+\newcommand\magenta{\color{magenta}}
+%%% knitr colours commands (but cannot define them as they exist in knitr)
+% \newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%            R number
+% \newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%              R value of input
+% \newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%   R comment
+% \newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%                        R operator (eg $)
+% \newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%            R text
+% \newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%    ???
+% \newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%             R sign (eg =)
+% \newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%            R input to function
+% \newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%   R command
+
+% To create a table of content and display all parts
+% see https://tex.stackexchange.com/questions/373046/how-to-list-beamer-tocs-all-sections-without-part-separation/373050#373050
+\usepackage{totcount}
+\regtotcounter{part}
+
+\newcommand{\E}{\mbox{E}}
+\renewcommand{\b}{\mbox{B}}
+\newcommand{\bcea}{\texttt{BCEA}\xspace}
+\newcommand{\R}{\texttt{R}\xspace}
+\newcommand{\bugs}{\texttt{BUGS}\xspace}
+\newcommand{\openbugs}{\texttt{OpenBUGS}\xspace}
+\newcommand{\winbugs}{\texttt{WinBUGS}\xspace}
+\newcommand{\jags}{{\texttt{JAGS}}\xspace}
+\newcommand{\hs}{\hspace{5pt}}
+\newcommand{\mytilde}{{\raise.17ex\hbox{$\scriptstyle\mathtt{\sim}$}}\xspace}
+
+%% Books to reference
+\newcommand{\bmhe}{\footnotesize  \textit{Bayesian Methods in Health Economics}}
+\newcommand{\bugsbook}{\footnotesize  \textit{The \texttt{BUGS} Book}}
+\newcommand{\bceabook}{\footnotesize  Baio et al (2017). \textit{Bayesian Cost-Effectiveness Analysis with the \texttt{R} package \texttt{BCEA}}}
+\newcommand{\esdmh}{\footnotesize Welton et al (2012). \textit{Evidence Synthesis for Decision Making in Healthcare}}
+\newcommand{\gelmanhill}{\footnotesize Gelman and Hill (2007). \textit{Data Analysis Using Regression and Multilevel/Hierarchical Models}}
+
+
+\begin{document}
+
+\title[STAT0019 --- BMHE]{STAT0019 --- Bayesian methods in Health Economics}
+\author[\fontsize{5}{5} \selectfont Gianluca Baio]{\textbf{Gianluca Baio} \\[10pt] \fontsize{8}{9}\selectfont{University College London \newline Department of Statistical Science}}
+\date{January--March 2020}
+\institute[\fontsize{5}{5} \selectfont \!\!UCL]{\olive \texttt{g.baio@ucl.ac.uk}\\\vspace{.1cm} \url{http://www.ucl.ac.uk/statistics/research/statistics-health-economics/} \\\url{http://www.statistica.it/gianluca}\\\url{https://github.com/giabaio}\\[3pt]\url{https://github.com/StatisticsHealthEconomics/STAT0019}
+}
+
+<<include=FALSE,message=FALSE,warning=FALSE>>=
+library(knitr)
+opts_chunk$set(prompt = TRUE, highlight = T, 
+               #background = '#FFFFFF',
+concordance=TRUE
+)
+
+# This makes sure the ~ is formatted correctly in code chunks
+# https://stackoverflow.com/questions/14710477/pretty-tilde-from-r-chunk-with-knitr
+hook_source = knit_hooks$get('source')
+knit_hooks$set(source = function(x, options) {
+  txt = hook_source(x, options)
+  # extend the default source hook. Uses mgsub to use multiple replacements throughout the text
+  mgsub::mgsub(txt,
+               pattern=c("~","bbold","endbrk","!greyout","!black"),
+               replacement=c("\\\\mytilde","\\\\textbf\\{","\\}","\\\\mygrey ","\\\\black ")
+               )
+})
+
+# Sets default fonts for tikz
+library(tikzDevice)
+options(tikzLatexPackages=c(getOption("tikzLatexPackages"),"\\usepackage{inconsolata,}",
+	"\\usepackage[scaled=.89]{helvet}\n\\renewcommand{\\familydefault}{\\sfdefault}\n"))
+
+
+#knit_hooks$set(source = function(x, options) {
+#  txt = hook_source(x, options)
+#  # extend the default source hook
+#  gsub('~', '\\\\mytilde', txt)
+#})
+@
+
+%%%\frame[plain]{\titlepage}
+
+\renewcommand{\partname}{Lecture}	% Changes the label "Part" to "Lecture"
+\date{Lecture 9}
+\addtocounter{part}{8}
+\part[Markov models]{Markov models}\label{MM} \frame{\partpage} 
+\UCL
+
+\begin{frame}
+
+\frametitle{Summary}
+
+\begin{itemize}
+\item Assess \alert{long-term} cost-effectiveness based only on
+  \alert{short-term} data
+
+\item State-transition (usually \emph{Markov}) models for clinical
+  histories
+
+\item Commonly implemented in Excel, or specialized software (eg \texttt{TreeAge})
+
+\item Bayesian framework lets you \alert{simultaneously} perform 
+  \begin{itemize}
+  \item parameter estimation (from short-term data, eg meta-analysis), and 
+  \item probabilistic sensitivity analysis (long-term costs and benefits)
+  \item uncertainty about parameters fully included 
+  \end{itemize}
+
+\item Simple example: estimate transition probabilities using
+  \emph{multinomial} distribution in \bugs
+  
+\item Markov models \& survival analysis
+
+\end{itemize}
+
+\vfill 
+\begin{block}{\footnotesize References}
+\bmhe,  chapter 5.4.\\
+\esdmh
+\end{block}
+
+\end{frame}
+
+%### New page ############################################################
+
+\frame{
+\frametitle{Markov models}
+\begin{itemize}
+\item Assume a set of $S$ ``clinically relevant'' states
+\begin{itemize}
+\item Exhaustive and mutually exclusive
+\end{itemize}
+\item The structure (links among nodes) describes the dynamics of disease history
+\begin{itemize}
+\item Arrows connecting two states encode the assumption that a transition from the one where the arrow originates to the one reached by it is possible
+\item Absence of an arrow between two states implies that the transition from one to the other is not allowed by our model
+\end{itemize}
+\pause
+\item From one period to the next, subjects can move among the states according to the rules specified by the arrows
+\item Movements occur according to suitable \textit{transition probabilities}
+\[ \myblue \bm{\pi}_j = \bm{\pi}_{j-1}\bm\Lambda_j \]
+where 
+\begin{itemize}
+\item $\myblue \bm{\pi}_j$ is the vector of probabilities for each state at time $j$
+\item $\myblue \bm\Lambda_j = [\Lambda_{j;s,s'}]$ is a transition matrix describing the probability of moving from state $s$ to state $s'$ at time $j$
+\end{itemize}
+\end{itemize}
+}
+
+\frame{
+\frametitle{Markov models}
+\only<1|handout:1>{1.\ Define a structure}
+\only<2|handout:2>{2.\ Estimate the transition probabilities}
+\only<3|handout:3>{3.\ Run the simulation: $j=0$}
+\only<4|handout:4>{3.\ Run the simulation: $j=1$}
+\only<5|handout:5>{3.\ Run the simulation: $j=2$}
+\only<6|handout:6>{3.\ Run the simulation: $j=3$}
+\only<7|handout:7>{3.\ Run the simulation: $j=J$}
+\begin{figure}
+\begin{tikzpicture}
+\draw(0,1.5) node[align=center,ellipse,draw,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](1){Disease};
+
+\draw(-2.5,0) node[align=center,ellipse,draw,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](2){In health};
+
+\draw(2.5,0) node[align=center,ellipse,draw,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](3){Death};
+
+\draw(0,-1.5) node[align=center,ellipse,draw,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](4){Recovery};
+
+\only<2-|handout:2->{
+\draw(-1.4,1.6) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](5){$\lambda_{22}$};
+
+\draw(-4.0,0) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](6){$\lambda_{11}$};
+
+\draw(-1.7,.9) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](7){$\lambda_{12}$};
+
+\draw(1.7,.9) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](8){$\lambda_{24}$};
+
+\draw(-.8,.2) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](9){$\lambda_{14}$};
+
+\draw(4,0) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](10){$\lambda_{44}$};
+
+\draw(.35,-.6) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](11){$\lambda_{23}$};
+
+\draw(-1.7,-.8) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](12){$\lambda_{31}$};
+
+\draw(1.7,-.8) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](13){$\lambda_{34}$};
+}
+
+\draw(-2.5,-1.7) node(box_healthy){
+\begin{minipage}{0.1\textwidth}
+\only<1-2|handout:1-2>{\white
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \\
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom
+}
+\only<3|handout:3>{\blue
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \\
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom
+}
+\only<4|handout:4>{\blue
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \\
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Gentsroom \white \Ladiesroom \Ladiesroom \Gentsroom \Ladiesroom \Gentsroom
+}
+\only<5|handout:5>{\blue
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \\
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \white \Gentsroom \Ladiesroom \\
+\Gentsroom \Ladiesroom \Ladiesroom \white\Gentsroom \Ladiesroom \Gentsroom
+}
+\only<6|handout:6>{\blue
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \\
+\white \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Gentsroom \Ladiesroom \Ladiesroom \white\Gentsroom \Ladiesroom \Gentsroom
+}
+\only<7|handout:7>{\white
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \\
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Ladiesroom \Gentsroom
+}
+\end{minipage}
+};
+
+\draw(3,-1.5) node(box_dead){
+\begin{minipage}{0.1\textwidth}
+\only<1-3|handout:1-3>{\white
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \\
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom
+}
+\only<4|handout:4>{
+\Gentsroom \Ladiesroom \white \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \\
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Ladiesroom \Gentsroom
+}
+\only<5|handout:5>{
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \white \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \\
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Ladiesroom \Gentsroom
+}
+\only<6|handout:6>{
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \white \Ladiesroom \Gentsroom \\
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Ladiesroom \Gentsroom
+}
+\only<7|handout:7>{
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \\
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom \Ladiesroom \\
+\Ladiesroom \Gentsroom \Ladiesroom \Ladiesroom \Gentsroom \Gentsroom
+}
+\end{minipage}
+};
+
+\draw(0.4,2.1) node(box_disease){
+\begin{minipage}{0.1\textwidth}
+\only<1-3|handout:1-3>{\white
+\Gentsroom \Ladiesroom \Ladiesroom \Gentsroom 
+}
+\only<4|handout:4>{\red
+\Gentsroom \Ladiesroom \Ladiesroom
+}
+\only<5|handout:5>{\red 
+\Gentsroom \Ladiesroom \Gentsroom \Ladiesroom 
+}
+\only<6|handout:6>{\red 
+\Gentsroom \Ladiesroom \Gentsroom 
+}
+\only<7|handout:7>{\white
+\Gentsroom \Ladiesroom \Gentsroom 
+}
+\end{minipage}
+};
+
+\draw(0.4,-2.1) node(box_recovery){
+\begin{minipage}{0.1\textwidth}
+\only<1-4|handout:1-4>{\white
+\Gentsroom \Ladiesroom  
+}
+\only<5|handout:5>{\green
+\Gentsroom 
+}
+\only<6|handout:6>{\green
+\Gentsroom \Gentsroom 
+}
+\only<7|handout:7>{\white
+\Gentsroom \Gentsroom 
+}
+\end{minipage}
+};
+
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (1.south) -- (4.north);
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (2.40) -- (1.200);
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (2.east) -- (3.west);
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (4.140) -- (2.300);
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (4.40) -- (3.220);
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (1.330) -- (3.140);
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (1) to [out=195, in=160, looseness=3.5] (1);
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (2) to [out=195, in=160, looseness=3.5] (2);
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (3) to [out=345, in=20, looseness=3.5] (3);
+
+
+\end{tikzpicture}
+\end{figure}
+
+\only<3|handout:3>{
+$\bm{\pi}=(1,0,0,0)$
+}
+\only<4|handout:4>{
+$\bm\pi=(19/24, 3/24, 0, 2/24)$
+}
+\only<5|handout:5>{
+$\bm\pi=(16/25, 4/25, 1/25, 4/25)$
+}
+\only<6|handout:6>{
+$\bm\pi=(12/27, 3/27, 2/27, 10/27)$
+}
+\only<7|handout:7>{
+$\bm\pi=(0, 0, 0, 1)$
+}
+
+
+
+}
+
+\begin{frame}
+
+\frametitle{Example: asthma}
+Five-state model for management of asthma:
+\begin{itemize}
+\item STW: Successfully treated week
+\item UTW: Unsuccessfully treated week
+\item Hex: Hospital-managed exacerbation
+\item Pex: Primary care-managed exacerbation
+\item TF: Treatment failure - enters a ``usual care'' pattern (absorbing)
+\end{itemize}
+
+\begin{center}
+\rotatebox{0}{\includegraphics[height=3.5cm]{11.markov-models/figs/5state.pdf}}
+\end{center}
+
+\vfill
+\footnotesize Briggs, Ades and Price. Medical Decision Making (2003);23:341-350
+
+\end{frame}
+
+%### New page ############################################################
+
+\begin{frame}
+
+\frametitle{Markov assumption (discrete time)}
+
+\alert{Markov} models are multi-state models in which next transition
+depends only on the current state\myblue
+\begin{eqnarray*}
+&&\Pr(\mbox{state $s'$ at time $j+1 \mid$ history of the process}) = \\
+&&\qquad \Pr(\mbox{state $s'$ at time $j+1\mid$ state $s$ at time $j$})
+%%%
+%%%&&\Pr(\mbox{state} \: j \: \mbox{at \: time} \: t+1\mid\mbox{history \: of \: process})=  \\
+%%%&&\qquad \Pr(\mbox{state} \: j \: \mbox{at \: time} \: t+1\mid\mbox{state} \: i \: \mbox{at \: time} \:t)
+\end{eqnarray*}\black 
+
+A Markov model is \alert{time-homogeneous} if this transition probability is the same for all times $j$
+\begin{itemize}
+\item Counterexample: risk of death depends on age
+\end{itemize}
+
+\end{frame}
+
+%### New page ############################################################
+
+\begin{frame}
+
+\frametitle{Data}
+\only<1|handout:1>{
+\begin{itemize}
+\item Data from a RCT with 2 treatments
+
+\begin{itemize}
+\item SFC: Salmeterol (50$\mu$g) / fluticasone propionate (100$\mu$g) in combination --- new treatment, $t=2$
+\item FP: Fluticasone propionate alone (100$\mu$g) --- existing treatment, $t=1$
+\end{itemize}
+
+\item 12 week trial
+
+\item For each arm we count the number of transitions between states from week $j$ to $j+1$
+
+\item From the Markov assumption, these can be considered independent
+\end{itemize}
+}
+\only<2|handout:2>{
+\begin{center}
+\begin{tabular}{l|rrrrr|r} \hline
+\multicolumn{7}{c}{SFC} \\ \hline
+&\multicolumn{5}{c|}{Number in state at week $j+1$}&Total in state \\
+$r_{ss'}$&STW&UTW&Hex&Pex&TF&at week $j$ ($n_s$)\\ \hline
+STW & 210 &  60 & 0 & 1 &  1 & 272 \\
+UTW &  88 & 641 & 0 & 4 & 13 & 746 \\
+Hex &   0 &   0 & 0 & 0 &  0 &   0 \\
+Pex &   1 &   0 & 0 & 0 &  1 &   2 \\
+TF  &   0 &   0 & 0 & 0 & 81 &  81 \\ \hline \hline
+\multicolumn{7}{c}{FP} \\ \hline
+STW &  66 &  32 & 0 & 0 &  2 & 100 \\
+UTW &  42 & 752 & 0 & 5 & 20 & 819 \\
+Hex &   0 &   0 & 0 & 0 &  0 &   0 \\
+Pex &   0 &   4 & 0 & 1 &  0 &   5 \\
+TF  &   0 &   0 & 0 & 0 &156 & 156 \\ \hline
+\end{tabular}
+\end{center}
+
+These are summed over all weeks
+
+}
+
+\end{frame}
+
+
+%### New page ############################################################
+
+\begin{frame}
+
+\frametitle{Estimating transition probabilities}
+
+\begin{itemize}
+\item Could estimate $(s,s')$ transition probability by dividing total 
+\begin{itemize}
+\item number of transitions observed from $s$ to $s'$, by 
+\item number of weeks observed in state $s$ 
+\end{itemize}
+
+\item But can't estimate transition rates out of Hex since nobody went
+  into~Hex! 
+\item Also very few went into Pex -- estimates / SEs for rates out of
+  Pex will be unstable
+\begin{itemize}
+\item Long-term economic model needs to include possibility of Hex /
+  Pex -- expensive states! 
+\item Needs to account for \alert{uncertainty} in the transition
+  rates
+\end{itemize}
+
+\end{itemize}
+
+$\rightarrow$ use Bayesian inference -- combine \alert{priors} on
+Hex/Pex/other states with data $\rightarrow$ \alert{posterior}
+distribution of transition probabilities.
+
+\end{frame}
+
+%### New page ############################################################
+
+\begin{frame}
+
+\frametitle{Binomial distribution for an event}
+
+Suppose there are two states in the model (\emph{successfully treated
+  week} / \emph{treatment failure})
+
+Out of $n$ people currently under treatment, the following week $r$
+people have had treatment failure
+
+\begin{center}
+\input{/home/gianluca/Dropbox/EcSan/ShortCourses/BSU-UCL/LaTeX/11.markov-models/figs/2state.pstex_t}
+\end{center}
+
+\begin{center}
+\begin{tabular}{l||rr}
+\hline
+Total in STW at $j$ & \multicolumn{2}{c}{Number in state at $j+1$}\\
+at week $j$ & STW & TF  \\ \hline
+$n$ & $n-r$ & $r$ \\ \hline
+\end{tabular}
+\end{center}
+\vspace{10pt}
+
+Beta distribution is a convenient prior for $\lambda$ (conjugacy --- \textbf{cfr Lecture \ref{Bayes2}})
+
+\end{frame}
+
+
+%### New page ############################################################
+
+\begin{frame}
+
+\frametitle{\textbf{Multinomial} model for several events}
+
+\begin{center}
+\input{/home/gianluca/Dropbox/EcSan/ShortCourses/BSU-UCL/LaTeX/11.markov-models/figs/5state-1row.pstex_t}
+\end{center}
+
+%$\sum \pi_j=1$ 
+
+\begin{center}
+\begin{tabular}{ccccc|c} \\ \hline
+\multicolumn{5}{c|}{Number in state at $j+1$}&Total in STW at $j$ \\
+STW&UTW&Hex&Pex&TF&at week $j$ \\ \hline
+$r_1$ & $r_2$ & $r_3$ & $r_4$ &  $r_5$ & $n$ \\ \hline
+\end{tabular}
+\end{center}
+
+
+\end{frame}
+
+%### New page ############################################################
+
+\begin{frame}
+
+\frametitle{Bayesian estimation of multinomial model}
+%\vspace{-1.5cm}
+
+\textbf{Sampling distribution}
+\myblue
+\[
+\begin{array}{lllll}
+r_1, \ldots, r_5  &\sim &\multicolumn{3}{l}{\mbox{Multinomial} (\lambda_1, \ldots, \lambda_5,n)} \\
+p(\bm r\mid\bm\lambda) &=& \displaystyle\frac{n!}{r_1! \cdots r_5!}\lambda_1^{r_1} \ldots \lambda_5^{r_5} &\propto& \lambda_1^{r_1} \ldots \lambda_5^{r_5} \\
+\displaystyle\sum_{s=1}^S \lambda_s &=& 1
+\end{array}
+\]
+
+\black  \vspace{10pt}
+\textbf{Prior distribution for five transition probabilities}
+\myblue
+\[
+\begin{array}{lllll}
+(\lambda_1,\ldots,\lambda_5) &\sim &\mbox{Dirichlet} (a_1,\ldots,a_5)&&  \\
+p(\lambda_1,\ldots,\lambda_5) &=& \displaystyle\frac{\Gamma(a_1+\cdots+a_5)}{\Gamma(a_1)\cdots\Gamma(a_5)}\lambda_1^{(a_1-1)}\cdots\lambda_5^{(a_5-1)} &\propto& \lambda_1^{(a_1-1)}\cdots\lambda_5^{(a_5-1)} 
+\end{array}
+\] 
+
+\black  \vspace{10pt}
+\textbf{Posterior distribution}
+\myblue
+\begin{eqnarray}
+p(\bm\lambda\mid \bm r) &\propto& \lambda_1^{(a_1+r_1-1)}\cdots\lambda_5^{(a_5+r_5-1)} \nonumber \\
+\bm\lambda &\sim & \mbox{Dirichlet} (a_1+r_1,\ldots, a_5+r_5)\nonumber 
+\end{eqnarray}
+
+\end{frame}
+
+%### New page ############################################################
+%%% NEED TO CHECK NOTATION FROM HERE!!!!
+
+\begin{frame}
+
+\frametitle{Dirichlet prior distribution\only<2|handout:2>{\hspace{0pt plus 1 filll}\small{Some examples\ldots}}}
+
+\begin{onlyenv}<1|handout:1>
+\begin{itemize}
+\item General prior for a set of numbers that add up to 1
+\item[] $(p_1, \ldots, p_S) \sim \mbox{Dirichlet}(a_1, \ldots, a_S)$
+\begin{itemize}
+\item $a_s$ proportional to \alert{expected} probability $p_s$ of outcome $s$
+\item scale of the $a_s$ indicates prior \alert{precision} of $(p_1, \ldots, p_S)$
+\end{itemize}
+
+\vspace{10pt}
+\item \textbf{NB}: $\mbox{Dirichlet} (1,\ldots, 1)$ is a flat prior
+\begin{itemize}
+\item But so are $\mbox{Dirichlet} (100,\ldots, 100)$ or $\mbox{Dirichlet} (0.001,\ldots,0.001)$!
+\end{itemize}
+\item Given a total sample size $\displaystyle\sum_{s=1}^S a_s$, the values $a_s$ are your prior expectation for the number of subjects you would expect in each state $s$
+\end{itemize}
+\end{onlyenv}
+
+\begin{onlyenv}<2|handout:2>
+\vspace{-3pt}
+<<echo=F,fig.width=5,fig.height=5,out.width='35%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=TRUE,fig.show="hold",fig.ncol=2>>=
+library(dplyr)
+library('ggplot2')
+library('gridExtra')
+library('dirichlet')
+
+
+plot_dirichlet <- function(alphas = c(.5, .5, .5),add_points=FALSE,n=250,title=NA,title.size=20,vjust=-15) {
+  f <- function(v) ddirichlet(v, alphas)
+  mesh <- simplex_mesh(.0025) %>% as.data.frame %>% tbl_df
+  mesh$f <- mesh %>% apply(1, function(v) f(bary2simp(v)))
+  if(is.na(title)) {title=""} 
+  
+  p <- ggplot(mesh, aes(x, y)) +
+    geom_raster(aes(fill = f)) +
+    coord_equal(xlim = c(0, 1), ylim = c(0, 1)) +
+    # scale_colour_gradient(low = 'white', high = 'black') +
+    scale_x_continuous(breaks = scales::pretty_breaks(n = 5)) +
+    ggtitle(title) +
+    theme(
+      axis.line = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.border = element_blank(),
+      panel.background = element_blank(),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      #axis.text.x = element_blank(),
+      #axis.ticks.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks.y = element_blank(),
+      legend.position = 'None',
+      plot.title = element_text(hjust = .5, vjust = vjust, size=title.size)
+    )
+  
+  if (add_points) {
+    points <- rdirichlet(n, alphas) %>% simp2bary %>% 
+      as.data.frame %>% tbl_df %>% rename(x = V1, y = V2)
+    p <- p + geom_point(data = points, color = 'orange', alpha = .3)
+  }
+  
+  p
+}
+
+
+plot_dirichlet(c(1, 1, 1), add_points = TRUE, n=1000, title="$\\bm a=(1,1,1)$",title.size=20,vjust=-10)
+plot_dirichlet(c(5, 5, 1), add_points = TRUE, title="$\\bm a=(5,5,1)$",title.size=20,vjust=-10)
+@
+\vspace{-2pt}
+<<echo=F,fig.width=5,fig.height=5,out.width='35%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=TRUE,fig.show="hold",fig.ncol=2>>=
+plot_dirichlet(c(100, 4, 10), add_points = TRUE, title="$\\bm a=(100,4,10)$",title.size=20,vjust=-10)
+plot_dirichlet(c(100, 100, 100), add_points = TRUE, title="$\\bm a=(100,100,100)$",title.size=20,vjust=-10)
+@
+\end{onlyenv}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+
+\frametitle{Markov model in \bugs \hspace{0pt plus 1filll}\small \textbf{(cfr BMHE, \S5.4.1)}}
+\fontsize{8}{9}\selectfont
+<<comment=NA,eval=FALSE,prompt=FALSE>>=
+model {
+# Multinomial distribution for r, s=1,...,4: non-absorbing states
+  for(s in 1:(S-1)){
+    r.sfc[s,1:S] ~ dmulti(lambda.sfc[s,1:S], n.sfc[s]) 
+    r.fp[s,1:S] ~ dmulti(lambda.fp[s,1:S], n.fp[s])    
+  }
+
+# Dirichlet prior distributions for the transition probabilities lambda
+  for(s in 1:(S-1)){
+    lambda.sfc[s,1:S] ~ ddirch(prior.sfc[s,1:S])
+    lambda.fp[s,1:S] ~ ddirch(prior.fp[s,1:S])
+  }
+
+# Fixed transition probabilities for the absorbing state - 
+#   prob 1 of staying there/prob 0 of moving. NB: In data, p.fixed=c(0,0,0,1)
+  for(s in 1:S){
+    lambda.sfc[S,s] <- p.fixed[s]
+    lambda.fp[S,s] <- p.fixed[s]
+  }
+} 
+@
+\end{frame}
+
+\begin{frame}
+
+\frametitle{Estimated transition probabilities versus observed data}
+%\vspace{-2cm}
+{\footnotesize
+
+\begin{tabular}{l|rrrrr||rrrrr} \\ \hline
+
+&\multicolumn{5}{c||}{\alert{Raw transition counts}} & \multicolumn{5}{c}{\alert{Bayesian posterior mean}} \\ \hline
+    \textbf{To:}&STW&UTW&Hex&Pex&TF  &STW&UTW&Hex&Pex&TF\\ \hline
+\textbf{From:}&\multicolumn{10}{c}{SFC} \\ \hline
+ STW & 210 &  60 & 0 & 1 &  1 & 0.76 & 0.22 & 0.004 & 0.01 & 0.01  \\  
+ UTW &  88 & 641 & 0 & 4 & 13 & 0.12 & 0.85 & 0.001 & 0.01 & 0.02  \\  
+ Hex &   0 &   0 & 0 & 0 &  0 & 0.20 & 0.20 & 0.20 & 0.20 & 0.20   \\  
+ Pex &   1 &   0 & 0 & 0 &  1 & 0.29 & 0.14 & 0.14 & 0.14 & 0.28   \\  
+ TF  &   0 &   0 & 0 & 0 & 81 &   0 &   0 & 0 & 0 & 1              \\ 
+ \hline
+ &\multicolumn{10}{c}{FP} \\ \hline
+ STW &  66 &  32 & 0 & 0 &  2 & 0.64 & 0.31 & 0.01 & 0.01 & 0.03   \\  
+ UTW &  42 & 752 & 0 & 5 & 20 & 0.05 & 0.91 & 0.001 & 0.00 & 0.03  \\  
+ Hex &   0 &   0 & 0 & 0 &  0 & 0.20 & 0.20 & 0.20 & 0.20 & 0.20   \\  
+ Pex &   0 &   4 & 0 & 1 &  0 & 0.10 & 0.50 & 0.10 & 0.20 & 0.10   \\  
+ TF  &   0 &   0 & 0 & 0 &156 &  0 &   0 & 0 & 0 & 1               \\ 
+ \hline 
+\end{tabular}
+}
+
+\vfill \small
+Information from the prior has been combined with the data
+
+\end{frame}
+
+
+\frame{
+\frametitle{Cost-effectiveness modelling \only<2|handout:1>{+ discounting} \hspace{0pt plus 1filll}\small \textbf{(cfr BMHE 5.4 + practical)}}
+Calculate \alert{expected costs} and \alert{expected benefits} of each
+treatment over the long term:
+
+\begin{itemize}
+
+\item Assign cost and benefit to each state in model 
+\item \alert{Cohort simulation:} Estimate proportion of population in each state at each successive time
+  (from Markov \emph{transition probabilities})
+  \begin{itemize}
+  \item at the start, everyone in ``base'' state (eg just received treatment) 
+  \item usually in the long run, everyone will be in the ``absorbing'' state (eg~death)
+  \end{itemize}
+\item Accumulate expected cost and benefit over times
+\end{itemize}
+
+\pause\vspace{10pt}
+\begin{itemize}
+\item Costs and outcomes can occur at different times with respect to when the intervention is implemented
+\begin{itemize}
+\item Society tends to value benefits that arrive closer to the present time more than those that are achievable later in the future
+\end{itemize}
+\item \alert{Discounting} accounts for differential timing by reducing the value of costs \& effects in the future
+\begin{itemize}
+\item Particularly relevant for economic evaluation spanning over a time horizon $>$ 1 year (eg Markov models)
+\end{itemize}
+\item Define a discount rate $d$ (NICE suggest 3.5\% for costs and outcomes) and compute the \textbf{Present Value} of intervention (treatment) $t$ as \color{myblue}
+\begin{eqnarray*}
+\text{PV}^c_t = \sum_{j=0}^{J}\frac{c_{tj}}{(1+d)^j} \qquad \text{PV}^e_t = \sum_{j=0}^{J}\frac{e_{tj}}{(1+d)^j}
+\end{eqnarray*} \color{black}
+(for \color{blue}costs $c$ \color{black}and \color{red}clinical benefits $e$\color{black}, respectively)
+\end{itemize}
+}
+
+\begin{frame}
+
+\frametitle{Simulating prevalences of states over time}
+
+\begin{itemize}
+\item $m_{js}$ is the \textbf{number} of patients in state $s$ at time $j$
+\item $\lambda_{ss'}$ is the probability of going from state $s$ to state $s'$ in one time step
+\item Thus \myblue 
+$$m_{j+1,s}=m_{j1}\lambda_{1s}+\cdots+m_{jS}\lambda_{Ss}$$
+\black 
+which we can write in matrix form as \myblue
+\[
+\begin{array}{rcl}
+(m_{j+1,1},\ldots,m_{j+1,S})&=&(m_{j,1},\ldots,m_{j,S})
+\left(
+\begin{array}{ccc}
+\lambda_{11} & \ldots & \lambda_{1S} \\
+\vdots & \ddots & \vdots \\
+\lambda_{S1} & \ldots & \lambda_{SS} 
+\end{array}
+\right) \nonumber \\
+\bm{m}_{j+1}&=&\bm{m}_j \bm\Lambda
+\end{array}
+\]
+\black 
+\item \textbf{NB}: $\bm\Lambda$ may depend on time $j$
+
+\end{itemize}
+\end{frame}
+
+%### New page ############################################################
+
+\begin{frame}[fragile]
+\frametitle{Coding this in \only<1|handout:1>{\textbf{\bugs}}\only<2|handout:2>{\textbf{\texttt{R}} \hspace{0pt plus 1filll}\small{\textbf{(see BMHE 5.4)}}}}
+\begin{overprint}
+\begin{onlyenv}<1|handout:1>
+<<comment=NA,eval=FALSE,prompt=FALSE>>=
+# Starting state
+for(s in 1:S){
+  m.sfc[1,s] <- m.start[s]
+  m.fp[1,s] <- m.start[s]
+}
+
+# Markov model
+for(j in 2:J){
+  for(s in 1:S){  
+  # state proportions
+    m.sfc[j,s] <- inprod(m.sfc[j-1,1:S],lambda.sfc[1:S,s]) 
+    m.fp[j,s]  <- inprod(m.fp[j-1,1:S],lambda.fp[1:S,s])
+  }
+}
+
+# inprod(v1[1:5],v2[1:5]) = sum_{i=1 to 5} v1_i v2_i
+# can also use inprod2 which is faster (and not documented)
+@
+
+\vfill \black 
+\textbf{NB}: Probably best to leave this computation to \texttt{R}, once the simulations for \texttt{lambda.sfc} and \texttt{lambda.fp} are available!
+
+\end{onlyenv}
+
+\begin{onlyenv}<2|handout:2>
+<<comment=NA,eval=FALSE,prompt=FALSE>>=
+# Markov model
+m.0 <- m.1 <- array(NA,c(n.sims,S,(J+1)))
+for (s in 1:S){
+  # Assumes only 1 patient
+  m.0[,s,1] <- c(1,0,0,0,0) # initially in the state
+  m.1[,s,1] <- c(1,0,0,0,0) # 'In health'
+}
+
+for (i in 1:n.sims) {
+  for (j in 2:(J+1)) {
+    for (s in 1:S) {
+      m.0[i,s,j] <- sum(m.0[i,,j-1]*lambda.0[i,,s])
+      m.1[i,s,j] <- sum(m.1[i,,j-1]*lambda.1[i,,s])
+    }
+  }
+}
+@
+
+\vfill \black \textbf{NB}: \texttt{BUGS} increases variables by one dimension (scalars become vectors, vectors become matrices, matrices become arrays...)
+
+\end{onlyenv}
+\end{overprint}
+\end{frame}
+
+%### New page ############################################################
+
+\begin{frame}
+
+\frametitle{Costs and utilities}
+\begin{itemize}
+\item Assign a cost to each state for each treatment
+\begin{center}
+\begin{tabular}{l|rrrrr} \\ \hline
+&\multicolumn{5}{c}{Cost per week (\pounds)} \\
+Treatment&STW&UTW&Hex&Pex&TF\\ \hline
+SFC & 7.96 & 7.96 & 1821.17 & 100.79 & TF cost (j)\\
+FP  & 2.38 & 2.38 & 1815.58 &  95.21 & TF cost (j)\\ \hline
+\end{tabular}
+\end{center}
+
+\vspace{7pt}
+\item Total cost for week $j$ in SFC group is
+$$\myblue m_{j1}\times\mathrm{cost}_{(SFC,1)}+\cdots + m_{j4}\times\mathrm{cost}_{(SFC,4)}+ m_{j5}\times\mbox{TF\:cost}(j) \vspace{-6pt}  \black$$
+\begin{itemize}
+\item $\displaystyle \myblue \mbox{TF\:cost}(j) = \frac{m_{j1}\mathrm{cost}_{(FP,1)}+ \cdots + m_{j4} \mathrm{cost}_{(FP,4)}}{m_{j1}+ \cdots +m_{j4}}$ 
+\item[] $\displaystyle \white \mbox{TF\:cost}(j)\myblue =$ \myblue average cost over states, weighted by time spent in each state, 
+\item[] $\displaystyle \white \mbox{TF\:cost}(j) =$ \myblue under old treatment
+\end{itemize}
+\vspace{7pt}
+\item Utility measure is the number of weeks in the successfully controlled state
+\end{itemize}
+\end{frame}
+
+%### New page ############################################################
+
+\begin{frame}[fragile]
+
+\frametitle{Coding this in \bugs}
+
+\fontsize{8}{9}\selectfont{
+<<comment=NA,eval=FALSE,prompt=FALSE>>=
+# Cost at time j from Markov model 
+for(j in 2:J) {
+# cost of TF at time j
+  weekly.cost.tf.fp[j] <- inprod(m.fp[j,1:4],weekly.cost.fp[1:4])/sum(m.fp[j,]) 
+
+# total cost for the two treatment arms
+  cost.sfc[j] <- inprod(m.sfc[j,1:4],weekly.cost.sfc[1:4]) + 
+    m.sfc[t,5]*weekly.cost.tf.fp[j]  
+  cost.fp[j]  <- inprod(m.fp[j,1:4],weekly.cost.fp[1:4]) + 
+    m.fp[t,5]*weekly.cost.tf.fp[j]
+}
+
+# Costs and utilities
+mu.c[1] <- sum(cost.fp[2:J])
+mu.c[2] <- sum(cost.sfc[2:J])
+delta.c <- mu.c[2] - mu.c[1]
+mu.e[1] <- sum(m.fp[2:J,1])
+mu.e[2] <- sum(m.sfc[2:J,1])
+delta.e <- mu.e[2] - mu.e[1]
+@
+}
+
+\vfill 
+\black \textbf{NB}: Again, can do this directly in \texttt{R} (see BMHE 5.4 + practical)!
+
+See also \texttt{\myblue https://github.com/pierucci/heemod} (linked to \texttt{BCEA} but fundamentally frequentist analysis)
+
+\end{frame}
+
+%%%%%%### New page ############################################################
+%%%%%
+%%%%%\begin{frame}
+%%%%%
+%%%%%\frametitle{At each iteration of the MCMC sampler}
+%%%%%%\vspace{-1.5cm}
+%%%%%
+%%%%%\bi
+%%%%%\item \noindent\textbf{Step 1}: Set up
+%%%%%\bi
+%%%%%\item draw a realization of the transition probabilities $\bm\Lambda$ from their posterior distribution 
+%%%%%\item define starting state and set $j=1$
+%%%%%\ei
+%%%%%
+%%%%%\vspace{5pt}\pause
+%%%%%\item \noindent\textbf{Step 2}: Markov model
+%%%%%\bi
+%%%%%\item Set $j=j+1$
+%%%%%\item find state numbers $m_j$ in each arm
+%%%%%\item find cost of these state in each arm
+%%%%%\item repeat step 2 until $j=J(=13$ in this case) 
+%%%%%\ei
+%%%%%
+%%%%%\vspace{5pt}\pause
+%%%%%\item \noindent\textbf{Step 3}: Cost-effectiveness
+%%%%%\bi
+%%%%%\item find total \alert{costs} in each arm
+%%%%%\item find total \alert{benefit} (proportion of time spent in STW) in each arm
+%%%%%\ei
+%%%%%\ei
+%%%%%\end{frame}
+%%%%%
+%%%%%
+%%%%%%### New page ############################################################
+%%%%%
+%%%%%\begin{frame}
+%%%%%
+%%%%%\frametitle{Results}
+%%%%%%\vspace{-1.5cm}
+%%%%%
+%%%%%Sample from \alert{joint posterior distribution} of costs and effects
+%%%%%for each treatment gives, eg 
+%%%%%\begin{itemize}
+%%%%%\item \alert{incremental cost-effectiveness ratio} = mean cost difference / mean benefit difference
+%%%%%\item ``cost-effectiveness plane''
+%%%%%\item incremental net benefit (with CI)
+%%%%%\item cost-effectiveness acceptability curve
+%%%%%\end{itemize}
+%%%%%
+%%%%%\begin{center}
+%%%%%\rotatebox{0}{\includegraphics[height=4cm]{11.markov-models/figs/markov5-contour.pdf}}
+%%%%%\rotatebox{0}{\includegraphics[height=4cm]{11.markov-models/figs//markov5-ceac.pdf}}
+%%%%%\end{center}
+%%%%%
+%%%%%\end{frame}
+
+\frame{
+\frametitle{Partitioned survival analysis (PartSA) \hspace{0pt plus 1filll}\small (\textbf{cfr Lecture \ref{Survival}})}
+
+\begin{onlyenv}<1|handout:1>
+\textbf{Digitising Kaplan-Meier data} \hspace{0pt plus 1filll}\small{(eg \texttt{DigitizeIt}: \texttt{http://www.digitizeit.de})}
+
+\begin{itemize}
+\item Point \& click on the curves from the published papers
+\begin{itemize}
+\item Often available as \textbf{\blue Overall Survival} (OS) and \textbf{\red Progression-Free Survival} (PFS)
+\end{itemize}
+\item Save suitable text files that can be fed to appropriate \texttt{R} scripts$^*$ 
+\item These can retrieve simulated individual level data that ``look like'' the original ones (who generated the KM curves)
+\begin{itemize}
+\item \textbf{NB}: The digitised data cannot account for correlation among PFS and OS!
+\end{itemize}
+\end{itemize}
+
+\begin{tikzpicture}
+\draw(-3.5,2.0) node(1){\hspace{-12pt}\includegraphics[scale=.09]{/home/gianluca/Dropbox/UCL/Mapi/Projects/Survival/Graphs/paper}};
+\draw(3.5,2.0) node(2){\hspace{-35pt}\includegraphics[scale=.09]{/home/gianluca/Dropbox/UCL/Mapi/Projects/Survival/Graphs/digit_data}};
+\draw(-.4,2) node[align=center,rectangle,rounded corners,draw=none,text width=4.1cm](8){\fontsize{8}{8}\selectfont $\Rightarrow$};
+\end{tikzpicture}
+
+\vfill\vspace{10pt}
+$^*$\fontsize{6}{6}\selectfont Guyot P, Ades A, Ouwens M, Welton N. (2012): \texttt{\myblue http://www.biomedcentral.com/1471-2288/12/9}
+\end{onlyenv}
+
+\begin{onlyenv}<2-3|handout:2-3>
+\begin{center}
+\only<2|handout:2>{
+\includegraphics[scale=.35]{PartSA}
+}
+\only<3|handout:3>{
+\includegraphics[scale=.35]{PartSA2}
+}
+\end{center}
+
+\vfill
+\myblue \small\url{http://scharr.dept.shef.ac.uk/nicedsu/wp-content/uploads/sites/7/2017/06/Partitioned-Survival-Analysis-final-report.pdf}
+\end{onlyenv}
+}
+
+\newcommand{\splus}{\hspace{-.15em} {+}\hspace{-.15em}}
+\newcommand{\sminus}{\hspace{-.15em} {-}\hspace{-.15em}}
+\frame{
+\frametitle{Markov model, PartSA \& survival analysis \hspace{0pt plus 1filll}\small (\textbf{cfr Lecture \ref{Survival}})}
+\vspace{60pt}
+\begin{center}
+\begin{tikzpicture}[remember picture,overlay]
+\draw(0,2) node[align=center,ellipse,draw,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](1){Progression};
+\draw(-2.5,0) node[align=center,ellipse,draw,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](2){Pre progression};
+\draw(2.5,0) node[align=center,ellipse,draw,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](3){Death};
+
+
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (2.40) -- (1.200);
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (2.east) -- (3.west);
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (1.330) -- (3.140);
+\only<2|handout:1>{
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin,color=black!20] (1) to [out=190, in=170, looseness=3.5] (1);
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin,color=black!20] (2) to [out=188, in=173, looseness=3.5] (2);
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin,color=black!20] (3) to [out=345, in=20, looseness=3.5] (3);
+}
+\only<1|handout:1>{
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (1) to [out=190, in=170, looseness=3.5] (1);
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (2) to [out=188, in=173, looseness=3.5] (2);
+\draw [->,>=latex,shorten >=0pt,auto,node distance=3cm,ultra thin] (3) to [out=345, in=20, looseness=3.5] (3);
+}
+
+
+\only<1|handout:1>{
+\draw(-4.5,0) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](6){$\lambda_{11}$};
+\draw(-1.65,1.15) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](7){$\lambda_{12}$};
+\draw(.4,.2) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](9){$\lambda_{13}$};
+\draw(-1.7,2.1) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](5){$\lambda_{22}$};
+\draw(1.6,1.15) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](8){$\lambda_{23}$};
+\draw(4,0) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm](10){$\lambda_{33}$};
+}
+\only<2|handout:1>{
+\draw(-4.5,0) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=black!20](6){$\lambda_{11}$};
+\draw(-1.65,1.15) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=black!20](7){$\lambda_{12}$};
+\draw(.4,.2) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=black!20](9){$\lambda_{13}$};
+\draw(-1.7,2.1) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=black!20](5){$\lambda_{22}$};
+\draw(1.6,1.15) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=black!20](8){$\lambda_{23}$};
+\draw(4,0) node[align=center,fill=none,font=\sffamily\fontsize{9}{10}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=black!20](10){$\lambda_{33}$};
+}
+
+
+\only<2|handout:1>{
+\draw(2.55,-.5) node[align=center,fill=none,font=\sffamily\fontsize{6}{7}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=red!70](10){$1-\mbox{OS}(j)$};
+\draw(-2.55,-.5) node[align=center,fill=none,font=\sffamily\fontsize{6}{7}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=red!70](6){$\mbox{PFS}(j)$};
+\draw(.15,2.5) node[align=center,fill=none,font=\sffamily\fontsize{6}{7}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=red!70](6){$\mbox{OS}(j)-\mbox{PFS}(j)$};
+}
+%%%%\only<3|handout:3>{
+%%%%\draw(2.55,-.5) node[align=center,fill=none,font=\sffamily\fontsize{6}{7}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=red!20](10){$1-\mbox{OS}(j)$};
+%%%%\draw(-2.55,-.5) node[align=center,fill=none,font=\sffamily\fontsize{6}{7}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=red!20](6){$\mbox{PFS}(j)$};
+%%%%\draw(.15,2.5) node[align=center,fill=none,font=\sffamily\fontsize{6}{7}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=red!20](6){$\mbox{OS}(j)-\mbox{PFS}(j)$};
+%%%%}
+
+%%%%\only<3|handout:1>{
+%%%%\draw(4,-.4) node[align=center,fill=none,font=\sffamily\fontsize{5}{6}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=blue!70](10){$1$};
+%%%%\draw(-.65,.8) node[align=center,fill=none,font=\sffamily\fontsize{5}{6}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=blue!70](7){$[1\sminus\mbox{PFS}(j)][\mbox{OS}(j)]$};
+%%%%\draw(-4.35,-.4) node[align=center,fill=none,font=\sffamily\fontsize{5}{6}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=blue!70](6){$\mbox{PFS}(j)$};
+%%%%\draw(-2.75,2.35) node[align=center,fill=none,font=\sffamily\fontsize{5}{6}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=blue!70](6){$\mbox{OS}(j)\splus\mbox{PFS}(j\sminus 1)[1\sminus\mbox{PFS}(j)][1\sminus\mbox{OS}(j)]$};
+%%%%\draw(.4,-.2) node[align=center,fill=none,font=\sffamily\fontsize{5}{6}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=blue!70](6){$[1\sminus\mbox{PFS}(j)][1\sminus\mbox{OS}(j)]$};
+%%%%\draw(3.0,.8) node[align=center,fill=none,font=\sffamily\fontsize{5}{6}\selectfont,minimum width=1.8cm,minimum height=.7cm,color=blue!70](6){$[1\sminus\mbox{OS}(j)]\sminus\mbox{PFS}(j\sminus 1)[1\sminus\mbox{PFS}(j)][1\sminus\mbox{OS}(j)]$};
+%%%%}
+\end{tikzpicture}
+\end{center}
+
+\vspace{20pt}
+\begin{itemize}
+\item \textbf{Ideally}, want to estimate the transition probabilities $\bm\lambda$ to run the MM
+\item But, typically only have access to (most likely digitised!) data on PFS/OS 
+\begin{itemize}
+\item PFS data record transition to either progression \textbf{or} death
+\item \textbf{Digitised} OS data conflate $\lambda_{12}$, $\lambda_{13}$ and $\lambda_{23}$
+\end{itemize}
+\pause
+\item Can estimate \textbf{\red proportion of people in each state} at each time point
+%%%%\vspace{5pt}\pause
+%%%%\item Can make some additional assumptions and approximate transition probs
+%%%%\begin{itemize}
+%%%%\item $\blue \mbox{PFS}(t)$ = proportion of subjects who have not progressed
+%%%%\item $\blue [1\!-\!\mbox{PFS}(t)]\mbox{OS}(t)$ = proportion of subjects who have progressed and not died
+%%%%\item $\blue [1\!-\!\mbox{PFS}(t)][1\!-\!\mbox{OS}(t)]$ = proportion of subjects who have progressed and died
+%%%%\item $\blue \Delta\mbox{OS}=\mbox{OS}(t\!-\! 1)\!-\!\mbox{OS}(t)=\lambda_{13}\!+\!\lambda_{23}$ = proportion of subjects who died in $[t-1;t]$
+%%%%\end{itemize}
+\begin{itemize}
+\item Basically run the simulation to attach costs \& utilities to the number of individuals in each state at each time
+\item \textbf{NB}: Partitioned survival analysis only applies for diseases where patients can only move \alert{forward}
+\item In a partitioned survival analysis, mortality is determined by time-to-death and not linked to concurring event
+\end{itemize}
+\end{itemize}
+}
+
+\begin{frame}[fragile]
+\frametitle{Partitioned survival analysis --- coding it in \R}
+\fontsize{7}{8}\selectfont
+<<comment=NA,eval=FALSE,prompt=FALSE>>=
+library(survHE)
+x.pfs = fit.models(...)   # here fit the model to the PFS data
+x.os = fit.models(...)    # here fit the model to the OS data
+
+# nsims = number of MCMC simulations for the survival curves
+# ntimes = number of time points in the virtual follow up (eg up to 20 years)
+# nstates = 3 = number of states in the model
+pfs = make.surv(x.pfs,t=seq(0,ntimes),nsim=nsims)   # get simulations for PFS curve
+os = make.surv(x.os,t=seq(0,ntimes),nsim=nsims)     # get simulations for OS curve
+
+pfs = pfs$mat   # here's the list with the nsims simulations for PFS curves
+# Each element of the list is a matrix of values with nsims rows and ntimes columns
+os = os$mat     # And can do the same with the OS curve
+npre = pfs[[1]] # This is the proportion of people in pre-progression at each time point
+npost = os[[1]]-pfs[[1]]  # This is the proportion of people in post-progression at each time point
+ndied = 1 - os[[1]]       # This is the proportion of people in the death state at each time point
+
+# In this way, mat is an array where the first dimension is the number of MCMC simulations, 
+# the second is the number of time points and the third is the number of states
+mat=array(NA,c(nsims,ncol(npre),nstates))
+for (j in 1:ncol(npre)) {
+  mat[,j,] = cbind(npre[,j],npost[,j],ndied[,j])  # For convenience rearrange all into an array
+}
+
+# Now obtain the number of people in each state at the other times
+# (here nsubj is the number of individuals assumed in the population)
+m=nsubj*mat
+@
+\end{frame}
+
+% \frame{
+% \frametitle{Putting it all together\ldots}
+% \href{https://egon.stats.ucl.ac.uk/projects/MMweb/}{\beamergotobutton{Let's go all the way!}}
+% }
+
+\end{document}

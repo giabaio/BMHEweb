@@ -1,0 +1,1042 @@
+---
+title: "&#8291;3. Learning from data using MCMC and `BUGS`"
+author: Gianluca Baio
+date: "25 January 2021"
+institute: "[Department of Statistical Science](https://www.ucl.ac.uk/statistics/) | University College London"
+params: 
+   - conference: "STAT0019 - Bayesian Methods in Health Economics"
+   - location: "UCL - 2020/2021"
+output:
+  xaringan::moon_reader:
+    includes: 
+       in_header: "../assets/latex_macros.html" 
+    seal: false
+    yolo: no
+    lib_dir: libs
+    nature:
+      beforeInit: ["https://platform.twitter.com/widgets.js"]
+      highlightStyle: github
+      highlightLines: yes
+      countIncrementalSlides: no
+      ratio: '16:9'
+      titleSlideClass:
+      - center
+      - middle
+    self_contained: false 
+    css:
+    - "../assets/ucl-powerpoint.css"
+---
+
+```{r echo=F,message=FALSE,warning=FALSE,comment=NA}
+# Sources the R file with all the relevant setup and commands
+source("../assets/setup.R")
+
+# Stuff from 'xaringanExtra' (https://pkg.garrickadenbuie.com/xaringanExtra)
+# This allows the use of panels (from 'xaringanExtra')
+use_panelset()
+# This allows to copy code from the slides directly
+use_clipboard()
+```
+
+class: title-slide
+
+# `r rmarkdown::metadata$title`
+
+## `r rmarkdown::metadata$author`
+
+### `r rmarkdown::metadata$institute`    
+
+.title-small[
+`r icon::icon_style(icon::fontawesome("envelope",style = "solid"),scale=.8,fill="#00acee")`  [g.baio@ucl.ac.uk](mailto:g.baio@ucl.ac.uk)
+`r icon::icon_style(icon::fontawesome("firefox"),scale=.8,fill="#EA7600")`  [http://www.statistica.it/gianluca/](http://www.statistica.it/gianluca/)
+`r icon::icon_style(icon::fontawesome("firefox"),scale=.8,fill="#EA7600")`  [https://egon.stats.ucl.ac.uk/research/statistics-health-economics/](https://egon.stats.ucl.ac.uk/research/statistics-health-economics/)
+`r icon::icon_style(icon::fontawesome("github"),scale=.8,fill="black")`  [https://github.com/giabaio](https://github.com/giabaio)
+`r icon::icon_style(icon::fontawesome("github"),scale=.8,fill="black")`  [https://github.com/StatisticsHealthEconomics](https://github.com/StatisticsHealthEconomics)
+`r icon::icon_style(icon::fontawesome("twitter"),scale=.8,fill="#00acee")`  [@gianlubaio](https://twitter.com/gianlubaio)     
+]
+
+### `r rmarkdown::metadata$params`
+
+`r date`
+
+.small[.alignleft[`r previous_slide("bugs")`]]
+
+.footer[
+`r go_home(path="../assets/home-icon.png")`
+]
+
+---
+
+layout: true
+.footer[
+`r go_home(path="../assets/home-icon.png")` <span style="position: relative; bottom: 10px; color: #D5D5D5;"> &nbsp; &copy; Gianluca Baio. STAT0019</span>
+]
+.footer-center[
+`r rmarkdown::metadata$title`
+]
+
+---
+
+# Summary 
+
+- Already seen how to make predictions based on parameters with *known* uncertainty distributions
+
+- Here we **learn** about parameters from **observed data** using *Bayes theorem*
+
+- Simple example &ndash; trial with binary outcome
+   - *"conjugate"*: no simulation needed
+
+- Simulating posterior distributions of unknowns given data, using **MCMC (Markov Chain Monte Carlo)** in `BUGS`
+   - Practical issues: putting data in 
+   - Convergence (knowing which / how many simulations to save)
+
+- Expressing full uncertainty on any function / transformation of unknown parameters
+
+`r vspace("4rem")`
+.content-box-beamer[
+### References 
+`r vspace("20px")`
+
+`r bugs_book(c(3,4))`
+
+`r bmhe(c(2,4))`
+]
+
+---
+
+# Bayes Theorem 
+
+
+## Updating beliefs with new evidence
+
+- External evidence about unknown quantities $\theta$ **that is not based on current data** is expressed as a **prior** probability distribution $p(\theta)$
+- Evidence from available data $y$ expressed as **sampling distribution**  $p(y\mid \theta)$
+
+--
+
+Two sources of evidence combined using **Bayes theorem**:
+
+$$p(\theta \mid y) = p(\theta) \times \frac{p(y\mid \theta)}{p(y)}$$ which is essentially
+
+$$p(\theta \mid y) \propto p(\theta) \times p(y\mid \theta)$$
+
+`r vspace("2rem")`
+<center style="color: #035AA6;"> <b>Posterior</b> \(\propto\) <b>Prior</b> \(\times\) <b>Likelihood</b> </center>
+
+<!--
+$$\mbox{posterior} \propto \mbox{prior} \times \mbox{likelihood}$$
+-->
+
+`r vspace("1rem")`
+... Posterior becomes your prior when next piece of evidence arrives...
+
+---
+
+# Bayesian methods for fitting models
+
+## Practical benefits
+
+- Ability to **synthesise** multiple datasets / sources of evidence in coherent manner
+
+- ... Allows complexities about real-world data to be modelled (via MCMC methods)
+
+- Naturally provides **predictions** of future events
+
+- Full allowance for **uncertainty** in conclusions
+
+- **Intuitive** communication
+   - express uncertainty by probability statements about unknowns
+
+--
+
+`r vspace(1)`
+## Challenges
+
+- Harder to implement than classical "frequentist" methods
+
+- Extra source of information (the prior) &ndash; can be tricky to specify...
+
+---
+
+# Choice of prior distributions
+
+- **"Vague" priors**: typically distributions with big variances (*on a suitable scale*!), eg `mu ~ dnorm(0, 0.00001)` (**NB**: precision=0.00001 $\Rightarrow$ variance=100000!)
+
+.pull-left[
+```{r echo=F,fig.width=5,fig.height=4,out.width='48%',fig.align='default',dev="tikz",message=FALSE,warning=FALSE,cache=TRUE,opts=list(width="85%",title="This is a vague prior for the mean of a Normal distribution. It may be perfectly OK to assume that possible values span effectively from -1000 to 1000, depending on the meaning of the underlying variable. Or it may be way too vague (if, for instance, the underlying variable is the difference in the blood pressure between patients treated with a new drug or with placebo")}
+plot(seq(-1000,1000,1),dnorm(seq(-1000,1000,1),0,2000),t="l",ylim=c(0,6e-04),xlim=c(-1000,1000),bty="L",ylab="Density",xlab="$\\theta$",
+     main="",axes=F)
+axis(1)
+axis(2,at=axTicks(2),labels=format(axTicks(2),scientific=FALSE))
+legend("top",bty="n",legend=("$y \\sim \\mbox{Normal}(\\theta,\\sigma)$\n$\\theta\\sim\\mbox{Normal}(\\mbox{mean}=0,\\mbox{sd}=2000)$"),cex=1.3)
+```
+]
+.pull-right[
+```{r echo=F,fig.width=5,fig.height=4,out.width='48%',fig.align='default',dev="tikz",message=FALSE,warning=FALSE,cache=TRUE,opts=list(width="85%",title="This is the same distribution, except this time is defined on the log sd of that Normal distribution. This would imply impossibly large values may still be reasonable, before we observe data and this may have implications especially if the information in the data is very limited")}
+plot(seq(-1000,1000,1),dnorm(seq(-1000,1000,1),0,2000),t="l",ylim=c(0,6e-04),xlim=c(-1000,1000),bty="L",ylab="Density",xlab="$\\log(\\sigma)$",
+     main="",axes=F)
+axis(1)
+axis(2,at=axTicks(2),labels=format(axTicks(2),scientific=FALSE))
+legend("top",bty="n",legend=("$y \\sim \\mbox{Normal}(\\theta,\\sigma)$\n${\\log(\\sigma)}\\sim\\mbox{Normal}(\\mbox{mean}=0,\\mbox{sd}=2000)$"),cex=1.3)
+```
+]
+
+`r vspace("-40px")`
+- **NB**: Beware of the implications of your prior &ndash; are you assuming too much (unrealistic) variance?    
+--
+
+- More recent proposal: **Penalised Complexity** (PC) Priors 
+   - Use "default" distributional assumptions; penalise deviations from (= added complexity in comparison to) a simpler, base model &ndash; can be very hard to think about and construct
+   - (**Very** technical) `r icon::fontawesome("file-contract")` [paper](https://projecteuclid.org/euclid.ss/1491465621)
+   
+---
+
+# Choice of prior distributions
+
+**Informative priors**: from previous studies, or *elicited* from experts  
+
+- May be difficult to derive, so present sensitivity analysis to different choices    
+- If exact choice of vague prior is influential $\Rightarrow$ need more data or informative prior    
+- Put prior on "**natural** scale" (as opposed to "*original* scale"!) parameters
+   - Easier to include genuine information &ndash; **more on this later!**
+   - For instance: place a prior on $\theta \sim `r sftext("Gamma")`(\eta,\lambda)$ ...
+
+`r vspace("-24px")`
+
+.pull-left[
+`r vspace("20px")`
+```{r echo=F,fig.width=6.5,fig.height=5,out.width='120%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=TRUE,,opts=list(width="90%",title="It's generally hard to elicit prior on mathematical (original) parameters, such as rates, shapes, scales, because they don't have a physical meaning. In this case, we can make priors on the mean and sd of an underlying Gamma distribution, for which we may be able to elicit some relevant information and then turn them into the priors for the actual mathematical parameters that are required to model the Gamma distribution")}
+par(mfrow=c(2,2),omi=c(0.5,0.3,0,0), plt=c(0.1,0.9,0,0.7))
+set.seed(3020)
+plot(seq(0,600),dlnorm(seq(0,600),5.2,.2),t="l",bty="L",ylab="Density",xlab="$\\mu$")
+mtext(side=1,line=2.5,"$\\mu$",cex=1.15)
+legend("topright",bty="n",legend="$\\mu\\sim\\mbox{logNormal}(5.2,0.2)$",cex=1.3)
+plot(seq(0,15,.1),dexp(seq(0,15,.1),.35),t="l",bty="L",ylab="Density",xlab="$\\sigma$")
+mtext(side=1,line=2.5,"$\\sigma$",cex=1.15)
+legend("topright",bty="n",legend="$\\sigma\\sim\\mbox{Exponential}(0.35)$",cex=1.3)
+mu=rlnorm(10000,5.2,.2)
+sigma=rexp(10000,.35)
+lambda=sqrt(mu/sigma^2)
+eta=mu*lambda
+hist(eta,5600,xlab="$\\eta$",main="",freq=FALSE,xlim=c(0,60000))
+mtext(side=1,line=2.5,"$\\eta$",cex=1.15)
+legend("top",bty="n",legend="$\\eta=\\mu\\lambda$",cex=1.3)
+hist(lambda,4000,xlab="$\\lambda$",main="",freq=FALSE,xlim=c(0,600))
+mtext(side=1,line=2.5,"$\\lambda$",cex=1.15)
+legend("top",bty="n",legend="$\\displaystyle\\lambda=\\sqrt{\\frac{\\mu}{\\sigma^2}}$",cex=1.3)
+```
+]
+
+.pull-right[
+`r vspace("-40px")`
+```{r echo=TRUE}
+# Simulates from priors for mu and sigma
+mu=rlnorm(10000,5.2,.2)
+sigma=rexp(10000,.35)
+# Check interval estimates
+quantile(mu,c(.025,.975))
+quantile(sigma,c(.025,.975))
+# Simulates from priors for lambda and eta
+lambda=sqrt(mu/sigma^2)
+eta=mu*lambda
+```
+]
+
+---
+
+name: conjugacy
+# Bayesian modelling of binary data
+
+Suppose $\theta$ is the true underlying success rate (proportion) of a drug
+
+Assume a $\color{#FF851B}{`r sftext("Beta")`(a, b)}$ prior distribution  for $\theta$
+
+$$`r sftext("Prior")`   \propto  \theta^{a -1} (1-\theta)^{ b - 1}$$
+
+If we observe $r$ successes out of $n$ trials, the Binomial distribution means that
+
+$$`r sftext("Likelihood")`  \propto  \theta^{r} (1-\theta)^{n- r} $$
+
+Then by Bayes theorem
+\begin{align}
+`r sftext("Posterior")` & \propto \theta^{a -1} (1-\theta)^{ b -1}
+\theta^{r} (1-\theta)^{n-r}  \\
+& \propto \theta^{a+r-1} (1-\theta)^{b+n-r-1}  \\
+&  = `r sftext("Beta")`(a+r,b+  n-r)
+\end{align}
+
+**Beta** prior + **Binomial** data = **Beta** posterior distribution
+
+---
+
+# Bayesian modelling of binary data 
+
+### See `r ref_lecture("bugs","beta-tricks")`
+
+So: $\displaystyle\left\{ \begin{array}{l} \theta\sim `r sftext("Beta")`(0,0) \\ y_0\sim `r sftext("Binomial")`(\theta,n_0)\end{array} \right. \qquad \Rightarrow\qquad  \theta\mid y_0,n_0 \sim `r sftext("Beta")`(y_0, n_0-y_0)$
+
+- Intuition: a $`r sftext("Beta")`(0,0)$ prior essentially implies you have truly no knowledge whatsoever about the parameter $\theta$ (even **less** than 0 successes in 0 trials!)
+
+--
+
+
+- **BUT**: this is an **improper** prior, because it does not integrate/sum to 1 (which is a fundamental property of probability distributions)
+
+$$\theta \sim`r sftext("Beta")`(0,0) \Rightarrow \int_0^1 p(\theta\mid\alpha=0,\beta=0)d\theta \propto \int_0^1 \frac{1}{\theta(1-\theta)}d\theta \rightarrow \infty$$
+
+- It is possible that when using improper priors, the posterior also does not integrate to 1, which means you **cannot** make probabilistic assessment of your output &ndash; in that case, Bayesian inference is not valid 
+
+--
+
+
+- It is still OK to consider this intuition and set up to validate the idea that a Beta prior can be formed to encode a thought experiment with $y_0$ "successes" out of $n_0$ "trials"
+
+---
+
+# Example: Drug
+
+## Recap from last lecture
+
+- Consider a drug to be given for relief of chronic pain
+
+
+- Experience with similar compounds has suggested that annual response rates between 0.2 and 0.6 could be feasible
+
+
+- Interpret this as a distribution with mean = 0.4, standard deviation 0.1
+
+
+- $\rightarrow$ Beta(9.2,13.8) **prior** distribution 
+
+`r vspace("20px")`
+
+We actually do the study and **observe** 15 successes out of 20 patients
+
+- Predict whether $>$ 25 successes in next 40 patients
+
+---
+
+# Example: Drug .subtitle[Prior distribution]
+
+```{r echo=F,eval=FALSE,include=FALSE,fig.width=5,fig.height=5,out.width='65%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=TRUE,crop=FALSE,opts=list(width="40%",title=""),crop=FALSE}
+theta=seq(0,1,.001)
+prior=dbeta(theta,9.2,13.8)
+lik=dbeta(theta,15+1,20-15+1)
+post=dbeta(theta,24.2,18.8)
+plot(theta,prior,t="l",col="red",lwd=4,xlab="$\\theta$",axes=F,main="",ylab="",ylim=1.1*range(prior,lik,post))
+axis(1)
+text(.4,max(prior),"Prior",col="red",cex=1.3,lwd=2,pos=3)
+```
+```{r echo=F,fig.width=5,fig.height=5,out.width='65%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=TRUE,crop=FALSE,opts=list(width="40%",title="Once again, this graph shows the Beta with parameters a=9.2 and b=13.8, encoding the assumption that the prior average for the probability of success for the drug is about 40%, with 95% interval between 20 and 60%"),crop=FALSE}
+theta=seq(0,1,.001)
+a=9.2
+b=13.8
+r=15
+n=20
+ggplot(data.frame(x = theta), aes(x = x)) + 
+  stat_function(fun = dbeta, args = list(shape1 = a+r, shape2 = b+n-r),size=2,col="white") +
+  stat_function(fun = dbeta, args = list(shape1 = r+1, shape2 = n-r+1),size=2,col="white") +
+  stat_function(fun = dbeta, args = list(shape1 = a, shape2 = b),size=2,col="red") +
+  theme_classic() + 
+  xlab(label="$\\theta$") +
+  theme(
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.text.y = element_blank(),
+    panel.border = element_blank(),
+    axis.line.x = element_line(size = 0.5, linetype = "solid", colour = "black"),
+    axis.line.y = element_line(size = 0.5, linetype = "solid", colour = "white")
+  ) +
+  annotate("text",.3,3.8,label="$p(\\theta)$",size=5,col="red") 
+```
+
+Beta(9.2, 13.8) prior distribution supporting response rates between 0.2 and 0.6
+
+---
+
+count: false
+# Example: Drug .subtitle[Likelihood]
+
+```{r echo=F,eval=FALSE,include=FALSE,fig.width=5,fig.height=5,out.width='65%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=TRUE,crop=FALSE,opts=list(width="40%",title=""),crop=FALSE}
+plot(theta,prior,t="l",col="black",lwd=1,xlab="$\\theta$",axes=F,main="",ylab="",ylim=1.1*range(prior,lik,post))
+points(theta,lik,t="l",col="red",lwd=4)
+axis(1)
+text(.4,max(prior),"Prior",col="black",cex=1.3,lwd=1,pos=3)
+text(15/20,max(lik),"Likelihood",col="red",cex=1.3,lwd=2,pos=3)
+```
+```{r echo=F,fig.width=5,fig.height=5,out.width='65%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=TRUE,crop=FALSE,opts=list(width="40%",title="This is the likelihood function (proportional to the sampling distribution) and describes the contribution produced by the observed data"),crop=FALSE}
+theta=seq(0,1,.001)
+a=9.2
+b=13.8
+r=15
+n=20
+ggplot(data.frame(x = theta), aes(x = x)) + 
+  stat_function(fun = dbeta, args = list(shape1 = a+r, shape2 = b+n-r),size=2,col="white") +
+  stat_function(fun = dbeta, args = list(shape1 = a, shape2 = b),size=2,col="lightgray") +
+  stat_function(fun = dbeta, args = list(shape1 = r+1, shape2 = n-r+1),size=2,col="red") +
+  theme_classic() + 
+  xlab(label="$\\theta$") +
+  theme(
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.text.y = element_blank(),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    axis.line.x = element_line(size = 0.5, linetype = "solid", colour = "black"),
+    axis.line.y = element_line(size = 0.5, linetype = "solid", colour = "white")
+   ) +
+  annotate("text",.3,3.8,label="$p(\\theta)$",size=5,col="blue") +
+  annotate("text",.9,4.4,label="$\\mathcal{L}(\\theta)\\propto p(y \\mid \\theta)$",size=5,col="red") 
+```
+Likelihood arising from a Binomial observation of 15 responders out of 20 patients given the drug
+$\displaystyle\mathcal{L}(\theta) = \theta^{15}(1-\theta)^{(20-15)} \Rightarrow `r sftext("MLE = 15/20")` =$ `r format(15/20,nsmall=2,digits=2)`
+
+---
+
+count: false
+# Example: Drug .subtitle[Posterior distribution]
+
+```{r echo=F,eval=FALSE,include=FALSE,fig.width=5,fig.height=5,out.width='65%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=TRUE,opts=list(width="40%",title="INCLUDE TEXT HERE"),crop=FALSE}
+plot(theta,prior,t="l",col="black",lwd=1,xlab="$\\theta$",axes=F,main="",ylab="",ylim=1.1*range(prior,lik,post))
+points(theta,lik,t="l",col="black",lwd=1)
+points(theta,post,t="l",col="red",lwd=4)
+axis(1)
+text(.4,max(prior),"Prior",col="black",cex=1.3,lwd=1,pos=3)
+text(15/20,max(lik),"Likelihood",col="black",cex=1.3,lwd=1,pos=3)
+text(24.2/(24.2+18.8),max(post),"Posterior",col="red",cex=1.3,lwd=2,pos=3)
+```
+```{r echo=F,fig.width=5,fig.height=5,out.width='65%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=TRUE,opts=list(width="40%",title="The posterior can be fully described by combining the values of the prior parameters a and b with the summary statistics (the observed number of successes y and the observed sample size n. This is an example of conjugate analysis"),crop=FALSE}
+theta=seq(0,1,.001)
+a=9.2
+b=13.8
+r=15
+n=20
+ggplot(data.frame(x = theta), aes(x = x)) + 
+  stat_function(fun = dbeta, args = list(shape1 = a, shape2 = b),size=2,col="lightgray") +
+  stat_function(fun = dbeta, args = list(shape1 = r+1, shape2 = n-r+1),size=2,col="lightgray") +
+  stat_function(fun = dbeta, args = list(shape1 = a+r, shape2 = b+n-r),size=2,col="red") +
+  theme_classic() + 
+  xlab(label="$\\theta$") +
+  theme(
+    axis.title.y = element_blank(),
+    axis.ticks.y = element_blank(),
+    axis.text.y = element_blank(),
+    panel.border = element_blank(),
+    panel.grid = element_blank(),
+    axis.line.x = element_line(size = 0.5, linetype = "solid", colour = "black"),
+    axis.line.y = element_line(size = 0.5, linetype = "solid", colour = "white")
+   ) +
+  annotate("text",.3,3.8,label="$p(\\theta)$",size=5,col="blue") +
+  annotate("text",.9,4.4,label="$\\mathcal{L}(\\theta)\\propto p(y \\mid \\theta)$",size=5,col="blue")  +
+  annotate("text",.6,5.4,label="$p(\\theta \\mid y)$",size=5,col="red")
+```
+Parameters of the Beta distribution are updated to $\displaystyle (a+15, b+20-15) = (24.2, 18.8)$: **posterior mean**: 24.2/(24.2+18.8) = `r format(24.2/(24.2+18.8),nsmall=2,digits=2)`.
+
+---
+
+# Conjugate distributions
+
+This is a case of **conjugate analysis**, when the posterior distribution is in the same **family** as the prior distribution
+
+`r vspace("20px")`
+Other examples:
+
+- Gamma prior for **rate** parameter of a Poisson likelihood (for count data, e.g. number of people arriving at emergency department)
+
+- Normal prior for mean of a Normal likelihood
+
+- Gamma prior for precision (1/variance) of a Normal likelihood
+
+`r vspace("2rem")`
+Advantage: don't need simulation to determine posterior
+
+... But real situations usually more complex $\Rightarrow$ software like `BUGS` needed
+
+---
+
+```{css echo=FALSE}
+/* No background */
+.remark-slide tr:nth-child(even) {
+  background: #FFFFFF; /*#e2e2f9*/
+}
+.remark-slide tr:nth-child(odd) {
+  background: #FFFFFF; /*#e2e2f9*/
+}
+/* No borders */
+.remark-slide table {
+  margin: auto;
+  border-top: 0px solid #666;
+  border-bottom: 0px solid #666;
+}
+```
+
+# Drug (continued)
+
+### Learning from data using  Markov chain Monte-Carlo (MCMC) methods
+
+Assume we observed 15 successes out of 20 subjects, and wish to predict whether we will get $>$ 25 successes in next 40 patients
+
+The model can be written  
+```{r echo=FALSE}
+library(kableExtra)
+## NB: need to use \(\) to render maths (instead of obvious $$)
+# tab=tibble(
+#   distr=c(
+#     '\\(\\theta\\sim {\\sf Beta}(a,b)\\)',
+#     "\\(y\\sim {\\sf Binomial}(\\theta,m)\\)",
+#     "\\(y_{\\rm pred} \\sim {\\sf Binomial}(\\theta,n)\\)",
+#     "\\(P_{\\rm crit}=\\Pr(y_{\\rm pred}\\ge n_{\\rm crit})\\)"
+#   ),
+#   lab=c(
+#     "prior distribution",
+#     "sampling distribution",
+#     "predictive distribution",
+#     "probability of exceeding critical threshold"
+#   )
+# )
+
+tab=tibble(
+  distr=c(
+    paste0('\\(\\theta\\sim',sftext("Beta"),'(a,b)\\)'),
+    paste0("\\(y\\sim",sftext("Binomial"),"(\\theta,m)\\)"),
+    paste0("\\(y_{\\rm pred} \\sim",sftext("Binomial"),"(\\theta,n)\\)"),
+    paste0("\\(P_{\\rm crit}=\\Pr(y_{\\rm pred}\\ge n_{\\rm crit})\\)")
+  ),
+  lab=c(
+    "prior distribution",
+    "sampling distribution",
+    "predictive distribution",
+    "probability of exceeding critical threshold"
+  )
+)
+tab %>% kable(col.names = NULL,booktabs = T,format = "html", escape = FALSE) %>%
+  kable_styling(full_width = F) %>% 
+  row_spec(1:nrow(tab), extra_latex_after = "\\arrayrulecolor{white}") %>% 
+  column_spec(1,color="#035AA6")
+
+```
+
+```{r comment=NA,prompt=FALSE,eval=FALSE}
+model {
+  theta ~ dbeta(a, b)                     # prior distribution
+  y ~ dbin(theta, m)                      # sampling distribution
+  y.pred ~ dbin(theta, n)                 # predictive distribution
+  P.crit <- step(y.pred - n.crit + 0.5)   # =1 if y.pred >= ncrit
+                                          # =0 otherwise
+}
+```
+
+---
+
+# Graphical model
+
+## (Equivalent to BUGS code)
+
+`r include_fig("BUGS_model.png",width="600px")`
+
+- "Parent" nodes (start of arrow) generate "child" nodes (end of arrow)    
+   - data `y` generated by model with parameter `theta`
+   - parameter `theta` generated by its "parents" `a,b`
+- `BUGS` samples from **posterior** of `theta` &ndash; formed by combining data `y` (**likelihood**) and **prior** parameters `a,b`    
+- Evidence flows **up and down** arrows: Knowing about  child `y` tells you about parent `theta`, just as information on `theta` used to predict child `y.pred`
+
+---
+
+# MCMC (Markov chain Monte Carlo)
+
+### Gibbs sampling
+
+- Uses a **Markov chain** (type of random walk &ndash; distribution for the next simulated value depends only on current value)
+
+- Give **initial values** to parameters $\theta_1,\ldots,\theta_P$
+
+- **Update** parameter values by repeatedly sampling from **full-conditional** posterior distribution of
+
+$$(\theta_1 \mid  `r sftext(" current ")`\, \theta_p: p \neq 1)$$
+$$(\theta_2 \mid  `r sftext(" current ")`\, \theta_p: p \neq 2)$$
+$$\ldots$$
+$$(\theta_P \mid  `r sftext(" current ")`\, \theta_p: p \neq P)$$
+
+&emsp; then repeat the cycle until **convergence** (more on this later!)
+
+- Should converge to sampling from **joint posterior** of all unknown quantities $\theta_p$ of interest
+
+- Summarize marginal posterior of $\theta_p$ using converged sample:
+   - Use sample mean as estimate of posterior mean
+   - Draw smoothed **histogram** to estimate shape of posterior
+
+---
+
+count: false
+# MCMC (Markov chain Monte Carlo) 
+
+### Gibbs sampling
+
+**(Convenient) Example: semi-conjugated Normal model**
+
+Assume    
+- $\displaystyle y_i \stackrel{iid}{\sim} `r sftext("Normal")`(\mu,\sigma^2), \qquad$ with $i=1,\ldots,n\Rightarrow$ observed data    
+- $\displaystyle \mu \mid \sigma^2 \sim `r sftext("Normal")`(\mu_0,\sigma^2_0) \qquad \left(`r sftext("e.g. ")` \sigma^2_0=\frac{\sigma^2}{\kappa}\right)\qquad `r sftext(" and ")` \qquad\tau=\frac{1}{\sigma^2} \sim `r sftext("Gamma")`(\alpha_0,\beta_0)$    
+for fixed $\mu_0,\sigma^2_0, \alpha_0, \beta_0$
+
+This implies that:
+- **Conditionally on** $\sigma^2$, $\mu$ has a **conjugate prior** (Normal)
+- **Marginally**, $\tau$ has a **conjugate prior** (Gamma)    
+
+--
+
+Can prove that under these assumptions 
+`r vspace("-40px")`
+$$\displaystyle\mu\mid\sigma^2,\boldsymbol{y} \sim `r sftext("Normal")`(\mu_1,\sigma^2_1) \qquad `r sftext("with: ")` \,\mu_1=\sigma^2_1\left(\frac{\mu_0}{\sigma^2_0}+\frac{n\bar{y}}{\sigma^2}\right) \quad `r sftext(" and ")` \quad \sigma^2_1=\left(\frac{1}{\sigma^2_0}+\frac{n}{\sigma^2}\right)^{-1}$$ 
+$$\displaystyle\tau\mid\mu,\boldsymbol{y} \sim `r sftext("Gamma")`(\alpha_1,\beta_1) \qquad `r sftext("with: ")`\,\alpha_1=\alpha_0+\frac{n}{2}\quad `r sftext(" and ")` \quad \beta_1 = \beta_0 + \frac{1}{2}\sum_{i=1}^n (y_i-\mu)^2$$
+
+---
+
+name: mcmc0
+# MCMC .subtitle[Gibbs sampling &ndash; convergence]
+
+```{r eval=FALSE,include=FALSE,message=FALSE,echo=FALSE,warning=FALSE,cache=TRUE}
+set.seed(13)
+y <- c(1.2697,7.7637,2.2532,3.4557,4.1776,6.4320,-3.6623,7.7567,5.9032,7.2671,
+	-2.3447,8.0160,3.5013,2.8495,0.6467,3.2371,5.8573,-3.3749,4.1507,4.3092,
+	11.7327,2.6174,9.4942,-2.7639,-1.5859,3.6986,2.4544,-0.3294,0.2329,5.2846)
+n=length(y)
+
+# Defines the hyper-parameters to build the full conditionals
+ybar <- mean(y)
+mu_0 <- 0
+sigma2_0 <- 10000
+alpha_0 <- 0.01
+beta_0 <- 0.01
+
+# Initialises the parameters
+mu <- tau <- numeric()
+sigma2 <- 1/tau
+
+mu[1] <- rnorm(1,0,3)
+tau[1] <- runif(1,0,3)
+sigma2[1] <- 1/tau[1]
+
+# Gibbs sampling (samples from the full conditionals)
+nsim <- 1000
+for (i in 2:nsim) {
+	sigma_n <- sqrt(1/(1/sigma2_0 + n/sigma2[i-1]))
+	mu_n <- (mu_0/sigma2_0 + n*ybar/sigma2[i-1])*sigma_n^2
+	mu[i] <- rnorm(1,mu_n,sigma_n)
+
+	alpha_n <- alpha_0+n/2
+	beta_n <- beta_0 + sum((y-mu[i])^2)/2
+	tau[i] <- rgamma(1,alpha_n,beta_n)
+	sigma2[i] <- 1/tau[i]
+}
+
+## Bivariate contour
+require(mvtnorm) 
+theta <- c(mean(mu),mean(sqrt(sigma2)))
+sigma <- c(var(mu),var(sqrt(sigma2)))
+rho <- cor(mu,sqrt(sigma2))
+ins <- c(-10,10)
+x1 <- seq(theta[1]-abs(ins[1]),theta[1]+abs(ins[1]),length.out=1000)
+x2 <- seq(theta[2]-abs(ins[2]),theta[2]+abs(ins[2]),length.out=1000)
+all <- expand.grid(x1, x2)
+Sigma<-matrix(c(sigma[1], sigma[1]*sigma[2]*rho, sigma[1]*sigma[2]*rho, sigma[2]), nrow=2, ncol=2)
+f.x <- dmvnorm(all, mean = theta, sigma = Sigma)
+f.x2 <- matrix(f.x, nrow=length(x1), ncol=length(x2))
+
+lw <- c(1,1.6)
+```
+
+```{r eval=FALSE,include=FALSE,echo=F,fig.width=6,fig.height=5,out.width='68%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=FALSE,opts=list(width="50%",title="This graph shows the 'true' joint posterior for the mean and the sd and the starting point (initialisation). In reality, we don't know the true posterior and we want to sample using the MCMC algorithm to approximate it")}
+nsims=1
+main="Initialisation"
+plot(mu,sqrt(sigma2),col="white",pch=20,cex=.3,xlim=range(mu),ylim=c(0,range(sqrt(sigma2))[2]),xlab="",ylab="",
+     main=main,axes=F)
+axis(1);axis(2)
+mtext(side=1,line=2.5,"$\\mu$",cex=1)
+mtext(side=2,line=2.5,"$\\sigma$",cex=1)
+for (i in 1:nsims) {
+  if(nsims>1) {
+    shape::Arrows(mu[i],sqrt(sigma2)[i],mu[i+1],sqrt(sigma2)[i],lwd=0.7,arr.type="triangle",arr.lwd=.6,arr.length=.2,arr.adj=1,col="grey70")
+    shape::Arrows(mu[i+1],sqrt(sigma2)[i],mu[i+1],sqrt(sigma2)[i+1],lwd=0.7,arr.type="triangle",arr.lwd=.6,arr.length=.2,arr.adj=1,col="grey70")
+	  #points(c(mu[i],mu[i+1]),c(sqrt(sigma2)[i],sqrt(sigma2)[i]),t="l",col="grey60")
+    #points(c(mu[i+1],mu[i+1]),c(sqrt(sigma2)[i],sqrt(sigma2)[i+1]),t="l",col="grey60")
+  }
+  points(mu[i],sqrt(sigma2)[i],pch=20)
+  text(mu[i],sqrt(sigma2)[i],paste("$\\mu^{(",(nsims-1),")},\\sigma^{(",(nsims-1),")}$"),pos=3)
+}
+contour(x = x1, y = x2, z = f.x2, nlevels=10,add=T,col="grey60",drawlabels=FALSE,lwd=lw[1])
+text(4,5.2,"$p(\\mu,\\sigma\\mid y)$",cex=1)
+```
+
+`r include_fig("unnamed-chunk-16-1.png",width="55%",title="This graph shows the true joint posterior for the mean and the sd and the starting point (initialisation). In reality, we do not know the true posterior and we want to sample using the MCMC algorithm to approximate it")`
+---
+
+count: false
+# MCMC .subtitle[Gibbs sampling &ndash; convergence]
+
+```{r eval=FALSE,include=FALSE,echo=F,fig.width=6,fig.height=5,out.width='68%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=FALSE,opts=list(width="50%",title="Then we first simulate from the posterior of the mean given the current value of the sd (we know what this distribution is because of semi-conjugacy) and we move along the x-axis to the new value. Then we simulate from the posterior of the sd given this new value for the mean and make the move to the new point")}
+# Conditionals
+sigma.n = sqrt(1/(1/sigma2_0 + n/sigma2[nsims]))
+mu.n=(mu_0/sigma2_0 + n*ybar/sigma2[nsims])*sigma.n^2
+alpha.n <- alpha_0+n/2
+beta.n <- beta_0 + sum((y-mu[nsims+1])^2)/2
+s=1/sqrt(rgamma(1000000,alpha.n,beta.n))
+
+nsims=2
+main=paste("After",(nsims-1),"iteration")
+plot(mu,sqrt(sigma2),col="white",pch=20,cex=.3,xlim=range(mu),ylim=c(0,range(sqrt(sigma2))[2]),xlab="",ylab="",
+     main=main,axes=F)
+axis(1);axis(2)
+mtext(side=1,line=2.5,"$\\mu$",cex=1)
+mtext(side=2,line=2.5,"$\\sigma$",cex=1)
+for (i in 1:(nsims-1)) {
+  shape::Arrows(mu[i],sqrt(sigma2)[i],mu[i+1],sqrt(sigma2)[i],lwd=0.7,arr.type="triangle",arr.lwd=.6,arr.length=.2,arr.adj=1,col="grey70")
+  shape::Arrows(mu[i+1],sqrt(sigma2)[i],mu[i+1],sqrt(sigma2)[i+1],lwd=0.7,arr.type="triangle",arr.lwd=.6,arr.length=.2,arr.adj=1,col="grey70")
+  points(mu[i+1],sqrt(sigma2)[i],pch=20)
+  points(mu[i+1],sqrt(sigma2)[i+1],pch=20)
+}
+points(mu[1],sqrt(sigma2)[1],pch=20)
+for (i in 1:nsims) {
+  text(mu[i],sqrt(sigma2)[i],paste("$\\mu^{(",(i-1),")},\\sigma^{(",(i-1),")}$"),pos=3)
+}
+contour(x = x1, y = x2, z = f.x2, nlevels=10,add=T,col="grey60",drawlabels=FALSE,lwd=lw[1])
+text(mu[nsims],sqrt(sigma2)[(nsims-1)],"Simulate $\\mu^{(1)}$ from $p(\\mu\\mid y,\\sigma^{(0)})$",pos=4,cex=.7)
+text(mu[nsims],sqrt(sigma2)[(nsims)],"Simulate $\\sigma^{(1)}$ from $p(\\sigma\\mid y,\\mu^{(1)})$",pos=2,cex=.7)
+points(seq(0,6,.01),dnorm(seq(0,6,.01),mu.n,sigma.n),t="l",col="gray60")
+points(density(s)$y,density(s)$x,t="l",col="gray60")
+text(5.5,.25,"$p(\\mu\\mid y,\\sigma^{(0)})$",cex=.7)
+text(.35,6,"$p(\\sigma\\mid y,\\mu^{(1)})$",cex=.7)
+points(mu[i],par()$usr[3]*.7,pch=4,cex=1.6,lwd=2,col="red")
+points(par()$usr[1]*.7,sqrt(sigma2)[i],pch=4,cex=1.6,lwd=2,col="red")
+```
+
+`r include_fig("unnamed-chunk-17-1.png",width="55%",title="Then we first simulate from the posterior of the mean given the current value of the sd (we know what this distribution is because of semi-conjugacy) and we move along the x-axis to the new value. Then we simulate from the posterior of the sd given this new value for the mean and make the move to the new point")`
+
+---
+
+count: false
+# MCMC .subtitle[Gibbs sampling &ndash; convergence]
+
+```{r eval=FALSE,include=FALSE,echo=F,fig.width=6,fig.height=5,out.width='68%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=FALSE,opts=list(width="50%",title="We repeat the process and move first along the x-axis and then along the y-axis to reach the new point")}
+# Conditionals
+plot(mu,sqrt(sigma2),col="white",pch=20,cex=.3,xlim=range(mu),ylim=c(0,range(sqrt(sigma2))[2]),xlab="",ylab="",
+     main="After 2 iterations",axes=F)
+points(seq(0,6,.01),dnorm(seq(0,6,.01),mu.n,sigma.n),t="l",col="gray90")
+points(density(s)$y,density(s)$x,t="l",col="gray90")
+
+sigma.n = sqrt(1/(1/sigma2_0 + n/sigma2[nsims]))
+mu.n=(mu_0/sigma2_0 + n*ybar/sigma2[nsims])*sigma.n^2
+alpha.n <- alpha_0+n/2
+beta.n <- beta_0 + sum((y-mu[nsims+1])^2)/2
+s=1/sqrt(rgamma(1000000,alpha.n,beta.n))
+
+nsims=3
+main=paste("After",(nsims-1),"iterations")
+# plot(mu,sqrt(sigma2),col="white",pch=20,cex=.3,xlim=range(mu),ylim=c(0,range(sqrt(sigma2))[2]),xlab="",ylab="",
+#      main=main,axes=F)
+axis(1);axis(2)
+mtext(side=1,line=2.5,"$\\mu$",cex=1)
+mtext(side=2,line=2.5,"$\\sigma$",cex=1)
+for (i in 1:(nsims-1)) {
+  shape::Arrows(mu[i],sqrt(sigma2)[i],mu[i+1],sqrt(sigma2)[i],lwd=0.7,arr.type="triangle",arr.lwd=.6,arr.length=.2,arr.adj=1,col="grey70")
+  shape::Arrows(mu[i+1],sqrt(sigma2)[i],mu[i+1],sqrt(sigma2)[i+1],lwd=0.7,arr.type="triangle",arr.lwd=.6,arr.length=.2,arr.adj=1,col="grey70")
+  points(mu[i+1],sqrt(sigma2)[i],pch=20)
+  points(mu[i+1],sqrt(sigma2)[i+1],pch=20)
+}
+points(mu[1],sqrt(sigma2)[1],pch=20)
+pos=numeric()
+ds=diff(sigma2)
+for (i in 1:length(ds)) {
+  if(ds[i]>0) {pos[i]=3} else {pos[i]=1}
+}
+pos=c(3,pos)
+for (i in 1:nsims) {
+  text(mu[i],sqrt(sigma2)[i],paste("$\\mu^{(",(i-1),")},\\sigma^{(",(i-1),")}$"),pos=pos[i])
+}
+contour(x = x1, y = x2, z = f.x2, nlevels=10,add=T,col="gray60",drawlabels=FALSE,lwd=lw[1])
+text(mu[nsims],sqrt(sigma2)[(nsims-1)],"Simulate $\\mu^{(2)}$ from $p(\\mu\\mid y,\\sigma^{(1)})$",pos=4,cex=.7)
+text(mu[nsims],sqrt(sigma2)[(nsims)],"Simulate $\\sigma^{(2)}$ from $p(\\sigma\\mid y,\\mu^{(2)})$",pos=4,cex=.7)
+points(seq(0,6,.1),dnorm(seq(0,6,.1),mu.n,sigma.n),t="l",col="lightblue4")
+points(density(s)$y,density(s)$x,t="l",col="lightblue4")#gray60
+text(5.5,.25,"$p(\\mu\\mid y,\\sigma^{(1)})$",cex=.7)
+text(.35,6,"$p(\\sigma\\mid y,\\mu^{(2)})$",cex=.7)
+points(mu[i],par()$usr[3]*.7,pch=4,cex=1.6,lwd=2,col="red")
+points(par()$usr[1]*.7,sqrt(sigma2)[i],pch=4,cex=1.6,lwd=2,col="red")
+```
+
+`r include_fig("unnamed-chunk-18-1.png",width="55.5%",title="We repeat the process and move first along the x-axis and then along the y-axis to reach the new point")`
+
+---
+
+count: false
+# MCMC .subtitle[Gibbs sampling &ndash; convergence]
+
+```{r eval=FALSE,include=FALSE,echo=F,fig.width=6,fig.height=5,out.width='68%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=FALSE,opts=list(width="50%",title="... and we continue to repeat - the graph shows the situation after 10 iterations")}
+nsims=11
+main=paste("After",(nsims-1),"iterations")
+plot(mu,sqrt(sigma2),col="white",pch=20,cex=.3,xlim=range(mu),ylim=c(0,range(sqrt(sigma2))[2]),xlab="",ylab="",
+     main=main,axes=F)
+axis(1);axis(2)
+mtext(side=1,line=2.5,"$\\mu$",cex=1)
+mtext(side=2,line=2.5,"$\\sigma$",cex=1)
+for (i in 1:(nsims-1)) {
+  shape::Arrows(mu[i],sqrt(sigma2)[i],mu[i+1],sqrt(sigma2)[i],lwd=0.7,arr.type="triangle",arr.lwd=.6,arr.length=.2,arr.adj=1,col="grey70")
+  shape::Arrows(mu[i+1],sqrt(sigma2)[i],mu[i+1],sqrt(sigma2)[i+1],lwd=0.7,arr.type="triangle",arr.lwd=.6,arr.length=.2,arr.adj=1,col="grey70")
+  #points(c(mu[i],mu[i+1]),c(sqrt(sigma2)[i],sqrt(sigma2)[i]),t="l",col="grey60")
+  #points(c(mu[i+1],mu[i+1]),c(sqrt(sigma2)[i],sqrt(sigma2)[i+1]),t="l",col="grey60")
+}
+text(jitter(mu[1:nsims]),jitter(sqrt(sigma2[1:nsims])),0:(nsims-1),col="grey20")
+contour(x = x1, y = x2, z = f.x2, nlevels=10,add=T,col="gray60",drawlabels=FALSE,lwd=lw[1])
+```
+
+`r include_fig("unnamed-chunk-19-1.png",width="55%",title="... and we continue to repeat - the graph shows the situation after 10 iterations")`
+
+---
+
+count: false
+# MCMC .subtitle[Gibbs sampling &ndash; convergence]
+
+```{r eval=FALSE,include=FALSE,echo=F,fig.width=6,fig.height=5,out.width='68%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=FALSE,opts=list(width="50%",title="... and after 30 iterations. In this case, we can see that we are indeed covering a lot of the target distribution")}
+nsims=31
+main=paste("After",(nsims-1),"iterations")
+plot(mu,sqrt(sigma2),col="white",pch=20,cex=.3,xlim=range(mu),ylim=c(0,range(sqrt(sigma2))[2]),xlab="",ylab="",
+     main=main,axes=F)
+axis(1);axis(2)
+mtext(side=1,line=2.5,"$\\mu$",cex=1)
+mtext(side=2,line=2.5,"$\\sigma$",cex=1)
+for (i in 1:(nsims-1)) {
+  shape::Arrows(mu[i],sqrt(sigma2)[i],mu[i+1],sqrt(sigma2)[i],lwd=0.7,arr.type="triangle",arr.lwd=.6,arr.length=.2,arr.adj=1,col="grey70")
+  shape::Arrows(mu[i+1],sqrt(sigma2)[i],mu[i+1],sqrt(sigma2)[i+1],lwd=0.7,arr.type="triangle",arr.lwd=.6,arr.length=.2,arr.adj=1,col="grey70")
+#  points(c(mu[i],mu[i+1]),c(sqrt(sigma2)[i],sqrt(sigma2)[i]),t="l",col="grey60")
+#  points(c(mu[i+1],mu[i+1]),c(sqrt(sigma2)[i],sqrt(sigma2)[i+1]),t="l",col="grey60")
+}
+text(jitter(mu[1:nsims]),jitter(sqrt(sigma2[1:nsims])),0:(nsims-1),col="grey20")
+contour(x = x1, y = x2, z = f.x2, nlevels=10,add=T,col="gray60",drawlabels=FALSE,lwd=lw[1])
+```
+
+`r include_fig("unnamed-chunk-20-1.png",width="55%",title="... and after 30 iterations. In this case, we can see that we are indeed covering a lot of the target distribution")`
+
+---
+
+count: false
+# MCMC .subtitle[Gibbs sampling &ndash; convergence]
+
+```{r eval=FALSE,include=FALSE,echo=F,fig.width=6,fig.height=5,out.width='68%',fig.align='center',dev="tikz",message=FALSE,warning=FALSE,cache=FALSE,opts=list(width="50%",title="... After 500 iterations, we've completely covered the target portion of the parametric space, although we started off from a very distant point (marked as 0)")}
+nsims=501
+main=paste("After",(nsims-1),"iterations")
+plot(mu,sqrt(sigma2),col="white",pch=20,cex=.3,xlim=range(mu),ylim=c(0,range(sqrt(sigma2))[2]),xlab="",ylab="",
+     main=main,axes=F)
+axis(1);axis(2)
+mtext(side=1,line=2.5,"$\\mu$",cex=1)
+mtext(side=2,line=2.5,"$\\sigma$",cex=1)
+for (i in 1:(nsims-1)) {
+  points(c(mu[i],mu[i+1]),c(sqrt(sigma2)[i],sqrt(sigma2)[i]),t="l",col="grey60")
+  points(c(mu[i+1],mu[i+1]),c(sqrt(sigma2)[i],sqrt(sigma2)[i+1]),t="l",col="grey60")
+}
+text(jitter(mu[1:nsims]),jitter(sqrt(sigma2[1:nsims])),0:(nsims-1),col="grey20")
+contour(x = x1, y = x2, z = f.x2, nlevels=10,add=T,col="gray60",drawlabels=FALSE,lwd=lw[1])
+```
+
+`r include_fig("unnamed-chunk-21-1.png",width="55%",title="... After 500 iterations, we've completely covered the target portion of the parametric space, although we started off from a very distant point (marked as 0)")`
+
+---
+
+count: false
+# MCMC .subtitle[Gibbs sampling &ndash; convergence]
+
+`r include_fig("convergence.png",width="600px",title="To assess convergence, we can start 2 independent chains from very difference points. If the process works, after a while they will go on top of each other, meaning that both are visiting the same part of the parametric space (the target distribution")`
+
+---
+
+count: false
+exclude: true
+# MCMC .subtitle[Gibbs sampling &ndash; convergence]
+
+`r include_fig("iter1_1.png",width="58%",title="")`
+---
+
+count: false
+exclude: true
+# MCMC .subtitle[Gibbs sampling &ndash; convergence]
+
+`r include_fig("iter1_2.png",width="58%")`
+---
+
+count: false
+exclude: true
+# MCMC .subtitle[Gibbs sampling &ndash; convergence]
+
+`r include_fig("iter1_3.png",width="58%",title="")`
+
+---
+
+count: false
+exclude: true
+# MCMC .subtitle[Gibbs sampling &ndash; convergence]
+
+`r include_fig("iter1_4.png",width="58%")`
+
+---
+
+name: caterpillar
+# Checking convergence: monitoring samples
+
+.pull-left[
+`r include_fig("trace_all_draft.jpg",width="380px",title="These are examples of traceplots for hypothetical analyses. We would like to see a 'fat hairy caterpillar' indicating convergence")`
+]
+.pull-right[
+
+- Convergence (or lack of) can be apparent from one chain
+   - Want **fat hairy caterpillars** (b) &ndash; not twisting  snakes
+
+- Chain may have converged but be slow to **mix** (c)
+   - Run chain for longer (d) to get more precise estimates
+
+- One chain may get "stuck" in some area due to extreme initial value (a)
+   - Run multiple chains from different initial values (e): check all end up in same place
+
+- Parameterisation may make a big difference (see manual)
+]
+
+---
+
+# Formal convergence tests
+
+Formal diagnostics exist to check if multiple chains end up in essentially same place, eg Brooks-Gelman-Rubin (often referred to as Potential Scale Reduction, PSR) statistic
+
+`r vspace("3rem")`
+
+.pull-left[
+`r include_fig("bgr.jpg",width="500px",title="The PSR statistic shows the ratio of the within to between chain variation. When these two things are similar, it means that the chains are varying more or less at the same rate and over the same part of the parametric space, to indicate convergence")`
+]
+
+.pull-right[
+
+- Based on ratio of between to within variances of multiple chains: (ANOVA)
+
+- `OpenBUGS` produces plots of
+   - Average 80% interval within-chains (blue) and pooled 80% interval between-chains (green)
+   - Ratio green/blue should converge to 1 (red) as iterations increase
+
+]
+
+`r vspace("1em")`
+
+- `coda` and `R2OpenBUGS` packages for `R` contain many other diagnostics    
+- **NB** This is only a heuristic measure &ndash; more recent work suggests alternative ways    
+   - [https://avehtari.github.io/rhat_ess/rhat_ess.html](https://avehtari.github.io/rhat_ess/rhat_ess.html)      
+   - [http://cknudson.com/Presentations/BayesComp2020.pdf](http://cknudson.com/Presentations/BayesComp2020.pdf)
+
+---
+
+# How many iterations after convergence?
+
+- How many significant figures do you need in your estimates: **your decision**
+
+- Easiest strategy: run chains until the posterior summaries of interest don't change
+
+- Monte Carlo Standard Error (MCSE) says how accurate the posterior mean is
+
+- **Autocorrelated** samples need to be longer to get the same accuracy, compared to independent samples
+   - Some theory (Raftery & Lewis, see `BUGS` Book for further details) suggests that to get 95% posterior quantiles with true 94.5-95.5% coverage need MCSE/posterior SD < 0.01, or **effective sample size** > 4000
+
+---
+
+# Supplying data to `BUGS`
+
+
+1. Rectangular format &ndash; traditional "spreadsheet"-shaped data
+```{r comment=NA,prompt=FALSE,eval=FALSE}
+n[] r[]
+ 47  0
+148 18
+...
+360 24
+END
+```
+
+
+<ol style="counter-reset: my-awesome-counter 1;">
+<li><span style="font-family:Inconsolata;">R</span> / <span style="font-family:Inconsolata;">S-Plus</span> style "lists"</li></ol>
+```{r comment=NA,prompt=FALSE,eval=FALSE}
+list(N=12,n = c(47,148,119,810,211,196,
+          148,215,207,97,256,360),
+     r = c(0,18,8,46,8,13,9,31,14,8,29,24))
+```
+
+
+List format more flexible, can specify constants alongside data &ndash; useful for complex multilevel models with variables of different lengths
+
+(**NB** If using `R` interfaces to `BUGS`, just supply data in `R` list object &ndash; see later...)
+
+---
+
+# Supplying data to `BUGS`
+
+## Drugs example
+
+Data can be written after the model description, or held in a separate `.txt` or `.odc` file
+```{r comment=NA,prompt=FALSE,eval=FALSE}
+list(
+  a=9.2, b=13.8,    # prior parameters
+  y=15,             # number of successes 
+  m=20,             # number of trials
+  n=40,             # future number of trials
+  ncrit=25          # critical value of future successes
+)
+```
+
+Alternatively, put all data and constants into model description: 
+```{r comment=NA,prompt=FALSE,eval=FALSE}
+model{
+  theta ~ dbeta(9.2, 13.8)      # prior distribution
+  y ~ dbin(theta, 20)           # sampling distribution
+  y.pred ~ dbin(theta, 40)      # predictive distribution
+  P.crit <- step(y.pred - 24.5) # =1 if y.pred >= ncrit,
+                                # =0 otherwise
+  y <- 15                       # observed successes
+}
+```
+
+---
+
+# Initial values
+
+- `BUGS` simulates from posterior &ndash; combination of prior and evidence from data &ndash;  by MCMC
+
+- Posterior **unknown** to start with &ndash; need to **initialize** simulation
+
+- `BUGS` can automatically generate initial values for the simulation using `gen.inits` &ndash; simulates from the prior
+   - We have seen this in the practical for forward sampling
+
+- Fine if have informative prior information
+
+- If have fairly "vague" priors, better to provide reasonable values in an initial-values list
+
+Initial values list can be after model description or in a separate file
+```{r comment=NA,prompt=FALSE,eval=FALSE}
+list(theta=0.1)
+```
+
+---
+
+# `OpenBUGS` output and exact answers
+
+```{r comment=NA,prompt=FALSE,eval=FALSE}
+node       mean     sd     MC error   2.5%   median   97.5%  start sample
+theta     0.5633  0.07458  4.292E-4   0.4139  0.5647  0.7051  1001 30000
+y.pred   22.52    4.278    0.02356   14.0    23.0    31.0     1001 30000
+P.crit    0.3273  0.4692   0.002631   0.0     0.0     1.0     1001 30000
+```
+
+Exact answers from conjugate analysis:
+
+- $\theta$:  mean 0.563 and standard deviation  0.075
+
+- $Y^{\rm pred}$:  mean 22.51 and standard deviation  4.31
+
+- Probability of at least 25:  0.329
+
+MCMC results are within Monte Carlo error of the true values
+
+.small[.alignright[`r icon::fontawesome("arrow-circle-right")` [Next lecture](../04_Intro_HE/index.html)]]

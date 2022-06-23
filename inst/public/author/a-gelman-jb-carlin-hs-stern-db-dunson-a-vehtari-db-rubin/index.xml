@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>A Gelman, JB Carlin, HS Stern, DB Dunson, A Vehtari, DB Rubin | Bayesian methods in health economics</title>
+    <link>/author/a-gelman-jb-carlin-hs-stern-db-dunson-a-vehtari-db-rubin/</link>
+      <atom:link href="/author/a-gelman-jb-carlin-hs-stern-db-dunson-a-vehtari-db-rubin/index.xml" rel="self" type="application/rss+xml" />
+    <description>A Gelman, JB Carlin, HS Stern, DB Dunson, A Vehtari, DB Rubin</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Mon, 04 Nov 2013 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>A Gelman, JB Carlin, HS Stern, DB Dunson, A Vehtari, DB Rubin</title>
+      <link>/author/a-gelman-jb-carlin-hs-stern-db-dunson-a-vehtari-db-rubin/</link>
+    </image>
+    
+    <item>
+      <title>Bayesian Data Analysis, 3rd edition</title>
+      <link>/publication/gelman-etal-2013/</link>
+      <pubDate>Mon, 04 Nov 2013 00:00:00 +0000</pubDate>
+      <guid>/publication/gelman-etal-2013/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

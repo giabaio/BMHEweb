@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practical 11: Computing the EVPI using nested Monte Carlo simulations | Bayesian methods in health economics</title>
+    <link>/practical/11_intro_voi/</link>
+      <atom:link href="/practical/11_intro_voi/index.xml" rel="self" type="application/rss+xml" />
+    <description>Practical 11: Computing the EVPI using nested Monte Carlo simulations</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Fri, 10 Jun 2022 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Practical 11: Computing the EVPI using nested Monte Carlo simulations</title>
+      <link>/practical/11_intro_voi/</link>
+    </image>
+    
+  </channel>
+</rss>

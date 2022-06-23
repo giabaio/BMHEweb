@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practical 12: Computing the EVPPI in BCEA and SAVI | Bayesian methods in health economics</title>
+    <link>/practical/12_evppi/</link>
+      <atom:link href="/practical/12_evppi/index.xml" rel="self" type="application/rss+xml" />
+    <description>Practical 12: Computing the EVPPI in BCEA and SAVI</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Practical 12: Computing the EVPPI in BCEA and SAVI</title>
+      <link>/practical/12_evppi/</link>
+    </image>
+    
+  </channel>
+</rss>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Voi | Bayesian methods in health economics</title>
+    <link>/tag/voi/</link>
+      <atom:link href="/tag/voi/index.xml" rel="self" type="application/rss+xml" />
+    <description>Voi</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Fri, 24 Jun 2022 14:15:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Voi</title>
+      <link>/tag/voi/</link>
+    </image>
+    
+    <item>
+      <title>Practical 15. Computing EVSI using regression</title>
+      <link>/syllabus/practical15/</link>
+      <pubDate>Fri, 24 Jun 2022 14:15:00 +0000</pubDate>
+      <guid>/syllabus/practical15/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 16: Regression-based EVSI</title>
+      <link>/syllabus/lecture16/</link>
+      <pubDate>Fri, 24 Jun 2022 13:45:00 +0000</pubDate>
+      <guid>/syllabus/lecture16/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Regression-based methods for EVSI computation&lt;/li&gt;
+&lt;li&gt;Using SAVI to compute EVSI&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 14. Computing the EVSI using Monte Carlo simulations</title>
+      <link>/syllabus/practical14/</link>
+      <pubDate>Fri, 24 Jun 2022 13:00:00 +0000</pubDate>
+      <guid>/syllabus/practical14/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 15: Calculating expected value of sample information</title>
+      <link>/syllabus/lecture15/</link>
+      <pubDate>Fri, 24 Jun 2022 11:15:00 +0000</pubDate>
+      <guid>/syllabus/lecture15/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Efficient Computation methods for EVSI&lt;/li&gt;
+&lt;li&gt;Efficient Nested Monte Carlo&lt;/li&gt;
+&lt;li&gt;Using the EVSI Web App&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 13. Generating data for EVSI</title>
+      <link>/syllabus/practical13/</link>
+      <pubDate>Fri, 24 Jun 2022 10:30:00 +0000</pubDate>
+      <guid>/syllabus/practical13/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 14: Generating data for the analysis of the EVSI</title>
+      <link>/syllabus/lecture14/</link>
+      <pubDate>Fri, 24 Jun 2022 09:45:00 +0000</pubDate>
+      <guid>/syllabus/lecture14/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Variation in individual outcomes&lt;/li&gt;
+&lt;li&gt;Predictive distribution data simulation&lt;/li&gt;
+&lt;li&gt;Data generation in Excel and R&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 13: Expected value of sample information</title>
+      <link>/syllabus/lecture13/</link>
+      <pubDate>Fri, 24 Jun 2022 09:00:00 +0000</pubDate>
+      <guid>/syllabus/lecture13/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Theory behind the EVSI&lt;/li&gt;
+&lt;li&gt;Expected net benefit of sampling&lt;/li&gt;
+&lt;li&gt;Optimising trial design&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 12. Computing the EVPPI in BCEA and SAVI</title>
+      <link>/syllabus/practical12/</link>
+      <pubDate>Thu, 23 Jun 2022 15:00:00 +0000</pubDate>
+      <guid>/syllabus/practical12/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 12: Expected value of partial information</title>
+      <link>/syllabus/lecture12/</link>
+      <pubDate>Thu, 23 Jun 2022 13:45:00 +0000</pubDate>
+      <guid>/syllabus/lecture12/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Theory behind the EVPPI&lt;/li&gt;
+&lt;li&gt;Computational methods: regression-based methods&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 11. Computing the EVPI using nested Monte Carlo simulations</title>
+      <link>/syllabus/practical11/</link>
+      <pubDate>Thu, 23 Jun 2022 13:00:00 +0000</pubDate>
+      <guid>/syllabus/practical11/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 11: Introduction to Value of Information</title>
+      <link>/syllabus/lecture11/</link>
+      <pubDate>Thu, 23 Jun 2022 11:00:00 +0000</pubDate>
+      <guid>/syllabus/lecture11/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Introduction to Research prioritisation&lt;/li&gt;
+&lt;li&gt;Value of Information and relevant measures&lt;/li&gt;
+&lt;li&gt;Applications/examples&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

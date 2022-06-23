@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ALD | Bayesian methods in health economics</title>
+    <link>/tag/ald/</link>
+      <atom:link href="/tag/ald/index.xml" rel="self" type="application/rss+xml" />
+    <description>ALD</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Wed, 22 Jun 2022 14:15:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>ALD</title>
+      <link>/tag/ald/</link>
+    </image>
+    
+    <item>
+      <title>Lecture 9: Markov models</title>
+      <link>/syllabus/lecture9/</link>
+      <pubDate>Wed, 22 Jun 2022 14:15:00 +0000</pubDate>
+      <guid>/syllabus/lecture9/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;State-transition models for clinical history&lt;/li&gt;
+&lt;li&gt;Bayesian implementation&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Markov models &amp;amp; survival analysis&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 6. Network meta-analysis</title>
+      <link>/syllabus/practical6/</link>
+      <pubDate>Tue, 21 Jun 2022 15:30:00 +0000</pubDate>
+      <guid>/syllabus/practical6/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 6: Evidence synthesis and network meta-analysis</title>
+      <link>/syllabus/lecture6/</link>
+      <pubDate>Tue, 21 Jun 2022 14:15:00 +0000</pubDate>
+      <guid>/syllabus/lecture6/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Motivation&lt;/li&gt;
+&lt;li&gt;Fixed effects NMA&lt;/li&gt;
+&lt;li&gt;Random effects NMA&lt;/li&gt;
+&lt;li&gt;Applications/examples&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 5. Evidence synthesis and decision models</title>
+      <link>/syllabus/practical5/</link>
+      <pubDate>Tue, 21 Jun 2022 12:15:00 +0000</pubDate>
+      <guid>/syllabus/practical5/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 5: Aggregated level data</title>
+      <link>/syllabus/lecture5/</link>
+      <pubDate>Tue, 21 Jun 2022 11:15:00 +0000</pubDate>
+      <guid>/syllabus/lecture5/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Role of evidence synthesis in decision modelling: Absolute and relative effects&lt;/li&gt;
+&lt;li&gt;Meta-analysis of aggregated summaries from RCTs&lt;/li&gt;
+&lt;li&gt;Evidence synthesis in health economics: Influenza example&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

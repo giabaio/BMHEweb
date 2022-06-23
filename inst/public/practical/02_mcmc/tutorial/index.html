@@ -1,0 +1,1604 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.3.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Gianluca Baio" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Introduction This short tutorial will guide you through the example of Gibbs sampling shown in class.
+As a quick reminder, the example does not really require Gibbs sampling or any form of MCMC to estimate the joint posterior distribution for the parameters." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="/practical/02_mcmc/tutorial/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+      
+    
+
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.3ef10ad94e43ba7ad3f08b0b007578ae.css" />
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="/practical/02_mcmc/tutorial/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+  <meta property="og:site_name" content="Bayesian methods in health economics" />
+  <meta property="og:url" content="/practical/02_mcmc/tutorial/" />
+  <meta property="og:title" content="How do MCMC and Gibbs sampling really work? | Bayesian methods in health economics" />
+  <meta property="og:description" content="Introduction This short tutorial will guide you through the example of Gibbs sampling shown in class.
+As a quick reminder, the example does not really require Gibbs sampling or any form of MCMC to estimate the joint posterior distribution for the parameters." /><meta property="og:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" />
+    <meta property="twitter:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+    
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>How do MCMC and Gibbs sampling really work? | Bayesian methods in health economics</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="0135d0e0d165c625493de072b2d547f1" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.da42964e270e05a6063fbca894d7ccff.js"></script>
+
+  
+
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container-xl">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+          
+          ></a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+        
+        ></a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#timetable"><span>Timetable</span></a>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Slides</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/slides/01_Intro"><span>Introduction</span></a>
+            
+              <a class="dropdown-item" href="/slides/02_MCMC"><span>Bayesian computation</span></a>
+            
+              <a class="dropdown-item" href="/slides/03_Intro_HE"><span>Introduction to Health Economics</span></a>
+            
+              <a class="dropdown-item" href="/slides/04_ILD"><span>Individual level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/05_ALD"><span>Aggregated level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/06_NMA"><span>Network meta-analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/07_Model_uncertainty"><span>Model error and structural analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/08_Survival"><span>Survival modelling in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/09_MM"><span>Markov models</span></a>
+            
+              <a class="dropdown-item" href="/slides/10_Missing"><span>Missing data in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/11_VoI"><span>Introduction to Value of information</span></a>
+            
+              <a class="dropdown-item" href="/slides/12_EVPPI"><span>Expected value of partial information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture13/13_EVSI.pdf"><span>Expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture14/14_Data_EVSI.pdf"><span>Generating data for the analysis of the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture15/15_EVSI_MC.pdf"><span>Calculating expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture16/16_EVSI_regression.pdf"><span>Regression-based EVSI</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Practicals</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/practical/01_monte-carlo"><span>Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/02_mcmc"><span>MCMC</span></a>
+            
+              <a class="dropdown-item" href="/practical/03_bcea"><span>Cost-effectiveness analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/04_ild"><span>HTA with individual level data</span></a>
+            
+              <a class="dropdown-item" href="/practical/05_ald"><span>Evidence synthesis and decision models</span></a>
+            
+              <a class="dropdown-item" href="/practical/06_nma"><span>NMA</span></a>
+            
+              <a class="dropdown-item" href="/practical/07_structural"><span>PSA to structural uncertainty</span></a>
+            
+              <a class="dropdown-item" href="/practical/08_survival"><span>Survival analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/09_mm"><span>Markov and multistate models</span></a>
+            
+              <a class="dropdown-item" href="/practical/10_missing"><span>Missing data</span></a>
+            
+              <a class="dropdown-item" href="/practical/11_intro_voi"><span>Computing the EVPI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/12_evppi"><span>Computing the EVPPI in BCEA and SAVI</span></a>
+            
+              <a class="dropdown-item" href="/practical/13_data_evsi"><span>Generating data for the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/practical/14_evsi_mc"><span>Computing the EVSI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/15_evsi_regression"><span>Computing the EVSI using regression</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Instructions</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/tips/computer-specification"><span>Computer specification</span></a>
+            
+              <a class="dropdown-item" href="/tips/using-bugs"><span>Using BUGS</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/publication"><span>Reading list</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          2. MCMC
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <ul class="nav docs-sidenav">
+        <li class=""><a href="/practical/"></a></li>
+    
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/01_monte-carlo/">1. Monte Carlo</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/01_monte-carlo/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/02_mcmc/">2. MCMC</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/02_mcmc/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/covid/">Covid</a></li>
+
+
+
+  <li class="active"><a href="/practical/02_mcmc/tutorial/">MCMC Tutorial</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/03_bcea/">3. Intro-HE</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/03_bcea/solutions/">Solution</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/04_ild/">4. ILD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/04_ild/tutorial-regression/">Regression Tutorial</a></li>
+
+
+
+  <li class=""><a href="/practical/04_ild/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/05_ald/">5. ALD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/05_ald/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/06_nma/">6. NMA</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/06_nma/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/07_structural/">7. PSA to structural uncertainty</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/07_structural/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/08_survival/">8. Survival</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/08_survival/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/09_mm/">9. Markov models</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/09_mm/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/09_mm/cohort-model/">Cohort discrete Markov model</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/10_missing/">10. Missing data</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/10_missing/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/11_intro_voi/">11. EVPI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/12_evppi/">12. EVPPI in BCEA &amp; SAVI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/13_data_evsi/">13 Generating data for EVSI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/14_evsi_mc/">14. EVSI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/15_evsi_regression/">15. EVSI using regression</a>
+    
+
+    
+      </div>
+    
+
+      
+    
+
+    
+      </ul>
+    
+
+  
+</nav>
+    </div>
+
+    <main class="col-10 docs-content" role="main">
+      <article class="article">
+
+        <div class="docs-article-container">
+          <h1>How do MCMC and Gibbs sampling really work?</h1>
+          
+          
+          
+          
+          
+
+
+
+
+<div class="btn-links mb-3">
+  
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/slides/02_MCMC" >
+    Lecture 2</a>
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/practical/02_mcmc/tutorial_MCMC.pdf" >
+    <i class="fas fa-file-pdf mr-1"></i>PDF version</a>
+
+
+</div>
+
+
+          <br>
+          
+          <div class="article-style">
+            
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This short tutorial will guide you through the example of Gibbs sampling shown in class.</p>
+<p>As a quick reminder, the example does not really require Gibbs sampling or any form of MCMC to estimate the joint posterior distribution for the parameters. However, because of its specific assumptions it is very helpful because essentially we can determine analytically the full conditional distributions for each parameter (details later). This means that we can directly and repeatedly sample from them (which is a pre-requisite of Gibbs sampling and what <tt>BUGS</tt> does).</p>
+<p>This document also includes the R code used to obtain the output.</p>
+</div>
+<div id="set-up" class="section level2">
+<h2>Set up</h2>
+<p>As discussed in class, we assume a set up such as the following.</p>
+<p><span class="math display">\[\begin{align}
+y_i &amp; \stackrel{iid}{\sim} \mbox{Normal}(\mu,\sigma^2),\qquad \mbox{with } i=1,\ldots,n \\
+\mu &amp; \sim \mbox{Normal}(\mu_0,\sigma^2_0) \\
+\tau = \frac{1}{\sigma^2} &amp; \sim \mbox{Gamma} (\alpha_0,\beta_0)
+\end{align}\]</span>
+Under these assumptions we can <em>prove</em> analyticaly that the full conditional distributions for the two parameters <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\tau\)</span> are
+<span class="math display">\[\mu\mid \sigma^2,\boldsymbol{y} \sim \mbox{Normal}(\mu_1,\sigma^2_1) \qquad \mbox{with: } \mu_1=\sigma^2_1\left( \frac{\mu_0}{\sigma^2_0} + \frac{n\bar{y}}{\sigma^2}\right) \qquad \mbox{and: } \sigma^2_1=\left(\frac{1}{\sigma^2_0}+\frac{n}{\sigma^2}\right)^{-1}\]</span>
+<span class="math display">\[\tau\mid\mu,\boldsymbol{y} \sim \mbox{Gamma}(\alpha_1,\beta_1) \qquad \mbox{with: }\,\alpha_1=\alpha_0+\frac{n}{2}\quad \mbox{and: } \quad \beta_1 = \beta_0 + \frac{1}{2}\sum_{i=1}^n (y_i-\mu)^2.\]</span></p>
+<p>Notice that the full conditionals are <strong>not</strong> the target distributions for Bayesian inference.
+What we really want is the marginal posterior distributions <span class="math inline">\(p(\mu \mid \boldsymbol{y} )\)</span> and <span class="math inline">\(p(\tau \mid \boldsymbol{y})\)</span>, which
+can be simply obtained from the marginal joint posterior <span class="math inline">\(p(\mu, \tau \mid \boldsymbol{y} )\)</span>.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a></p>
+<p>However, in this case, for each of the two parameters, conditionally on (i.e. given)
+the other, the posterior is in the same family of the prior — the posterior for <span class="math inline">\(\mu\)</span> is
+still a Normal and the posterior for <span class="math inline">\(\tau\)</span> is still a Gamma; what changes is the value of
+the “hyper-parameters” (i.e. the parameters of these distributions), which move from
+(<span class="math inline">\(\mu_0\)</span>, <span class="math inline">\(\sigma_0^2)\)</span> to <span class="math inline">\((\mu_1 , \sigma_1^2 )\)</span> and from <span class="math inline">\((\alpha_0, \beta_0 )\)</span> to <span class="math inline">\((\alpha_1 , \beta_1)\)</span>. For this reason, this model is called
+“semi-conjugated”.</p>
+<p>These relationships clarify that the (posterior) distribution of the mean <span class="math inline">\(\mu\)</span> depends
+(among other things) on the variance <span class="math inline">\(\sigma^2 = 1/\tau\)</span> as well as that the posterior for the
+precision <span class="math inline">\(\tau\)</span> depends (among other things) on the mean <span class="math inline">\(\mu\)</span>. Crucially, <strong><em>in this example</em></strong>,
+this dependence is known in closed form. A very useful implication of this set up is that
+it means that we can directly determine not just the distributional form of the posteriors
+(Normal for the mean and Gamma for the precision), but also the numerical value of
+the “hyper-parameters” (<span class="math inline">\(\mu_1, \sigma_1^2 , \alpha_1,\beta_1 )\)</span>.</p>
+<div id="what-do-we-really-need-to-do" class="section level3">
+<h3>What do we really need to do?</h3>
+<p>The point of this exercise is to create a routine that can simulate sequentially from these
+distributions, with the aim of obtaining a sample from the joint posterior distribution
+<span class="math inline">\(p(\mu, \tau \mid \boldsymbol{y})\)</span>. So, once the data y have been observed and we have fixed the values for
+the parameters of the prior distributions (<span class="math inline">\(\mu_0, \sigma_0^2,\alpha_0,\beta_0)\)</span>, we can use, for instance <tt>R</tt>, to
+simulate from the resulting full conditionals.</p>
+<p>At each iteration, we will update sequentially the values of the two parameters: first
+we update <span class="math inline">\(\mu\)</span> by simulating from its full conditional, then we set the value of <span class="math inline">\(\mu\)</span> to the
+one we have just simulated and update the value of <span class="math inline">\(\tau\)</span> by randomly drawing from its
+full conditional. And we repeat this process “until convergence”.</p>
+</div>
+</div>
+<div id="running-the-example" class="section level2">
+<h2>Running the example</h2>
+<div id="data-and-fixed-quantities" class="section level3">
+<h3>Data and fixed quantities</h3>
+<p>Suppose we have observed a sample of <span class="math inline">\(n = 30\)</span> data points, for example, in <tt>R</tt> you may
+input the data onto your workspace using the following command.</p>
+<pre class="r"><code># Vector of observed data
+y = c(1.2697,7.7637,2.2532,3.4557,4.1776,6.4320,-3.6623,7.7567,5.9032,
+7.2671,-2.3447,8.0160,3.5013,2.8495,0.6467,3.2371,5.8573,-3.3749,
+4.1507,4.3092,11.7327,2.6174,9.4942,-2.7639,-1.5859,3.6986,2.4544,
+-0.3294,0.2329,5.2846)</code></pre>
+<p>Assume also that you want to set the value of the parameters for the priors as <span class="math inline">\(\mu_0 = 0\)</span>,
+<span class="math inline">\(\sigma_0^2 = 10000\)</span> and <span class="math inline">\(\alpha_0 = \beta_0 = 0.1\)</span>. In <tt>R</tt> we could define these using the following
+commands.</p>
+<pre class="r"><code># &quot;Hyper-parameters&quot; (ie parameters for the prior distributions)
+mu_0 = 0
+sigma2_0 = 10000
+alpha_0 = 0.01
+beta_0 = 0.01</code></pre>
+<p>We may also want to define some “utility” variables, that can be used later on, for
+instance the sample size and observed sample mean, which we can input in R as in the
+following code.</p>
+<pre class="r"><code># Sample size and sample mean of the data
+n = length(y)
+ybar = mean(y)</code></pre>
+<p>The actual values of these variables are now stored in the respective “objects” and can
+be accessed at any point, for instance the commands:</p>
+<pre class="r"><code>n</code></pre>
+<pre><code>## [1] 30</code></pre>
+<pre class="r"><code>ybar</code></pre>
+<pre><code>## [1] 3.343347</code></pre>
+<p>will output the sample size and mean.</p>
+</div>
+<div id="initial-values" class="section level3">
+<h3>Initial values</h3>
+<p>As seen in the lecture, in order to run the Gibbs sampling algorithm, we need to initialise
+the Markov chains. This essentially means telling the computer what values should be
+used at iteration 0 of the process for anything that is a) associated with a probability
+distribution (i.e. it is not known with absolute certainty); and b) has not been observed.</p>
+<p>We can do this in <tt>R</tt> using the following code.</p>
+<pre class="r"><code># Sets the &quot;seed&quot; (for reproducibility). With this command, you will
+# *always* get the exact same output
+set.seed(13)
+# Initialises the parameters
+mu = tau = numeric()
+sigma2 = 1/tau
+mu[1] = rnorm(1,0,3)
+tau[1] = runif(1,0,3)
+sigma2[1] = 1/tau[1]</code></pre>
+<p>First, we set the “random seed” (in this case to the value 13), which ensures replicability of the results. If you run this code on any machine, you will always and invariably obtain the same results.</p>
+<p>Then, we define the parameters mu and tau to be vectors, which in <tt>R</tt> we do by using the <tt>R</tt> built-in command <code>numeric()</code>. Basically, the command <code>mu = tau = numeric()</code> instructs <tt>R</tt> to expect these two objects to be vectors of (as yet) unspecified length (if you used the command <code>x = numeric(5)</code> we would define a vector of length 5).</p>
+<p>Finally, we set the first value of <code>mu</code> and <code>tau</code> to be randomly generated, respectively
+from a Normal(mean = 0, sd = 3) and a Uniform(0, 3). <tt>R</tt> has built-in commands to
+draw (pseudo-)random numbers — typically these are constructed using the prefix <code>r</code>
+(for “random”) and a string of text describing the distribution (e.g. <code>norm</code> for “Normal”,
+<code>unif</code> for “Uniform”, <code>bin</code> for “Binomial”, etc.). The first argument (input) to a call to a
+<code>rxxxx(...)</code> command is the number of values you want to simulate. So, for instance,
+<code>rnorm(1000,0,6)</code> instructs <tt>R</tt> to simulate 1000 values from a Normal distribution with
+mean 0 and standard deviation 6 — notice that, unlike <tt>BUGS</tt>, <tt>R</tt> parameterises the Normal in terms of mean and sd (instead of the precision).
+You can check the values that have been selected to initialise your Markov chain by
+simply typing the name of the variables (or some suitable function thereof).</p>
+<p>You can check the values that have been selected to initialise your Markov chain by
+simply typing the name of the variables (or some suitable function thereof).</p>
+<pre class="r"><code>mu</code></pre>
+<pre><code>## [1] 1.662981</code></pre>
+<pre class="r"><code>sqrt(sigma2)</code></pre>
+<pre><code>## [1] 0.9249339</code></pre>
+</div>
+<div id="running-the-gibbs-sampling" class="section level3">
+<h3>Running the Gibbs sampling</h3>
+<p>Generally speaking, the actual Gibbs sampling is really simple (if the full conditionals
+are known analytically!) and reduces to code such as the following.</p>
+<pre class="r"><code># Sets the number of iterations (nsim)
+nsim = 1000
+# Loops over to sequentially update the parameters
+for (i in 2:nsim) {
+  # 1. Updates the sd of the full conditional for mu
+  sigma_1 = sqrt(1/(1/sigma2_0 + n/sigma2[i-1]))
+  # 2. Updates the mean of the full conditional for mu
+  mu_1 = (mu_0/sigma2_0 + n*ybar/sigma2[i-1])*sigma_1^2
+  # 3. Samples from the updated full conditional for mu
+  mu[i] = rnorm(1,mu_1,sigma_1)
+  
+  # 4. Updates the 1st parameter of the full conditional for tau
+  alpha_1 = alpha_0+n/2
+  # 5. Updates the 2nd parameter of the full conditional for tau
+  beta_1 = beta_0 + sum((y-mu[i])^2)/2
+  # 6. Samples from the updated full conditional for tau
+  tau[i] = rgamma(1,alpha_1,beta_1)
+  # 7. Re-scales the sampled value on the variance scale
+  sigma2[i] = 1/tau[i]
+}</code></pre>
+<p>If you check the code above, you should be able to see that it matches perfectly the
+mathematical expressions defined for the (updated) parameters of the full posterior
+distributions. The loop goes from 2 to <code>nsim</code> — the first value of the vectors <code>mu</code>, <code>tau</code> and
+<code>sigma2</code> are filled at initialisation.<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a></p>
+<p>Note that the code above produces simulations from the full conditional of the precision
+<span class="math inline">\(\tau\)</span> , which are then rescaled to produce a vector of simulations from the joint posterior
+distribution for the variance <span class="math inline">\(\sigma^2\)</span> . It is of course very easy to also rescale these further to
+obtain a sample of values from the posterior of the standard deviation <span class="math inline">\(\sigma\)</span>, for example
+using the following code.</p>
+<pre class="r"><code>sigma = sqrt(sigma2)</code></pre>
+<p>Once this code has been executed in <tt>R</tt> your output is made by vectors that, if the procedure has worked (i.e. it has converged), are drawn, at least with a very good degree of approximation, from the joint posterior distribution of the parameters.</p>
+<p>You can also visualise a traceplot — in this particular case, convergence is not an issue
+(as the model is “semi-conjugated”) and even with a single chain, you can get a sense
+that all the traceplots are <a href="/slides/02_mcmc/#34">“fat, hairy caterpillars”</a>, which indicates all is well.</p>
+<p>A simple code needed to produce these two plots is the following.</p>
+<pre class="r"><code># Histograms from the posterior distributions
+hist(mu)</code></pre>
+<p><img src="/practical/02_mcmc/tutorial_files/figure-html/unnamed-chunk-10-1.png" width="50%" /></p>
+<pre class="r"><code>hist(sigma)</code></pre>
+<p><img src="/practical/02_mcmc/tutorial_files/figure-html/unnamed-chunk-10-2.png" width="50%" /></p>
+<pre class="r"><code># Traceplots
+plot(mu,t=&quot;l&quot;,bty=&quot;l&quot;)</code></pre>
+<p><img src="/practical/02_mcmc/tutorial_files/figure-html/unnamed-chunk-11-1.png" width="50%" /></p>
+<pre class="r"><code>plot(sigma,t=&quot;l&quot;,bty=&quot;l&quot;)</code></pre>
+<p><img src="/practical/02_mcmc/tutorial_files/figure-html/unnamed-chunk-11-2.png" width="50%" /></p>
+<p>Once again, notice how powerful MCMC is: technically, you may not model directly a
+(highly non-linear) function of the main parameters; for example, all the computation
+is made in terms of the precision <code>tau</code>, although you may be much more interested in
+learning the standard deviation sigma. MCMC lets you obtain all the relevant informa-
+tion on the latter by simply creating simulations from the posterior distributions using
+the relevant inverse function <code>sigma = 1/sqrt(tau)</code>.</p>
+<p>We can also depict the trajectories of the MCMC samples in the first 10 iterations of the proecess. The arrows follow
+the moves of the Markov chain during the updates of the parameters, from the initial</p>
+<p><img src="/practical/02_mcmc/tutorial_files/figure-html/unnamed-chunk-19-1.png" style="width:50.0%" /></p>
+</div>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>The main intuition here is to do with the basic properties of conditional probabilities. Recall that given two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, then by definition <span class="math inline">\(\Pr(A \mid B) = \frac{\Pr(A,B)}{\Pr(B)}\)</span>. Now we can extend this to the case of three events <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span>, by adding <span class="math inline">\(C\)</span> to the conditioning set (i.e. to the right of the “<span class="math inline">\(\mid\)</span>” symbol throughout the equation) and get <span class="math inline">\(\Pr(A \mid B, C ) = \frac{\Pr(A,B\mid C)}{Pr(B\mid C)}\)</span>. If we replace <span class="math inline">\(\mu\)</span> for <span class="math inline">\(A\)</span>, <span class="math inline">\(\sigma^2\)</span> for <span class="math inline">\(B\)</span> ,<span class="math inline">\(\boldsymbol{y}\)</span> for <span class="math inline">\(C\)</span> and a probability distribution <span class="math inline">\(p(\cdot)\)</span> for the probability associated with an event <span class="math inline">\(\Pr(\cdot)\)</span>, we can write <span class="math inline">\(p(\mu \mid \sigma^2, \boldsymbol{y} ) = \frac{p(\mu,\sigma^2\mid \boldsymbol{y})}{p(\sigma^2\mid \boldsymbol{y})}\propto p(\mu, \sigma^2 \mid \boldsymbol{y} )\)</span>. Similarly, <span class="math inline">\(p(\sigma^2 \mid \mu, \boldsymbol{y}) = \frac{p(\mu,\sigma^2\mid\boldsymbol{y})}{p(\mu\mid\boldsymbol{y})} \propto p(\mu,\sigma^2\mid\boldsymbol{y})\)</span>. We can then see that each full conditional is proportional to the target distribution (i.e. the joint posterior of all the parameters). Thus, sampling repeatedly from all the full conditionals essentially gives us something that is, broadly speaking, proportional to our target joint posterior distribution. Formal theorems ensure that
+if we do this long enough, we are guaranteed to actually approximate the target to an arbitrary degree of precision.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p><strong>NB</strong>: there is a slight confusion in the terminology: usually, we refer the initialisation of the process as iteration 0. However, <tt>R</tt> does not let you index a vector with the number 0, i.e. the first element of a vector is indexed by the number 1. Thus, what in the <a href="/slides/02_mcmc/#27">Lecture 2</a> was indicated as <span class="math inline">\(\mu^{(0)}\)</span> is actually <code>mu[1]</code> in the <tt>R</tt> code. Similarly, the updated value for <span class="math inline">\(\mu\)</span> at iteration 2 is indicated as <span class="math inline">\(\mu^{(2)}\)</span> in the slides, but as <code>mu[3]</code> in the <tt>R</tt> code.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Previous</div>
+    <a href="/practical/02_mcmc/covid/" rel="next">Covid vaccine: Bayesian modelling</a>
+  </div>
+  
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          
+          
+
+          
+
+
+          
+          
+          
+          
+          
+
+
+          
+
+
+
+
+          
+
+
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+    
+      &copy;  2022-2024 &middot;
+
+    Based on
+    <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a>
+    
+    
+    (version 5.3.0)
+    
+    for <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
+    
+    
+    <i><b>Latest update: 23 Jun 2022 </i></b>
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/en/js/wowchemy.min.50d3bf3df0c53b31631bb48a62b35f92.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

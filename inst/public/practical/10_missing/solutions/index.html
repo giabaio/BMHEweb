@@ -1,0 +1,1630 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.3.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Gianluca Baio" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Bivariate Normal model The data are stored in a list format because the variables are non-balanced, in terms of sample size. In other words, the data for arm \(t=1\) contain fewer points than for \(t=2\)." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="/practical/10_missing/solutions/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+      
+    
+
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.3ef10ad94e43ba7ad3f08b0b007578ae.css" />
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="/practical/10_missing/solutions/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+  <meta property="og:site_name" content="Bayesian methods in health economics" />
+  <meta property="og:url" content="/practical/10_missing/solutions/" />
+  <meta property="og:title" content="Practical 10. Missing data - SOLUTIONS | Bayesian methods in health economics" />
+  <meta property="og:description" content="Bivariate Normal model The data are stored in a list format because the variables are non-balanced, in terms of sample size. In other words, the data for arm \(t=1\) contain fewer points than for \(t=2\)." /><meta property="og:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" />
+    <meta property="twitter:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2021-06-22T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2022-06-23T10:00:00&#43;00:00">
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Practical 10. Missing data - SOLUTIONS | Bayesian methods in health economics</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="c4dc4ca1610d846360dfec6fcb8417fb" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.da42964e270e05a6063fbca894d7ccff.js"></script>
+
+  
+
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container-xl">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+          
+          ></a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+        
+        ></a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#timetable"><span>Timetable</span></a>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Slides</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/slides/01_Intro"><span>Introduction</span></a>
+            
+              <a class="dropdown-item" href="/slides/02_MCMC"><span>Bayesian computation</span></a>
+            
+              <a class="dropdown-item" href="/slides/03_Intro_HE"><span>Introduction to Health Economics</span></a>
+            
+              <a class="dropdown-item" href="/slides/04_ILD"><span>Individual level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/05_ALD"><span>Aggregated level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/06_NMA"><span>Network meta-analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/07_Model_uncertainty"><span>Model error and structural analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/08_Survival"><span>Survival modelling in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/09_MM"><span>Markov models</span></a>
+            
+              <a class="dropdown-item" href="/slides/10_Missing"><span>Missing data in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/11_VoI"><span>Introduction to Value of information</span></a>
+            
+              <a class="dropdown-item" href="/slides/12_EVPPI"><span>Expected value of partial information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture13/13_EVSI.pdf"><span>Expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture14/14_Data_EVSI.pdf"><span>Generating data for the analysis of the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture15/15_EVSI_MC.pdf"><span>Calculating expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture16/16_EVSI_regression.pdf"><span>Regression-based EVSI</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Practicals</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/practical/01_monte-carlo"><span>Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/02_mcmc"><span>MCMC</span></a>
+            
+              <a class="dropdown-item" href="/practical/03_bcea"><span>Cost-effectiveness analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/04_ild"><span>HTA with individual level data</span></a>
+            
+              <a class="dropdown-item" href="/practical/05_ald"><span>Evidence synthesis and decision models</span></a>
+            
+              <a class="dropdown-item" href="/practical/06_nma"><span>NMA</span></a>
+            
+              <a class="dropdown-item" href="/practical/07_structural"><span>PSA to structural uncertainty</span></a>
+            
+              <a class="dropdown-item" href="/practical/08_survival"><span>Survival analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/09_mm"><span>Markov and multistate models</span></a>
+            
+              <a class="dropdown-item" href="/practical/10_missing"><span>Missing data</span></a>
+            
+              <a class="dropdown-item" href="/practical/11_intro_voi"><span>Computing the EVPI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/12_evppi"><span>Computing the EVPPI in BCEA and SAVI</span></a>
+            
+              <a class="dropdown-item" href="/practical/13_data_evsi"><span>Generating data for the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/practical/14_evsi_mc"><span>Computing the EVSI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/15_evsi_regression"><span>Computing the EVSI using regression</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Instructions</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/tips/computer-specification"><span>Computer specification</span></a>
+            
+              <a class="dropdown-item" href="/tips/using-bugs"><span>Using BUGS</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/publication"><span>Reading list</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          10. Missing data
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <ul class="nav docs-sidenav">
+        <li class=""><a href="/practical/"></a></li>
+    
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/01_monte-carlo/">1. Monte Carlo</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/01_monte-carlo/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/02_mcmc/">2. MCMC</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/02_mcmc/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/covid/">Covid</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/tutorial/">MCMC Tutorial</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/03_bcea/">3. Intro-HE</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/03_bcea/solutions/">Solution</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/04_ild/">4. ILD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/04_ild/tutorial-regression/">Regression Tutorial</a></li>
+
+
+
+  <li class=""><a href="/practical/04_ild/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/05_ald/">5. ALD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/05_ald/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/06_nma/">6. NMA</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/06_nma/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/07_structural/">7. PSA to structural uncertainty</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/07_structural/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/08_survival/">8. Survival</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/08_survival/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/09_mm/">9. Markov models</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/09_mm/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/09_mm/cohort-model/">Cohort discrete Markov model</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/10_missing/">10. Missing data</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class="active"><a href="/practical/10_missing/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/11_intro_voi/">11. EVPI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/12_evppi/">12. EVPPI in BCEA &amp; SAVI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/13_data_evsi/">13 Generating data for EVSI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/14_evsi_mc/">14. EVSI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/15_evsi_regression/">15. EVSI using regression</a>
+    
+
+    
+      </div>
+    
+
+      
+    
+
+    
+      </ul>
+    
+
+  
+</nav>
+    </div>
+
+    <main class="col-10 docs-content" role="main">
+      <article class="article">
+
+        <div class="docs-article-container">
+          <h1>Practical 10. Missing data - SOLUTIONS</h1>
+          
+          <p style="color:grey;"><i>Thursday, 23 June 2022</i></p>
+          
+          
+          
+
+
+
+
+<div class="btn-links mb-3">
+  
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/slides/10_Missing" >
+    Lecture 10</a>
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/practical/10_missing/practical10.pdf" >
+    <i class="fas fa-file-pdf mr-1"></i>PDF version</a>
+
+
+</div>
+
+
+          <br>
+          
+          <div class="article-style">
+            
+
+
+<div id="bivariate-normal-model" class="section level2">
+<h2>Bivariate Normal model</h2>
+<p>The data are stored in a list format because the variables are non-balanced, in terms of sample size. In other words, the data for arm <span class="math inline">\(t=1\)</span> contain fewer points than for <span class="math inline">\(t=2\)</span>. It would be possible to format this dataset using a <code>data.frame</code>, but this would mean having a single column for each variable (stacking together the two treatment arms) and adding a treatment indicator.</p>
+<p>In any case, we can visualise the relevant information using usual <code>R</code> commands, e.g. <code>names</code> to check the naming of the variables and the <code>$</code> operator to access them.</p>
+<pre class="r"><code># Reads in the data list
+data=readRDS(&quot;missing_data.rds&quot;)
+
+# Checks the name of the variables
+names(data)</code></pre>
+<pre><code>[1] &quot;c&quot; &quot;e&quot; &quot;n&quot; &quot;u&quot;</code></pre>
+<pre class="r"><code># And shows some values
+data$c</code></pre>
+<pre><code>[[1]]
+ [1]     NA    0.1     NA     NA     NA    0.1     NA     NA     NA  516.0
+[11]     NA     NA     NA     NA  404.0     NA     NA  116.0  145.0  436.0
+[21]  782.0     NA  145.0     NA     NA     NA    2.0     NA     NA    0.1
+[31]     NA     NA     NA     NA  193.0    0.1     NA     NA   64.0     NA
+[41]     NA     NA     NA     NA     NA 1039.0     NA    2.0     NA     NA
+[51]     NA     NA    0.1     NA  246.0     NA     NA     NA  141.0  400.0
+[61]  116.0    0.1     NA  360.0  281.0     NA    0.1     NA     NA     NA
+[71]  107.0     NA     NA  123.0     NA
+
+[[2]]
+ [1]    NA    NA    NA 183.0    NA    NA    NA    NA   0.1 107.0    NA    NA
+[13]    NA    NA 516.0    NA    NA    NA    NA    NA    NA    NA    NA    NA
+[25]    NA   0.1    NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
+[37]   0.1    NA    NA 194.0  60.0 227.0    NA    NA    NA 266.0    NA    NA
+[49]   0.1 169.0 346.0    NA    NA   0.1    NA    NA    NA 366.0    NA    NA
+[61]    NA 380.5    NA    NA    NA    NA    NA    NA 268.0 123.0    NA    NA
+[73]    NA 389.5    NA    NA    NA    NA    NA    NA    NA    NA    NA    NA</code></pre>
+<p>As is possible to see, the element <code>data$c</code> is itself a list. The data are clearly affected by many missing values (recorded in <code>R</code> as <code>NA</code>). We can also inspect the distribution of the variables using histograms, e.g. using the following commands.</p>
+<pre class="r"><code># Produces a histogram of the cost distribution in arm t=1
+hist(data$c[[1]])</code></pre>
+<p><img src="/practical/10_missing/solutions_files/figure-html/setup2-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>In general terms, it is important to make some preliminary analysis to evaluate the impact of missingness. For instance, if you had a large dataset with only a handful of missing values, then perhaps you could simply do a “Complete Case Analysis”, which probably would not have a massive impact on your overall results. But if missingness is very prevalent, then this would imply the need for more sophisticated analyses, as well as the fact that the results would be by necessity to be taken with a rather large pinch of salt… We can summarise the proportion of missing data using the following command.</p>
+<pre class="r"><code>lapply(1:2,function(x) table(is.na(data$e[[x]]))/sum(table(is.na(data$e[[x]]))))</code></pre>
+<pre><code>[[1]]
+
+FALSE  TRUE 
+ 0.36  0.64 
+
+[[2]]
+
+    FALSE      TRUE 
+0.2261905 0.7738095 </code></pre>
+<p>In this case, we can use the <code>R</code> command <code>table</code> to tabulate the data (on the effectiveness variable, named <code>e</code>) depending on whether they are <code>NA</code> (= missing) or not. We use the <code>lapply</code> function to perform the operation on both the elements of the list <code>data$e</code>. The code</p>
+<pre class="r"><code>table(is.na(data$e[[x]]))/sum(table(is.na(data$e[[x]])))</code></pre>
+<p>can be used to compute the proportion (instead of the absolute number) of missingness in each arm. As is possible to see, in this particular case, missingness is a big problem, as in the two arms there are respectively 64.00% and 77.38% of missing values.</p>
+<p>We can then proceed to the modelling part. Firstly, we fit a bivariate Normal model for costs and effects; while this is not ideal because it clearly fails to accommodate the marked skewness in the data (as evidenced by the histogram above), it is a good starting point and at least allows us to account for potential correlation between costs and effects (and their missing mechanisms).</p>
+<p>The model code is not too dissimilar to those used in Practical 4 (on individual level data), but it does require some modifications, to account for the missing data. We firstly assume a marginal Normal distribution for the effectiveness
+<span class="math display">\[ e_i \sim \mbox{Normal}\left( \phi_{eit},\psi_{et} \right), \]</span>
+where the individual mean response (QALYs) is modelled as a linear regression as a function of the baseline utility
+<span class="math display">\[ \phi_{eit} = \alpha_0 + \alpha_1 (u_{it}-\mu_{ut}). \]</span></p>
+<p>In the <code>BUGS</code> code, we need to be careful in defining the Normal distribution, which requires the <em>precision</em> instead of the variance. For this reason, we code for example</p>
+<pre class="r"><code>eff1[i] ~ dnorm(phi.e1[i],tau.e[1])</code></pre>
+<p>where <code>tau.e[1]</code> is the precision, i.e. <span class="math inline">\(\tau_{e1}=\psi_{et}^{-1}\)</span>. In addition, the linear predictor simply translates the regression for <span class="math inline">\(\phi_{eit}\)</span> — we notice here that we center the covariate <span class="math inline">\(u_{it}\)</span> for simplicity in the interpretation and ease of convergence (in this way, <span class="math inline">\(\alpha_0\)</span> is the overall mean QALY in the population).</p>
+<p>The next thing to understand is that, because also <span class="math inline">\(u_{it}\)</span> is affected by missing values, we need to model it explicitly, even if it is used as covariate in the model. Thus, we need to include a suitable `BUGS} statement to define a probability distribution to represent it. We choose for simplicity the same form as the QALYs <span class="math inline">\(e_{it}\)</span> and thus specify a Normal distribution depending on a mean <span class="math inline">\(\mu_{ut}\)</span> and a <em>precision</em> <span class="math inline">\(\tau_{ut}\)</span>.</p>
+<p>Finally, we can model the conditional distribution of the costs, given the effectiveness variable. The assumption is a model
+<span class="math display">\[ c_{it} \sim \mbox{Normal}(\phi_{cit},\psi_{ct}), \]</span>
+where the mean is specified as a linear predictor
+<span class="math display">\[ \phi_{cit} = \beta_0 + \beta_1 (e_{it}-\mu_{et}). \]</span>
+Because we are again centering the covariate included in this model, we can simply characterise the population mean costs and benefits as <span class="math inline">\(\mu_{ct} = \beta_0\)</span> and <span class="math inline">\(\mu_{et}=\alpha_0\)</span>, which we can then use in the economic analysis.</p>
+<p>The `BUGS} code is replicated for the two treatment arms and it then specifies the prior distributions. The model parameters are <span class="math inline">\(\boldsymbol{\theta}=(\boldsymbol\alpha,\boldsymbol\beta,\boldsymbol\sigma_{e},\boldsymbol\sigma_{c},\boldsymbol\mu_u,\boldsymbol\sigma_u)\)</span>, where:</p>
+<ul>
+<li><span class="math inline">\(\boldsymbol\alpha=(\alpha_0,\alpha_1)\stackrel{iid}{\sim}\mbox{Normal}(0,v)\)</span>, with <span class="math inline">\(v\)</span> a large variance (e.g. a precision of 0.00001);</li>
+<li><span class="math inline">\(\boldsymbol\beta=(\beta_0,\beta_1)\stackrel{iid}{\sim}\mbox{Normal}(0,v)\)</span>, with <span class="math inline">\(v\)</span> a large variance (e.g. a precision of 0.00001);</li>
+<li><span class="math inline">\(\boldsymbol\sigma_e=(\sigma_{e1},\sigma_{e2})\)</span> are the standard deviations for the effectiveness measures in the two treatment arms. We specify vague priors on the log-standard deviation scale, i.e. <span class="math inline">\(\log \sigma_{et}\sim \mbox{Uniform}(-5,10)\)</span>. This of course induces a prior on <span class="math inline">\(\sigma_{et}\)</span> and then on <span class="math inline">\(\sigma_{et}^2\)</span> and then on <span class="math inline">\(\tau_{et}\)</span>;</li>
+<li><span class="math inline">\(\boldsymbol\sigma_c=(\sigma_{c1},\sigma_{c2})\)</span> are the standard deviations for the cost measures in the two treatment arms. We specify vague priors on the log-standard deviation scale, i.e. <span class="math inline">\(\log \sigma_{ct}\sim \mbox{Uniform}(-5,10)\)</span>. This of course induces a prior on <span class="math inline">\(\sigma_{ct}\)</span> and then on <span class="math inline">\(\sigma_{et}^2\)</span> and then on <span class="math inline">\(\tau_{ct}\)</span>;</li>
+<li><span class="math inline">\(\boldsymbol\mu_u=(\mu_{u1},\mu_{u2})\stackrel{iid}{\sim}\mbox{Normal}(0,v)\)</span>, with <span class="math inline">\(v\)</span> a large variance (e.g. a precision of 0.00001);</li>
+<li><span class="math inline">\(\boldsymbol\sigma_u=(\sigma_{u1},\sigma_{u2})\)</span> are the standard deviations for the baseline utility in the two treatment arms. We specify vague priors on the log-standard deviation scale, i.e. <span class="math inline">\(\log \sigma_{ut}\sim \mbox{Uniform}(-5,10)\)</span>. This of course induces a prior on <span class="math inline">\(\sigma_{ut}\)</span> and then on <span class="math inline">\(\sigma_{ut}^2\)</span> and then on <span class="math inline">\(\tau_{ut}\)</span>.</li>
+</ul>
+<p>The <code>BUGS</code> code maps these assumptions directly and also adds some lines to derive the analytic form of the <em>conditional</em> variance and precision for the costs. These are useful, but are not necessarily fundamental parameters.</p>
+<p>We can now run the model using <code>OpenBUGS</code>.</p>
+<pre class="r"><code># Loads the package
+library(R2OpenBUGS)
+
+# Defines: 
+# 1. model file
+filein=&quot;Normal_Normal.txt&quot;
+
+# 2. data list
+datalist=list(N1=data$n[[1]],eff1=data$e[[1]],cost1=data$c[[1]],u1=data$u[[1]],
+          N2=data$n[[2]],eff2=data$e[[2]],cost2=data$c[[2]],u2=data$u[[2]])
+
+# 3. parameters to monitor
+params&lt;-c(&quot;mu.e&quot;,&quot;sd.e&quot;,&quot;alpha0&quot;,&quot;alpha1&quot;,&quot;beta0&quot;,&quot;beta1&quot;,&quot;Delta_e&quot;,
+          &quot;Delta_c&quot;,&quot;mu.c&quot;,&quot;sd.c&quot;,&quot;eff1&quot;,&quot;eff2&quot;,&quot;cost1&quot;,&quot;cost2&quot;)
+
+# 4. number of iterations
+n.iter&lt;-10000
+
+# 5. sets up initial values for crucial parameters
+inits=function(){
+   list(alpha0=rnorm(2),alpha1=rnorm(2),beta0=rnorm(2),beta1=rnorm(2),mu.u=rnorm(2))
+}
+
+# 6. runs the model
+NN=bugs(data=datalist,inits=inits,parameters.to.save=params,
+         model.file=filein,n.chains=2,n.iter=n.iter,n.thin=1,DIC=TRUE)</code></pre>
+<p>All is fairly straightforward; we first point <code>R</code> to the <code>.txt</code> file including the model code, then we define a datalist in the format that matches the name of the variables in the model code, then define the vector of parameters to monintor and select a suitable number of iterations for the MCMC procedure.</p>
+<p>In this case, it is important to generate suitable initial values. For instance, if you did not create the function <code>inits} and let</code>BUGS} initialise the chains, the programme would return an error and cannot start the procedure. We set up the initial values for <span class="math inline">\(\boldsymbol\alpha,\boldsymbol\beta,\mu_u\)</span> from Normal(0,1) distributions, which ensures that the algorithm can sample reasonable starting points and run.</p>
+<p>We can check that the model has reached convergence and that the estimates are reasonable. For instance, we could use the <code>print</code> method and apply it to the object <code>NN</code>, where we have stored the <code>BUGS</code> output. However, we have monitored many parameters and so this may be complicated to see. In cases such as this, it is probably more effective to use the element `$summary” to visualise the data, for instance using the following code</p>
+<pre class="r"><code>head(NN$summary[,c(&quot;mean&quot;,&quot;sd&quot;,&quot;2.5%&quot;,&quot;97.5%&quot;,&quot;Rhat&quot;,&quot;n.eff&quot;)])</code></pre>
+<pre><code>                mean         sd      2.5%    97.5%     Rhat n.eff
+mu.e[1]   0.87119481 0.02232442 0.8268950 0.914805 1.000952 10000
+mu.e[2]   0.91179054 0.02240187 0.8679975 0.956400 1.001053  9700
+sd.e[1]   0.07969351 0.01191242 0.0605200 0.107200 1.000956 10000
+sd.e[2]   0.08954983 0.01636157 0.0641200 0.127800 1.000912 10000
+alpha0[1] 0.87119481 0.02232442 0.8268950 0.914805 1.000952 10000
+alpha0[2] 0.91179054 0.02240187 0.8679975 0.956400 1.001053  9700</code></pre>
+<p>which would simply show the first few rows of the overall summary table for a selected set of columns (those displaying the mean, sd, 2.5- and 97.5% quantiles, as well as the convergence statistics). We could also specify the parameters for which we want to see the summary statistics, for instance using the following code</p>
+<pre class="r"><code>NN$summary[grep(&quot;alpha&quot;,rownames(NN$summary)),
+           c(&quot;mean&quot;,&quot;sd&quot;,&quot;2.5%&quot;,&quot;97.5%&quot;,&quot;Rhat&quot;,&quot;n.eff&quot;)]</code></pre>
+<pre><code>               mean         sd      2.5%    97.5%     Rhat n.eff
+alpha0[1] 0.8711948 0.02232442 0.8268950 0.914805 1.000952 10000
+alpha0[2] 0.9117905 0.02240187 0.8679975 0.956400 1.001053  9700
+alpha1[1] 0.7912292 0.15647962 0.4809875 1.091025 1.001219  4700
+alpha1[2] 0.2751874 0.08561333 0.1061975 0.443105 1.000901 10000</code></pre>
+<p>to show the selected summary statistics for all the nodes whose name contains the keyword <code>alpha</code> (this is done using the <code>grep</code> function — see <code>help(grep)</code> in your <code>R</code> terminal, for more details).</p>
+<p>Another way to simply check convergence when the number of model parameters is very large is to plot the output for both <span class="math inline">\(\hat{R}\)</span> and <span class="math inline">\(n_{eff}\)</span> for all parameters. We can do this simply using the following command</p>
+<pre class="r"><code>plot(NN$summary[,&quot;Rhat&quot;])</code></pre>
+<p><img src="/practical/10_missing/solutions_files/figure-html/show.res3-1.png" width="60%" style="display: block; margin: auto;" />
+to check that the value of <span class="math inline">\(\hat{R}\)</span> is below the arbitrary threshold of 1.1 for all nodes. If this is the case, then the model has reached convergence; if not, we can investigate further and check which node has not converged yet. Of course the graph can be annotated and made prettier, but this crude version can still be very helpful.</p>
+<p>Another similar graphical representation can be made to check the number of effective samples obtained using the MCMC procedure.</p>
+<pre class="r"><code>plot(NN$summary[,&quot;n.eff&quot;])</code></pre>
+<p><img src="/practical/10_missing/solutions_files/figure-html/show.res4-1.png" width="60%" style="display: block; margin: auto;" /></p>
+<p>As is possible to see here, most of the nodes have a value that is close to the nominal sample size, indicating virtually no issues with autocorrelation.</p>
+<p>Once we are satisfied about the output of the Bayesian model, we can feed it to <code>BCEA</code> to perform the economic analysis.</p>
+<pre class="r"><code># Extracts the simulated values for the population mean effectiveness and costs
+e=cbind(NN$sims.list$mu.e[,1],NN$sims.list$mu.e[,2])
+c=cbind(NN$sims.list$mu.c[,1],NN$sims.list$mu.c[,2])
+
+# Post-processes the results using BCEA
+library(BCEA)</code></pre>
+<pre><code>
+Attaching package: &#39;BCEA&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:graphics&#39;:
+
+    contour</code></pre>
+<pre class="r"><code>CEA_NN=bcea(e=e,c=c,ref = 2)
+# Shows the C/E plane
+ceplane.plot(CEA_NN)</code></pre>
+<p><img src="/practical/10_missing/solutions_files/figure-html/show.res5-1.png" width="60%" style="display: block; margin: auto;" /></p>
+<p>Notice that we first create suitable matrices with the simulations for the two main variables <span class="math inline">\((\mu_{et},\mu_{ct})\)</span>; we extract these simulations from the object <code>NN</code> — in particular, they are stored in the two lists <code>$sims.list$mu.e</code> and <code>$sims.list$mu.c</code>, respectively. Each of these two objects has dimension (10000, 2), i.e. 10000 rows (simulations) and 2 columns (treatment arms). We use the <code>R</code> function <code>cbind</code> to “bind” together these values, so that the resulting objects <code>e</code> and <code>c</code> are matrices, as required by <code>BCEA</code>.</p>
+<p>Because we have monitored the variables <code>eff1,eff2,cost1,cost2</code> in the object <code>NN</code>, we can also check what the model is doing in terms of imputing the missing values. As suggested in the script, the easiest way doing so is by plotting the estimated posterior distribution, which we do using the following commands.</p>
+<pre class="r"><code>hist(NN$sims.list$eff1[,1],xlab=&quot;QALYs for the first missing individual in t=1&quot;,main=&quot;&quot;)
+abline(v=1,lwd=2)</code></pre>
+<p><img src="/practical/10_missing/solutions_files/figure-html/show.res6-1.png" width="60%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>sum(NN$sims.list$eff1[,1]&gt;1)/NN$n.sims</code></pre>
+<pre><code>[1] 0.0036</code></pre>
+<p>The graph shows the posterior for <code>eff1</code>, the measure of effectiveness in treatment arm <span class="math inline">\(t=1\)</span>. As is possible to see, about 0.360% of the simulated values above the theoretical upper limit of 1 — which is of course not reasonable. Another way of visualising this feature of the model output is by using the specialised plotting function <code>coefplot</code> (which is available from the <code>R</code> package <code>bmhe</code> — which you would need to install), to produce a graph such as the following.</p>
+<pre class="r"><code>bmhe::coefplot(NN,parameter=&quot;eff1&quot;) + geom_vline(xintercept=1,linetype=2,size=1.3,col=&quot;red&quot;) </code></pre>
+<p><img src="/practical/10_missing/solutions_files/figure-html/show.res7-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p>For each of the 48 individuals affected by missing QALYs in <span class="math inline">\(t=1\)</span>, this shows a description of the posterior distribution (imputed values). The dots represent the means, while the lines extend over the 95% credible interval. As is possible to see, there are quite a few individuals whose imputed values distributions expands above 1, although the means are all below this threshold.</p>
+</div>
+<div id="beta-gamma-model" class="section level2">
+<h2>Beta-Gamma model</h2>
+<p>The Beta-Gamma model is theoretically more appropriate, because it correctly recognises the natural range of the two variables — the interval [0-1] for the QALYs and the open positive real line <span class="math inline">\((0,\infty)\)</span> for the costs. Thus, it seems a more suitable modelling structure for this problem.</p>
+<p>In general terms, the model code is not much more complicated than the one for the bivariate Normal — the main complication is that the regression models for the individual average QALYs and costs cannot be constructed as linear predictor. Instead, we need to rescale the average QALYs (defined in [0-1]) onto <span class="math inline">\((-\infty,\infty)\)</span>, which we do using a logistic regression
+<span class="math display">\[ \mbox{logit}(\phi_{eit}) = \alpha_0 + \alpha_1 (u_{it}-\mu_{ut}). \]</span>
+This implies that the overall average effectiveness measure <span class="math inline">\(\mu_{et}\)</span> is just a rescaled version of the intercept <span class="math inline">\(\alpha_0\)</span> (given that we are centering the covariate <span class="math inline">\(u_{it}\)</span>). In other words, we need to take the inverse logit transformation and define
+<span class="math display">\[ \mu_{et} = \frac{\exp(\alpha_0)}{1+\exp(\alpha_0)}. \]</span></p>
+<p>Similarly, we need to rescale the conditional regression for the average costs <span class="math inline">\(\phi_{cit}\)</span> as a function of the centered effectiveness, which we can do using a log-linear regression
+<span class="math display">\[ \mbox{log}(\phi_{cit}) = \beta_0 + \beta_1 (e_{it}-\mu_{et})  \]</span>
+and again the overall average cost is obtained by rescaling the intercept <span class="math inline">\(\beta_0\)</span> as
+<span class="math display">\[ \mu_{ct} = \exp(\beta_0). \]</span></p>
+<p>In fact, the main complication in the <code>BUGS</code> script is in the parameterisation of the Beta and Gamma distributions. <code>BUGS</code> requires that the Beta distribution is defined in terms of two scale parameters and thus we code <span class="math inline">\(e_{it} \sim \mbox{Beta}(a_{ti},b_{ti})\)</span> for each intervention arm and individuals. However, we need to actually model the individual mean <span class="math inline">\(\phi_{eit}\)</span> and so we need to link this with <span class="math inline">\((a_{ti},b_{ti})\)</span>. We can use the properties of the Beta distribution and derive that
+<span class="math display">\[ a_{it} = \phi_{eit}\left[\frac{\phi_{eit}(1-\phi_{eit})}{\psi_{et}} - 1\right] \qquad \mbox{ and } \qquad b_{it} = (1-\phi_{eit})\left[\frac{\phi_{eit}(1-\phi_{eit})}{\psi_{et}} - 1\right],\]</span>
+where <span class="math inline">\(\psi_{et}\)</span> is the variance for the Beta distribution (which is coded as <code>ss.e</code> in the model file). By modelling the mean <span class="math inline">\(\phi_{eit}\)</span> (through the priors induced on the parameters <span class="math inline">\(\boldsymbol\alpha\)</span>) and standard deviation <span class="math inline">\(\sigma_{et}\)</span>, we then imply a prior on <span class="math inline">\((a_{it},b_{it})\)</span>.</p>
+<p>A further complication is given by the fact that, because of the mathematical properties of the Beta distribution, <span class="math inline">\(\sigma_{et}\)</span> is constrained in its range by the value taken by the overall mean <span class="math inline">\(\mu_{et}\)</span>; for this reason, we define the prior as Uniform in the range $(0,).</p>
+<p>As for the Gamma distribution, we need to follow a similar strategy: the “original scale” parameters (which are required by <code>BUGS</code>) are the shape and rate say <span class="math inline">\((\zeta_{it},\lambda_{it})\)</span>; however, these can be related to the mean and variance using the mathematical properties of the Gamma distribution as
+<span class="math display">\[ \mbox{shape}_{it} = \zeta_{it} = \frac{\phi_{cit}^2}{\sigma_{ct}^2} \qquad \mbox{ and } \qquad \mbox{rate}_{it} = \lambda_{it} = \frac{\phi_{cit}}{\sigma_{ct}^2}. \]</span>
+Again, priors on <span class="math inline">\(\boldsymbol\beta\)</span> and <span class="math inline">\(\sigma_{ct}\)</span> (which in the model code is indicated as <code>sd.c[t]</code> and is given a truncated <span class="math inline">\(t\)</span> distribution, to provide a continuous distribution on the positive real line) induce suitable priors for the shape and rate.</p>
+<p>The interesting point of this model is that because of its relative complexity, <code>OpenBUGS</code> struggles to determine suitable initial values from which to start the simulation. In fact, we have tested several configurations, providing initial values for all the relevant model parameters and still have failed to run the model. Conversely, <code>JAGS</code> is able to start and successfully estimate this model and data. The main reason for this crucial difference is probabaly to do with the specific version of the sampler used by the two pieces of software.</p>
+<p>In other words, to be able to run the Beta-Gamma model, it is necessary to install <code>JAGS</code> (which is available and easy to install from <a href="https://sourceforge.net/projects/mcmc-jags/files/">https://sourceforge.net/projects/mcmc-jags/files/</a>. Then we need to install the <code>R</code> package <code>R2jags</code> (which is the equivalent to <code>R2OpenBUGS</code>). Fortunately, the differences between <code>JAGS</code> and <code>OpenBUGS</code> are virtually none. Thus, we can simply run the model following the script and using the commands below:</p>
+<pre class="r"><code># Installs and R2jags 
+install.packages(&quot;R2jags&quot;)
+
+# Then loads the package
+library(R2jags)</code></pre>
+<p>(this is of course only necessary once). When the package is installed, we just need to load it into our workspace and then proceed with the commands.</p>
+<pre class="r"><code># 1. specifies the model file
+filein=&quot;Beta_Gamma.txt&quot;
+
+# 2. data list
+datalist=list(N1=data$n[[1]],eff1=data$e[[1]],cost1=data$c[[1]],u1=data$u[[1]],
+              N2=data$n[[2]],eff2=data$e[[2]],cost2=data$c[[2]],u2=data$u[[2]])
+
+# 3. parameters to monitor
+params&lt;-c(&quot;mu.e&quot;,&quot;sd.e&quot;,&quot;alpha0&quot;,&quot;alpha1&quot;,&quot;beta0&quot;,&quot;beta1&quot;,&quot;
+          Delta_e&quot;,&quot;Delta_c&quot;,&quot;mu.c&quot;,&quot;sd.c&quot;,&quot;eff1&quot;,&quot;eff2&quot;,&quot;cost1&quot;,&quot;cost2&quot;)
+
+# 4. number of iterations
+n.iter&lt;-10000
+
+# 5. reset the inits function
+inits=NULL</code></pre>
+<p>Finally, we’re ready to run the main <code>jags</code> function to run the model:</p>
+<p><code>JAGS</code> compiles and initialises the model successfully and it does not even require us to specify the initial values (we still can do so, if we wanted to have full control, of course).</p>
+<p>We can now replicate the analysis performed above to check and summarise convergence, as well as to feed the output of our Beta-Gamma Bayesian model to <code>BCEA</code>, to perform the economic analysis. Notice that the <code>JAGS</code> object <code>BG</code> has a slightly different structure and contains an “extra-layer” in comparison to its <code>OpenBUGS</code> counterpart <code>NN</code>}. As a result, in order to access the simulations, we need to go deeper inside the object and look into the element <code>$BUGSoutput$sims.list</code>.</p>
+<pre class="r"><code>e&lt;-cbind(BG$BUGSoutput$sims.list$mu.e[,1],BG$BUGSoutput$sims.list$mu.e[,2])
+c&lt;-cbind(BG$BUGSoutput$sims.list$mu.c[,1],BG$BUGSoutput$sims.list$mu.c[,2])
+CEA_BG&lt;-bcea(e=e,c=c,ref = 2)
+
+# Plots the CEAC
+ceac.plot(CEA_NN)
+points(CEA_BG$k,CEA_BG$ceac,t=&quot;l&quot;,col=&quot;red&quot;)</code></pre>
+<p><img src="/practical/10_missing/solutions_files/figure-html/show.res10-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p>Interestingly, the results are different, depending on the model used for imputation of the missing data. The graph above shows the CEACs for the two model specifications and as is possible to see the Normal-Normal model somewhat overestimates the probability of cost-effectiveness. This is likely due to the higher mean QALYs associated with each individual, given the imputations exceed the theoretical range of 1. If we check the <code>coefplot</code> for the Beta-Gamma model, we now see that all the distributions are within the range [0-1], as should be.
+<img src="/practical/10_missing/solutions_files/figure-html/show.res11-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<p>In the graph we display the distributions for the Beta-Gamma (black) and Normal-Normal (red) models. A clear indication of the “pull” towards higher values that the bivariate Normal model shows is given by individual number 6. The red line is shifted upwards in comparison to the black one — this is because the Normal-Normal model does not know that it should not go above one (because the Normal distribution is unrestricted) and so it pulls up the estimate for this individual. This translate in slightly higher values for the QALYs, which in turn artificially increase the cost-effectiveness profile of the active intervention.</p>
+</div>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          
+          
+
+          
+
+
+          
+          
+          
+          
+          
+
+
+          
+
+
+
+
+          
+
+
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+    
+      &copy;  2022-2024 &middot;
+
+    Based on
+    <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a>
+    
+    
+    (version 5.3.0)
+    
+    for <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
+    
+    
+    <i><b>Latest update: 23 Jun 2022 </i></b>
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/en/js/wowchemy.min.50d3bf3df0c53b31631bb48a62b35f92.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

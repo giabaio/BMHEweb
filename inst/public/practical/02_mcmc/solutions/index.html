@@ -1,0 +1,1507 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.3.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Gianluca Baio" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Understanding Gibbs sampling Most of this exercise is actually fairly easy as it is performed directly in Excel. In fact, the model does not need MCMC to be analysed and we could obtain analytic estimates for the two variables \((y_1,y_2)\)." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="/practical/02_mcmc/solutions/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+      
+    
+
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.3ef10ad94e43ba7ad3f08b0b007578ae.css" />
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="/practical/02_mcmc/solutions/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+  <meta property="og:site_name" content="Bayesian methods in health economics" />
+  <meta property="og:url" content="/practical/02_mcmc/solutions/" />
+  <meta property="og:title" content="Practical 2. Markov Chain Monte Carlo - SOLUTIONS | Bayesian methods in health economics" />
+  <meta property="og:description" content="Understanding Gibbs sampling Most of this exercise is actually fairly easy as it is performed directly in Excel. In fact, the model does not need MCMC to be analysed and we could obtain analytic estimates for the two variables \((y_1,y_2)\)." /><meta property="og:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" />
+    <meta property="twitter:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2021-01-10T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2022-06-20T14:00:00&#43;00:00">
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Practical 2. Markov Chain Monte Carlo - SOLUTIONS | Bayesian methods in health economics</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="1b697c8627310f515c7014d016c524d4" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.da42964e270e05a6063fbca894d7ccff.js"></script>
+
+  
+
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container-xl">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+          
+          ></a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+        
+        ></a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#timetable"><span>Timetable</span></a>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Slides</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/slides/01_Intro"><span>Introduction</span></a>
+            
+              <a class="dropdown-item" href="/slides/02_MCMC"><span>Bayesian computation</span></a>
+            
+              <a class="dropdown-item" href="/slides/03_Intro_HE"><span>Introduction to Health Economics</span></a>
+            
+              <a class="dropdown-item" href="/slides/04_ILD"><span>Individual level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/05_ALD"><span>Aggregated level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/06_NMA"><span>Network meta-analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/07_Model_uncertainty"><span>Model error and structural analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/08_Survival"><span>Survival modelling in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/09_MM"><span>Markov models</span></a>
+            
+              <a class="dropdown-item" href="/slides/10_Missing"><span>Missing data in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/11_VoI"><span>Introduction to Value of information</span></a>
+            
+              <a class="dropdown-item" href="/slides/12_EVPPI"><span>Expected value of partial information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture13/13_EVSI.pdf"><span>Expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture14/14_Data_EVSI.pdf"><span>Generating data for the analysis of the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture15/15_EVSI_MC.pdf"><span>Calculating expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture16/16_EVSI_regression.pdf"><span>Regression-based EVSI</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Practicals</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/practical/01_monte-carlo"><span>Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/02_mcmc"><span>MCMC</span></a>
+            
+              <a class="dropdown-item" href="/practical/03_bcea"><span>Cost-effectiveness analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/04_ild"><span>HTA with individual level data</span></a>
+            
+              <a class="dropdown-item" href="/practical/05_ald"><span>Evidence synthesis and decision models</span></a>
+            
+              <a class="dropdown-item" href="/practical/06_nma"><span>NMA</span></a>
+            
+              <a class="dropdown-item" href="/practical/07_structural"><span>PSA to structural uncertainty</span></a>
+            
+              <a class="dropdown-item" href="/practical/08_survival"><span>Survival analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/09_mm"><span>Markov and multistate models</span></a>
+            
+              <a class="dropdown-item" href="/practical/10_missing"><span>Missing data</span></a>
+            
+              <a class="dropdown-item" href="/practical/11_intro_voi"><span>Computing the EVPI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/12_evppi"><span>Computing the EVPPI in BCEA and SAVI</span></a>
+            
+              <a class="dropdown-item" href="/practical/13_data_evsi"><span>Generating data for the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/practical/14_evsi_mc"><span>Computing the EVSI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/15_evsi_regression"><span>Computing the EVSI using regression</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Instructions</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/tips/computer-specification"><span>Computer specification</span></a>
+            
+              <a class="dropdown-item" href="/tips/using-bugs"><span>Using BUGS</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/publication"><span>Reading list</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          2. MCMC
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <ul class="nav docs-sidenav">
+        <li class=""><a href="/practical/"></a></li>
+    
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/01_monte-carlo/">1. Monte Carlo</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/01_monte-carlo/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/02_mcmc/">2. MCMC</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class="active"><a href="/practical/02_mcmc/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/covid/">Covid</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/tutorial/">MCMC Tutorial</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/03_bcea/">3. Intro-HE</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/03_bcea/solutions/">Solution</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/04_ild/">4. ILD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/04_ild/tutorial-regression/">Regression Tutorial</a></li>
+
+
+
+  <li class=""><a href="/practical/04_ild/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/05_ald/">5. ALD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/05_ald/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/06_nma/">6. NMA</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/06_nma/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/07_structural/">7. PSA to structural uncertainty</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/07_structural/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/08_survival/">8. Survival</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/08_survival/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/09_mm/">9. Markov models</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/09_mm/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/09_mm/cohort-model/">Cohort discrete Markov model</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/10_missing/">10. Missing data</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/10_missing/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/11_intro_voi/">11. EVPI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/12_evppi/">12. EVPPI in BCEA &amp; SAVI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/13_data_evsi/">13 Generating data for EVSI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/14_evsi_mc/">14. EVSI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/15_evsi_regression/">15. EVSI using regression</a>
+    
+
+    
+      </div>
+    
+
+      
+    
+
+    
+      </ul>
+    
+
+  
+</nav>
+    </div>
+
+    <main class="col-10 docs-content" role="main">
+      <article class="article">
+
+        <div class="docs-article-container">
+          <h1>Practical 2. Markov Chain Monte Carlo - SOLUTIONS</h1>
+          
+          
+          
+          
+          
+
+
+
+
+<div class="btn-links mb-3">
+  
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/slides/02_MCMC" >
+    Lecture 2</a>
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/practical/02_mcmc/solutions2.pdf" >
+    <i class="fas fa-file-pdf mr-1"></i>PDF version</a>
+
+
+</div>
+
+
+          <br>
+          
+          <div class="article-style">
+            
+
+
+<div id="understanding-gibbs-sampling" class="section level2">
+<h2>Understanding Gibbs sampling</h2>
+<p>Most of this exercise is actually fairly easy as it is performed directly in <tt>Excel</tt>. In fact, the model does not need MCMC to be analysed and we could obtain analytic estimates for the two variables <span class="math inline">\((y_1,y_2)\)</span>. Some clarifications are perhaps useful, though.</p>
+<p>The main point is perhaps to realise that correlation across the model parameters may be a crucial factor in terms of convergence and the speed at which this may be reached when running MCMC. This is due to the fact that larger correlation implies that the joint distribution of the parameters has a ``narrower’’ shape. The figure below clarifies this point in the simplest two-dimensional, bi-variate Normal case — but the situation generalises to higher dimensions and different distributional shapes.</p>
+<div style="overflow:hidden;">
+<div style="float: left;margin-left: 20px;margin-top: 0px;margin-bottom:0px; width: 48%;">
+<img src="/practical/02_mcmc/solutions_files/figure-html/unnamed-chunk-2-1.png" width="80%" />
+<center>
+<ol style="list-style-type: lower-alpha">
+<li>Low correlation <span class="math inline">\(\rho=0.08\)</span>
+</center>
+</div>
+<div style="float: left;margin-left: 20px;margin-top: 0px;margin-bottom:0px; width: 48%;">
+<img src="/practical/02_mcmc/solutions_files/figure-html/unnamed-chunk-3-1.png" width="80%" />
+<center>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>High correlation <span class="math inline">\(\rho=0.98\)</span>
+</center>
+</div>
+</div></li>
+</ol></li>
+</ol>
+<p>The graphs show the first 30 simulations in a Gibbs sampling process for the same set up as in the <tt>Excel</tt> spreadsheet; the “true” underlying mean is <span class="math inline">\(\boldsymbol\theta=(0,0)\)</span> and the “true” underlying variances are <span class="math inline">\(\boldsymbol\sigma^2=(1,1)\)</span>. In the plot (panel a) we assume correlation <span class="math inline">\(\rho=0.08\)</span> (i.e.~very low). This generates a joint distribution for (y_1,y_2)$ that is like a “ball”, with a wide radius. This means that even a relatively low number of simulations (and more importantly long moves across the parametric space) is almost sufficient to cover the underlying true joint distribution.</p>
+<p>In panel (b), however, because we are assuming a large correlation (<span class="math inline">\(\rho=0.98\)</span>), then the resulting distribution is very narrow and thus 30 simulations cannot cover the target portion of the space. In fact, in this case, the initial values make a difference — starting from values that are far awy from the bulk of the target distribution will generally mean that a longer running time is necessary.</p>
+</div>
+<div id="mcmc-in-bugs" class="section level2">
+<h2>MCMC in <tt>BUGS</tt></h2>
+<p>As discussed in the lecture, the model is very similar to the one seen in Practical 1.</p>
+<pre class="r"><code>model {
+   theta    ~ dbeta(a,b)         # prior distribution
+   y        ~ dbin(theta,m)      # sampling distribution
+   y.pred   ~ dbin(theta,n)      # predictive distribution
+   P.crit  &lt;- step(y.pred - ncrit + 0.5) # =1 if y.pred &gt;= ncrit,
+}</code></pre>
+<p>Again, we model our uncertainty on the underlying success rate for the drug using an informative, conjugate Beta prior distribution, which implies a mean of around 0.4 and a 95% interval spanning from 0.2 to 0.6. This time, however, we do have observed data on <span class="math inline">\(y\)</span> — effectively now the objective of our analysis is estimate the <em>posterior</em> distribution of <span class="math inline">\(\theta\)</span>, <span class="math inline">\(p(\theta\mid y)\)</span> and to predict the outcome of the next round of the trial, when we assume to observed <span class="math inline">\(n=40\)</span> patients alltogether.</p>
+<p>Notice that in the model code, we are making the assumption that the new patients are effectively drawn from the same population of those that we have already observed. This is expressed by assuming that they have the same distributional form — both <code>y</code> and <code>y.pred</code> are modelled using a sampling distribution that is assumed to be Binomial<span class="math inline">\((\theta, \mbox{sample size})\)</span> and effectively all that we assume to vary is the sample size (<span class="math inline">\(m=20\)</span> for the observed <span class="math inline">\(y\)</span> and <span class="math inline">\(n=40\)</span> for the new patients).</p>
+<p>The actual <code>.odc</code> file contains <em>all</em> the relevant bits that <tt>BUGS</tt> needs, in one place. In addition to the model code, it also contains the data, in the following format.</p>
+<pre class="r"><code>list(
+a = 9.2, b = 13.8, # prior parameters
+y = 15,            # number of successes
+m = 20,            # number of trials
+n = 40,            # future number of trials
+ncrit = 25)        # critical value of future successes</code></pre>
+<p>This is a “list” (we shall see a lot more of this when we start working in <tt>R</tt>). As mentioned in the class, it is generally a good idea to keep the code general and then pass values that can be changed separately, rather than “hard-coding” them in the model code. In this simple case, however, you could “fix” the values of the parameters into the model code, as in the following.</p>
+<pre class="r"><code>model {
+   theta ~ dbeta(a,b)                   # prior distribution
+   y ~ dbin(theta,m)                    # sampling distribution
+   y.pred ~ dbin(theta,n)               # predictive distribution
+   P.crit &lt;- step(y.pred - ncrit + 0.5) # =1 if y.pred &gt;= ncrit,
+   y &lt;- 15                              #  0 otherwise
+}</code></pre>
+<p>If you wanted to use this latter format, you would not need to pass <tt>BUGS</tt> any data, because all the relevant numbers would be included in the model code. Notice <tt>BUGS</tt> accepts a `<code>double'' definition for the node</code>y` — first as a random variable associated with a Binomial distribution and then as a fixed number (15, indicating the observed number of successess in the current trial). In general, however, you need to be careful — for example it is not possible to define a node twice with the same nature (i.e. twice as observed data, or twice with two different probabilistic assignments).</p>
+<p>Finally, the <code>odc</code> file contains the list for the initial values. In a <tt>BUGS</tt> file, all variables that are associated with a probabilistic statement (i.e. a “<code>~</code>” symbol after the variable name) <strong>and</strong> are <em>not</em> observed need to be initialised so that <tt>BUGS</tt> can run the Gibbs sampler. So, in this particular case, although <code>y</code> is defined as a random variable, because it is also observed, then there is no uncertainty about its value and so we should not initialise it. Conversely, although <code>y.pred</code> has exactly the same nature as <code>y</code>, because it is not observed, then we need to initialise it. In the <code>odc</code> file we actually let <tt>BUGS</tt> do this (effectively when clicking the <code>gen init</code> button in the <code>Specification tool</code>), but we do provide initial values for the other unobserved, random node, <code>theta</code>.</p>
+<p>For the same reason mentioned above, <tt>BUGS</tt> does not let us monitor the node <code>y</code> — it has been already observed, so, as said above, there is nothing more to learn about it. It can be only used to learn about <code>theta</code>, <code>y.pred</code> and <code>P.crit</code>, which will all be associated with a posterior distribution, given the evidence provided by the fact that <span class="math inline">\(y=15\)</span> out of <span class="math inline">\(m=20\)</span> trials.</p>
+<p>When we actually run the model, we can monitor the relevant nodes and produce the following summary statistics.</p>
+<pre><code>         mean     sd   2.5%    25%    50%    75%  97.5% Rhat n.eff
+y.pred 22.578 4.2649 14.000 20.000 23.000 25.000 31.000    1 10000
+theta   0.563 0.0749  0.414  0.512  0.563  0.614  0.706    1 10000
+P.crit  0.330 0.4701  0.000  0.000  0.000  1.000  1.000    1 10000</code></pre>
+<p>These indicate that, given current evidence, we revise our uncertainty about the true success rate of the drug from a distribution centered on 0.4 and with most of the mass in [0.2; 0.6] to another centered around 0.563 and with most of the probability mass included in [0.414; 0.706].</p>
+<p>In fact, because we are using a Beta prior combined with a Binomial sampling distribution, then the model is <em>conjugated</em> and so we <strong>know</strong> that the form of the posterior distribution is another Beta (as seen in class), where the update from prior to posterior only involves the value of its parameters. This implies that we don’t need to worry about convergence of the MCMC model. This is confirmed by the inspection of the traceplots.</p>
+<div style="overflow:hidden;">
+<div style="float: left;margin-left: 20px;margin-top: 0px;margin-bottom:0px; width: 48%;">
+<p><img src="/practical/02_mcmc/solutions_files/figure-html/unnamed-chunk-9-1.png" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+<div style="float: left;margin-left: 20px;margin-top: 0px;margin-bottom:0px; width: 48%;">
+<p><img src="/practical/02_mcmc/solutions_files/figure-html/unnamed-chunk-10-1.png" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<p>In all cases, already at iteration 1 of the MCMC the two chains that we’ve run in parallel are on top of each other and evidently visiting the same portion of the parametric space.</p>
+<p>As for <code>y.pred</code> and <code>P.crit</code> we can see that the expected number of successes in the next phase of the trial is around 23 and the probability of exceeding the critical threshold (25) is 32.97.</p>
+Notice finally that we can also look at the convergence statistics, <span class="math inline">\(\hat{R}\)</span> (<code>Rhat</code>, the Potential Scale Reduction, also known as “Gelman-Rubin Statistic”) and the effective sample size <span class="math inline">\(n_{\text{eff}}\)</span> (<code>n.eff</code>). The former has a value of 1 for all the nodes — again, given the fact that the model is conjugate, this is not surprising. The model does not present problems in terms of autocorrelation. The following graphs show the autocorrelation plot for the monitored nodes.
+<div style="overflow:hidden;">
+<div style="float: left;margin-left: 20px;margin-top: 0px;margin-bottom:0px; width: 48%;">
+<p><img src="/practical/02_mcmc/solutions_files/figure-html/unnamed-chunk-11-1.png" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+<div style="float: left;margin-left: 20px;margin-top: 0px;margin-bottom:0px; width: 48%;">
+<p><img src="/practical/02_mcmc/solutions_files/figure-html/unnamed-chunk-12-1.png" width="80%" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<p>The way in which we need to interpret these is to look at the level of autocorrelation across different lags. These indicate how much correlation exists across consecutive, lagged simulations in the MCMC procedure. It is expected that consecutive iterations be relatively correlated (if you recall how the Gibbs sampling is constructed, you should realise that the <span class="math inline">\(s-\)</span>th simulated value for the <span class="math inline">\(p-\)</span>th parameter <span class="math inline">\(\theta_p^{(s)}\)</span> depends on the distribution at the <span class="math inline">\((s-1)-\)</span>th run for all the other parameters). But it is also expected that this level of correlation should fade away as you consider simulations that are further apart. So if the autocorrelation graph looks like the ones above, you can say that actually the simulations are close to a series of independent values because the autocorrelation is very low, in fact at low lags as well.</p>
+<p>In our case, we that the model converges (because of conjugacy), so it is not surprising to see these graphs. Numerically, when the effective sample size is “close enough” the the nominal sample size (i.e. the number of iterations you use to draw your inference), then autocorrelation is not a problem. In this case, we have considered 2 chains, each with 5000 iterations (so a total of 10000). The value of <code>n.eff</code> is 10000 for <code>y.pred</code>, 10000 for <code>theta</code> and 10000 for <code>P.crit</code>. Clearly, the ratio of effective to nominal sample size is then 1, 1 and 1, which clearly indicate no issues.</p>
+</div>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Next</div>
+    <a href="/practical/02_mcmc/covid/" rel="prev">Covid vaccine: Bayesian modelling</a>
+  </div>
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          
+          
+
+          
+
+
+          
+          
+          
+          
+          
+
+
+          
+
+
+
+
+          
+
+
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+    
+      &copy;  2022-2024 &middot;
+
+    Based on
+    <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a>
+    
+    
+    (version 5.3.0)
+    
+    for <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
+    
+    
+    <i><b>Latest update: 23 Jun 2022 </i></b>
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/en/js/wowchemy.min.50d3bf3df0c53b31631bb48a62b35f92.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

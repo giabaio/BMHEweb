@@ -1,0 +1,1760 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.3.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Gianluca Baio" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="2. Individual level data on event history and Markov models In this case, we consider individual level data, e.g. derived from a randomised study, in which patients have been:" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="/practical/09_mm/solutions/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+      
+    
+
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.3ef10ad94e43ba7ad3f08b0b007578ae.css" />
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="/practical/09_mm/solutions/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+  <meta property="og:site_name" content="Bayesian methods in health economics" />
+  <meta property="og:url" content="/practical/09_mm/solutions/" />
+  <meta property="og:title" content="Practical 9. Markov models — SOLUTIONS | Bayesian methods in health economics" />
+  <meta property="og:description" content="2. Individual level data on event history and Markov models In this case, we consider individual level data, e.g. derived from a randomised study, in which patients have been:" /><meta property="og:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" />
+    <meta property="twitter:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2021-01-10T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2022-06-22T15:15:00&#43;00:00">
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Practical 9. Markov models — SOLUTIONS | Bayesian methods in health economics</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="a0d52c4f27efcd354cf3f4d1ccc3fff8" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.da42964e270e05a6063fbca894d7ccff.js"></script>
+
+  
+
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container-xl">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+          
+          ></a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+        
+        ></a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#timetable"><span>Timetable</span></a>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Slides</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/slides/01_Intro"><span>Introduction</span></a>
+            
+              <a class="dropdown-item" href="/slides/02_MCMC"><span>Bayesian computation</span></a>
+            
+              <a class="dropdown-item" href="/slides/03_Intro_HE"><span>Introduction to Health Economics</span></a>
+            
+              <a class="dropdown-item" href="/slides/04_ILD"><span>Individual level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/05_ALD"><span>Aggregated level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/06_NMA"><span>Network meta-analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/07_Model_uncertainty"><span>Model error and structural analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/08_Survival"><span>Survival modelling in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/09_MM"><span>Markov models</span></a>
+            
+              <a class="dropdown-item" href="/slides/10_Missing"><span>Missing data in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/11_VoI"><span>Introduction to Value of information</span></a>
+            
+              <a class="dropdown-item" href="/slides/12_EVPPI"><span>Expected value of partial information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture13/13_EVSI.pdf"><span>Expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture14/14_Data_EVSI.pdf"><span>Generating data for the analysis of the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture15/15_EVSI_MC.pdf"><span>Calculating expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture16/16_EVSI_regression.pdf"><span>Regression-based EVSI</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Practicals</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/practical/01_monte-carlo"><span>Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/02_mcmc"><span>MCMC</span></a>
+            
+              <a class="dropdown-item" href="/practical/03_bcea"><span>Cost-effectiveness analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/04_ild"><span>HTA with individual level data</span></a>
+            
+              <a class="dropdown-item" href="/practical/05_ald"><span>Evidence synthesis and decision models</span></a>
+            
+              <a class="dropdown-item" href="/practical/06_nma"><span>NMA</span></a>
+            
+              <a class="dropdown-item" href="/practical/07_structural"><span>PSA to structural uncertainty</span></a>
+            
+              <a class="dropdown-item" href="/practical/08_survival"><span>Survival analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/09_mm"><span>Markov and multistate models</span></a>
+            
+              <a class="dropdown-item" href="/practical/10_missing"><span>Missing data</span></a>
+            
+              <a class="dropdown-item" href="/practical/11_intro_voi"><span>Computing the EVPI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/12_evppi"><span>Computing the EVPPI in BCEA and SAVI</span></a>
+            
+              <a class="dropdown-item" href="/practical/13_data_evsi"><span>Generating data for the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/practical/14_evsi_mc"><span>Computing the EVSI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/15_evsi_regression"><span>Computing the EVSI using regression</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Instructions</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/tips/computer-specification"><span>Computer specification</span></a>
+            
+              <a class="dropdown-item" href="/tips/using-bugs"><span>Using BUGS</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/publication"><span>Reading list</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          9. Markov models
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <ul class="nav docs-sidenav">
+        <li class=""><a href="/practical/"></a></li>
+    
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/01_monte-carlo/">1. Monte Carlo</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/01_monte-carlo/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/02_mcmc/">2. MCMC</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/02_mcmc/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/covid/">Covid</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/tutorial/">MCMC Tutorial</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/03_bcea/">3. Intro-HE</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/03_bcea/solutions/">Solution</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/04_ild/">4. ILD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/04_ild/tutorial-regression/">Regression Tutorial</a></li>
+
+
+
+  <li class=""><a href="/practical/04_ild/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/05_ald/">5. ALD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/05_ald/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/06_nma/">6. NMA</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/06_nma/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/07_structural/">7. PSA to structural uncertainty</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/07_structural/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/08_survival/">8. Survival</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/08_survival/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/09_mm/">9. Markov models</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class="active"><a href="/practical/09_mm/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/09_mm/cohort-model/">Cohort discrete Markov model</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/10_missing/">10. Missing data</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/10_missing/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/11_intro_voi/">11. EVPI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/12_evppi/">12. EVPPI in BCEA &amp; SAVI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/13_data_evsi/">13 Generating data for EVSI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/14_evsi_mc/">14. EVSI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/15_evsi_regression/">15. EVSI using regression</a>
+    
+
+    
+      </div>
+    
+
+      
+    
+
+    
+      </ul>
+    
+
+  
+</nav>
+    </div>
+
+    <main class="col-10 docs-content" role="main">
+      <article class="article">
+
+        <div class="docs-article-container">
+          <h1>Practical 9. Markov models — SOLUTIONS</h1>
+          
+          
+          
+          
+          
+
+
+
+
+<div class="btn-links mb-3">
+  
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/slides/09_MM" >
+    Lecture 09</a>
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/practical/09_mm/solutions9.pdf" >
+    <i class="fas fa-file-pdf mr-1"></i>PDF version</a>
+
+
+</div>
+
+
+          <br>
+          
+          <div class="article-style">
+            
+<script src="/rmarkdown-libs/kePrint/kePrint.js"></script>
+<link href="/rmarkdown-libs/lightable/lightable.css" rel="stylesheet" />
+
+
+<div id="individual-level-data-on-event-history-and-markov-models" class="section level2">
+<h2>2. Individual level data on event history and Markov models</h2>
+<p>In this case, we consider individual level data, e.g. derived from a randomised study, in which patients have been:</p>
+<ol style="list-style-type: decimal">
+<li>Randomised to either standard of care (<span class="math inline">\(t=0\)</span>) or an innovative <a href="https://en.wikipedia.org/wiki/Cancer_immunotherapy">immuno-oncologic</a> drug;<br />
+</li>
+<li>Followed up for a period of time during which their “event history” has been recorded. In particular, we know whether or not the individuals have “<em>progressed</em>” to a more serious stage of the cancer (and in that case, the time since enrollement at which this has been confirmed), as well as whether or not the individual has “<em>died</em>” (again with the exact time of death being recorded).</li>
+</ol>
+As shown in class, the data look like this.
+<table class=" lightable-classic table" style="font-family: &quot;Arial Narrow&quot;, &quot;Source Sans Pro&quot;, sans-serif; margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:center;">
+Patient
+</th>
+<th style="text-align:center;">
+Treatment
+</th>
+<th style="text-align:center;">
+Progression?
+</th>
+<th style="text-align:center;">
+Death?
+</th>
+<th style="text-align:center;">
+Progression time
+</th>
+<th style="text-align:center;">
+Death time
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+31.99
+</td>
+<td style="text-align:center;">
+32.00
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+30.55
+</td>
+<td style="text-align:center;">
+30.60
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+<span class="math inline">\(\ldots\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\ldots\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\ldots\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\ldots\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\ldots\)</span>
+</td>
+<td style="text-align:center;">
+<span class="math inline">\(\ldots\)</span>
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0.17
+</td>
+<td style="text-align:center;">
+0.46
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+1.27
+</td>
+<td style="text-align:center;">
+1.57
+</td>
+</tr>
+<tr>
+<td style="text-align:center;border-bottom: 2px solid;">
+<span class="math inline">\(\ldots\)</span>
+</td>
+<td style="text-align:center;border-bottom: 2px solid;">
+<span class="math inline">\(\ldots\)</span>
+</td>
+<td style="text-align:center;border-bottom: 2px solid;">
+<span class="math inline">\(\ldots\)</span>
+</td>
+<td style="text-align:center;border-bottom: 2px solid;">
+<span class="math inline">\(\ldots\)</span>
+</td>
+<td style="text-align:center;border-bottom: 2px solid;">
+<span class="math inline">\(\ldots\)</span>
+</td>
+<td style="text-align:center;border-bottom: 2px solid;">
+<span class="math inline">\(\ldots\)</span>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The time is recorded in months; from the modelling point of view, this is not a problem; however, for the sake of running the Markov model for a “lifetime horizon”, it may be more efficient to convert the times in, say, years — this means that the values are rescaled (by 12, in this case) and so the overall number of cycles becomes smaller (so, instead of running the Markov model for 120 months, which implies a relatively large computational burden), we can do it for 10 years.</p>
+<p>As shown in class, this dataset has the advantage of using the nature of the data — for each individual we know whether and when they experience the two events of interest (progression and death). This is not possible when we use digitised data on PFS and OS separately. However to run the analysis, we need to convert the data to a suitable format (often referred to as “multistate”). For example, we can use the <a href="https://www.tidyverse.org/">tidyverse</a> and re-arrange the data in a very efficient way.</p>
+<pre class="r"><code># &#39;tidyverse&#39; code to re-arrange the data in &quot;multistate&quot; format
+msmdata=
+  # Transition Pre to Post
+  data %&gt;% mutate(                                                        # use the original data and start making changes to them
+  id=patid,                                                               # patient ID
+  from=1,                                                                 # starting state (1=&quot;Pre-progression&quot;)
+  to=2,                                                                   # arriving state (2=&quot;Progressed&quot;)
+  trans=1,                                                                # transition ID (1=&quot;Pre-progression -&gt; Progressed&quot;)
+  Tstart=0,                                                               # entry time
+  Tstop=prog_t,                                                           # exit time (time at which the event happens)
+  time=Tstop-Tstart,                                                      # observed time
+  status=case_when(                                                       # event indicator
+    prog==1~1,                                                            #   if progressed then 1
+    TRUE~0                                                                #   otherwise 0 (censored for progression)
+  ),
+  treat=treat                                                             # treatment arm
+) %&gt;% select(id,from,to,trans,Tstart,Tstop,time,status,treat) %&gt;%         # selects only the relevant columns (for simplicity)
+  bind_rows(                                                              # stack these new rows below those selected above
+  # Transition Pre to Death
+    data %&gt;% mutate(                                                      # use the original data and start making changes to them
+      id=patid,                                                           # patient ID
+      from=1,                                                             # starting state (1=&quot;Pre-progression&quot;)
+      to=3,                                                               # arriving state (3=&quot;Death&quot;)
+      trans=2,                                                            # transition ID (2=&quot;Pre-progression -&gt; Death&quot;)
+      Tstart=0,                                                           # entry time
+      Tstop=death_t,                                                      # exit time (time at which the event happens)
+      time=Tstop-Tstart,                                                  # observed time
+      status=case_when(                                                   # event indicator
+        (death==1 &amp; prog_t==death_t)~1,                                   #   if death then 1
+        TRUE~0                                                            #   otherwise 0 (censored for death)
+      ),
+      treat=treat                                                         # treatment arm
+    ) %&gt;% select(id,from,to,trans,Tstart,Tstop,time,status,treat)         # selects only the relevant columns (for simplicity)
+  ) %&gt;% 
+  bind_rows(                                                              # stack these new rows below those selected above
+  # Transition Post to Death
+    data %&gt;% filter(prog==1) %&gt;% mutate(                                  # use the original data, but **filter only those who have progressed**
+      id=patid,                                                           # patient ID
+      from=2,                                                             # starting state (2=&quot;Progressed&quot;)
+      to=3,                                                               # arriving state (3=&quot;Death&quot;)
+      trans=3,                                                            # transition ID (3=&quot;Progressed -&gt; Death&quot;)
+      Tstart=prog_t,                                                      # entry time. NB: this time is the time of progression!
+      Tstop=death_t,                                                      # exit time (time at which the event happens). NB: this time it&#39;s death!
+      time=Tstop-Tstart,                                                  # observed time
+      status=case_when(                                                   # event indicator
+        death==1~1,                                                       #   if death then 1
+        TRUE~0                                                            #   otherwise 0 (censored for death **after progression**)
+      ),
+      treat=treat                                                         # treatment arm
+    ) %&gt;% select(id,from,to,trans,Tstart,Tstop,time,status,treat)         # selects only the relevant columns (for simplicity)
+  ) %&gt;% arrange(id,trans)
+
+# Visualise the data
+msmdata</code></pre>
+<pre><code>## # A tibble: 1,868 × 9
+##       id  from    to trans Tstart Tstop     time status treat
+##    &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt;
+##  1     1     1     2     1    0   32.0  32.0          1     1
+##  2     1     1     3     2    0   32    32            0     1
+##  3     1     2     3     3   32.0 32     0.00920      0     1
+##  4     2     1     2     1    0   30.6  30.6          1     1
+##  5     2     1     3     2    0   30.6  30.6          0     1
+##  6     2     2     3     3   30.6 30.6   0.0476       0     1
+##  7     3     1     2     1    0   27.9  27.9          1     1
+##  8     3     1     3     2    0   28    28            0     1
+##  9     3     2     3     3   27.9 28     0.0944       0     1
+## 10     4     1     2     1    0    2.88  2.88         1     0
+## # … with 1,858 more rows</code></pre>
+<p>We can now run three separate survival analyses for each of the three transitions, for instance using <code>survHE</code> (but you don’t have to do this — in case you need it, notice that <code>survHE</code> is installed in the <a href="../../tips/#virtual-machine">Binder remote server</a>). This step is <strong>much</strong> more complicated than shown here. For example, we would need to test several parametric models (as discussed in <a href="../../slides/06_Survival">Lecture 6</a>). Then we would need to validate the different models — on the basis of their fit to the observed data, but more importantly in relation to the <strong>extrapolation</strong> over times that have not been observed.</p>
+<p>In this case, we can simplify things and assume that, for all three models (PFS, OS and OS after progression, which we indicate respectively as <code>m_12</code>, <code>m_13</code> and <code>m_23</code> — the reason for this terminology will be obvious later), we select a Gompertz distribution as the best one. In <code>survHE</code>, the models would be fitted using the following commands.</p>
+<pre class="r"><code># Loads survHE
+library(survHE)</code></pre>
+<pre><code>## Loading required package: flexsurv</code></pre>
+<pre><code>## Loading required package: survival</code></pre>
+<pre><code>## 
+## Attaching package: &#39;survHE&#39;</code></pre>
+<pre><code>## The following objects are masked _by_ &#39;.GlobalEnv&#39;:
+## 
+##     data, msmdata</code></pre>
+<pre class="r"><code># Runs survival models on the specific subsets to obtain estimate of the various transition probabilities
+m_12=fit.models(Surv(time,status)~as.factor(treat),              # model &#39;formula&#39;: defines the time and censoring indicator and the covariates
+                data=msmdata %&gt;% filter(trans==1),               # subsets the msmdata by filtering transition number 1 (pre-progression-&gt;progressed)
+                distr=&quot;gom&quot;,                                     # selects the Gompertz model
+                method=&quot;hmc&quot;,                                    # instructs R to use HMC/Bayesian modelling
+                priors=list(gom=list(a_alpha=1.5,b_alpha=1.5)))  # specifies the informative prior
+
+m_13=fit.models(Surv(time,status)~as.factor(treat),              # model &#39;formula&#39;: defines the time and censoring indicator and the covariates
+                data=msmdata %&gt;% filter(trans==2),               # subsets the msmdata by filtering transition number 2 (pre-progression-&gt;death)
+                distr=&quot;gom&quot;,                                     # selects the Gompertz model
+                method=&quot;hmc&quot;,                                    # instructs R to use HMC/Bayesian modelling
+                priors=list(gom=list(a_alpha=1.5,b_alpha=1.5)))  # specifies the informative prior
+
+m_23=fit.models(Surv(time,status)~as.factor(treat),              # model &#39;formula&#39;: defines the time and censoring indicator and the covariates
+                data=msmdata %&gt;% filter(trans==3),               # subsets the msmdata by filtering transition number 3 (progressed-&gt;death)
+                distr=&quot;gom&quot;,                                     # selects the Gompertz model
+                method=&quot;hmc&quot;,                                    # instructs R to use HMC/Bayesian modelling
+                priors=list(gom=list(a_alpha=1.5,b_alpha=1.5)))  # specifies the informative prior```</code></pre>
+<p>When we fit these models, we obtain the estimates for the model parameters (which in the case of the Gompertz are the shape <span class="math inline">\(\alpha\)</span> and the rate <span class="math inline">\(\mu\)</span>). These can be used to reconstruct the full survival curves for an arbitrary time interval — for example in the case of the Gompertz model, for any given time <span class="math inline">\(t\)</span>, the survival curve is
+<span class="math display">\[S(t) = 1-\exp\left(-\frac{\mu}{\alpha} \exp(\alpha t)-1\right).\]</span></p>
+<p>In <code>survHE</code> the function <code>make.surv</code> can be used to construct <code>nsim</code> simulations of the survival curves for any specific interval of time <code>t=...</code>. Once these are obtained, we can use them to compute the approximated transition probabilities using the formula
+<span class="math display">\[\lambda_{s&#39;sj}\approx 1-\frac{S_{t+k}}{S_t}\]</span>
+for a given pair of times <span class="math inline">\(t\)</span> and <span class="math inline">\(t+k\)</span>.</p>
+<p>The script provided contains a few functions that code up this process. We can load up the functions contained in the script <code>survHE_utils.R</code>; these essentially use <code>dplyr</code> and <code>ggplot2</code> to manipulate the output of the models using the following steps.</p>
+<ol style="list-style-type: decimal">
+<li>Compute the survival curves using the <code>make.surv</code> function in <code>survHE</code><br />
+</li>
+<li>Use the approximation formula to translate these into the probabilities <span class="math inline">\(\lambda_{12}\)</span> (transition from Pre-progression to Progressed), <span class="math inline">\(\lambda_{13}\)</span> (transition from Pre-progressed to Death) and <span class="math inline">\(\lambda_{23}\)</span> (transition from Progressed to Death).<br />
+</li>
+<li>Run the specialised function <code>three_state_mm</code> that:<br />
+</li>
+</ol>
+<ul>
+<li>first completes the transition matrix by retrieving the remaining transition probabilities (<span class="math inline">\(\lambda_{11}=1-\lambda_{12}-\lambda_{13}\)</span> and <span class="math inline">\(\lambda_{22}=1-\lambda_{23}\)</span>;<br />
+</li>
+<li>then move people around according to the Markov matrix algebra.<br />
+</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li>Run the specialised function <code>markov_trace</code> to manipulate the resulting state occupancy tibble and then use <code>ggplot2</code> to plot the Markov trace.</li>
+</ol>
+<pre class="r"><code># Sources the specialised functions
+source(&quot;survHE_utils.R&quot;)
+
+# Then run the Markov model using the specialised function &#39;three_state_mm&#39;
+mm=three_state_mm(
+  m_12,m_13,m_23,         # these are the three objects containing the parameters estimates
+  t=seq(0,130),           # specifies that the Markov model needs to be run for discrete times from 0 to 130 (months)
+  nsim=1,                 # only uses 1 simulation from the distribution of the model parameters (the mean)
+  start=c(1000,0,0)       # initial population: 1000 in pre-progression, 0 in progressed and 0 in death
+)</code></pre>
+<p>We can visualise the resulting object</p>
+<pre class="r"><code>mm</code></pre>
+<pre><code>## $m
+## # A tibble: 260 × 11
+##    treat     t `Pre-progressed` Progressed Death sim_idx lambda_11 lambda_12
+##    &lt;int&gt; &lt;int&gt;            &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;   &lt;int&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+##  1     1     1            1000        0     0          1     0.993   0.00506
+##  2     1     2             993.       5.06  1.67       1     0.993   0.00527
+##  3     1     3             986.      10.2   3.45       1     0.993   0.00550
+##  4     1     4             979.      15.4   5.33       1     0.993   0.00574
+##  5     1     5             972.      20.7   7.32       1     0.992   0.00599
+##  6     1     6             964.      26.1   9.43       1     0.992   0.00625
+##  7     1     7             957.      31.6  11.7        1     0.992   0.00652
+##  8     1     8             949.      37.2  14.0        1     0.991   0.00680
+##  9     1     9             941.      42.8  16.5        1     0.991   0.00710
+## 10     1    10             932.      48.6  19.1        1     0.991   0.00740
+## # … with 250 more rows, and 3 more variables: lambda_13 &lt;dbl&gt;, lambda_22 &lt;dbl&gt;,
+## #   lambda_23 &lt;dbl&gt;
+## 
+## $running_time
+## Time difference of 0.121031 secs
+## 
+## $base_case
+## NULL</code></pre>
+<p>This includes three elements:</p>
+<ol style="list-style-type: decimal">
+<li>The tibble <code>m</code>; this includes the state occupancy as well as the value of the relevant transition probabilities for each time point in the “virtual follow up”.<br />
+</li>
+<li>The running time; this is a function of the number of simulations used — in this case, we’re only using <code>nsim</code>=1 and so the computation is very fast. Note that in general, running this <code>R</code> is more efficient than any implementation in spreadsheets.<br />
+</li>
+<li>The user can instruct <code>R</code> to also compute the Markov model for the “base-case” scenario, which is essentially the same as the case with <code>nsim</code>=1. So in this case, the element <code>base_case</code> is not computed and it is set to <code>NULL</code>.</li>
+</ol>
+<p>Finally, we can visualise the results using the following code.</p>
+<pre class="r"><code>markov_trace(mm)</code></pre>
+<p><img src="/practical/09_mm/solutions_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="note-on-using-survhe" class="section level2">
+<h2>Note on using survHE</h2>
+<p>The code above uses the current <code>CRAN</code> version of <code>survHE</code>, which you can install by using the <code>R</code> command <code>install.packages('survHE')</code> or from the GitHub repository <code>remotes::install_github('giabaio/survHE')</code> – assuming you have installed <code>remotes</code> (check <a href="../../../tips/computer-specification">here</a> for more details on <code>remotes</code>).</p>
+<p><code>survHE</code> is a bit of a complicated package – it’s not like most of its functions are difficult, it’s just that it is designed to “wrap up” complex packages doing the survival modelling. In particular, the two Bayesian versions are performed using very structured and heavy <code>R</code> packages (<code>rstan</code> and <code>INLA</code>), which means that its installation can be long. If you’re on the <a href="../../../tips/computer-specification#virtual-machine">Binder VM</a>, the installation of the whole thing may break it. In that case, you can resort to doing a “cheat” and installing the frequentist module only. You can do this by using the <code>R</code> command <code>remotes::install_github("giabaio/survHE",ref="devel")</code>. Note that in this case we use the extra option <code>ref="devel"</code>, which instructs <code>R</code> to install the version contained in the GitHub branch named <code>devel</code>, which contains the code to run the frequentist version of the models, only.</p>
+<p>In this case, you will need to slightly modify the code above, to remove the reference to the <code>"hmc"</code> method. For instance, you need to modify the call to <code>fit.models</code> to the following</p>
+<pre class="r"><code>m_12=fit.models(Surv(time,status)~as.factor(treat),              # model &#39;formula&#39;: defines the time and censoring indicator and the covariates
+                data=msmdata %&gt;% filter(trans==1),               # subsets the msmdata by filtering transition number 1 (pre-progression-&gt;progressed)
+                distr=&quot;gom&quot;                                      # selects the Gompertz model
+)</code></pre>
+<p>(notice the removal to the <code>prior</code> argument too: this is a frequentist model, so there’s no space for priors…).</p>
+</div>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Next</div>
+    <a href="/practical/09_mm/cohort-model/" rel="prev">Cohort discrete Markov model</a>
+  </div>
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          
+          
+
+          
+
+
+          
+          
+          
+          
+          
+
+
+          
+
+
+
+
+          
+
+
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+    
+      &copy;  2022-2024 &middot;
+
+    Based on
+    <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a>
+    
+    
+    (version 5.3.0)
+    
+    for <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
+    
+    
+    <i><b>Latest update: 23 Jun 2022 </i></b>
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/en/js/wowchemy.min.50d3bf3df0c53b31631bb48a62b35f92.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

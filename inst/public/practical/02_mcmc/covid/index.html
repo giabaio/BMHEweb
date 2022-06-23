@@ -1,0 +1,1479 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.3.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Gianluca Baio" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Description In the wake of the COVID-19 pandemic, several biotechnology and pharmaceutical companies have started collaborating on the development of a vaccine, in an unprecedented effort to deliver vital innovation in a short amount of time." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="/practical/02_mcmc/covid/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+      
+    
+
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.3ef10ad94e43ba7ad3f08b0b007578ae.css" />
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="/practical/02_mcmc/covid/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+  <meta property="og:site_name" content="Bayesian methods in health economics" />
+  <meta property="og:url" content="/practical/02_mcmc/covid/" />
+  <meta property="og:title" content="Covid vaccine: Bayesian modelling | Bayesian methods in health economics" />
+  <meta property="og:description" content="Description In the wake of the COVID-19 pandemic, several biotechnology and pharmaceutical companies have started collaborating on the development of a vaccine, in an unprecedented effort to deliver vital innovation in a short amount of time." /><meta property="og:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" />
+    <meta property="twitter:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+    
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Covid vaccine: Bayesian modelling | Bayesian methods in health economics</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="726b6aab35f6f7accb550a08a6a4e753" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.da42964e270e05a6063fbca894d7ccff.js"></script>
+
+  
+
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container-xl">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+          
+          ></a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+        
+        ></a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#timetable"><span>Timetable</span></a>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Slides</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/slides/01_Intro"><span>Introduction</span></a>
+            
+              <a class="dropdown-item" href="/slides/02_MCMC"><span>Bayesian computation</span></a>
+            
+              <a class="dropdown-item" href="/slides/03_Intro_HE"><span>Introduction to Health Economics</span></a>
+            
+              <a class="dropdown-item" href="/slides/04_ILD"><span>Individual level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/05_ALD"><span>Aggregated level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/06_NMA"><span>Network meta-analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/07_Model_uncertainty"><span>Model error and structural analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/08_Survival"><span>Survival modelling in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/09_MM"><span>Markov models</span></a>
+            
+              <a class="dropdown-item" href="/slides/10_Missing"><span>Missing data in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/11_VoI"><span>Introduction to Value of information</span></a>
+            
+              <a class="dropdown-item" href="/slides/12_EVPPI"><span>Expected value of partial information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture13/13_EVSI.pdf"><span>Expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture14/14_Data_EVSI.pdf"><span>Generating data for the analysis of the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture15/15_EVSI_MC.pdf"><span>Calculating expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture16/16_EVSI_regression.pdf"><span>Regression-based EVSI</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Practicals</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/practical/01_monte-carlo"><span>Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/02_mcmc"><span>MCMC</span></a>
+            
+              <a class="dropdown-item" href="/practical/03_bcea"><span>Cost-effectiveness analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/04_ild"><span>HTA with individual level data</span></a>
+            
+              <a class="dropdown-item" href="/practical/05_ald"><span>Evidence synthesis and decision models</span></a>
+            
+              <a class="dropdown-item" href="/practical/06_nma"><span>NMA</span></a>
+            
+              <a class="dropdown-item" href="/practical/07_structural"><span>PSA to structural uncertainty</span></a>
+            
+              <a class="dropdown-item" href="/practical/08_survival"><span>Survival analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/09_mm"><span>Markov and multistate models</span></a>
+            
+              <a class="dropdown-item" href="/practical/10_missing"><span>Missing data</span></a>
+            
+              <a class="dropdown-item" href="/practical/11_intro_voi"><span>Computing the EVPI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/12_evppi"><span>Computing the EVPPI in BCEA and SAVI</span></a>
+            
+              <a class="dropdown-item" href="/practical/13_data_evsi"><span>Generating data for the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/practical/14_evsi_mc"><span>Computing the EVSI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/15_evsi_regression"><span>Computing the EVSI using regression</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Instructions</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/tips/computer-specification"><span>Computer specification</span></a>
+            
+              <a class="dropdown-item" href="/tips/using-bugs"><span>Using BUGS</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/publication"><span>Reading list</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          2. MCMC
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <ul class="nav docs-sidenav">
+        <li class=""><a href="/practical/"></a></li>
+    
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/01_monte-carlo/">1. Monte Carlo</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/01_monte-carlo/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/02_mcmc/">2. MCMC</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/02_mcmc/solutions/">Solutions</a></li>
+
+
+
+  <li class="active"><a href="/practical/02_mcmc/covid/">Covid</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/tutorial/">MCMC Tutorial</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/03_bcea/">3. Intro-HE</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/03_bcea/solutions/">Solution</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/04_ild/">4. ILD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/04_ild/tutorial-regression/">Regression Tutorial</a></li>
+
+
+
+  <li class=""><a href="/practical/04_ild/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/05_ald/">5. ALD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/05_ald/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/06_nma/">6. NMA</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/06_nma/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/07_structural/">7. PSA to structural uncertainty</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/07_structural/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/08_survival/">8. Survival</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/08_survival/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/09_mm/">9. Markov models</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/09_mm/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/09_mm/cohort-model/">Cohort discrete Markov model</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/10_missing/">10. Missing data</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/10_missing/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/11_intro_voi/">11. EVPI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/12_evppi/">12. EVPPI in BCEA &amp; SAVI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/13_data_evsi/">13 Generating data for EVSI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/14_evsi_mc/">14. EVSI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/15_evsi_regression/">15. EVSI using regression</a>
+    
+
+    
+      </div>
+    
+
+      
+    
+
+    
+      </ul>
+    
+
+  
+</nav>
+    </div>
+
+    <main class="col-10 docs-content" role="main">
+      <article class="article">
+
+        <div class="docs-article-container">
+          <h1>Covid vaccine: Bayesian modelling</h1>
+          
+          
+          
+          
+          
+
+
+
+
+<div class="btn-links mb-3">
+  
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/slides/02_MCMC" >
+    Lecture 2</a>
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/practical/02_mcmc/covid.pdf" >
+    <i class="fas fa-file-pdf mr-1"></i>PDF version</a>
+
+
+</div>
+
+
+          <br>
+          
+          <div class="article-style">
+            
+
+
+<div id="description" class="section level2">
+<h2>Description</h2>
+<p>In the wake of the COVID-19 pandemic, several biotechnology and pharmaceutical companies have started collaborating on the development of a vaccine, in an unprecedented effort to deliver vital innovation in a short amount of time. The first vaccine to be approved by the FDA in December 2020 was the one developed jointly by German biotech company BioNTech and US pharmaceutical giant Pfizer. The development of the vaccine was based on a Phase I/II/III multicenter, placebo-controlled trial to evaluate the safety, tolerability, immunogenicity and efficacy of the candidate vaccine.</p>
+<p>The Phase II/III study was designed using a Bayesian approach based on the following setup. There are two arms: one is randomised to receive two doses of a placebo, while the active arm receives two doses of the candidate vaccine. The data relevant for the efficacy analysis are the number of individuals who in each arm are confirmed COVID-19 cases, over the total number of individuals randomised to the specific arm. This can be formalised as <span class="math inline">\(y_{\rm plac}\sim \mbox{Bin}(\pi_{\rm plac}, n_{\rm plac})\)</span> and <span class="math inline">\(y_{\rm vac}\sim \mbox{Bin}(\pi_{\rm vac}, n_{\rm vac})\)</span>, respectively. The actual measure of vaccine efficacy is defined as <span class="math inline">\(\mbox{VE}=\displaystyle\left(1-\frac{\pi_{\rm vac}}{\pi_{\rm plac}}\right)\)</span>, assuming a 1:1 allocation ratio in the two arms and thus <span class="math inline">\(n_{\rm plac}=n_{\rm vac}=N\)</span>.</p>
+<p>However, the analysis is based on a reformulation of the problem: the experimenters actually model <span class="math inline">\(y=y_{\rm vac}=\)</span> number of COVID-19 cases among the individuals in the treatment arm over <span class="math inline">\(n=(y_{\rm vac}+y_{\rm plac})=\)</span> the total number of COVID-19 cases in the two arms. This is modelled as <span class="math inline">\(y \sim \mbox{Bin}(\theta,n)\)</span>, where
+<span class="math display">\[\begin{eqnarray}
+\theta&amp; = &amp; \displaystyle\frac{\pi_{\rm vac}}{\pi_{\rm vac}+\pi_{\rm plac}} \nonumber \\
+&amp; = &amp; \frac{1-\mbox{VE}}{2-\mbox{VE}}.
+\end{eqnarray}\]</span></p>
+<p>The reason for this seemingly overly-complex (and obscure) setup is that it allows the experimenters to only specify one observational model and, crucially a single prior distribution for the parameter <span class="math inline">\(\theta\)</span> — of course, once <span class="math inline">\(p(\theta\mid {\rm data})\)</span> is available, using the equation above, it is straightforward (e.g. through Monte Carlo simulation) to obtain directly the posterior distribution for the main parameter of interest <span class="math inline">\(p(\mbox{VE}\mid {\rm data})\)</span>.</p>
+</div>
+<div id="sample-size-calculation" class="section level2">
+<h2>Sample size calculation</h2>
+<p>The determination of the sample size calculation is based on a simulation approach. The experimenter looked to determine a sample size large enough to be able to provide a probability exceeding 90% to conclude that <span class="math inline">\(\mbox{VE}&gt;30\%\)</span> with a “high probability” (we note here that the study protocol is vague on the actual threshold selected).</p>
+<p>The simulation excercise proceeds in two steps. Firstly, the experimenters make assumptions about some of the features of the “data generating process”. For instance, in the study protocol, they stipulate a “true” vaccine efficacy <span class="math inline">\(\widehat{\mbox{VE}} =0.6\)</span> (i.e. a reduction by 40% in the infection rate in the vaccine arm, in comparison to the placebo population). This implies that the “true” proportion of COVID-19 cases in the vaccine arm over the total of cases is
+<span class="math display">\[\hat\theta=\displaystyle\frac{1-\widehat{\mbox{VE}}}{2-\widehat{\mbox{VE}}}=0.2857.\]</span></p>
+<p>Using these assumption, we can simulate a large number <span class="math inline">\(S\)</span> (say, 100,000) of potential trial data from the alleged generating process <span class="math inline">\(y^{(s)}\sim \mbox{Bin}(\hat\theta,n)\)</span>, where the superscript <span class="math inline">\((s)\)</span> indicates the <span class="math inline">\(s-\)</span>th simulated dataset and given a fixed value of the overall number of cases <span class="math inline">\(n\)</span>. Typically, we repeat the simulation for a grid of possible values of <span class="math inline">\(n\)</span> (e.g. <span class="math inline">\(n=[10,20,30,40,50,60,70,\ldots]\)</span>).</p>
+<p>Once the hypothetical trial data have been generated, the second step consists in analysing them according to the statistical analysis plan defined in the protocol. In this case, the full model specification is required, which involves defining a prior distribution for <span class="math inline">\(\theta\)</span>.</p>
+<p>For simplicity, the experimenters set a minimally informative Beta prior <span class="math inline">\(\theta \sim \mbox{Beta}(\alpha_0,\beta_0)\)</span>, where the parameters <span class="math inline">\(\alpha_0\)</span> and <span class="math inline">\(\beta_0\)</span> are selected to express the limited amount of information available a priori (recall that <span class="math inline">\(\theta\)</span> represents the proportion of COVID-19 cases occurred in the vaccine group). <a href="../../../slides/02_BUGS/index.html#27">We know</a> that <span class="math inline">\(\mbox{E}[\theta]=\displaystyle\frac{\alpha_0}{\alpha_0+\beta_0}\)</span>. If we fix <span class="math inline">\(\beta_0=1\)</span>, then we can solve for <span class="math inline">\(\alpha_0\)</span> so that the prior mean for <span class="math inline">\(\theta\)</span> is equal to some pre-specified value — in particular, the experimenters had chosen a threshold of <span class="math inline">\(\mbox{VE}=30\%\)</span> as the minimum level of efficacy they were prepared to entertain. This value can be mapped to the scale of <span class="math inline">\(\theta\)</span> as <span class="math inline">\(\displaystyle \frac{1-0.3}{2-0.3}=0.4117\)</span> and thus solving
+<span class="math display">\[\begin{eqnarray*}
+\frac{\alpha_0}{\alpha_0+1} = 0.4117
+\end{eqnarray*}\]</span>
+gives <span class="math inline">\(\alpha_0=0.700102\)</span>.</p>
+<p>Because of <a href="../../../slides/03_MCMC/#18">conjugacy</a>, for each simulated dataset we can easily update the Beta<span class="math inline">\((0.700102,1)\)</span> prior to a Beta<span class="math inline">\((\alpha_1,\beta_1)\)</span> posterior distribution for <span class="math inline">\(\theta\)</span>, where <span class="math inline">\(\alpha_1=0.700102+y^{(s)}\)</span> and <span class="math inline">\(\beta_1=1+n-y^{(s)}\)</span>. Moreover, for each simulation <span class="math inline">\(s\)</span>, we can compute <em>analytically</em> any tail-area probability from <span class="math inline">\(p(\theta\mid{\rm data})\)</span>. Once again, we are really interested in <span class="math inline">\(\Pr(\mbox{VE}&gt;0.3\mid{\rm data})\)</span>, but using the deterministic relationship linking VE to <span class="math inline">\(\theta\)</span>, we can re-express this as
+<span class="math display">\[\begin{eqnarray*}
+\Pr(\mbox{VE}&gt;0.3 \mid{\rm data}) &amp; = &amp; \Pr\left(\frac{1-2\theta}{1-\theta}&gt;0.3\mid{\rm data}\right) \\
+&amp; = &amp; \Pr(\theta&lt;0.4117 \mid {\rm data}),
+\end{eqnarray*}\]</span>
+which can be computed for each simulation <span class="math inline">\(s\)</span>. This produces a large number of simulations that can be used to determine the “power” for a given sample size, as the proportion of times in which this computed probability exceeds a set threshold (i.e. is “large enough” in the phrasing of the study protocol).</p>
+<p>The experimenters compute <span class="math inline">\(n=164\)</span> as the optimal number of total COVID-19 cases that are necessary to be able to ascertain that <span class="math inline">\(\mbox{VE}&gt;30\%\)</span> with a large probability.</p>
+<p>Then, it is necessary to determine the overall sample size (i.e. the total number of individuals to be recruited in the study) so that a total of 164 cases is likely to be observed within the required time frame. Once again, it is necessary to make some assumption about the data generating process; specifically the experimenters consider a 1.3% illness rate per year in the placebo group. Because the study aims at accruing 164 cases within 6 months, this essentially amounts to assuming that <span class="math inline">\(\pi_{\rm plac} \approx 0.013/2\)</span> and thus <span class="math inline">\(\pi_{\rm vac} \approx (\pi_{\rm plac}\times 0.4)/2\)</span> (recall that we are assuming a 60% vaccine efficacy, or that <span class="math inline">\(\pi_{\rm vac}=0.4\times \pi_{\rm plac}\)</span>).</p>
+<p>We can once again resort to simulations to estimate what sample size in each arm <span class="math inline">\(N\)</span> is necessary so that we can expect <span class="math inline">\(y_{\rm vac}+y_{\rm plac}\geq 164\)</span> — this returns an optimal sample size of <span class="math inline">\(N=17\,600\)</span> per group. Finally, considering an attrition rate of 20% (indicating that such proportion of individuals would not generate an evaluable outcome could be observed), the experimenters inflate the sample size to obtain <span class="math inline">\(N^*=\displaystyle\frac{N}{0.8}=21\,999\)</span> per group (or a total of 43,998 individuals).</p>
+</div>
+<div id="data-analysis" class="section level2">
+<h2>Data analysis</h2>
+<p>At the end of the actual study, there were <span class="math inline">\(y_{\rm vac}=8\)</span> and <span class="math inline">\(y_{\rm plac}=162\)</span> confirmed COVID-19 cases in the vaccine and the placebo group, respectively. These imply that <span class="math inline">\(y=8\)</span> and <span class="math inline">\(n=(8+162)=170\)</span>. However, there is a slight extra complication: the setup describe above implies the assumption of 1:1 allocation (i.e. <span class="math inline">\(n_{\rm plac}=n_{\rm vac}\)</span>) — this is crucial to ensure the simple deterministic relationship between VE and <span class="math inline">\(\theta\)</span>. In actual fact, the placebo group had a slightly higher number of individuals, by the time of the data analysis (there were 17,411 and 17,511 individuals with valid data in the vaccine and placebo group, respectively). Thus, we need to rescale the observed data, which can be done by considering <span class="math inline">\(y_{\rm vac}^*=y_{\rm vac}\displaystyle\frac{17\,461}{17\,411}=8.02297\)</span> and <span class="math inline">\(y_{\rm plac}^*=y_{\rm plac}\displaystyle\frac{17\,461}{17\,511}=161.53743\)</span>, where <span class="math inline">\(17\,461 = \displaystyle\frac{17\,411+17\,511}{2}\)</span> and thus <span class="math inline">\(y^*=8.02297\)</span> and <span class="math inline">\(n^*=169.5604\)</span>.</p>
+<p>These data can be used to update the prior distribution Beta<span class="math inline">\((0.700102,1)\)</span> into a Beta<span class="math inline">\((8.723072,162.5374)\)</span> posterior for <span class="math inline">\(\theta\)</span>. Finally, we can rescale this posterior to determine the relevant posterior distribution <span class="math inline">\(p(\mbox{VE}\mid {\rm data})\)</span>, for instance using Monte Carlo to simulate a large number <span class="math inline">\(S\)</span> of values <span class="math inline">\(\theta^{(s)}\sim \mbox{Beta}(8.723072,162.5374)\)</span> and then computing <span class="math inline">\(\mbox{VE}^{(s)}=\displaystyle\frac{1-2\theta^{(s)}}{1-\theta^{(s)}}\)</span> and then use these to characterise the uncertainty around the vaccine efficacy.</p>
+<p>In this case, the posterior distributions <span class="math inline">\(p(\theta\mid {\rm data})\)</span> and <span class="math inline">\(p(\mbox{VE}\mid {\rm data})\)</span> can be visualised below.</p>
+<pre class="r"><code>alpha.0=0.700102
+beta.0=1
+y=c(8,162)
+n=c(17411,17511)
+# So needs to reproportion as if the treatment arms had the same sample size (to be in line with model assumptions!)
+y=y*mean(n)/n
+# Now can update the Beta prior with the observed data
+alpha.1=alpha.0+y[1]
+beta.1=beta.0+y[2]
+
+theta=rbeta(100000,alpha.1,beta.1)
+ve=(1-2*theta)/(1-theta)</code></pre>
+<p><img src="/practical/02_mcmc/covid_files/figure-html/unnamed-chunk-3-1.png" width="50%" /><img src="/practical/02_mcmc/covid_files/figure-html/unnamed-chunk-3-2.png" width="50%" /></p>
+<p>We can also use the resulting samples from the posterior distribution to estimate the 95% interval of <span class="math inline">\([0.9034; 0.9761]\)</span> for the vaccine efficacy, indicating that we expect the vaccine to perform extremely well.</p>
+</div>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Previous</div>
+    <a href="/practical/02_mcmc/solutions/" rel="next">Practical 2. Markov Chain Monte Carlo - SOLUTIONS</a>
+  </div>
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Next</div>
+    <a href="/practical/02_mcmc/tutorial/" rel="prev">How do MCMC and Gibbs sampling really work?</a>
+  </div>
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          
+          
+
+          
+
+
+          
+          
+          
+          
+          
+
+
+          
+
+
+
+
+          
+
+
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+    
+      &copy;  2022-2024 &middot;
+
+    Based on
+    <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a>
+    
+    
+    (version 5.3.0)
+    
+    for <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
+    
+    
+    <i><b>Latest update: 23 Jun 2022 </i></b>
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/en/js/wowchemy.min.50d3bf3df0c53b31631bb48a62b35f92.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

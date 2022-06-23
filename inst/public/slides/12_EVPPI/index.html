@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>⁣12. Expected value of partial information</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Anna Heath" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <script src="libs/freezeframe/freezeframe.min.js"></script>
+    <script src="libs/xaringanExtra-freezeframe/freezeframe-init.js"></script>
+    <script id="xaringanExtra-freezeframe-options" type="application/json">{"selector":"img[src$=\"gif\"]","trigger":"click","overlay":false,"responsive":true,"warnings":true}</script>
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
+    <!-- (Re)Defines a bunch of LaTeX commands that can then be used directly in the .Rmd file as '\command{...}' -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: {
+        /* This enables color macros */
+        extensions: ["color.js"],
+        Macros: {
+          /* Probability & mathematical symbols */
+          Pr: "{\\style{font-family:inherit; font-size: 110%;}{\\text{Pr}}}",
+          exp: "{\\style{font-family:inherit; font-size: 105%;}{\\text{exp}}}",
+          log: "{\\style{font-family:inherit; font-size: 105%;}{\\text{log}}}",
+          ln: "{\\style{font-family:inherit; font-size: 105%;}{\\text{ln}}}",
+          logit: "{\\style{font-family:inherit; font-size: 100%;}{\\text{logit}}}",
+          HR: "{\\style{font-family:inherit; font-size: 105%;}{\\text{HR}}}",
+          OR: "{\\style{font-family:inherit; font-size: 105%;}{\\text{OR}}}",
+          E: "{\\style{font-family:inherit; font-size: 105%;}{\\text{E}}}",
+          Var: "{\\style{font-family:inherit; font-size: 105%;}{\\text{Var}}}",
+          Cov: "{\\style{font-family:inherit; font-size: 105%;}{\\text{Cov}}}",
+          Corr: "{\\style{font-family:inherit; font-size: 105%;}{\\text{Corr}}}",
+          DIC: "{\\style{font-family:inherit; font-size: 105%;}{\\text{DIC}}}",
+          se: "{\\style{font-family:inherit; font-size: 100%;}{\\text{se}}}",
+          sd: "{\\style{font-family:inherit; font-size: 100%;}{\\text{sd}}}",
+          kld: "{\\style{font-family:inherit; font-size: 100%;}{\\text{KLD}}}",
+          /* Distributions */
+          dnorm: "{\\style{font-family:inherit;}{\\text{Normal}}}",
+          dt: "{\\style{font-family:inherit;}{\\text{t}}}",
+          ddirch: "{\\style{font-family:inherit;}{\\text{Dirichlet}}}",
+          dmulti: "{\\style{font-family:inherit;}{\\text{Multinomial}}}",
+          dbeta: "{\\style{font-family:inherit;}{\\text{Beta}}}",
+          dgamma: "{\\style{font-family:inherit;}{\\text{Gamma}}}",
+          dbern: "{\\style{font-family:inherit;}{\\text{Bernoulli}}}",
+          dbin: "{\\style{font-family:inherit;}{\\text{Binomial}}}",
+          dpois: "{\\style{font-family:inherit;}{\\text{Poisson}}}",
+          dweib: "{\\style{font-family:inherit;}{\\text{Weibull}}}",
+          dexp: "{\\style{font-family:inherit;}{\\text{Exponential}}}",
+          dlnorm: "{\\style{font-family:inherit;}{\\text{logNormal}}}",
+          dunif: "{\\style{font-family:inherit;}{\\text{Uniform}}}",
+          /* LaTeX formatting */
+          bm: ["{\\boldsymbol #1}",1],
+          /* These create macros to typeset numbers in maths with the basic font */
+          0: "{\\style{font-family:inherit; font-size: 105%;}{\\text{0}}}",
+          1: "{\\style{font-family:inherit; font-size: 105%;}{\\text{1}}}",
+          2: "{\\style{font-family:inherit; font-size: 105%;}{\\text{2}}}",
+          3: "{\\style{font-family:inherit; font-size: 105%;}{\\text{3}}}",
+          4: "{\\style{font-family:inherit; font-size: 105%;}{\\text{4}}}",
+          5: "{\\style{font-family:inherit; font-size: 105%;}{\\text{5}}}",
+          6: "{\\style{font-family:inherit; font-size: 105%;}{\\text{6}}}",
+          7: "{\\style{font-family:inherit; font-size: 105%;}{\\text{7}}}",
+          8: "{\\style{font-family:inherit; font-size: 105%;}{\\text{8}}}",
+          9: "{\\style{font-family:inherit; font-size: 105%;}{\\text{9}}}",
+          /* Health economics quantities */
+          icer: "{\\style{font-family:inherit; font-size: 100%;}{\\text{ICER}}}",
+          nb: "{\\style{font-family:inherit; font-size: 100%;}{\\text{NB}}}",
+          ib: "{\\style{font-family:inherit; font-size: 100%;}{\\text{IB}}}",
+          eib: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EIB}}}",
+          ol: "{\\style{font-family:inherit; font-size: 100%;}{\\text{OL}}}",
+          ceac: "{\\style{font-family:inherit; font-size: 100%;}{\\text{CEAC}}}",
+          evpi: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EVPI}}}",
+          evppi: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EVPPI}}}",
+          evsi: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EVSI}}}"
+        }
+      }
+    });
+    </script>
+    <link rel="stylesheet" href="../assets/beamer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+class: title-slide
+
+# &amp;#8291;12. Expected value of partial information
+
+## Anna Heath
+
+### [Sick Kids Hospital](https://www.sickkids.ca/) &amp; [Dalla Lana School of Public Health](https://www.dlsph.utoronto.ca/) | University of Toronto    
+
+.title-small[
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#00acee;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"&gt;&lt;/path&gt;&lt;/svg&gt;  [anna.heath@sickkids.ca](mailto:anna.heath@sickkids.ca)
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#EA7600;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://sites.google.com/site/annaheathstats/](https://sites.google.com/site/annaheathstats/)
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#EA7600;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://egon.stats.ucl.ac.uk/research/statistics-health-economics/](https://egon.stats.ucl.ac.uk/research/statistics-health-economics/)
+&lt;svg viewBox="0 0 496 512" style="position:relative;display:inline-block;top:.1em;fill:black;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://github.com/annaheath](https://github.com/annaheath)
+&lt;svg viewBox="0 0 496 512" style="position:relative;display:inline-block;top:.1em;fill:black;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://github.com/StatisticsHealthEconomics](https://github.com/StatisticsHealthEconomics)
+]
+
+### Bayesian Methods in Health Economics, Lausanne
+
+---
+
+layout: true
+
+.my-footer[ 
+.alignleft[
+&amp;nbsp; &amp;copy; Anna Heath (Sick Kids) &amp;nbsp;&lt;a href="https://github.com/annaheath"; title="Check out my repos"&gt;&lt;svg viewBox="0 0 496 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp; &amp;nbsp;&lt;a href="mailto:anna.heath@sickkids.ca"; title="Email me"&gt;&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp; &amp;nbsp;&lt;a href="https://sites.google.com/site/annaheathstats/"; title="Visit my website"&gt;&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp;
+]
+.aligncenter[
+.mydropdown[ 
+.mydropbtn[
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M504 256c0 137-111 248-248 248S8 393 8 256 119 8 256 8s248 111 248 248zM273 369.9l135.5-135.5c9.4-9.4 9.4-24.6 0-33.9l-17-17c-9.4-9.4-24.6-9.4-33.9 0L256 285.1 154.4 183.5c-9.4-9.4-24.6-9.4-33.9 0l-17 17c-9.4 9.4-9.4 24.6 0 33.9L239 369.9c9.4 9.4 24.6 9.4 34 0z"&gt;&lt;/path&gt;&lt;/svg&gt; 
+]
+.mydropdown-content[
+[1. Introduction](../01_Intro/index.html)
+[2. MCMC](../02_MCMC/index.html)
+[3. Intro HTA](../03_Intro_HE/index.html)
+[4. ILD](../04_ILD/index.html)
+[5. ALD](../05_ALD/index.html)
+[6. NMA](../06_NMA/index.html)
+[7. Model uncertainty](../07_Model_uncertainty/index.html)
+[8. Survival](../08_Survival/index.html)
+[9. Markov models](../09_MM/index.html)
+[10. Missing data](../10_Missing/index.html)
+[11. VoI](../11_VoI/index.html)
+[12. EVPPI](../12_EVPPI/index.html)
+[13. Intro EVSI](../13_EVSI/index.html)
+[14. Data EVSI](../14_Data_EVSI/index.html)
+[15. EVSI MC](../15_EVSI_MC/index.html)
+[16. EVSI Regression](../16_EVSI_regression/index.html)
+]
+]
+&amp;#8291;12. Expected value of partial information 
+]
+.alignright[
+&amp;nbsp;&lt;a target="_self" href="../../index.html"; title="Back to the summer school website"&gt;&lt;svg viewBox="0 0 576 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:1em;bottom:1em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp; &amp;nbsp; BMHE 
+]
+] 
+
+---
+
+# Summary
+
+- Formally define the EVPPI
+
+- Estimate the EVPPI by nested MC simulation
+
+- Introduce the regression based EVPPI estimation method
+
+- Computing the EVPPI in R and BCEA
+
+- Online tools for the EVPPI
+   - SAVI
+   - BCEAWeb
+
+&lt;span style="display:block; margin-top: 4em ;"&gt;&lt;/span&gt;
+
+.content-box-beamer[
+### **References** 
+
+&lt;span style="display:block; margin-top: 20px ;"&gt;&lt;/span&gt;
+
+&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;
+  [ comment ]
+  &lt;path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"&gt;&lt;/path&gt;
+&lt;/svg&gt; &lt;i&gt;Bayesian Methods in Health Economics&lt;/i&gt;, chapter 5.4 .button[&lt;img src="../img/routledge.png" width="7%"&gt; [Book website (CRC)](https://www-taylorfrancis-com.libproxy.ucl.ac.uk/books/9780429111396)] .button[&lt;i class="fab fa-firefox"&gt;&lt;/i&gt; [Book website](https://gianluca.statistica.it/bmhe)] .button[&lt;i class="fab fa-github"&gt;&lt;/i&gt; [Code](https://github.com/giabaio/BCEA)]
+
+&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;
+  [ comment ]
+  &lt;path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"&gt;&lt;/path&gt;
+&lt;/svg&gt; &lt;i&gt;Evidence Synthesis for Decision Making in Healthcare&lt;/i&gt;, chapter 12 .button[&lt;img src="../img/wiley.png" width="10%"&gt; [Book website](https://www.wiley.com/en-gb/Evidence+Synthesis+for+Decision+Making+in+Healthcare-p-9780470061091)]
+
+&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;
+  [ comment ]
+  &lt;path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"&gt;&lt;/path&gt;
+&lt;/svg&gt; &lt;i&gt;Bayesian Cost-Effectiveness Analysis with the R package BCEA&lt;/i&gt;, chapter 4.3 .button[&lt;img src="../img/springer.png" width="8%"&gt; [Book website (Springer)](http://www.springer.com/us/book/9783319557168)] .button[&lt;i class="fab fa-firefox"&gt;&lt;/i&gt; [Book website](https://gianluca.statistica.it/book/bcea/)] 
+
+]
+
+---
+
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- Recall that the model parameters are denoted `\(\bm\theta\)` and have a distribution `\(p(\bm\theta)\)` 
+
+- `\(\bm\theta=(\theta_1,\ldots,\theta_P) = (\bm\phi,\bm\psi)\)`
+
+- What is the expected value of learning subset of parameters `\(\bm\phi\)`?
+
+- Again, baseline decision &amp;ndash; choose `\(d\)` with largest expected net benefit
+
+`$$\class{myblue}{\max_t\E_\bm\theta\left[\nb_t(\bm\theta)\right]}$$`
+
+
+---
+
+# Summarising PSA + Research priority
+
+&lt;style type="text/css"&gt;
+&lt;!-- https://www.garrickadenbuie.com/blog/better-progressive-xaringan/?panelset=r-markdown --&gt;
+.shading &gt; li {
+  color: gray;
+}
+.shading &gt; li:last-of-type {
+  color: #24568c;
+  font-weight: normal;
+}
+&lt;/style&gt;
+
+## Expected Value of Partial Perfect Information
+
+- `\(\class{blue}{\bm\theta} =\)` all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", `\(\class{myblue}{\bm\phi}\)`, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], `\(\class{olive}{\bm\psi}\)`, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on `\(\class{myblue}{\bm\phi}\)`, while leaving current level of uncertainty on `\(\class{olive}{\bm\psi}\)` unchanged
+
+--
+   
+&lt;ul class="shading"&gt;
+&lt;li&gt;First, consider the expected utility (EU) &lt;b&gt;if&lt;/b&gt; we were able to learn \(\class{myblue}{\bm\phi}\) but not \(\class{myblue}{\bm\psi}\)&lt;/li&gt;
+&lt;/ul&gt;
+
+
+&lt;span style="display:block; margin-top: 3cm ;"&gt;&lt;/span&gt;
+`$$\class{myblue}{\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]}$$`
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- `\(\class{blue}{\bm\theta} =\)` all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", `\(\class{myblue}{\bm\phi}\)`, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], `\(\class{olive}{\bm\psi}\)`, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on `\(\class{myblue}{\bm\phi}\)`, while leaving current level of uncertainty on `\(\class{olive}{\bm\psi}\)` unchanged
+
+&lt;ul class="shading"&gt;
+&lt;li&gt;First, consider the expected utility (EU) &lt;b&gt;if&lt;/b&gt; we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;If&lt;/b&gt; we knew \(\class{myblue}{\bm\phi}\) perfectly, best decision = the maximum of this EU&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;span style="display:block; margin-top: 2.25cm ;"&gt;&lt;/span&gt;
+`$$\class{myblue}{\max_t}\class{gray}{\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]}$$`
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- `\(\class{blue}{\bm\theta} =\)` all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", `\(\class{myblue}{\bm\phi}\)`, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], `\(\class{olive}{\bm\psi}\)`, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on `\(\class{myblue}{\bm\phi}\)`, while leaving current level of uncertainty on `\(\class{olive}{\bm\psi}\)` unchanged
+
+&lt;ul class="shading"&gt;
+&lt;li&gt;First, consider the expected utility (EU) &lt;b&gt;if&lt;/b&gt; we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;If&lt;/b&gt; we knew \(\class{gray}{\bm\phi}\) perfectly, best decision = the maximum of this EU&lt;/li&gt;
+&lt;li&gt;Of course, we cannot know \(\class{myblue}{\bm\phi}\) &lt;b&gt;perfectly&lt;/b&gt;, so take the expected value&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;span style="display:block; margin-top: 1.1cm ;"&gt;&lt;/span&gt;
+`$$\class{myblue}{\E_{\bm\phi}}\class{myblue}{\left [\class{gray}{\max_t\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]}\right]}$$`
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- `\(\class{blue}{\bm\theta} =\)` all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", `\(\class{myblue}{\bm\phi}\)`, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], `\(\class{olive}{\bm\psi}\)`, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on `\(\class{myblue}{\bm\phi}\)`, while leaving current level of uncertainty on `\(\class{olive}{\bm\psi}\)` unchanged
+
+&lt;ul class="shading"&gt;
+&lt;li&gt;First, consider the expected utility (EU) &lt;b&gt;if&lt;/b&gt; we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;If&lt;/b&gt; we knew \(\class{gray}{\bm\phi}\) perfectly, best decision = the maximum of this EU&lt;/li&gt;
+&lt;li&gt;Of course, we cannot know \(\class{gray}{\bm\phi}\) &lt;b&gt;perfectly&lt;/b&gt;, so take the expected value&lt;/li&gt;
+&lt;li&gt;And compare this with the &lt;b&gt;maximum expected utility overall&lt;/b&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;span style="display:block; margin-top: .5cm ;"&gt;&lt;/span&gt;
+`$$\class{gray}{\E_{\bm\phi}\left[\max_t\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]\right]}\class{myblue}{-\max_t \E_{\bm\theta}[\nb_t(\bm\theta)]}$$`
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- `\(\class{blue}{\bm\theta} =\)` all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", `\(\class{myblue}{\bm\phi}\)`, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], `\(\class{olive}{\bm\psi}\)`, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on `\(\class{myblue}{\bm\phi}\)`, while leaving current level of uncertainty on `\(\class{olive}{\bm\psi}\)` unchanged
+
+&lt;ul class="shading"&gt;
+&lt;li&gt;First, consider the expected utility (EU) &lt;b&gt;if&lt;/b&gt; we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;If&lt;/b&gt; we knew \(\class{gray}{\bm\phi}\) perfectly, best decision = the maximum of this EU&lt;/li&gt;
+&lt;li&gt;Of course, we cannot know \(\class{gray}{\bm\phi}\) &lt;b&gt;perfectly&lt;/b&gt;, so take the expected value&lt;/li&gt;
+&lt;li&gt;And compare this with the &lt;b&gt;maximum expected utility overall&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;This is the EVPPI&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;span style="display:block; margin-top: -.55cm ;"&gt;&lt;/span&gt;
+`$$\class{myblue}{\evppi = \E_{\bm\phi}\left[\max_t\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]\right]-\max_t \E_{\bm\theta}[\nb_t(\bm\theta)]}$$`
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- `\(\class{blue}{\bm\theta} =\)` all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", `\(\class{myblue}{\bm\phi}\)`, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], `\(\class{olive}{\bm\psi}\)`, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on `\(\class{myblue}{\bm\phi}\)`, while leaving current level of uncertainty on `\(\class{olive}{\bm\psi}\)` unchanged
+
+&lt;ul class="shading"&gt;
+&lt;li&gt;First, consider the expected utility (EU) &lt;b&gt;if&lt;/b&gt; we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;If&lt;/b&gt; we knew \(\class{gray}{\bm\phi}\) perfectly, best decision = the maximum of this EU&lt;/li&gt;
+&lt;li&gt;Of course, we cannot know \(\class{gray}{\bm\phi}\) &lt;b&gt;perfectly&lt;/b&gt;, so take the expected value&lt;/li&gt;
+&lt;li&gt;And compare this with the &lt;b&gt;maximum expected utility overall&lt;/b&gt;&lt;/li&gt;
+&lt;li&gt;This is the EVPPI&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;span style="display:block; margin-top: -.55cm ;"&gt;&lt;/span&gt;
+`$$\class{myblue}{\evppi = \E_{\bm\phi}\left[\class{red}{\max_t\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]}\right]-\max_t \E_{\bm\theta}[\nb_t(\bm\theta)]}$$`
+
+- .red[**That**] is the difficult part!
+   - Can do nested Monte Carlo, but takes for ever to get accurate results
+   - .orange[**Recent methods**] based on **GAMs**/**Gaussian Process regression**/**spatial modelling** very efficient and quick! 
+   
+&lt;span style="display:block; margin-top: -17px ;"&gt;&lt;/span&gt;
+.alignright[.small[&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  &lt;g groupmode="layer" id="layer6" label="icon"&gt;    &lt;path style="stroke-width:0.07717" d="m 115.59247,222.50738 c -9.72601,0 -18.734334,7.07397 -24.986084,14.41694 -5.061076,5.95394 -7.591049,15.13238 -7.591049,22.77486 0,7.6402 2.870733,16.13879 7.931808,22.09274 6.152292,7.34297 12.778135,12.37522 22.603045,12.37522 8.83314,0 19.33786,-3.70766 25.389,-9.76105 6.1523,-6.05338 11.26931,-16.21737 11.26931,-25.04826 0,-8.73142 -2.39548,-19.18696 -8.54776,-25.24039 -6.15229,-6.15455 -17.33741,-11.61061 -26.06883,-11.61061 z m 174.6438,2.39944 c -10.12046,0 -18.35798,3.98058 -24.70919,11.93724 -5.15827,6.38628 -7.73967,13.66255 -7.73967,21.82831 0,8.27088 2.5814,15.59914 7.73967,21.98538 6.35064,7.95667 14.58873,11.93729 24.70919,11.93729 9.03149,0 16.67002,-3.25109 22.9212,-9.74241 6.25399,-6.59703 9.37846,-14.65259 9.37846,-24.18026 0,-9.422 -3.17646,-17.37639 -9.52708,-23.86775 -6.2495,-6.59477 -13.8428,-9.89721 -22.77258,-9.89721 z M 255.99998,7.9999981 C 119.03396,7.9999981 7.9999985,119.03394 7.9999985,255.99998 7.9999985,392.96602 119.03396,504 255.99998,504 392.96606,504 504,392.96602 504,255.99998 504,119.03394 392.96606,7.9999981 255.99998,7.9999981 Z M 197.17431,331.79065 h -45.93563 v -18.69931 c -4.66437,5.85506 -15.63869,11.82369 -20.40025,14.50172 -8.33473,4.66267 -19.65377,7.70067 -30.27265,7.70067 -17.167865,0 -32.44885,-5.425 -45.844653,-17.23173 -15.977193,-14.0903 -23.483472,-35.63322 -23.483472,-58.85447 0,-23.61798 8.186103,-42.47212 24.559999,-56.56242 12.999092,-11.21393 28.896046,-20.18949 45.766106,-20.18949 9.82264,0 21.93961,0.88269 30.57214,5.04865 4.96218,2.38076 13.84449,7.98548 19.10448,13.44381 v -98.50164 h 45.93564 v 229.34421 z m 157.21544,-21.13999 c -15.28099,17.58718 -36.66682,26.38303 -64.15348,26.38303 -27.58613,0 -49.01942,-8.79585 -64.30436,-26.38303 -12.60069,-14.44803 -18.90387,-32.19228 -18.90387,-53.23507 0,-18.94908 6.35065,-35.75132 19.0525,-50.4079 15.37988,-17.69285 37.26185,-26.54011 65.64139,-26.54011 26.09766,0 46.93585,8.84558 62.51694,26.54011 12.70185,14.44806 19.05247,31.66734 19.05247,51.66468 0.003,20.20586 -6.29921,37.53085 -18.90159,51.97886 z m 38.76899,-199.21794 c 5.35888,-5.35888 11.85868,-8.03746 19.49892,-8.03746 7.64024,0 14.14005,2.67858 19.49893,8.03746 5.35888,5.25945 8.03746,11.70955 8.03746,19.35034 0,7.73965 -2.67858,14.28864 -8.03746,19.64753 -5.25944,5.25944 -11.75925,7.8883 -19.49893,7.8883 -7.64247,0 -14.14227,-2.67861 -19.49892,-8.0375 -5.2594,-5.35885 -7.88829,-11.85871 -7.88829,-19.49892 -0.003,-7.6402 2.62889,-14.0903 7.88829,-19.35029 z m 43.91029,220.24265 H 388.24626 V 185.84118 h 48.82277 z" id="path2"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt; [Strong et al (2014)](https://journals.sagepub.com/doi/full/10.1177/0272989x13505910) and &lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  &lt;g groupmode="layer" id="layer6" label="icon"&gt;    &lt;path style="stroke-width:0.07717" d="m 115.59247,222.50738 c -9.72601,0 -18.734334,7.07397 -24.986084,14.41694 -5.061076,5.95394 -7.591049,15.13238 -7.591049,22.77486 0,7.6402 2.870733,16.13879 7.931808,22.09274 6.152292,7.34297 12.778135,12.37522 22.603045,12.37522 8.83314,0 19.33786,-3.70766 25.389,-9.76105 6.1523,-6.05338 11.26931,-16.21737 11.26931,-25.04826 0,-8.73142 -2.39548,-19.18696 -8.54776,-25.24039 -6.15229,-6.15455 -17.33741,-11.61061 -26.06883,-11.61061 z m 174.6438,2.39944 c -10.12046,0 -18.35798,3.98058 -24.70919,11.93724 -5.15827,6.38628 -7.73967,13.66255 -7.73967,21.82831 0,8.27088 2.5814,15.59914 7.73967,21.98538 6.35064,7.95667 14.58873,11.93729 24.70919,11.93729 9.03149,0 16.67002,-3.25109 22.9212,-9.74241 6.25399,-6.59703 9.37846,-14.65259 9.37846,-24.18026 0,-9.422 -3.17646,-17.37639 -9.52708,-23.86775 -6.2495,-6.59477 -13.8428,-9.89721 -22.77258,-9.89721 z M 255.99998,7.9999981 C 119.03396,7.9999981 7.9999985,119.03394 7.9999985,255.99998 7.9999985,392.96602 119.03396,504 255.99998,504 392.96606,504 504,392.96602 504,255.99998 504,119.03394 392.96606,7.9999981 255.99998,7.9999981 Z M 197.17431,331.79065 h -45.93563 v -18.69931 c -4.66437,5.85506 -15.63869,11.82369 -20.40025,14.50172 -8.33473,4.66267 -19.65377,7.70067 -30.27265,7.70067 -17.167865,0 -32.44885,-5.425 -45.844653,-17.23173 -15.977193,-14.0903 -23.483472,-35.63322 -23.483472,-58.85447 0,-23.61798 8.186103,-42.47212 24.559999,-56.56242 12.999092,-11.21393 28.896046,-20.18949 45.766106,-20.18949 9.82264,0 21.93961,0.88269 30.57214,5.04865 4.96218,2.38076 13.84449,7.98548 19.10448,13.44381 v -98.50164 h 45.93564 v 229.34421 z m 157.21544,-21.13999 c -15.28099,17.58718 -36.66682,26.38303 -64.15348,26.38303 -27.58613,0 -49.01942,-8.79585 -64.30436,-26.38303 -12.60069,-14.44803 -18.90387,-32.19228 -18.90387,-53.23507 0,-18.94908 6.35065,-35.75132 19.0525,-50.4079 15.37988,-17.69285 37.26185,-26.54011 65.64139,-26.54011 26.09766,0 46.93585,8.84558 62.51694,26.54011 12.70185,14.44806 19.05247,31.66734 19.05247,51.66468 0.003,20.20586 -6.29921,37.53085 -18.90159,51.97886 z m 38.76899,-199.21794 c 5.35888,-5.35888 11.85868,-8.03746 19.49892,-8.03746 7.64024,0 14.14005,2.67858 19.49893,8.03746 5.35888,5.25945 8.03746,11.70955 8.03746,19.35034 0,7.73965 -2.67858,14.28864 -8.03746,19.64753 -5.25944,5.25944 -11.75925,7.8883 -19.49893,7.8883 -7.64247,0 -14.14227,-2.67861 -19.49892,-8.0375 -5.2594,-5.35885 -7.88829,-11.85871 -7.88829,-19.49892 -0.003,-7.6402 2.62889,-14.0903 7.88829,-19.35029 z m 43.91029,220.24265 H 388.24626 V 185.84118 h 48.82277 z" id="path2"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt;  [Heath et al (2016)](https://onlinelibrary.wiley.com/doi/full/10.1002/sim.6983)]]
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+`$$\class{myblue}{\evppi = \E_{\bm\phi}\left[\max_t\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]\right]-\max_t \E_{\bm\theta}[\nb_t(\bm\theta)]}$$`
+
+- Can rewrite as
+`\begin{align}
+\class{myblue}{\evppi(\bm\phi)} &amp; \class{myblue}{= \E_\bm\phi\left[\max_t \E_{\bm\psi\mid\bm\phi}\left\{ \nb_t(\bm\phi,\bm\psi) \right\}\right] - \max_t \E_\bm\theta\left[\nb_t(\bm\theta)\right]} \\
+&amp; \class{myblue}{= \E_\bm\phi\left[\max_t \E_{\bm\psi\mid\bm\phi}\left\{ \nb_t(\bm\phi,\bm\psi) \right\}\right] - \max_t \E_\bm\phi\left[\E_{\bm\psi\mid\bm\phi}\left\{\nb_t(\bm\theta)\right\}\right]}
+\end{align}`
+
+- Here, the second term is estimated using the same MC simulation as the first
+
+---
+
+# Problems calculating the EVPPI by MC simulation
+
+&lt;span style="display:block; margin-top: 20pt ;"&gt;&lt;/span&gt;
+
+.content-box-beamer[
+### EVPPI for the parameters of interest `\(\bm\phi\)`
+
+`$$\evppi(\bm\phi) = \E_\bm\phi\left[\max_t \class{red}{\E_{\bm\psi\mid\bm\phi}\left\{ \nb_t(\bm\phi,\bm\psi) \right\}}\right] - \max_t \E_\bm\phi\left[\class{red}{\E_{\bm\psi\mid\bm\phi}\left\{\nb_t(\bm\theta)\right\}}\right]$$`
+
+where the parameters `\(\bm\theta\)` are partitioned into those of interest `\(\bm\phi\)` and the rest `\(\bm\psi\)`
+]
+
+&lt;span style="display:block; margin-top: 40pt ;"&gt;&lt;/span&gt;
+
+- These inner expectations are problematic
+
+   - Nested expectations are potentially slow to evaluate by Monte Carlo
+   - `\(p(\bm\psi \mid \bm\phi)\)` could be a difficult conditional distribution to sample from
+   - May require MCMC (using e.g. `BUGS`, `JAGS`, bespoke code, ...)
+   
+- If `\(\bm\phi\)` and `\(\bm\psi\)` are independent then `\(p(\bm\psi \mid \bm\phi)= p(\bm\psi)\)`, which makes things easier
+
+---
+
+# Estimating the EVPPI
+
+1. Use analytic expressions, or approximations, to the inner expectation 
+
+2. Methods that only work for single parameters:
+   - [Strong and Oakley (2013)](journals.sagepub.com/doi/pdf/10.1177/0272989X12465123)
+   - [Sadatsafavi et al (2013)](https://tinyurl.com/sv8yex6k)
+
+--
+
+3. Regression-based methods that work for any number of parameters
+
+.content-box-beamer[
+### EVPPI for the parameters of interest `\(\bm\phi\)`
+
+`$$\evppi(\bm\phi) = \E_\bm\phi\left[\max_t \class{red}{\E_{\bm\psi\mid\bm\phi}\left\{ \nb_t(\bm\phi,\bm\psi) \right\}}\right] - \max_t \E_\bm\phi\left[\class{red}{\E_{\bm\psi\mid\bm\phi}\left\{\nb_t(\bm\theta)\right\}}\right]$$`
+]
+
+.content-box-beamer[
+### Regression equation
+
+`\begin{align}
+\nb_t(\bm\theta) &amp; =  \color{red}{\E_{\bm\psi\mid\bm\phi}\left[\nb_t(\bm\phi,\bm\psi)\right]} + \varepsilon \\
+&amp; = \color{red}{g_t(\bm\phi)} + \varepsilon
+\end{align}`
+]
+
+&lt;span style="display:block; margin-top: 15pt ;"&gt;&lt;/span&gt;
+
+--
+
+- `\(\class{red}{g_t(\bm\phi)}\)` is some unknown *smooth* function of `\(\bm\phi\)` and can show that `\(\E\left[\varepsilon\right] = 0\)`
+- Treat as non-parametric regression of `\(\nb_t(\bm\theta)\)` on `\(\bm\phi\)` ([Strong et al 2014](https://journals.sagepub.com/doi/full/10.1177/0272989X13505910))
+- The regression fitted values `\(\color{red}{\hat{g}_t(\bm\phi)}\)` are estimates of `\(\color{red}{\E_{\bm\psi\mid\bm\phi}\left[\nb_t(\bm\phi,\bm\psi)\right]}\)`
+
+---
+
+# EVPPI &amp;ndash; Brute force/nested MC
+
+Assuming there are only two interventions, can consider `\(\class{myblue}{\ib(\bm\theta)=\nb_1(\bm\theta)-\nb_0(\bm\theta)}\)`
+
+&lt;center&gt;&lt;img src=./img/brute-force-1_25.png width='44%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+&lt;span style="display:block; margin-top: -5px ;"&gt;&lt;/span&gt;
+.small[Slide stolen from [Mark Strong](https://www.sheffield.ac.uk/scharr/people/staff/mark-strong)]
+---
+
+exclude: false
+count: false
+# EVPPI &amp;ndash; Brute force/nested MC
+
+Assuming there are only two interventions, can consider `\(\class{myblue}{\ib(\bm\theta)=\nb_1(\bm\theta)-\nb_0(\bm\theta)}\)`
+
+&lt;center&gt;&lt;img src=./img/brute-force-2_26.png width='44%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+exclude: false
+# EVPPI &amp;ndash; model as a regression problem...
+
+Can model as a **regression** problem
+`\begin{align}
+\nb_t(\bm\theta) =&amp; \E_{\bm\psi\mid\bm\theta}[\nb_t(\bm\theta)] + \varepsilon, \qquad \style{font-family:inherit;}{\text{ with }} \varepsilon \sim \dnorm(0,\sigma^2_\varepsilon) \\
+=&amp; \class{olive}{g(\bm\phi)} + \class{myblue}{\varepsilon}
+\end{align}`
+&lt;span style="display:block; margin-top: -20px ;"&gt;&lt;/span&gt;
+
+"Data" 
+   - **Simulations** for `\(\nb_t(\bm\theta)\)` as ".myblue[response]"
+   - **Simulations** for `\(\bm\phi\)` as ".olive[covariates]"
+   - **NB**: Only need `\(S\)` data points (=PSA simulations), instead of `\(S_\bm\phi \times S_\bm\psi\)`!
+   
+.center[
+&lt;table class=" lightable-classic table" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto; font-size: 18px; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="empty-cells: hide;" colspan="1"&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="4"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;Parameter simulations ('covariates')&lt;/div&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;'Responses'&lt;/div&gt;&lt;/th&gt;
+&lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:center;"&gt; Iteration &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; \(\pi_0\) &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; \(\rho\) &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; \(\ldots\) &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; \(\gamma\) &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; \(\nb_0(\boldsymbol\theta)\) &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; \(\nb_1(\boldsymbol\theta)\) &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 0.585 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 0.3814 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 0.4194 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 77480 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 67795 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 0.515 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 0.0166 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 0.0768 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 87165 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 106535 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 0.611 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 0.1373 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 0.0592 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 58110 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 38740 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 4 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 0.195 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 0.7282 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 0.7314 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 77480 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; 87165 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;width: 2.5cm; border-bottom: 2px solid;"&gt; \(S\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; border-bottom: 2px solid;"&gt; 0.0305 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; border-bottom: 2px solid;"&gt; 0.204 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; border-bottom: 2px solid;"&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; border-bottom: 2px solid;"&gt; 0.558 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; border-bottom: 2px solid;"&gt; 48425 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 2.5cm; border-bottom: 2px solid;"&gt; 87165 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+]
+
+---
+
+exclude: false
+count: false
+# EVPPI &amp;ndash; model as a regression problem...
+
+&lt;center&gt;&lt;img src=./img/brute-force-3_28.png width='48%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+exclude: false
+count: false
+# EVPPI &amp;ndash; model as a regression problem...
+
+&lt;center&gt;&lt;img src=./img/brute-force-4_29.png width='48%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+exclude: false
+count: false
+# EVPPI &amp;ndash; model as a regression problem...
+
+&lt;center&gt;&lt;img src=./img/brute-force-5_30.png width='51%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+exclude: false
+count: false
+# EVPPI &amp;ndash; model as a regression problem...
+
+- Once the functions `\(\class{olive}{g_t(\bm\phi)}\)` are estimated, can approximate
+`\begin{align}
+\evppi&amp;=\E_\bm\phi \left[ \max_t \E_{\bm\psi\mid\bm\phi} [\nb_t(\bm\theta)] \right] - \max_t \E_\bm\theta [\nb_t(\bm\theta)] \\
+&amp;\approx\frac{1}{S}\sum_{s=1}^S \max_t \hat{g}_t(\bm\phi_s) - \max_t \frac{1}{S}\sum_{s=1}^S \hat{g}_t(\bm\phi_s)
+\end{align}`
+
+
+--
+
+exclude: false
+- **NB**: `\(\class{olive}{g_t(\bm\phi)}\)` can be complex, so need to use .orange[**flexible**] regression methods
+   - **GAMs**: `\(\displaystyle g_t(\bm\phi)=\sum_{q=1}^{Q_\bm\phi} h_t(\phi_{sq})\)` with `\(h_t(\cdot)=\)` smooth functions (cubic polynomials) 
+   
+   - very fast, but only if number of important parameters `\(Q_\bm\phi\leq 5\)` (interactions increase model size exponentially)
+   
+   - If `\(Q_\bm\phi &gt;5\)` then use .blue[**Gaussian Process**] regression (GPR)
+   
+      - [Strong et al](https://journals.sagepub.com/doi/full/10.1177/0272989x13505910): original GPR method
+      - [Heath et al](https://onlinelibrary.wiley.com/doi/full/10.1002/sim.6983): based on spatial modelling; can be more computationally efficient
+      
+- Other methods based on alternative approaches 
+   
+   - Most are implemented in the &lt;svg viewBox="0 0 581 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt; package [BCEA](http://www.statistica.it/gianluca/software/bcea/)  (see also: &lt;svg viewBox="0 0 496 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt; [https://github.com/giabaio/BCEA](https://github.com/giabaio/BCEA/tree/dev)) 
+
+---
+
+# Computing EVPI via GAM regression in `R` directly
+
+## For example, if we wish to estimate the EVPPI of `\(\phi = \theta_1\)`
+
+
+```r
+&gt; library(mgcv)
+&gt; model1 &lt;- gam(nb1 ~ s(theta1))
+&gt; model2 &lt;- gam(nb2 ~ s(theta1))
+&gt; g.hat1 &lt;- fitted(model1)
+&gt; g.hat2 &lt;- fitted(model2)
+&gt; evppi &lt;- mean(pmax(g.hat1, g.hat2)) - max(mean(g.hat1), mean(g.hat2))
+```
+
+--
+
+## Or the EVPPI for a group `\(\bm\phi=\{\theta_1,\theta_2,\theta_3\}\)`
+
+
+```r
+&gt; model1 &lt;- gam(nb1 ~ te(theta1, theta2, theta3))
+&gt; model2 &lt;- gam(nb2 ~ te(theta1, theta2, theta3))
+&gt; ...
+```
+
+- The syntax `s()` in the `gam` function specifies a thin plate regression spline 
+- The syntax `te()` in the `gam` function specifies a cubic spline 
+- Very simple R code, and fast (for further details see [Strong et al 2014](journals.sagepub.com/doi/pdf/10.1177/0272989X13505910))
+
+---
+
+# EVPPI via GAM for groups of inputs
+
+&lt;svg viewBox="0 0 576 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;position:relative;display:inline-block;top:.1em;fill:red;"&gt;  [ comment ]  &lt;path d="M569.517 440.013C587.975 472.007 564.806 512 527.94 512H48.054c-36.937 0-59.999-40.055-41.577-71.987L246.423 23.985c18.467-32.009 64.72-31.951 83.154 0l239.94 416.028zM288 354c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z"&gt;&lt;/path&gt;&lt;/svg&gt; We can sometimes run into problems in the case where we wish to estimate EVPPI for a group of inputs and have specified a multivariate smooth term, i.e.
+`$$\nb_t(\bm\theta) = s(\theta_1,\ldots,\theta_q)+\varepsilon$$`
+
+- If the number of independent variables is even moderately sized (e.g. more than 5 or 6 or so), we can run into computational problems
+
+   - The number of basis functions required to define the multivariate smooth function is `\(N^q\)` , where `\(N\)` is the number of basis functions in each input dimension
+   
+   - This means that it can be difficult to calculate EVPI for groups of inputs where the number of inputs in the group is larger than 5 or 6 or so
+
+---
+
+count: false
+# EVPPI via GAM for groups of inputs
+
+- If we want to estimate the EVPPI for a large group of inputs, we could specify a model in which the smooth terms for each input were additive
+`$$\nb_t(\bm\theta) = s(\theta_1)+s(\theta_2)+\ldots+\varepsilon$$`
+
+- Or, in which smooth functions of sub-groups of terms were additive
+`$$\nb_t(\bm\theta) = s(\theta_1,\theta_2,\theta_3)+s(\theta_4,\theta_5,\theta+6)+\ldots+\varepsilon$$`
+
+- How well this approximates the ‘true’ EVPI will depend on the nature of the interaction between variables
+
+- Alternative non-parametric regression approaches include Gaussian Process regression, Multivariate Adaptive Regression Splines (MARS), Neural Networks, Projection Pursuit Regression, Regression Trees
+
+- These all allow for large numbers of interactions
+
+---
+
+# Non-parametric regression approach
+
+- From the `\(T\)` net benefits for `\(T\)` decision options, we can calculate `\(T − 1\)` incremental net benefits against some chosen reference option
+
+- Working with the incremental net benefits allows us to reduce the number of regressions from `\(T\)` to `\(T − 1\)`
+
+&lt;span style="display:block; margin-top: 20pt ;"&gt;&lt;/span&gt;
+--
+
+- For example,  if we wish to estimate the EVPPI of `\(\phi = \theta_1\)`:
+
+
+```r
+&gt; ## "Old" code
+&gt; model1 &lt;- gam(nb1 ~ s(theta1))
+&gt; model2 &lt;- gam(nb2 ~ s(theta1))
+&gt; g.hat1 &lt;- fitted(model1)
+&gt; g.hat2 &lt;- fitted(model2)
+&gt; evppi &lt;- mean(pmax(g.hat1, g.hat2)) - max(mean(g.hat1), mean(g.hat2))
+&gt; 
+&gt; # "New" code
+&gt; model &lt;- gam(inb ~ s(theta1))
+&gt; g.hat &lt;- fitted(model)
+&gt; evppi &lt;- mean(pmax(0, g.hat)) - max(0, mean(g.hat))
+```
+
+---
+
+# Calculating the EVPPI in `BCEA`
+
+.panelset[
+.panel[
+.panel-name[Code]
+
+```r
+&gt; library(BCEA)
+&gt; 
+&gt; # Load the data
+&gt; data(Vaccine)
+&gt; 
+&gt; # Runs BCEA to post-process the cost-effectiveness model
+&gt; m = bcea(e,c,interventions=treats,ref=2)
+&gt; 
+&gt; # Formats the input
+&gt; PSA = createInputs(vaccine_mat,print_is_linear_comb = FALSE)
+&gt; 
+&gt; # Computes the EVPPI using BCEA
+&gt; VoI = evppi(m,c("beta.1."),PSA$mat)
+&gt; 
+&gt; # Plots the results
+&gt; plot(VoI)
+```
+]
+
+.panel[
+.panel-name[Output]
+
+&lt;img src="./img/unnamed-chunk-9-1.png" style="display: block; margin: auto;" width="45%"&gt;
+]
+]
+
+---
+
+# Across Willingness-to-Pay
+
+- Notice that BCEA calculates the EVPPI across willingness-to-pay
+
+- In previous lecture, we fit the following regression curve:
+`$$\class{myblue}{\nb_t^{(j)} = g_t\left( \bm\phi^{(j)} \right) + \varepsilon^{(j)}}$$`
+where
+`$$\class{myblue}{\nb_t^{(j)} = k e_t^{(j)} - c_t^{(j)}}$$`
+
+- To calculate across `\(k\)`, we fit two regression curves &amp;ndash; one for effects and one for costs
+
+- This is important for later...
+
+---
+
+# Calculating EVPPI with larger parameter subsets in `BCEA`
+
+.panelset[
+.panel[
+.panel-name[Code]
+
+```r
+&gt; VoI = evppi(m, c("beta.1.", "beta.2.", "beta.3.", "beta.4.", "beta.5."),PSA$mat)
+&gt; plot(VoI)
+```
+]
+
+.panel[
+.panel-name[Output]
+
+&lt;img src="./img/unnamed-chunk-12-1.png" style="display: block; margin: auto;" width="45%"&gt;
+]
+]
+
+---
+
+# Default methods
+
+- When calculating the EVPPI with BCEA the regression method is displayed
+
+- For EVPPI with less than 5 parameters 
+
+   `Calculating fitted values for the GAM regression`
+   
+   Fast and accurate for small numbers of parameters
+
+&lt;span style="display:block; margin-top: 30pt ;"&gt;&lt;/span&gt;
+
+- For EVPPI with 5 or more parameters    
+
+    `Calculating fitted values for the GP regression using INLA/SPDE`
+   
+   Fast approximation to GP regression &amp;ndash; recommended multi-parameter method
+
+---
+
+# Why `INLA/SPDE`?
+
+&lt;center&gt;&lt;img src=./img/inla.png width='65%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+
+---
+
+# How does the `INLA/SPDE` method work?
+
+1. Starts with a linear model for all the elements in `\(\bm\phi\)`
+
+2. *Corrects* for non-linearity in the relationship between `\(\bm\phi\)` and `\(\nb(\bm\theta)\)` using a "mesh"
+`Determining Mesh`
+
+3. Reduces the dimension of `\(\bm\phi\)` in this non-linear part
+`Finding projections`
+
+4. Uses a fast Bayesian computation method (INLA) 
+
+&lt;span style="display:block; margin-top: 80px ;"&gt;&lt;/span&gt;
+More details in [Heath et al 2016](doi.org/10.1002/sim.6983)
+
+---
+
+# Residual checking
+
+- This approximation is usually sufficient to estimate the EVPPI
+
+- We can check the accuracy of the fit by looking at residuals
+
+- This can be performed easily in `BCEA`
+
+
+```r
+&gt; diag.evppi(VoI,m)
+&gt; diag.evppi(VoI,m,int=1,diag="qqplot")
+```
+
+&lt;center&gt;&lt;img src=./img/residuals.png width='65%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+# Multi-decision example
+
+- Sometime the dimension reduction is not sufficient to understand the non-linear part
+- Residual checking is vital in these situations
+- `BCEA` tells you which regression fit is potentially poorly fitted
+
+&lt;span style="display:block; margin-top: 30px ;"&gt;&lt;/span&gt;
+
+```
+&gt; VoI&lt;-evppi(c(1,2,3),inp$mat,m)
+
+Warning message:
+In make.proj(parameter = parameter, inputs = inputs, x = x, k = k, :
+  The dimension of the sufficient reduction for the incremental effects , column 1 , is 3 .
+                   Dimensions greater than 2 imply that the EVPPI approximation using INLA may be inaccurate.
+  Full residual checking using diag.evppi is required.
+
+&gt; diag.evppi(VoI,m,int=1)
+```
+
+---
+
+# How to improve the approximation?
+
+## Issues with residuals
+
+If there are issues with the residual plots, there are two main ways to improve the EVPPI estimate:
+
+1. Include interactions in the linear part of the regression curve for the fast approximation
+2. Use full GP regression &amp;ndash; slower but more accurate
+
+&lt;span style="display:block; margin-top: 30px ;"&gt;&lt;/span&gt;
+
+--
+
+## Extending the linear part
+
+- Extending the linear structure is fast but you will still see a warning
+- Residuals checks must be used to see whether the fit is accurate
+- We specify the level of interactions using a list
+
+```
+&gt; VoI&lt;-evppi(c(1,2,3,4,5),PSA$mat,m,
+   int.ord=list(c(2,1,1), #effects,
+   c(2,1,1) #costs
+))
+
+&gt; diag.evppi(VoI,m,int=1)
+
+```
+---
+
+# Mixed strategy
+
+&lt;center&gt;&lt;img src=./img/residuals2.png width='60%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+&lt;span style="display:block; margin-top: -20px ;"&gt;&lt;/span&gt;
+Residuals are **very** structured, so must use full GP
+```
+&gt; VoI&lt;-evppi(c(1,2,3),inp$mat,m,
+   method=list(c("GP","INLA","INLA") #effects,
+   c("GP","INLA","INLA")) #costs
+   n.sim=1000)
+
+```
+
+---
+
+# Online tools
+
+&lt;span style="display:block; margin-top: -0px ;"&gt;&lt;/span&gt;
+
+
+
+### [https://savi.shef.ac.uk/SAVI/](http://savi.shef.ac.uk/SAVI/)
+
+&lt;iframe frameborder="no" src="https://savi.shef.ac.uk/SAVI/"
+style="
+    position: fixed;
+    top: -15px;
+    bottom: 0px;
+    right: 0px;
+    left: -200px;
+    width: 100%;
+    border: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    z-index: 999999;
+    height: 120%;
+    ms-transform: scale(0.45);
+   -moz-transform: scale(0.45);
+   -o-transform: scale(0.45);
+   -webkit-transform: scale(0.45);
+   transform: scale(0.65);
+  "&gt;&lt;/iframe&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"highlightSpans": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<style>
+.logo {
+  background-image: url("../assets/beamer/sk.png");
+  background-size: 14% 7%;
+  background-repeat: no-repeat;
+  position: absolute;
+  top:  2.625%; /* 2.65%em */
+  left: 85%;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)' +
+    ':not(.thankyou-michelle)' +
+    ':not(.thankyou-barney)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

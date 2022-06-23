@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practical 10. Missing data | Bayesian methods in health economics</title>
+    <link>/practical/10_missing/</link>
+      <atom:link href="/practical/10_missing/index.xml" rel="self" type="application/rss+xml" />
+    <description>Practical 10. Missing data</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 22 Jun 2021 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Practical 10. Missing data</title>
+      <link>/practical/10_missing/</link>
+    </image>
+    
+    <item>
+      <title>Practical 10. Missing data - SOLUTIONS</title>
+      <link>/practical/10_missing/solutions/</link>
+      <pubDate>Thu, 23 Jun 2022 10:00:00 +0000</pubDate>
+      <guid>/practical/10_missing/solutions/</guid>
+      <description>
+
+
+&lt;div id=&#34;bivariate-normal-model&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Bivariate Normal model&lt;/h2&gt;
+&lt;p&gt;The data are stored in a list format because the variables are non-balanced, in terms of sample size. In other words, the data for arm &lt;span class=&#34;math inline&#34;&gt;\(t=1\)&lt;/span&gt; contain fewer points than for &lt;span class=&#34;math inline&#34;&gt;\(t=2\)&lt;/span&gt;. It would be possible to format this dataset using a &lt;code&gt;data.frame&lt;/code&gt;, but this would mean having a single column for each variable (stacking together the two treatment arms) and adding a treatment indicator.&lt;/p&gt;
+&lt;p&gt;In any case, we can visualise the relevant information using usual &lt;code&gt;R&lt;/code&gt; commands, e.g. &lt;code&gt;names&lt;/code&gt; to check the naming of the variables and the &lt;code&gt;$&lt;/code&gt; operator to access them.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Reads in the data list
+data=readRDS(&amp;quot;missing_data.rds&amp;quot;)
+
+# Checks the name of the variables
+names(data)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;c&amp;quot; &amp;quot;e&amp;quot; &amp;quot;n&amp;quot; &amp;quot;u&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# And shows some values
+data$c&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[[1]]
+ [1]     NA    0.1     NA     NA     NA    0.1     NA     NA     NA  516.0
+[11]     NA     NA     NA     NA  404.0     NA     NA  116.0  145.0  436.0
+[21]  782.0     NA  145.0     NA     NA     NA    2.0     NA     NA    0.1
+[31]     NA     NA     NA     NA  193.0    0.1     NA     NA   64.0     NA
+[41]     NA     NA     NA     NA     NA 1039.0     NA    2.0     NA     NA
+[51]     NA     NA    0.1     NA  246.0     NA     NA     NA  141.0  400.0
+[61]  116.0    0.1     NA  360.0  281.0     NA    0.1     NA     NA     NA
+[71]  107.0     NA     NA  123.0     NA
+
+[[2]]
+ [1]    NA    NA    NA 183.0    NA    NA    NA    NA   0.1 107.0    NA    NA
+[13]    NA    NA 516.0    NA    NA    NA    NA    NA    NA    NA    NA    NA
+[25]    NA   0.1    NA    NA    NA    NA    NA    NA    NA    NA    NA    NA
+[37]   0.1    NA    NA 194.0  60.0 227.0    NA    NA    NA 266.0    NA    NA
+[49]   0.1 169.0 346.0    NA    NA   0.1    NA    NA    NA 366.0    NA    NA
+[61]    NA 380.5    NA    NA    NA    NA    NA    NA 268.0 123.0    NA    NA
+[73]    NA 389.5    NA    NA    NA    NA    NA    NA    NA    NA    NA    NA&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As is possible to see, the element &lt;code&gt;data$c&lt;/code&gt; is itself a list. The data are clearly affected by many missing values (recorded in &lt;code&gt;R&lt;/code&gt; as &lt;code&gt;NA&lt;/code&gt;). We can also inspect the distribution of the variables using histograms, e.g. using the following commands.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Produces a histogram of the cost distribution in arm t=1
+hist(data$c[[1]])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/10_missing/solutions_files/figure-html/setup2-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In general terms, it is important to make some preliminary analysis to evaluate the impact of missingness. For instance, if you had a large dataset with only a handful of missing values, then perhaps you could simply do a “Complete Case Analysis”, which probably would not have a massive impact on your overall results. But if missingness is very prevalent, then this would imply the need for more sophisticated analyses, as well as the fact that the results would be by necessity to be taken with a rather large pinch of salt… We can summarise the proportion of missing data using the following command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;lapply(1:2,function(x) table(is.na(data$e[[x]]))/sum(table(is.na(data$e[[x]]))))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[[1]]
+
+FALSE  TRUE 
+ 0.36  0.64 
+
+[[2]]
+
+    FALSE      TRUE 
+0.2261905 0.7738095 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In this case, we can use the &lt;code&gt;R&lt;/code&gt; command &lt;code&gt;table&lt;/code&gt; to tabulate the data (on the effectiveness variable, named &lt;code&gt;e&lt;/code&gt;) depending on whether they are &lt;code&gt;NA&lt;/code&gt; (= missing) or not. We use the &lt;code&gt;lapply&lt;/code&gt; function to perform the operation on both the elements of the list &lt;code&gt;data$e&lt;/code&gt;. The code&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;table(is.na(data$e[[x]]))/sum(table(is.na(data$e[[x]])))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;can be used to compute the proportion (instead of the absolute number) of missingness in each arm. As is possible to see, in this particular case, missingness is a big problem, as in the two arms there are respectively 64.00% and 77.38% of missing values.&lt;/p&gt;
+&lt;p&gt;We can then proceed to the modelling part. Firstly, we fit a bivariate Normal model for costs and effects; while this is not ideal because it clearly fails to accommodate the marked skewness in the data (as evidenced by the histogram above), it is a good starting point and at least allows us to account for potential correlation between costs and effects (and their missing mechanisms).&lt;/p&gt;
+&lt;p&gt;The model code is not too dissimilar to those used in Practical 4 (on individual level data), but it does require some modifications, to account for the missing data. We firstly assume a marginal Normal distribution for the effectiveness
+&lt;span class=&#34;math display&#34;&gt;\[ e_i \sim \mbox{Normal}\left( \phi_{eit},\psi_{et} \right), \]&lt;/span&gt;
+where the individual mean response (QALYs) is modelled as a linear regression as a function of the baseline utility
+&lt;span class=&#34;math display&#34;&gt;\[ \phi_{eit} = \alpha_0 + \alpha_1 (u_{it}-\mu_{ut}). \]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;In the &lt;code&gt;BUGS&lt;/code&gt; code, we need to be careful in defining the Normal distribution, which requires the &lt;em&gt;precision&lt;/em&gt; instead of the variance. For this reason, we code for example&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;eff1[i] ~ dnorm(phi.e1[i],tau.e[1])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;where &lt;code&gt;tau.e[1]&lt;/code&gt; is the precision, i.e. &lt;span class=&#34;math inline&#34;&gt;\(\tau_{e1}=\psi_{et}^{-1}\)&lt;/span&gt;. In addition, the linear predictor simply translates the regression for &lt;span class=&#34;math inline&#34;&gt;\(\phi_{eit}\)&lt;/span&gt; — we notice here that we center the covariate &lt;span class=&#34;math inline&#34;&gt;\(u_{it}\)&lt;/span&gt; for simplicity in the interpretation and ease of convergence (in this way, &lt;span class=&#34;math inline&#34;&gt;\(\alpha_0\)&lt;/span&gt; is the overall mean QALY in the population).&lt;/p&gt;
+&lt;p&gt;The next thing to understand is that, because also &lt;span class=&#34;math inline&#34;&gt;\(u_{it}\)&lt;/span&gt; is affected by missing values, we need to model it explicitly, even if it is used as covariate in the model. Thus, we need to include a suitable `BUGS} statement to define a probability distribution to represent it. We choose for simplicity the same form as the QALYs &lt;span class=&#34;math inline&#34;&gt;\(e_{it}\)&lt;/span&gt; and thus specify a Normal distribution depending on a mean &lt;span class=&#34;math inline&#34;&gt;\(\mu_{ut}\)&lt;/span&gt; and a &lt;em&gt;precision&lt;/em&gt; &lt;span class=&#34;math inline&#34;&gt;\(\tau_{ut}\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Finally, we can model the conditional distribution of the costs, given the effectiveness variable. The assumption is a model
+&lt;span class=&#34;math display&#34;&gt;\[ c_{it} \sim \mbox{Normal}(\phi_{cit},\psi_{ct}), \]&lt;/span&gt;
+where the mean is specified as a linear predictor
+&lt;span class=&#34;math display&#34;&gt;\[ \phi_{cit} = \beta_0 + \beta_1 (e_{it}-\mu_{et}). \]&lt;/span&gt;
+Because we are again centering the covariate included in this model, we can simply characterise the population mean costs and benefits as &lt;span class=&#34;math inline&#34;&gt;\(\mu_{ct} = \beta_0\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\mu_{et}=\alpha_0\)&lt;/span&gt;, which we can then use in the economic analysis.&lt;/p&gt;
+&lt;p&gt;The `BUGS} code is replicated for the two treatment arms and it then specifies the prior distributions. The model parameters are &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol{\theta}=(\boldsymbol\alpha,\boldsymbol\beta,\boldsymbol\sigma_{e},\boldsymbol\sigma_{c},\boldsymbol\mu_u,\boldsymbol\sigma_u)\)&lt;/span&gt;, where:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\alpha=(\alpha_0,\alpha_1)\stackrel{iid}{\sim}\mbox{Normal}(0,v)\)&lt;/span&gt;, with &lt;span class=&#34;math inline&#34;&gt;\(v\)&lt;/span&gt; a large variance (e.g. a precision of 0.00001);&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\beta=(\beta_0,\beta_1)\stackrel{iid}{\sim}\mbox{Normal}(0,v)\)&lt;/span&gt;, with &lt;span class=&#34;math inline&#34;&gt;\(v\)&lt;/span&gt; a large variance (e.g. a precision of 0.00001);&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\sigma_e=(\sigma_{e1},\sigma_{e2})\)&lt;/span&gt; are the standard deviations for the effectiveness measures in the two treatment arms. We specify vague priors on the log-standard deviation scale, i.e. &lt;span class=&#34;math inline&#34;&gt;\(\log \sigma_{et}\sim \mbox{Uniform}(-5,10)\)&lt;/span&gt;. This of course induces a prior on &lt;span class=&#34;math inline&#34;&gt;\(\sigma_{et}\)&lt;/span&gt; and then on &lt;span class=&#34;math inline&#34;&gt;\(\sigma_{et}^2\)&lt;/span&gt; and then on &lt;span class=&#34;math inline&#34;&gt;\(\tau_{et}\)&lt;/span&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\sigma_c=(\sigma_{c1},\sigma_{c2})\)&lt;/span&gt; are the standard deviations for the cost measures in the two treatment arms. We specify vague priors on the log-standard deviation scale, i.e. &lt;span class=&#34;math inline&#34;&gt;\(\log \sigma_{ct}\sim \mbox{Uniform}(-5,10)\)&lt;/span&gt;. This of course induces a prior on &lt;span class=&#34;math inline&#34;&gt;\(\sigma_{ct}\)&lt;/span&gt; and then on &lt;span class=&#34;math inline&#34;&gt;\(\sigma_{et}^2\)&lt;/span&gt; and then on &lt;span class=&#34;math inline&#34;&gt;\(\tau_{ct}\)&lt;/span&gt;;&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\mu_u=(\mu_{u1},\mu_{u2})\stackrel{iid}{\sim}\mbox{Normal}(0,v)\)&lt;/span&gt;, with &lt;span class=&#34;math inline&#34;&gt;\(v\)&lt;/span&gt; a large variance (e.g. a precision of 0.00001);&lt;/li&gt;
+&lt;li&gt;&lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\sigma_u=(\sigma_{u1},\sigma_{u2})\)&lt;/span&gt; are the standard deviations for the baseline utility in the two treatment arms. We specify vague priors on the log-standard deviation scale, i.e. &lt;span class=&#34;math inline&#34;&gt;\(\log \sigma_{ut}\sim \mbox{Uniform}(-5,10)\)&lt;/span&gt;. This of course induces a prior on &lt;span class=&#34;math inline&#34;&gt;\(\sigma_{ut}\)&lt;/span&gt; and then on &lt;span class=&#34;math inline&#34;&gt;\(\sigma_{ut}^2\)&lt;/span&gt; and then on &lt;span class=&#34;math inline&#34;&gt;\(\tau_{ut}\)&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The &lt;code&gt;BUGS&lt;/code&gt; code maps these assumptions directly and also adds some lines to derive the analytic form of the &lt;em&gt;conditional&lt;/em&gt; variance and precision for the costs. These are useful, but are not necessarily fundamental parameters.&lt;/p&gt;
+&lt;p&gt;We can now run the model using &lt;code&gt;OpenBUGS&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Loads the package
+library(R2OpenBUGS)
+
+# Defines: 
+# 1. model file
+filein=&amp;quot;Normal_Normal.txt&amp;quot;
+
+# 2. data list
+datalist=list(N1=data$n[[1]],eff1=data$e[[1]],cost1=data$c[[1]],u1=data$u[[1]],
+          N2=data$n[[2]],eff2=data$e[[2]],cost2=data$c[[2]],u2=data$u[[2]])
+
+# 3. parameters to monitor
+params&amp;lt;-c(&amp;quot;mu.e&amp;quot;,&amp;quot;sd.e&amp;quot;,&amp;quot;alpha0&amp;quot;,&amp;quot;alpha1&amp;quot;,&amp;quot;beta0&amp;quot;,&amp;quot;beta1&amp;quot;,&amp;quot;Delta_e&amp;quot;,
+          &amp;quot;Delta_c&amp;quot;,&amp;quot;mu.c&amp;quot;,&amp;quot;sd.c&amp;quot;,&amp;quot;eff1&amp;quot;,&amp;quot;eff2&amp;quot;,&amp;quot;cost1&amp;quot;,&amp;quot;cost2&amp;quot;)
+
+# 4. number of iterations
+n.iter&amp;lt;-10000
+
+# 5. sets up initial values for crucial parameters
+inits=function(){
+   list(alpha0=rnorm(2),alpha1=rnorm(2),beta0=rnorm(2),beta1=rnorm(2),mu.u=rnorm(2))
+}
+
+# 6. runs the model
+NN=bugs(data=datalist,inits=inits,parameters.to.save=params,
+         model.file=filein,n.chains=2,n.iter=n.iter,n.thin=1,DIC=TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;All is fairly straightforward; we first point &lt;code&gt;R&lt;/code&gt; to the &lt;code&gt;.txt&lt;/code&gt; file including the model code, then we define a datalist in the format that matches the name of the variables in the model code, then define the vector of parameters to monintor and select a suitable number of iterations for the MCMC procedure.&lt;/p&gt;
+&lt;p&gt;In this case, it is important to generate suitable initial values. For instance, if you did not create the function &lt;code&gt;inits} and let&lt;/code&gt;BUGS} initialise the chains, the programme would return an error and cannot start the procedure. We set up the initial values for &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\alpha,\boldsymbol\beta,\mu_u\)&lt;/span&gt; from Normal(0,1) distributions, which ensures that the algorithm can sample reasonable starting points and run.&lt;/p&gt;
+&lt;p&gt;We can check that the model has reached convergence and that the estimates are reasonable. For instance, we could use the &lt;code&gt;print&lt;/code&gt; method and apply it to the object &lt;code&gt;NN&lt;/code&gt;, where we have stored the &lt;code&gt;BUGS&lt;/code&gt; output. However, we have monitored many parameters and so this may be complicated to see. In cases such as this, it is probably more effective to use the element `$summary” to visualise the data, for instance using the following code&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;head(NN$summary[,c(&amp;quot;mean&amp;quot;,&amp;quot;sd&amp;quot;,&amp;quot;2.5%&amp;quot;,&amp;quot;97.5%&amp;quot;,&amp;quot;Rhat&amp;quot;,&amp;quot;n.eff&amp;quot;)])&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;                mean         sd      2.5%    97.5%     Rhat n.eff
+mu.e[1]   0.87119481 0.02232442 0.8268950 0.914805 1.000952 10000
+mu.e[2]   0.91179054 0.02240187 0.8679975 0.956400 1.001053  9700
+sd.e[1]   0.07969351 0.01191242 0.0605200 0.107200 1.000956 10000
+sd.e[2]   0.08954983 0.01636157 0.0641200 0.127800 1.000912 10000
+alpha0[1] 0.87119481 0.02232442 0.8268950 0.914805 1.000952 10000
+alpha0[2] 0.91179054 0.02240187 0.8679975 0.956400 1.001053  9700&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;which would simply show the first few rows of the overall summary table for a selected set of columns (those displaying the mean, sd, 2.5- and 97.5% quantiles, as well as the convergence statistics). We could also specify the parameters for which we want to see the summary statistics, for instance using the following code&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;NN$summary[grep(&amp;quot;alpha&amp;quot;,rownames(NN$summary)),
+           c(&amp;quot;mean&amp;quot;,&amp;quot;sd&amp;quot;,&amp;quot;2.5%&amp;quot;,&amp;quot;97.5%&amp;quot;,&amp;quot;Rhat&amp;quot;,&amp;quot;n.eff&amp;quot;)]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;               mean         sd      2.5%    97.5%     Rhat n.eff
+alpha0[1] 0.8711948 0.02232442 0.8268950 0.914805 1.000952 10000
+alpha0[2] 0.9117905 0.02240187 0.8679975 0.956400 1.001053  9700
+alpha1[1] 0.7912292 0.15647962 0.4809875 1.091025 1.001219  4700
+alpha1[2] 0.2751874 0.08561333 0.1061975 0.443105 1.000901 10000&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;to show the selected summary statistics for all the nodes whose name contains the keyword &lt;code&gt;alpha&lt;/code&gt; (this is done using the &lt;code&gt;grep&lt;/code&gt; function — see &lt;code&gt;help(grep)&lt;/code&gt; in your &lt;code&gt;R&lt;/code&gt; terminal, for more details).&lt;/p&gt;
+&lt;p&gt;Another way to simply check convergence when the number of model parameters is very large is to plot the output for both &lt;span class=&#34;math inline&#34;&gt;\(\hat{R}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(n_{eff}\)&lt;/span&gt; for all parameters. We can do this simply using the following command&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(NN$summary[,&amp;quot;Rhat&amp;quot;])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/10_missing/solutions_files/figure-html/show.res3-1.png&#34; width=&#34;60%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;
+to check that the value of &lt;span class=&#34;math inline&#34;&gt;\(\hat{R}\)&lt;/span&gt; is below the arbitrary threshold of 1.1 for all nodes. If this is the case, then the model has reached convergence; if not, we can investigate further and check which node has not converged yet. Of course the graph can be annotated and made prettier, but this crude version can still be very helpful.&lt;/p&gt;
+&lt;p&gt;Another similar graphical representation can be made to check the number of effective samples obtained using the MCMC procedure.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(NN$summary[,&amp;quot;n.eff&amp;quot;])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/10_missing/solutions_files/figure-html/show.res4-1.png&#34; width=&#34;60%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As is possible to see here, most of the nodes have a value that is close to the nominal sample size, indicating virtually no issues with autocorrelation.&lt;/p&gt;
+&lt;p&gt;Once we are satisfied about the output of the Bayesian model, we can feed it to &lt;code&gt;BCEA&lt;/code&gt; to perform the economic analysis.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Extracts the simulated values for the population mean effectiveness and costs
+e=cbind(NN$sims.list$mu.e[,1],NN$sims.list$mu.e[,2])
+c=cbind(NN$sims.list$mu.c[,1],NN$sims.list$mu.c[,2])
+
+# Post-processes the results using BCEA
+library(BCEA)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Attaching package: &amp;#39;BCEA&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;The following object is masked from &amp;#39;package:graphics&amp;#39;:
+
+    contour&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;CEA_NN=bcea(e=e,c=c,ref = 2)
+# Shows the C/E plane
+ceplane.plot(CEA_NN)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/10_missing/solutions_files/figure-html/show.res5-1.png&#34; width=&#34;60%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Notice that we first create suitable matrices with the simulations for the two main variables &lt;span class=&#34;math inline&#34;&gt;\((\mu_{et},\mu_{ct})\)&lt;/span&gt;; we extract these simulations from the object &lt;code&gt;NN&lt;/code&gt; — in particular, they are stored in the two lists &lt;code&gt;$sims.list$mu.e&lt;/code&gt; and &lt;code&gt;$sims.list$mu.c&lt;/code&gt;, respectively. Each of these two objects has dimension (10000, 2), i.e. 10000 rows (simulations) and 2 columns (treatment arms). We use the &lt;code&gt;R&lt;/code&gt; function &lt;code&gt;cbind&lt;/code&gt; to “bind” together these values, so that the resulting objects &lt;code&gt;e&lt;/code&gt; and &lt;code&gt;c&lt;/code&gt; are matrices, as required by &lt;code&gt;BCEA&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Because we have monitored the variables &lt;code&gt;eff1,eff2,cost1,cost2&lt;/code&gt; in the object &lt;code&gt;NN&lt;/code&gt;, we can also check what the model is doing in terms of imputing the missing values. As suggested in the script, the easiest way doing so is by plotting the estimated posterior distribution, which we do using the following commands.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;hist(NN$sims.list$eff1[,1],xlab=&amp;quot;QALYs for the first missing individual in t=1&amp;quot;,main=&amp;quot;&amp;quot;)
+abline(v=1,lwd=2)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/10_missing/solutions_files/figure-html/show.res6-1.png&#34; width=&#34;60%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sum(NN$sims.list$eff1[,1]&amp;gt;1)/NN$n.sims&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 0.0036&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The graph shows the posterior for &lt;code&gt;eff1&lt;/code&gt;, the measure of effectiveness in treatment arm &lt;span class=&#34;math inline&#34;&gt;\(t=1\)&lt;/span&gt;. As is possible to see, about 0.360% of the simulated values above the theoretical upper limit of 1 — which is of course not reasonable. Another way of visualising this feature of the model output is by using the specialised plotting function &lt;code&gt;coefplot&lt;/code&gt; (which is available from the &lt;code&gt;R&lt;/code&gt; package &lt;code&gt;bmhe&lt;/code&gt; — which you would need to install), to produce a graph such as the following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;bmhe::coefplot(NN,parameter=&amp;quot;eff1&amp;quot;) + geom_vline(xintercept=1,linetype=2,size=1.3,col=&amp;quot;red&amp;quot;) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/10_missing/solutions_files/figure-html/show.res7-1.png&#34; width=&#34;80%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;For each of the 48 individuals affected by missing QALYs in &lt;span class=&#34;math inline&#34;&gt;\(t=1\)&lt;/span&gt;, this shows a description of the posterior distribution (imputed values). The dots represent the means, while the lines extend over the 95% credible interval. As is possible to see, there are quite a few individuals whose imputed values distributions expands above 1, although the means are all below this threshold.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;beta-gamma-model&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Beta-Gamma model&lt;/h2&gt;
+&lt;p&gt;The Beta-Gamma model is theoretically more appropriate, because it correctly recognises the natural range of the two variables — the interval [0-1] for the QALYs and the open positive real line &lt;span class=&#34;math inline&#34;&gt;\((0,\infty)\)&lt;/span&gt; for the costs. Thus, it seems a more suitable modelling structure for this problem.&lt;/p&gt;
+&lt;p&gt;In general terms, the model code is not much more complicated than the one for the bivariate Normal — the main complication is that the regression models for the individual average QALYs and costs cannot be constructed as linear predictor. Instead, we need to rescale the average QALYs (defined in [0-1]) onto &lt;span class=&#34;math inline&#34;&gt;\((-\infty,\infty)\)&lt;/span&gt;, which we do using a logistic regression
+&lt;span class=&#34;math display&#34;&gt;\[ \mbox{logit}(\phi_{eit}) = \alpha_0 + \alpha_1 (u_{it}-\mu_{ut}). \]&lt;/span&gt;
+This implies that the overall average effectiveness measure &lt;span class=&#34;math inline&#34;&gt;\(\mu_{et}\)&lt;/span&gt; is just a rescaled version of the intercept &lt;span class=&#34;math inline&#34;&gt;\(\alpha_0\)&lt;/span&gt; (given that we are centering the covariate &lt;span class=&#34;math inline&#34;&gt;\(u_{it}\)&lt;/span&gt;). In other words, we need to take the inverse logit transformation and define
+&lt;span class=&#34;math display&#34;&gt;\[ \mu_{et} = \frac{\exp(\alpha_0)}{1+\exp(\alpha_0)}. \]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Similarly, we need to rescale the conditional regression for the average costs &lt;span class=&#34;math inline&#34;&gt;\(\phi_{cit}\)&lt;/span&gt; as a function of the centered effectiveness, which we can do using a log-linear regression
+&lt;span class=&#34;math display&#34;&gt;\[ \mbox{log}(\phi_{cit}) = \beta_0 + \beta_1 (e_{it}-\mu_{et})  \]&lt;/span&gt;
+and again the overall average cost is obtained by rescaling the intercept &lt;span class=&#34;math inline&#34;&gt;\(\beta_0\)&lt;/span&gt; as
+&lt;span class=&#34;math display&#34;&gt;\[ \mu_{ct} = \exp(\beta_0). \]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;In fact, the main complication in the &lt;code&gt;BUGS&lt;/code&gt; script is in the parameterisation of the Beta and Gamma distributions. &lt;code&gt;BUGS&lt;/code&gt; requires that the Beta distribution is defined in terms of two scale parameters and thus we code &lt;span class=&#34;math inline&#34;&gt;\(e_{it} \sim \mbox{Beta}(a_{ti},b_{ti})\)&lt;/span&gt; for each intervention arm and individuals. However, we need to actually model the individual mean &lt;span class=&#34;math inline&#34;&gt;\(\phi_{eit}\)&lt;/span&gt; and so we need to link this with &lt;span class=&#34;math inline&#34;&gt;\((a_{ti},b_{ti})\)&lt;/span&gt;. We can use the properties of the Beta distribution and derive that
+&lt;span class=&#34;math display&#34;&gt;\[ a_{it} = \phi_{eit}\left[\frac{\phi_{eit}(1-\phi_{eit})}{\psi_{et}} - 1\right] \qquad \mbox{ and } \qquad b_{it} = (1-\phi_{eit})\left[\frac{\phi_{eit}(1-\phi_{eit})}{\psi_{et}} - 1\right],\]&lt;/span&gt;
+where &lt;span class=&#34;math inline&#34;&gt;\(\psi_{et}\)&lt;/span&gt; is the variance for the Beta distribution (which is coded as &lt;code&gt;ss.e&lt;/code&gt; in the model file). By modelling the mean &lt;span class=&#34;math inline&#34;&gt;\(\phi_{eit}\)&lt;/span&gt; (through the priors induced on the parameters &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\alpha\)&lt;/span&gt;) and standard deviation &lt;span class=&#34;math inline&#34;&gt;\(\sigma_{et}\)&lt;/span&gt;, we then imply a prior on &lt;span class=&#34;math inline&#34;&gt;\((a_{it},b_{it})\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;A further complication is given by the fact that, because of the mathematical properties of the Beta distribution, &lt;span class=&#34;math inline&#34;&gt;\(\sigma_{et}\)&lt;/span&gt; is constrained in its range by the value taken by the overall mean &lt;span class=&#34;math inline&#34;&gt;\(\mu_{et}\)&lt;/span&gt;; for this reason, we define the prior as Uniform in the range $(0,).&lt;/p&gt;
+&lt;p&gt;As for the Gamma distribution, we need to follow a similar strategy: the “original scale” parameters (which are required by &lt;code&gt;BUGS&lt;/code&gt;) are the shape and rate say &lt;span class=&#34;math inline&#34;&gt;\((\zeta_{it},\lambda_{it})\)&lt;/span&gt;; however, these can be related to the mean and variance using the mathematical properties of the Gamma distribution as
+&lt;span class=&#34;math display&#34;&gt;\[ \mbox{shape}_{it} = \zeta_{it} = \frac{\phi_{cit}^2}{\sigma_{ct}^2} \qquad \mbox{ and } \qquad \mbox{rate}_{it} = \lambda_{it} = \frac{\phi_{cit}}{\sigma_{ct}^2}. \]&lt;/span&gt;
+Again, priors on &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\beta\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\sigma_{ct}\)&lt;/span&gt; (which in the model code is indicated as &lt;code&gt;sd.c[t]&lt;/code&gt; and is given a truncated &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; distribution, to provide a continuous distribution on the positive real line) induce suitable priors for the shape and rate.&lt;/p&gt;
+&lt;p&gt;The interesting point of this model is that because of its relative complexity, &lt;code&gt;OpenBUGS&lt;/code&gt; struggles to determine suitable initial values from which to start the simulation. In fact, we have tested several configurations, providing initial values for all the relevant model parameters and still have failed to run the model. Conversely, &lt;code&gt;JAGS&lt;/code&gt; is able to start and successfully estimate this model and data. The main reason for this crucial difference is probabaly to do with the specific version of the sampler used by the two pieces of software.&lt;/p&gt;
+&lt;p&gt;In other words, to be able to run the Beta-Gamma model, it is necessary to install &lt;code&gt;JAGS&lt;/code&gt; (which is available and easy to install from &lt;a href=&#34;https://sourceforge.net/projects/mcmc-jags/files/&#34;&gt;https://sourceforge.net/projects/mcmc-jags/files/&lt;/a&gt;. Then we need to install the &lt;code&gt;R&lt;/code&gt; package &lt;code&gt;R2jags&lt;/code&gt; (which is the equivalent to &lt;code&gt;R2OpenBUGS&lt;/code&gt;). Fortunately, the differences between &lt;code&gt;JAGS&lt;/code&gt; and &lt;code&gt;OpenBUGS&lt;/code&gt; are virtually none. Thus, we can simply run the model following the script and using the commands below:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Installs and R2jags 
+install.packages(&amp;quot;R2jags&amp;quot;)
+
+# Then loads the package
+library(R2jags)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;(this is of course only necessary once). When the package is installed, we just need to load it into our workspace and then proceed with the commands.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# 1. specifies the model file
+filein=&amp;quot;Beta_Gamma.txt&amp;quot;
+
+# 2. data list
+datalist=list(N1=data$n[[1]],eff1=data$e[[1]],cost1=data$c[[1]],u1=data$u[[1]],
+              N2=data$n[[2]],eff2=data$e[[2]],cost2=data$c[[2]],u2=data$u[[2]])
+
+# 3. parameters to monitor
+params&amp;lt;-c(&amp;quot;mu.e&amp;quot;,&amp;quot;sd.e&amp;quot;,&amp;quot;alpha0&amp;quot;,&amp;quot;alpha1&amp;quot;,&amp;quot;beta0&amp;quot;,&amp;quot;beta1&amp;quot;,&amp;quot;
+          Delta_e&amp;quot;,&amp;quot;Delta_c&amp;quot;,&amp;quot;mu.c&amp;quot;,&amp;quot;sd.c&amp;quot;,&amp;quot;eff1&amp;quot;,&amp;quot;eff2&amp;quot;,&amp;quot;cost1&amp;quot;,&amp;quot;cost2&amp;quot;)
+
+# 4. number of iterations
+n.iter&amp;lt;-10000
+
+# 5. reset the inits function
+inits=NULL&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Finally, we’re ready to run the main &lt;code&gt;jags&lt;/code&gt; function to run the model:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;JAGS&lt;/code&gt; compiles and initialises the model successfully and it does not even require us to specify the initial values (we still can do so, if we wanted to have full control, of course).&lt;/p&gt;
+&lt;p&gt;We can now replicate the analysis performed above to check and summarise convergence, as well as to feed the output of our Beta-Gamma Bayesian model to &lt;code&gt;BCEA&lt;/code&gt;, to perform the economic analysis. Notice that the &lt;code&gt;JAGS&lt;/code&gt; object &lt;code&gt;BG&lt;/code&gt; has a slightly different structure and contains an “extra-layer” in comparison to its &lt;code&gt;OpenBUGS&lt;/code&gt; counterpart &lt;code&gt;NN&lt;/code&gt;}. As a result, in order to access the simulations, we need to go deeper inside the object and look into the element &lt;code&gt;$BUGSoutput$sims.list&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;e&amp;lt;-cbind(BG$BUGSoutput$sims.list$mu.e[,1],BG$BUGSoutput$sims.list$mu.e[,2])
+c&amp;lt;-cbind(BG$BUGSoutput$sims.list$mu.c[,1],BG$BUGSoutput$sims.list$mu.c[,2])
+CEA_BG&amp;lt;-bcea(e=e,c=c,ref = 2)
+
+# Plots the CEAC
+ceac.plot(CEA_NN)
+points(CEA_BG$k,CEA_BG$ceac,t=&amp;quot;l&amp;quot;,col=&amp;quot;red&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/10_missing/solutions_files/figure-html/show.res10-1.png&#34; width=&#34;80%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Interestingly, the results are different, depending on the model used for imputation of the missing data. The graph above shows the CEACs for the two model specifications and as is possible to see the Normal-Normal model somewhat overestimates the probability of cost-effectiveness. This is likely due to the higher mean QALYs associated with each individual, given the imputations exceed the theoretical range of 1. If we check the &lt;code&gt;coefplot&lt;/code&gt; for the Beta-Gamma model, we now see that all the distributions are within the range [0-1], as should be.
+&lt;img src=&#34;/practical/10_missing/solutions_files/figure-html/show.res11-1.png&#34; width=&#34;80%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In the graph we display the distributions for the Beta-Gamma (black) and Normal-Normal (red) models. A clear indication of the “pull” towards higher values that the bivariate Normal model shows is given by individual number 6. The red line is shifted upwards in comparison to the black one — this is because the Normal-Normal model does not know that it should not go above one (because the Normal distribution is unrestricted) and so it pulls up the estimate for this individual. This translate in slightly higher values for the QALYs, which in turn artificially increase the cost-effectiveness profile of the active intervention.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practical 3. Introduction to R and cost-effectiveness analysis using BCEA | Bayesian methods in health economics</title>
+    <link>/practical/03_bcea/</link>
+      <atom:link href="/practical/03_bcea/index.xml" rel="self" type="application/rss+xml" />
+    <description>Practical 3. Introduction to R and cost-effectiveness analysis using BCEA</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Mon, 20 Jun 2022 16:30:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Practical 3. Introduction to R and cost-effectiveness analysis using BCEA</title>
+      <link>/practical/03_bcea/</link>
+    </image>
+    
+    <item>
+      <title>Practical 3. Introduction to R and cost-effectiveness analysis using BCEA - SOLUTIONS</title>
+      <link>/practical/03_bcea/solutions/</link>
+      <pubDate>Mon, 20 Jun 2022 16:30:00 +0000</pubDate>
+      <guid>/practical/03_bcea/solutions/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction-to-r-and-cost-effectiveness-analysis-using-bcea-solutions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Introduction to &lt;tt&gt;R&lt;/tt&gt; and cost-effectiveness analysis using &lt;tt&gt;BCEA&lt;/tt&gt; — SOLUTIONS&lt;/h2&gt;
+&lt;div id=&#34;mcmc-in-rbugs&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;MCMC in &lt;tt&gt;R&lt;/tt&gt;/&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/h3&gt;
+&lt;p&gt;The model file is fairly simple in this case and it is coded as in the
+following&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Model for Laplace&amp;#39;s analysis of birth&amp;#39;s data
+model {
+    y ~ dbin(theta,n)
+    theta ~ dunif(0,1)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;which you can save on a file &lt;code&gt;ModelLaplace.txt&lt;/code&gt;. Of course, the naming
+convention is completely up to you and you can use any name or file
+extension, for that matter, e.g. something like &lt;code&gt;model.bug&lt;/code&gt; is perfectly
+acceptable to &lt;tt&gt;BUGS&lt;/tt&gt;, as long as all is
+consistent in your call from &lt;tt&gt;R&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;The next step consists into inputting the data in the
+&lt;tt&gt;R&lt;/tt&gt; workspace. Assuming you have opened
+&lt;tt&gt;R&lt;/tt&gt;, you can point it in the “working”
+directory, i.e. the folder in which you have stored the relevant files,
+say something like &lt;code&gt;C:\gianluca&lt;/code&gt; if you are under &lt;code&gt;MS Windows&lt;/code&gt;.
+&lt;tt&gt;R&lt;/tt&gt; uses &lt;code&gt;Unix&lt;/code&gt; notation and thus paths to
+folder are characterised by a slash (not a forward slash, as in
+&lt;code&gt;MS Windows&lt;/code&gt;). Thus you can point &lt;tt&gt;R&lt;/tt&gt; to the
+relevant directory using the &lt;code&gt;setwd&lt;/code&gt; command, for example as in the
+following.&lt;/p&gt;
+&lt;p&gt;An alternative way of specifying a path in
+&lt;tt&gt;R&lt;/tt&gt; is to use “double forward slash”, as in the
+following&lt;/p&gt;
+&lt;p&gt;To &lt;tt&gt;R&lt;/tt&gt; , both commands have the same meaning.&lt;br /&gt;
+Now we can start inputting the data in the workspace. Because the
+example is so simple, we can simply write down the values we want to
+associated with each of the relevant variables, for example as in the
+following commands.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;y=241945
+n=493527
+data=list(y=y,n=n)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The first two commands define new variables &lt;code&gt;y&lt;/code&gt; and &lt;code&gt;n&lt;/code&gt; and assign them
+the relevant values. The third line creates a new
+&lt;tt&gt;R&lt;/tt&gt; object — that is a &lt;em&gt;list&lt;/em&gt; in which we store
+&lt;code&gt;y&lt;/code&gt; and &lt;code&gt;n&lt;/code&gt;. Lists are very helpful because they act as boxes in which
+you can put variables of different nature (scalars, matrices, strings,
+numbers, etc.). The way &lt;tt&gt;R&lt;/tt&gt; defines variables
+and lists in particular is rather straightforward: notice however that
+you can assign names to elements of a list — we do this here by using
+the option &lt;code&gt;y=y,n=n&lt;/code&gt;.&lt;br /&gt;
+You can inspect the list by using various
+&lt;tt&gt;R&lt;/tt&gt; commands, for example as in the following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;names(data)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;y&amp;quot; &amp;quot;n&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;data$y&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 241945&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The command &lt;code&gt;names&lt;/code&gt; returns the names of the objects included inside the
+data list, while the “$” operator allows us to access objects contained
+inside other objects. So the command &lt;code&gt;data$y&lt;/code&gt; looks inside the object
+&lt;code&gt;data&lt;/code&gt; and returns the value of the object &lt;code&gt;y&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The next step we need to follow before we can run our model using
+&lt;tt&gt;BUGS&lt;/tt&gt;is to set up the environment and main
+variables for the MCMC. We do this using the
+&lt;tt&gt;R&lt;/tt&gt; commands below.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;filein=&amp;quot;ModelLaplace.txt&amp;quot;
+params=&amp;quot;theta&amp;quot;
+inits_det=list(list(theta=.1),list(theta=.9))
+inits_ran=function(){list(theta=runif(1))}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The first one creates a string variable with the path to the model file.
+In this case, we assume that the &lt;code&gt;.txt&lt;/code&gt; file is stored in the working
+directory and so all that is necessary is a pointer to the file name. If
+the &lt;code&gt;.txt&lt;/code&gt; were stored somewhere, e.g. in the folder
+&lt;code&gt;C:\gianluca\myfiles&lt;/code&gt;, then we would need to specify the full path to
+the file, e.g. &lt;code&gt;filein=C:/gianluca/myfiles/ModelLaplace.txt&lt;/code&gt;. Of course,
+there is nothing special about the name &lt;code&gt;filein&lt;/code&gt; — and you can use any
+name you like, provided you are then consistent in the call to
+&lt;tt&gt;BUGS&lt;/tt&gt;.&lt;/p&gt;
+&lt;p&gt;The second command defines the parameters to be monitored. In this case,
+the model is so simple that it only has one parameter, so we simply
+define a string variable &lt;code&gt;params&lt;/code&gt;. If we had more than one parameter, we
+would need to create a vector of names — in
+&lt;tt&gt;R&lt;/tt&gt; we can do this by using the “collection”
+operator, for example as in the following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;params=c(&amp;quot;theta1&amp;quot;,&amp;quot;theta2&amp;quot;,&amp;quot;theta3&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The third and fourth commands show two different ways of creating
+initial values to pass to &lt;tt&gt;BUGS&lt;/tt&gt;. The first
+one uses deterministic initial values, in the sense that you are passing
+specific values to &lt;tt&gt;R&lt;/tt&gt; , which it in turn will
+send to &lt;tt&gt;BUGS&lt;/tt&gt;. If you want to do this, you
+need to create a “list of lists”. In other words, first you define a
+variable (in this case &lt;code&gt;inits_det&lt;/code&gt;) as a list. Then, you create other
+lists inside it — each of this list should contain a specific value for
+each of the variables you need to initialise. The number of lists inside
+the upper-level list is defined by the number of Markov chain you want
+to run (see below and the lecture slides). You can explore the list you
+have just created by simply calling its name.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;inits_det&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[[1]]
+[[1]]$theta
+[1] 0.1
+
+
+[[2]]
+[[2]]$theta
+[1] 0.9&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This may be a bit daunting at first glance, but once you get your head
+around it, the way in which &lt;tt&gt;R&lt;/tt&gt; manages its
+objects is actually very informative and very much linked with its
+object-oriented programming nature. The output is characterised by a
+series of “tags”. For example, the tag &lt;code&gt;[[1]]&lt;/code&gt; indicates the first
+element (i.e. the first list included) in the main object (i.e. the
+variable &lt;code&gt;inits_det&lt;/code&gt;). So for example, you can access elements inside an
+object using the “‘double square bracket’’ and/or the “$” notation, for
+example as in the following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;inits_det[[1]]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$theta
+[1] 0.1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;inits_det[[1]]$theta&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 0.1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The lower level tag &lt;code&gt;[1]&lt;/code&gt; is used to indicate the variables stored
+inside the upper-level element of the object (e.g. the value &lt;code&gt;0.1&lt;/code&gt; that
+we have assigned to &lt;code&gt;theta&lt;/code&gt; in the first list inside &lt;code&gt;inits_det&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;The fourth command defines “random” initial values. To do so, instead of
+you passing a specific value, you can create a
+&lt;tt&gt;R&lt;/tt&gt; function that simulates them from a
+suitable probability distribution. In this case, we know that &lt;code&gt;theta&lt;/code&gt; is
+defined in our model code to be a probability and so it has to range
+between 0 and 1. As we have seen in the classes, a Uniform distribution
+may be a good candidate and thus in this case we set up a little
+function that creates a list and puts inside it a number generated
+randomly from a Uniform distribution. In &lt;tt&gt;R&lt;/tt&gt;,
+built-in functions such as &lt;code&gt;runif&lt;/code&gt; have default values. So a call&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;runif(1)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 0.1834258&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;randomly samples 1 value from a Uniform distribution defined in the
+default range &lt;span class=&#34;math inline&#34;&gt;\([0;1]\)&lt;/span&gt;. You can get more information on
+&lt;tt&gt;R&lt;/tt&gt; functions typing the command
+&lt;code&gt;help(name_of_the_function)&lt;/code&gt; to your
+&lt;tt&gt;R&lt;/tt&gt; terminal.&lt;/p&gt;
+&lt;p&gt;At this point we are finally ready to call
+&lt;tt&gt;BUGS&lt;/tt&gt;in background and do the MCMC simulation
+for us. We can do so using the following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(R2OpenBUGS)
+model= bugs(data=data,inits=inits_det,parameters.to.save=params,model.file=filein,
+              n.chains=2,n.iter=10000,n.burnin=4500,n.thin=1,DIC=TRUE) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Firstly we load the package &lt;code&gt;R2OpenBUGS&lt;/code&gt;, which allows us to link
+&lt;tt&gt;R&lt;/tt&gt; to &lt;tt&gt;BUGS&lt;/tt&gt;. Then
+we define a new object &lt;code&gt;model&lt;/code&gt;, which will collect the output of the
+call to the function &lt;code&gt;bugs&lt;/code&gt;. This takes several arguments. In this case,
+we are using the deterministic initial values and considering 2 chains.
+We ask &lt;tt&gt;BUGS&lt;/tt&gt;to do a burn-in (cfr. slides as
+well as &lt;em&gt;BMHE&lt;/em&gt; and &lt;em&gt;The BUGS Book&lt;/em&gt;) of 4500 iterations and then simulate
+for another 10000 iterations after that. We do not require thinning (or,
+equivalently, a thinning of 1, which simply means that all the 10000
+simulations after burn-in are stored for our analysis). Finally, we
+instruct &lt;tt&gt;BUGS&lt;/tt&gt;to compute the DIC (more on
+this later — do not worry about it for now).&lt;/p&gt;
+&lt;p&gt;The commands&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;names(model)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; [1] &amp;quot;n.chains&amp;quot;        &amp;quot;n.iter&amp;quot;          &amp;quot;n.burnin&amp;quot;        &amp;quot;n.thin&amp;quot;         
+ [5] &amp;quot;n.keep&amp;quot;          &amp;quot;n.sims&amp;quot;          &amp;quot;sims.array&amp;quot;      &amp;quot;sims.list&amp;quot;      
+ [9] &amp;quot;sims.matrix&amp;quot;     &amp;quot;summary&amp;quot;         &amp;quot;mean&amp;quot;            &amp;quot;sd&amp;quot;             
+[13] &amp;quot;median&amp;quot;          &amp;quot;root.short&amp;quot;      &amp;quot;long.short&amp;quot;      &amp;quot;dimension.short&amp;quot;
+[17] &amp;quot;indexes.short&amp;quot;   &amp;quot;last.values&amp;quot;     &amp;quot;isDIC&amp;quot;           &amp;quot;DICbyR&amp;quot;         
+[21] &amp;quot;pD&amp;quot;              &amp;quot;DIC&amp;quot;             &amp;quot;model.file&amp;quot;     &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;model$n.iter&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 10000&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;will return the list of names for all the elements included in the
+&lt;code&gt;model&lt;/code&gt; object; and access the value of the element &lt;code&gt;n.iter&lt;/code&gt; included
+inside the object &lt;code&gt;model&lt;/code&gt;, respectively.&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;R2OpenBUGS&lt;/code&gt; has a “print” method — meaning that we can display the
+results of our model in a tabular form, simply using the following
+command (the option &lt;code&gt;digits=3&lt;/code&gt; defines the number of significant figures
+to be displayed).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;print(model,digits=3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Inference for Bugs model at &amp;quot;ModelLaplace.txt&amp;quot;, 
+Current: 2 chains, each with 10000 iterations (first 4500 discarded)
+Cumulative: n.sims = 11000 iterations saved
+           mean    sd   2.5%   25%   50%    75%  97.5%  Rhat n.eff
+theta     0.490 0.001  0.489  0.49  0.49  0.491  0.492 1.001 11000
+deviance 14.562 1.427 13.560 13.66 14.02 14.870 18.740 1.002  3200
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = Dbar-Dhat)
+pD = 1.002 and DIC = 15.560
+DIC is an estimate of expected predictive error (lower deviance is better).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This returns a table with summary statistics from the posterior
+distribution of the nodes we have instructed
+&lt;tt&gt;R&lt;/tt&gt; and &lt;tt&gt;BUGS&lt;/tt&gt;to
+monitor. Notice that &lt;tt&gt;BUGS&lt;/tt&gt;will automatically
+monitor a node &lt;code&gt;deviance&lt;/code&gt; — see Lecture 5. For now, let us not worry
+about it!&lt;/p&gt;
+&lt;p&gt;In this case, we can easily assess that the estimate for the probability
+of a girl being born is on average 0.490 and we can approximate a 95%
+&lt;em&gt;credible&lt;/em&gt; interval by considering as lower and upper limits the 2.5%
+and 97% quantiles of the posterior distribution. In this case, the
+interval estimate is 0.489 to 0.492. Because the entire interval is
+below the threshold of 0.5, Laplace concluded in his analysis that it
+was “morally certain” that a boy birth was more likely than a girl (see
+&lt;em&gt;BMHE&lt;/em&gt;, chapter 2).&lt;/p&gt;
+&lt;p&gt;In any MCMC analysis, convergence is a crucial point. Because the
+Uniform distribution (that we have used as prior for &lt;code&gt;theta&lt;/code&gt;) can be
+considered as a special case of the Beta distribution, we know from
+Lecture 3 that actually ours is a case of Binomial-Beta conjugate model.
+Thus, we do not really have issues with convergence and in fact the
+&lt;tt&gt;BUGS&lt;/tt&gt;model is not even really a MCMC exercise
+(the simulations are still obtained but all the calculations are done in
+close-form because of conjugacy). This is reflected in the value of the
+potential scale reduction factor (or Gelman-Rubin statistic &lt;span class=&#34;math inline&#34;&gt;\(\hat{R}\)&lt;/span&gt;),
+described in the column headed &lt;code&gt;Rhat&lt;/code&gt;, which show values well below the
+threshold of 1.1. Similarly, autocorrelation is not an issue as the
+effective sample size (described in the column headed &lt;code&gt;neff&lt;/code&gt;) is exactly
+identical with the actual sample size. In particular, notice that: we
+have 2 chains, we run the model for 10000 iterations per chain after a
+burn-in of 4500 iterations per chain that are discarded. This makes the
+total number of simulations used for our analysis
+&lt;span class=&#34;math inline&#34;&gt;\(2\times (10000-4500)=11000\)&lt;/span&gt;. This number is stored also in the object
+&lt;code&gt;model$n.sims&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;A handy workaround that allows us to avoid using the “$” or “double
+square bracket” notation is to “attach” an object to the workspace. This
+means that we effectively bypass the upper-level object and make its
+elements available directly to &lt;tt&gt;R&lt;/tt&gt; and we can
+do this by using the command&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;attach.bugs(model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;div class=&#34;alert alert-warning&#34;&gt;
+  &lt;div&gt;
+    &lt;p&gt;&lt;strong&gt;NB&lt;/strong&gt;: It is possible that this command does not produce the required effect (in newer versions of &lt;code&gt;R2OpenBUGS&lt;/code&gt;). An alternative that should work is&lt;/p&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;attach.all(model)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;(i.e. use the function &lt;code&gt;attach.all&lt;/code&gt;, still from the package &lt;code&gt;R2OpenBUGS&lt;/code&gt;, where the argument in brackets is the name of the &lt;code&gt;BUGS&lt;/code&gt; model for which you want to make all the output directly available on your &lt;code&gt;R&lt;/code&gt; workspace).
+
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;Notice that this operation comes with some risks — every variable that
+is currently present in the &lt;tt&gt;R&lt;/tt&gt; workspace with
+the same name as a variable included in the object &lt;code&gt;model&lt;/code&gt; will be now
+overwritten. Nevertheless, we can now use all the elements of &lt;code&gt;model&lt;/code&gt;
+directly; for example we can produce a histogram of the posterior
+distribution for &lt;code&gt;theta&lt;/code&gt; simply using the following command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;hist(theta)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/03_bcea/solutions_files/figure-html/inspect.bugs4-1.png&#34; width=&#34;460.8&#34; style=&#34;display: block; margin: auto;&#34; /&gt;
+which confirms that, effectively, there is no chance that &lt;code&gt;theta&lt;/code&gt; is
+greated than 0.5.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;health-economic-evaluation-in-r-using-bcea&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Health economic evaluation in &lt;tt&gt;R&lt;/tt&gt; using &lt;tt&gt;BCEA&lt;/tt&gt;&lt;/h2&gt;
+&lt;p&gt;First we load a dataset that has been previously saved. There are
+several format to which you can save &lt;tt&gt;R&lt;/tt&gt; data
+or &lt;tt&gt;R&lt;/tt&gt; workspaces — in this case we use the
+format &lt;code&gt;.RData&lt;/code&gt;. We can load a &lt;code&gt;.RData&lt;/code&gt; file simply using the built-in
+&lt;tt&gt;R&lt;/tt&gt; command &lt;code&gt;load&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;load(&amp;quot;Vaccine.RData&amp;quot;)
+names(he)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; [1] &amp;quot;n_sim&amp;quot;         &amp;quot;n_comparators&amp;quot; &amp;quot;n_comparisons&amp;quot; &amp;quot;delta_e&amp;quot;      
+ [5] &amp;quot;delta_c&amp;quot;       &amp;quot;Kmax&amp;quot;          &amp;quot;k&amp;quot;             &amp;quot;ib&amp;quot;           
+ [9] &amp;quot;eib&amp;quot;           &amp;quot;kstar&amp;quot;         &amp;quot;best&amp;quot;          &amp;quot;ref&amp;quot;          
+[13] &amp;quot;comp&amp;quot;          &amp;quot;step&amp;quot;          &amp;quot;interventions&amp;quot; &amp;quot;delta.e&amp;quot;      
+[17] &amp;quot;delta.c&amp;quot;      &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The file &lt;code&gt;Vaccine.RData&lt;/code&gt; contains the object &lt;code&gt;he&lt;/code&gt;, which in turns has
+several elements in it.&lt;/p&gt;
+&lt;p&gt;We can now load the package &lt;tt&gt;BCEA&lt;/tt&gt; (assuming
+you have already installed it) and use it to post-process &lt;code&gt;he&lt;/code&gt; and
+produce relevant summaries/analyses.&lt;/p&gt;
+&lt;p&gt;&lt;div class=&#34;alert alert-warning&#34;&gt;
+  &lt;div&gt;
+    The practical uses the &lt;strong&gt;current&lt;/strong&gt; version of &lt;tt&gt;BCEA&lt;/tt&gt;, which is available from &lt;a href=&#34;https://cran.r-project.org/web/packages/BCEA/index.html&#34;&gt;CRAN&lt;/a&gt;. However, the &lt;a href=&#34;https://github.com/giabaio/BCEA/tree/dev&#34;&gt;development version&lt;/a&gt; is in the “beta-testing” version and will soon replace the current stable version. As this will be a &lt;strong&gt;major&lt;/strong&gt; update, some of the commands below &lt;em&gt;may&lt;/em&gt; break in the future — differences will be minor and changes will be easy to address.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(BCEA)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Attaching package: &amp;#39;BCEA&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;The following object is masked from &amp;#39;package:graphics&amp;#39;:
+
+    contour&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ICER=mean(he$delta.c)/mean(he$delta.e) 
+ICER&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 20097.59&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The first thing we need to do is to compute the ICER. If you check with
+your slides for Lecture 3, you will see that
+&lt;span class=&#34;math display&#34;&gt;\[\mbox{ICER} = \frac{\mbox{E}[\Delta_c]}{\mbox{E}[\Delta_e]}\]&lt;/span&gt; and so
+we create a new variable &lt;code&gt;ICER&lt;/code&gt; to which we assign as value the ratio of
+the mean of the element &lt;code&gt;he$delta.c&lt;/code&gt; to the mean of the element
+&lt;code&gt;he$delta.e&lt;/code&gt;. Its value is returned to be 20097.59. The only difficulty
+of this part is to realise how to translate the correct formula for the
+ICER into &lt;tt&gt;R&lt;/tt&gt; commands (i.e. you need to take
+the ratio of the means, not the mean of the ratio!) and to access the
+elements &lt;code&gt;delta.e&lt;/code&gt; and &lt;code&gt;delta.c&lt;/code&gt; from inside the main object &lt;code&gt;he&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Secondly, we are asked to compute the Expected Incremental Benefit (EIB)
+for a value of the willingness to pay threshold &lt;span class=&#34;math inline&#34;&gt;\(k=30000\)&lt;/span&gt;. Now, from the
+Lecture we know that
+&lt;span class=&#34;math display&#34;&gt;\[\mbox{EIB} = k\mbox{E}[\Delta_e] - \mbox{E}[\Delta_c]\]&lt;/span&gt; and so we can
+easily compute this using the following
+&lt;tt&gt;R&lt;/tt&gt; commmands.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;k=30000
+EIB=k*mean(he$delta.e)-mean(he$delta.c)
+EIB&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 2.48131&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Because for this willingness to pay threshold &lt;span class=&#34;math inline&#34;&gt;\(\mbox{EIB}&amp;gt;0\)&lt;/span&gt;, then the
+new treatment &lt;span class=&#34;math inline&#34;&gt;\(t=1\)&lt;/span&gt; is more cost-effective than the comparator &lt;span class=&#34;math inline&#34;&gt;\(t=0\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Next, we are required to display the cost-effectiveness plane, using the
+&lt;tt&gt;BCEA&lt;/tt&gt; built-in command &lt;code&gt;ceplane.plot&lt;/code&gt;. This
+gives the following result.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ceplane.plot(he,wtp=10000)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/03_bcea/solutions_files/figure-html/bcea3-1.png&#34; width=&#34;652.8&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The reason why &lt;tt&gt;BCEA&lt;/tt&gt; says “ICER=NULL” in the
+top-right corner of the graph is because the object &lt;code&gt;he&lt;/code&gt; has been
+modified from the standard &lt;tt&gt;BCEA&lt;/tt&gt; output
+(effectively, the variable &lt;code&gt;ICER&lt;/code&gt; is computed within a
+&lt;tt&gt;BCEA&lt;/tt&gt; object. But because you were required to
+compute the ICER yourselves, this has been removed and so &lt;code&gt;ceplane.plot&lt;/code&gt;
+does not know what value to use. If you are bothered by this, you can
+simply define in &lt;tt&gt;R&lt;/tt&gt; &lt;code&gt;he$ICER=ICER&lt;/code&gt; and re-run
+the &lt;code&gt;ceplane.plot&lt;/code&gt; command. Now &lt;tt&gt;BCEA&lt;/tt&gt; will
+print on the graph the value of the ICER.&lt;/p&gt;
+&lt;p&gt;In any case, because we have selected a different threshold (&lt;span class=&#34;math inline&#34;&gt;\(k=10\,000\)&lt;/span&gt;
+instead of &lt;span class=&#34;math inline&#34;&gt;\(k=30,000\)&lt;/span&gt; as before), this time the ICER (the red dot in the
+graph) is not included in the “sustainability area” (the grey area in
+the plane). For this reason, we can conclude that &lt;em&gt;at this new
+threshold&lt;/em&gt;, &lt;span class=&#34;math inline&#34;&gt;\(t=0\)&lt;/span&gt; is more cost-effective.&lt;/p&gt;
+&lt;p&gt;If we now execute the following command&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;eib.plot(he, plot.cri=FALSE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/03_bcea/solutions_files/figure-html/bcea4-1.png&#34; width=&#34;652.8&#34; style=&#34;display: block; margin: auto;&#34; /&gt;
+we obtain a plot of the EIB for different values of the willingness to
+pay. The interpretation of this graph is that for willingness to pay up
+to about 20100, then &lt;span class=&#34;math inline&#34;&gt;\(t=0\)&lt;/span&gt; is the most cost-effective treatment (because
+EIB&lt;span class=&#34;math inline&#34;&gt;\(&amp;lt;0\)&lt;/span&gt;). After that, &lt;span class=&#34;math inline&#34;&gt;\(t=1\)&lt;/span&gt; becomes more cost-effective and EIB&lt;span class=&#34;math inline&#34;&gt;\(&amp;gt;0\)&lt;/span&gt;
+indicating that the new treatment has a greater utility than the
+comparator.&lt;/p&gt;
+&lt;p&gt;Finally, we can use &lt;tt&gt;BCEA&lt;/tt&gt; to show a contour
+plot of the economic results, by using the following command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;contour(he)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/03_bcea/solutions_files/figure-html/bcea5-1.png&#34; width=&#34;652.8&#34; style=&#34;display: block; margin: auto;&#34; /&gt;
+The probability that the new intervention (vaccination) is dominated by
+the reference (status quo) is estimated by the proportion if points in
+the cost-effectiveness plane that lie in the NW quadrant. This is
+reported by the graph as 0.169.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>D Lunn, C Jackson, N Best, A Thomas, D Spiegelhalter | Bayesian methods in health economics</title>
+    <link>/author/d-lunn-c-jackson-n-best-a-thomas-d-spiegelhalter/</link>
+      <atom:link href="/author/d-lunn-c-jackson-n-best-a-thomas-d-spiegelhalter/index.xml" rel="self" type="application/rss+xml" />
+    <description>D Lunn, C Jackson, N Best, A Thomas, D Spiegelhalter</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Thu, 01 Nov 2012 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>D Lunn, C Jackson, N Best, A Thomas, D Spiegelhalter</title>
+      <link>/author/d-lunn-c-jackson-n-best-a-thomas-d-spiegelhalter/</link>
+    </image>
+    
+    <item>
+      <title>The BUGS Book</title>
+      <link>/publication/lunn-etal-2012/</link>
+      <pubDate>Thu, 01 Nov 2012 00:00:00 +0000</pubDate>
+      <guid>/publication/lunn-etal-2012/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

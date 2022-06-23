@@ -1,0 +1,512 @@
+12,12,12,17,18)
+# Makes the Gantt chart
+##shades=colorRampPalette(c("blue","red"))
+shades=colorRampPalette(c("cyan1","blueviolet"))
+project=as_tibble(unlist(activity)) %>%
+mutate(wp=unlist(lapply(1:length(activity),function(i) rep(names(activity)[i],length(activity[[i]])))),
+start_date=start_date,end_date=end_date,value=paste(" ",value)) %>%
+rename(activity=value) %>% select(wp,activity,start_date,end_date) %>%
+filter(!is.na(wp))
+project
+gantt=ganttrify(project,project_start_date="2021-10",mark_quarters=TRUE,colour_palette=shades(length(wp)),
+size_text_relative=1.5)
+gantt+ggplot2::theme(axis.text.y=ggplot2::element_text(hjust=0))
+gantt+ggplot2::theme(axis.text.y=ggplot2::element_text(hjust=0,size=2))
+gantt+ggplot2::theme(axis.text.y=ggplot2::element_text(hjust=0,size=10))
+gantt=ganttrify(project,project_start_date="2021-10",mark_quarters=TRUE,colour_palette=shades(length(wp)),
+size_text_relative=0.9)
+gantt+ggplot2::theme(axis.text.y=ggplot2::element_text(hjust=0,size=10))
+gantt+ggplot2::theme(axis.text.y=ggplot2::element_text(hjust=0,size=20))
+ganttrify
+project
+length(unique(project$wp)) > length(as.character(wesanderson::wes_palette("Darjeeling1")))
+df <- project %>% dplyr::mutate(start_date = as.numeric(start_date),
+end_date = as.numeric(end_date))
+df
+sum(is.na(df$start_date)) == nrow(df)
+start_yearmon <- zoo::as.yearmon(project_start_date) -
+(1/12)
+project_start_date="Oct2021"
+start_yearmon <- zoo::as.yearmon(project_start_date) -
+(1/12)
+start_yearmon
+zoo::as.yearmon
+help(as.yearmon)
+library(googlesheets4)
+library(dplyr)
+covid_data=read_sheet("https://docs.google.com/spreadsheets/d/1pIVZAs10iXB-UtA5SfwWA4TSNk9-76sw75YilKeDKFU/edit#gid=0")
+confirmed=as.numeric(gsub(",","",covid_data %>% filter(`...2`=="World[e]") %>% select(contains("Cases"))))
+deaths=as.numeric(gsub(",","",covid_data %>% filter(`...2`=="World[e]") %>% select(contains("Death"))))
+confirmed/1000000
+plyr::round_any(deaths,1000)
+include_fig=function(img,width) {
+paste('<center><img src= img/',img, 'width=',width,'></center>')
+}
+include_fig("bayes-quote.jpg","650")
+paste0('<center><img src= img/',img, 'width=',width,'></center>')
+include_fig=function(img,width) {
+paste0('<center><img src= img/',img, 'width=',width,'></center>')
+}
+include_fig("bayes-quote.jpg","650")
+include_fig=function(img,width) {
+paste0('<center><img src= img/',img, ' width=',width,'></center>')
+}
+include_fig("bayes-quote.jpg","650")
+p=ggplot(data=df,aes(de,dc)) + geom_point(col="lightgray",size=.7) + theme_classic() +
+theme(axis.line=element_blank(),
+axis.text.x=element_blank(),
+axis.text.y=element_blank(),
+axis.ticks=element_blank(),
+legend.position="none",
+panel.background=element_blank(),
+panel.border=element_blank(),
+panel.grid.major=element_blank(),
+panel.grid.minor=element_blank(),
+plot.background=element_blank()) +
+geom_hline(yintercept=0) + geom_vline(xintercept=0) +
+geom_segment(aes(x=0,y=-Inf,xend=0,yend=Inf),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_segment(aes(x=-Inf,y=0,xend=Inf,yend=0),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_point(aes(x=mean(de),y=mean(dc)),col="red",size=2) +
+labs(title="Cost effectiveness plane",y="Cost differential",x="Effectiveness differential") +
+theme(plot.title = element_text(hjust = 0.5,size=18),
+axis.title.x = element_text(size=15),
+axis.title.y = element_text(size=15)
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\mbox{ICER}=\\frac{{\\sf E}[\\Delta_c]}{{\\sf E}[\\Delta_c]}=\\frac{\\hat\\mu_{c1}-\\hat\\mu_{c0}}{\\hat\\mu_{e1}-\\hat\\mu_{e0}}$",
+hjust=-.05, size=6
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\phantom{\\mbox{ICER}}=\\mbox{Cost per outcome}$",
+hjust=-.05,vjust=2.5, size=6
+) +
+annotate("text",0,Inf,label="$\\Delta_c$",hjust=2,vjust=1,size=5) +
+annotate("text",Inf,0,label="$\\Delta_e$",hjust=1,vjust=2,size=5) +
+annotate(
+"text",Inf,Inf,
+label="$\\Delta_e=\\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_1]}_{\\mu_{e1}} - \\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_0]}_{\\mu_{e0}}$"
+)
+library(BCEA)
+library(ggplot2)
+data(Vaccine)
+m=bcea(e,c,ref=2)
+df=data.frame(de=m$delta.e,dc=m$delta.c)
+p=ggplot(data=df,aes(de,dc)) + geom_point(col="lightgray",size=.7) + theme_classic() +
+theme(axis.line=element_blank(),
+axis.text.x=element_blank(),
+axis.text.y=element_blank(),
+axis.ticks=element_blank(),
+legend.position="none",
+panel.background=element_blank(),
+panel.border=element_blank(),
+panel.grid.major=element_blank(),
+panel.grid.minor=element_blank(),
+plot.background=element_blank()) +
+geom_hline(yintercept=0) + geom_vline(xintercept=0) +
+geom_segment(aes(x=0,y=-Inf,xend=0,yend=Inf),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_segment(aes(x=-Inf,y=0,xend=Inf,yend=0),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_point(aes(x=mean(de),y=mean(dc)),col="red",size=2) +
+labs(title="Cost effectiveness plane",y="Cost differential",x="Effectiveness differential") +
+theme(plot.title = element_text(hjust = 0.5,size=18),
+axis.title.x = element_text(size=15),
+axis.title.y = element_text(size=15)
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\mbox{ICER}=\\frac{{\\sf E}[\\Delta_c]}{{\\sf E}[\\Delta_c]}=\\frac{\\hat\\mu_{c1}-\\hat\\mu_{c0}}{\\hat\\mu_{e1}-\\hat\\mu_{e0}}$",
+hjust=-.05, size=6
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\phantom{\\mbox{ICER}}=\\mbox{Cost per outcome}$",
+hjust=-.05,vjust=2.5, size=6
+) +
+annotate("text",0,Inf,label="$\\Delta_c$",hjust=2,vjust=1,size=5) +
+annotate("text",Inf,0,label="$\\Delta_e$",hjust=1,vjust=2,size=5) +
+annotate(
+"text",Inf,Inf,
+label="$\\Delta_e=\\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_1]}_{\\mu_{e1}} - \\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_0]}_{\\mu_{e0}}$"
+)
+p
+p=ggplot(data=df,aes(de,dc)) + geom_point(col="lightgray",size=.7) + theme_classic() +
+theme(axis.line=element_blank(),
+axis.text.x=element_blank(),
+axis.text.y=element_blank(),
+axis.ticks=element_blank(),
+legend.position="none",
+panel.background=element_blank(),
+panel.border=element_blank(),
+panel.grid.major=element_blank(),
+panel.grid.minor=element_blank(),
+plot.background=element_blank()) +
+geom_hline(yintercept=0) + geom_vline(xintercept=0) +
+geom_segment(aes(x=0,y=-Inf,xend=0,yend=Inf),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_segment(aes(x=-Inf,y=0,xend=Inf,yend=0),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_point(aes(x=mean(de),y=mean(dc)),col="red",size=2) +
+labs(title="Cost effectiveness plane",y="Cost differential",x="Effectiveness differential") +
+theme(plot.title = element_text(hjust = 0.5,size=18),
+axis.title.x = element_text(size=15),
+axis.title.y = element_text(size=15)
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\mbox{ICER}=\\frac{{\\sf E}[\\Delta_c]}{{\\sf E}[\\Delta_c]}=\\frac{\\hat\\mu_{c1}-\\hat\\mu_{c0}}{\\hat\\mu_{e1}-\\hat\\mu_{e0}}$",
+hjust=-.05, size=6
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\phantom{\\mbox{ICER}}=\\mbox{Cost per outcome}$",
+hjust=-.05,vjust=2.5, size=6
+) +
+annotate("text",0,Inf,label="$\\Delta_c$",hjust=2,vjust=1,size=5) +
+annotate("text",Inf,0,label="$\\Delta_e$",hjust=1,vjust=2,size=5) +
+annotate(
+"text",Inf,Inf,
+label="$\\Delta_e=\\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_1]}_{\\mu_{e1}} - \\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_0]}_{\\mu_{e0}}$", hjust=4,vjust=4,size=5
+)
+p
+p=ggplot(data=df,aes(de,dc)) + geom_point(col="lightgray",size=.7) + theme_classic() +
+theme(axis.line=element_blank(),
+axis.text.x=element_blank(),
+axis.text.y=element_blank(),
+axis.ticks=element_blank(),
+legend.position="none",
+panel.background=element_blank(),
+panel.border=element_blank(),
+panel.grid.major=element_blank(),
+panel.grid.minor=element_blank(),
+plot.background=element_blank()) +
+geom_hline(yintercept=0) + geom_vline(xintercept=0) +
+geom_segment(aes(x=0,y=-Inf,xend=0,yend=Inf),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_segment(aes(x=-Inf,y=0,xend=Inf,yend=0),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_point(aes(x=mean(de),y=mean(dc)),col="red",size=2) +
+labs(title="Cost effectiveness plane",y="Cost differential",x="Effectiveness differential") +
+theme(plot.title = element_text(hjust = 0.5,size=18),
+axis.title.x = element_text(size=15),
+axis.title.y = element_text(size=15)
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\mbox{ICER}=\\frac{{\\sf E}[\\Delta_c]}{{\\sf E}[\\Delta_c]}=\\frac{\\hat\\mu_{c1}-\\hat\\mu_{c0}}{\\hat\\mu_{e1}-\\hat\\mu_{e0}}$",
+hjust=-.05, size=6
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\phantom{\\mbox{ICER}}=\\mbox{Cost per outcome}$",
+hjust=-.05,vjust=2.5, size=6
+) +
+annotate("text",0,Inf,label="$\\Delta_c$",hjust=2,vjust=1,size=5) +
+annotate("text",Inf,0,label="$\\Delta_e$",hjust=1,vjust=2,size=5) +
+annotate(
+"text",Inf,Inf,
+label="$\\Delta_e=\\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_1]}_{\\mu_{e1}} - \\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_0]}_{\\mu_{e0}}$", hjust=1,vjust=1,size=5
+)
+p
+p=ggplot(data=df,aes(de,dc)) + geom_point(col="lightgray",size=.7) + theme_classic() +
+theme(axis.line=element_blank(),
+axis.text.x=element_blank(),
+axis.text.y=element_blank(),
+axis.ticks=element_blank(),
+legend.position="none",
+panel.background=element_blank(),
+panel.border=element_blank(),
+panel.grid.major=element_blank(),
+panel.grid.minor=element_blank(),
+plot.background=element_blank()) +
+geom_hline(yintercept=0) + geom_vline(xintercept=0) +
+geom_segment(aes(x=0,y=-Inf,xend=0,yend=Inf),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_segment(aes(x=-Inf,y=0,xend=Inf,yend=0),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_point(aes(x=mean(de),y=mean(dc)),col="red",size=2) +
+labs(title="Cost effectiveness plane",y="Cost differential",x="Effectiveness differential") +
+theme(plot.title = element_text(hjust = 0.5,size=18),
+axis.title.x = element_text(size=15),
+axis.title.y = element_text(size=15)
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\mbox{ICER}=\\frac{{\\sf E}[\\Delta_c]}{{\\sf E}[\\Delta_c]}=\\frac{\\hat\\mu_{c1}-\\hat\\mu_{c0}}{\\hat\\mu_{e1}-\\hat\\mu_{e0}}$",
+hjust=-.05, size=6
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\phantom{\\mbox{ICER}}=\\mbox{Cost per outcome}$",
+hjust=-.05,vjust=2.5, size=6
+) +
+annotate("text",0,Inf,label="$\\Delta_c$",hjust=2,vjust=1,size=5) +
+annotate("text",Inf,0,label="$\\Delta_e$",hjust=1,vjust=2,size=5) +
+annotate(
+"text",Inf,Inf,
+label="$\\Delta_e=\\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_1]}_{\\mu_{e1}} - \\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_0]}_{\\mu_{e0}}$", hjust=0,vjust=1,size=5
+)
+p
+p=ggplot(data=df,aes(de,dc)) + geom_point(col="lightgray",size=.7) + theme_classic() +
+theme(axis.line=element_blank(),
+axis.text.x=element_blank(),
+axis.text.y=element_blank(),
+axis.ticks=element_blank(),
+legend.position="none",
+panel.background=element_blank(),
+panel.border=element_blank(),
+panel.grid.major=element_blank(),
+panel.grid.minor=element_blank(),
+plot.background=element_blank()) +
+geom_hline(yintercept=0) + geom_vline(xintercept=0) +
+geom_segment(aes(x=0,y=-Inf,xend=0,yend=Inf),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_segment(aes(x=-Inf,y=0,xend=Inf,yend=0),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_point(aes(x=mean(de),y=mean(dc)),col="red",size=2) +
+labs(title="Cost effectiveness plane",y="Cost differential",x="Effectiveness differential") +
+theme(plot.title = element_text(hjust = 0.5,size=18),
+axis.title.x = element_text(size=15),
+axis.title.y = element_text(size=15)
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\mbox{ICER}=\\frac{{\\sf E}[\\Delta_c]}{{\\sf E}[\\Delta_c]}=\\frac{\\hat\\mu_{c1}-\\hat\\mu_{c0}}{\\hat\\mu_{e1}-\\hat\\mu_{e0}}$",
+hjust=-.05, size=6
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\phantom{\\mbox{ICER}}=\\mbox{Cost per outcome}$",
+hjust=-.05,vjust=2.5, size=6
+) +
+annotate("text",0,Inf,label="$\\Delta_c$",hjust=2,vjust=1,size=5) +
+annotate("text",Inf,0,label="$\\Delta_e$",hjust=1,vjust=2,size=5) +
+annotate(
+"text",Inf,Inf,
+label="$\\Delta_e=\\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_1]}_{\\mu_{e1}} - \\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_0]}_{\\mu_{e0}}$", hjust=1.5,vjust=1.5,size=5
+)
+p
+p=ggplot(data=df,aes(de,dc)) + geom_point(col="lightgray",size=.7) + theme_classic() +
+theme(axis.line=element_blank(),
+axis.text.x=element_blank(),
+axis.text.y=element_blank(),
+axis.ticks=element_blank(),
+legend.position="none",
+panel.background=element_blank(),
+panel.border=element_blank(),
+panel.grid.major=element_blank(),
+panel.grid.minor=element_blank(),
+plot.background=element_blank()) +
+geom_hline(yintercept=0) + geom_vline(xintercept=0) +
+geom_segment(aes(x=0,y=-Inf,xend=0,yend=Inf),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_segment(aes(x=-Inf,y=0,xend=Inf,yend=0),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_point(aes(x=mean(de),y=mean(dc)),col="red",size=2) +
+labs(title="Cost effectiveness plane",y="Cost differential",x="Effectiveness differential") +
+theme(plot.title = element_text(hjust = 0.5,size=18),
+axis.title.x = element_text(size=15),
+axis.title.y = element_text(size=15)
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\mbox{ICER}=\\frac{{\\sf E}[\\Delta_c]}{{\\sf E}[\\Delta_c]}=\\frac{\\hat\\mu_{c1}-\\hat\\mu_{c0}}{\\hat\\mu_{e1}-\\hat\\mu_{e0}}$",
+hjust=-.05, size=6
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\phantom{\\mbox{ICER}}=\\mbox{Cost per outcome}$",
+hjust=-.05,vjust=2.5, size=6
+) +
+annotate("text",0,Inf,label="$\\Delta_c$",hjust=2,vjust=1,size=5) +
+annotate("text",Inf,0,label="$\\Delta_e$",hjust=1,vjust=2,size=5) +
+annotate(
+"text",Inf,Inf,
+label="$\\Delta_e=\\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_1]}_{\\mu_{e1}} - \\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_0]}_{\\mu_{e0}}$", hjust=-1.5,vjust=1.5,size=5
+)
+p
+p=ggplot(data=df,aes(de,dc)) + geom_point(col="lightgray",size=.7) + theme_classic() +
+theme(axis.line=element_blank(),
+axis.text.x=element_blank(),
+axis.text.y=element_blank(),
+axis.ticks=element_blank(),
+legend.position="none",
+panel.background=element_blank(),
+panel.border=element_blank(),
+panel.grid.major=element_blank(),
+panel.grid.minor=element_blank(),
+plot.background=element_blank()) +
+geom_hline(yintercept=0) + geom_vline(xintercept=0) +
+geom_segment(aes(x=0,y=-Inf,xend=0,yend=Inf),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_segment(aes(x=-Inf,y=0,xend=Inf,yend=0),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_point(aes(x=mean(de),y=mean(dc)),col="red",size=2) +
+labs(title="Cost effectiveness plane",y="Cost differential",x="Effectiveness differential") +
+theme(plot.title = element_text(hjust = 0.5,size=18),
+axis.title.x = element_text(size=15),
+axis.title.y = element_text(size=15)
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\mbox{ICER}=\\frac{{\\sf E}[\\Delta_c]}{{\\sf E}[\\Delta_c]}=\\frac{\\hat\\mu_{c1}-\\hat\\mu_{c0}}{\\hat\\mu_{e1}-\\hat\\mu_{e0}}$",
+hjust=-.05, size=6
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\phantom{\\mbox{ICER}}=\\mbox{Cost per outcome}$",
+hjust=-.05,vjust=2.5, size=6
+) +
+annotate("text",0,Inf,label="$\\Delta_c$",hjust=2,vjust=1,size=5) +
+annotate("text",Inf,0,label="$\\Delta_e$",hjust=1,vjust=2,size=5) +
+annotate(
+"text",Inf,Inf,
+label="$\\Delta_e=\\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_1]}_{\\mu_{e1}} - \\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_0]}_{\\mu_{e0}}$",
+hjust=0,vjust=1.5,size=5
+)
+p
+p=ggplot(data=df,aes(de,dc)) + geom_point(col="lightgray",size=.7) + theme_classic() +
+theme(axis.line=element_blank(),
+axis.text.x=element_blank(),
+axis.text.y=element_blank(),
+axis.ticks=element_blank(),
+legend.position="none",
+panel.background=element_blank(),
+panel.border=element_blank(),
+panel.grid.major=element_blank(),
+panel.grid.minor=element_blank(),
+plot.background=element_blank()) +
+geom_hline(yintercept=0) + geom_vline(xintercept=0) +
+geom_segment(aes(x=0,y=-Inf,xend=0,yend=Inf),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_segment(aes(x=-Inf,y=0,xend=Inf,yend=0),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_point(aes(x=mean(de),y=mean(dc)),col="red",size=2) +
+labs(title="Cost effectiveness plane",y="Cost differential",x="Effectiveness differential") +
+theme(plot.title = element_text(hjust = 0.5,size=18),
+axis.title.x = element_text(size=15),
+axis.title.y = element_text(size=15)
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\mbox{ICER}=\\frac{{\\sf E}[\\Delta_c]}{{\\sf E}[\\Delta_c]}=\\frac{\\hat\\mu_{c1}-\\hat\\mu_{c0}}{\\hat\\mu_{e1}-\\hat\\mu_{e0}}$",
+hjust=-.05, size=6
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\phantom{\\mbox{ICER}}=\\mbox{Cost per outcome}$",
+hjust=-.05,vjust=2.5, size=6
+) +
+annotate("text",0,Inf,label="$\\Delta_c$",hjust=2,vjust=1,size=5) +
+annotate("text",Inf,0,label="$\\Delta_e$",hjust=1,vjust=2,size=5) +
+annotate(
+"text",Inf,Inf,
+label="$\\Delta_e=\\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_1]}_{\\mu_{e1}} - \\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_0]}_{\\mu_{e0}}$"
+)
+p
+p=ggplot(data=df,aes(de,dc)) + geom_point(col="lightgray",size=.7) + theme_classic() +
+theme(axis.line=element_blank(),
+axis.text.x=element_blank(),
+axis.text.y=element_blank(),
+axis.ticks=element_blank(),
+legend.position="none",
+panel.background=element_blank(),
+panel.border=element_blank(),
+panel.grid.major=element_blank(),
+panel.grid.minor=element_blank(),
+plot.background=element_blank()) +
+geom_hline(yintercept=0) + geom_vline(xintercept=0) +
+geom_segment(aes(x=0,y=-Inf,xend=0,yend=Inf),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_segment(aes(x=-Inf,y=0,xend=Inf,yend=0),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_point(aes(x=mean(de),y=mean(dc)),col="red",size=2) +
+labs(title="Cost effectiveness plane",y="Cost differential",x="Effectiveness differential") +
+theme(plot.title = element_text(hjust = 0.5,size=18),
+axis.title.x = element_text(size=15),
+axis.title.y = element_text(size=15)
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\mbox{ICER}=\\frac{{\\sf E}[\\Delta_c]}{{\\sf E}[\\Delta_c]}=\\frac{\\hat\\mu_{c1}-\\hat\\mu_{c0}}{\\hat\\mu_{e1}-\\hat\\mu_{e0}}$",
+hjust=-.05, size=6
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\phantom{\\mbox{ICER}}=\\mbox{Cost per outcome}$",
+hjust=-.05,vjust=2.5, size=6
+) +
+annotate("text",0,Inf,label="$\\Delta_c$",hjust=2,vjust=1,size=5) +
+annotate("text",Inf,0,label="$\\Delta_e$",hjust=1,vjust=2,size=5) +
+annotate(
+"text",Inf,Inf,
+label="$\\Delta_e=\\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_1]}_{\\mu_{e1}} - \\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_0]}_{\\mu_{e0}}$",vjust=2
+)
+p
+p=ggplot(data=df,aes(de,dc)) + geom_point(col="lightgray",size=.7) + theme_classic() +
+theme(axis.line=element_blank(),
+axis.text.x=element_blank(),
+axis.text.y=element_blank(),
+axis.ticks=element_blank(),
+legend.position="none",
+panel.background=element_blank(),
+panel.border=element_blank(),
+panel.grid.major=element_blank(),
+panel.grid.minor=element_blank(),
+plot.background=element_blank()) +
+geom_hline(yintercept=0) + geom_vline(xintercept=0) +
+geom_segment(aes(x=0,y=-Inf,xend=0,yend=Inf),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_segment(aes(x=-Inf,y=0,xend=Inf,yend=0),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_point(aes(x=mean(de),y=mean(dc)),col="red",size=2) +
+labs(title="Cost effectiveness plane",y="Cost differential",x="Effectiveness differential") +
+theme(plot.title = element_text(hjust = 0.5,size=18),
+axis.title.x = element_text(size=15),
+axis.title.y = element_text(size=15)
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\mbox{ICER}=\\frac{{\\sf E}[\\Delta_c]}{{\\sf E}[\\Delta_c]}=\\frac{\\hat\\mu_{c1}-\\hat\\mu_{c0}}{\\hat\\mu_{e1}-\\hat\\mu_{e0}}$",
+hjust=-.05, size=6
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\phantom{\\mbox{ICER}}=\\mbox{Cost per outcome}$",
+hjust=-.05,vjust=2.5, size=6
+) +
+annotate("text",0,Inf,label="$\\Delta_c$",hjust=2,vjust=1,size=5) +
+annotate("text",Inf,0,label="$\\Delta_e$",hjust=1,vjust=2,size=5) +
+annotate(
+"text",Inf,Inf,
+label="$\\Delta_e=\\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_1]}_{\\mu_{e1}} - \\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_0]}_{\\mu_{e0}}$",vjust=3
+)
+p
+p=ggplot(data=df,aes(de,dc)) + geom_point(col="lightgray",size=.7) + theme_classic() +
+theme(axis.line=element_blank(),
+axis.text.x=element_blank(),
+axis.text.y=element_blank(),
+axis.ticks=element_blank(),
+legend.position="none",
+panel.background=element_blank(),
+panel.border=element_blank(),
+panel.grid.major=element_blank(),
+panel.grid.minor=element_blank(),
+plot.background=element_blank()) +
+geom_hline(yintercept=0) + geom_vline(xintercept=0) +
+geom_segment(aes(x=0,y=-Inf,xend=0,yend=Inf),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_segment(aes(x=-Inf,y=0,xend=Inf,yend=0),arrow=arrow(length=unit(0.30,"cm"),type = "closed")) +
+geom_point(aes(x=mean(de),y=mean(dc)),col="red",size=2) +
+labs(title="Cost effectiveness plane",y="Cost differential",x="Effectiveness differential") +
+theme(plot.title = element_text(hjust = 0.5,size=18),
+axis.title.x = element_text(size=15),
+axis.title.y = element_text(size=15)
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\mbox{ICER}=\\frac{{\\sf E}[\\Delta_c]}{{\\sf E}[\\Delta_c]}=\\frac{\\hat\\mu_{c1}-\\hat\\mu_{c0}}{\\hat\\mu_{e1}-\\hat\\mu_{e0}}$",
+hjust=-.05, size=6
+) +
+annotate(
+"text",mean(df$de),mean(df$dc),
+label="$\\phantom{\\mbox{ICER}}=\\mbox{Cost per outcome}$",
+hjust=-.05,vjust=2.5, size=6
+) +
+annotate("text",0,Inf,label="$\\Delta_c$",hjust=2,vjust=1,size=5) +
+annotate("text",Inf,0,label="$\\Delta_e$",hjust=1,vjust=2,size=5) +
+annotate(
+"text",Inf,Inf,
+label="$\\Delta_e=\\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_1]}_{\\mu_{e1}} - \\color{red}\\underbrace{{\\sf E}[e \\mid \\boldsymbol{\\theta}_0]}_{\\mu_{e0}}$",vjust=3,size=5
+)
+p
+Sys.Date()
+format(Sys.Date(),"%d %B %Y")
+?xaringanthemer::style_xaringan
+xaringanthemer::style_xaringan(header_font_google = xaringanthemere::google_font("Source Sans Pro"),outfile="~/Desktop/temp.css")
+xaringanthemer::style_xaringan(header_font_google = xaringanthemer::google_font("Source Sans Pro"),outfile="~/Desktop/temp.css")
+xaringan:::inf_mr()
+xaringan:::inf_mr()
+xaringan:::inf_mr()
+xaringan:::inf_mr()

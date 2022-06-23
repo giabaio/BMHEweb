@@ -1,0 +1,1790 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.3.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Gianluca Baio" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Survival analysis using survHE Preliminaries This practical assumes that you have installed survHE, a R package specifically designed to perform survival analysis in health economic evaluation and with advanced facilities for Bayesian modelling." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="/practical/08_survival/solutions/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+      
+    
+
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.3ef10ad94e43ba7ad3f08b0b007578ae.css" />
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="/practical/08_survival/solutions/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+  <meta property="og:site_name" content="Bayesian methods in health economics" />
+  <meta property="og:url" content="/practical/08_survival/solutions/" />
+  <meta property="og:title" content="Practical 8. Survival analysis — SOLUTIONS | Bayesian methods in health economics" />
+  <meta property="og:description" content="Survival analysis using survHE Preliminaries This practical assumes that you have installed survHE, a R package specifically designed to perform survival analysis in health economic evaluation and with advanced facilities for Bayesian modelling." /><meta property="og:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" />
+    <meta property="twitter:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2021-01-10T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2022-06-22T11:00:00&#43;00:00">
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Practical 8. Survival analysis — SOLUTIONS | Bayesian methods in health economics</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="b5919da3c38663e10e05b06ddeb81906" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.da42964e270e05a6063fbca894d7ccff.js"></script>
+
+  
+
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container-xl">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+          
+          ></a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+        
+        ></a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#timetable"><span>Timetable</span></a>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Slides</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/slides/01_Intro"><span>Introduction</span></a>
+            
+              <a class="dropdown-item" href="/slides/02_MCMC"><span>Bayesian computation</span></a>
+            
+              <a class="dropdown-item" href="/slides/03_Intro_HE"><span>Introduction to Health Economics</span></a>
+            
+              <a class="dropdown-item" href="/slides/04_ILD"><span>Individual level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/05_ALD"><span>Aggregated level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/06_NMA"><span>Network meta-analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/07_Model_uncertainty"><span>Model error and structural analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/08_Survival"><span>Survival modelling in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/09_MM"><span>Markov models</span></a>
+            
+              <a class="dropdown-item" href="/slides/10_Missing"><span>Missing data in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/11_VoI"><span>Introduction to Value of information</span></a>
+            
+              <a class="dropdown-item" href="/slides/12_EVPPI"><span>Expected value of partial information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture13/13_EVSI.pdf"><span>Expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture14/14_Data_EVSI.pdf"><span>Generating data for the analysis of the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture15/15_EVSI_MC.pdf"><span>Calculating expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture16/16_EVSI_regression.pdf"><span>Regression-based EVSI</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Practicals</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/practical/01_monte-carlo"><span>Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/02_mcmc"><span>MCMC</span></a>
+            
+              <a class="dropdown-item" href="/practical/03_bcea"><span>Cost-effectiveness analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/04_ild"><span>HTA with individual level data</span></a>
+            
+              <a class="dropdown-item" href="/practical/05_ald"><span>Evidence synthesis and decision models</span></a>
+            
+              <a class="dropdown-item" href="/practical/06_nma"><span>NMA</span></a>
+            
+              <a class="dropdown-item" href="/practical/07_structural"><span>PSA to structural uncertainty</span></a>
+            
+              <a class="dropdown-item" href="/practical/08_survival"><span>Survival analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/09_mm"><span>Markov and multistate models</span></a>
+            
+              <a class="dropdown-item" href="/practical/10_missing"><span>Missing data</span></a>
+            
+              <a class="dropdown-item" href="/practical/11_intro_voi"><span>Computing the EVPI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/12_evppi"><span>Computing the EVPPI in BCEA and SAVI</span></a>
+            
+              <a class="dropdown-item" href="/practical/13_data_evsi"><span>Generating data for the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/practical/14_evsi_mc"><span>Computing the EVSI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/15_evsi_regression"><span>Computing the EVSI using regression</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Instructions</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/tips/computer-specification"><span>Computer specification</span></a>
+            
+              <a class="dropdown-item" href="/tips/using-bugs"><span>Using BUGS</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/publication"><span>Reading list</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          8. Survival
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <ul class="nav docs-sidenav">
+        <li class=""><a href="/practical/"></a></li>
+    
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/01_monte-carlo/">1. Monte Carlo</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/01_monte-carlo/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/02_mcmc/">2. MCMC</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/02_mcmc/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/covid/">Covid</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/tutorial/">MCMC Tutorial</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/03_bcea/">3. Intro-HE</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/03_bcea/solutions/">Solution</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/04_ild/">4. ILD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/04_ild/tutorial-regression/">Regression Tutorial</a></li>
+
+
+
+  <li class=""><a href="/practical/04_ild/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/05_ald/">5. ALD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/05_ald/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/06_nma/">6. NMA</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/06_nma/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/07_structural/">7. PSA to structural uncertainty</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/07_structural/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/08_survival/">8. Survival</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class="active"><a href="/practical/08_survival/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/09_mm/">9. Markov models</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/09_mm/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/09_mm/cohort-model/">Cohort discrete Markov model</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/10_missing/">10. Missing data</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/10_missing/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/11_intro_voi/">11. EVPI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/12_evppi/">12. EVPPI in BCEA &amp; SAVI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/13_data_evsi/">13 Generating data for EVSI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/14_evsi_mc/">14. EVSI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/15_evsi_regression/">15. EVSI using regression</a>
+    
+
+    
+      </div>
+    
+
+      
+    
+
+    
+      </ul>
+    
+
+  
+</nav>
+    </div>
+
+    <main class="col-10 docs-content" role="main">
+      <article class="article">
+
+        <div class="docs-article-container">
+          <h1>Practical 8. Survival analysis — SOLUTIONS</h1>
+          
+          
+          
+          
+          
+
+
+
+
+<div class="btn-links mb-3">
+  
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/slides/08_Survival" >
+    Lecture 8</a>
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/practical/08_survival/solutions8.pdf" >
+    <i class="fas fa-file-pdf mr-1"></i>PDF version</a>
+
+
+</div>
+
+
+          <br>
+          
+          <div class="article-style">
+            
+
+
+<div id="survival-analysis-using-survhe" class="section level2 unnumbered">
+<h2>Survival analysis using <code>survHE</code></h2>
+<div id="preliminaries" class="section level3 unnumbered">
+<h3>Preliminaries</h3>
+<p>This practical assumes that you have installed <code>survHE</code>, a
+<tt>R</tt> package specifically designed to perform
+survival analysis in health economic evaluation and with advanced
+facilities for Bayesian modelling.</p>
+<p>You can install <code>survHE</code> you can either use the “official” <a href="https://cran.r-project.org/web/packages/survHE/index.html">CRAN version</a>, or the
+most-updated, <a href="https://github.com/giabaio/survHE">“development”</a>. This can take a little time, as there
+are several “dependencies” (i.e. packages that are required for <code>survHE</code>
+to work properly).</p>
+<pre class="r"><code># Install survHE from CRAN
+install.packages(&quot;survHE&quot;)
+
+# Or the development version fro GitHub
+devtools::install.github(&quot;giabaio/survHE&quot;)</code></pre>
+<p>If <code>survHE</code> is installed, you simply need to load it into your
+<tt>R</tt> session, as usual and then we can also load
+some data.</p>
+<pre class="r"><code># Loads survHE in the session
+library(survHE)</code></pre>
+<pre><code>Loading required package: flexsurv</code></pre>
+<pre><code>Loading required package: survival</code></pre>
+<pre class="r"><code>load(&quot;survival_data.Rdata&quot;)</code></pre>
+<p>This loads a dataset called <code>dat</code>, which contains some survival data. In
+particular, the dataset includes the patients ID; the time of
+progression to a more severe stage of cancer; an indicator for the event
+of interest (mortality); an indicator for the treatment arm (coded as 0
+= control and 1 = active treatment); an indicator for the patients’ sex
+(0 = male; 1 = female); the patients’ age (in years); and the Index of
+Multiple Deprivation (IMD) score (this is a census-based, area-level
+measure of socio-economic circumstances. It is coded as categorical
+variable taking values in the interval <span class="math inline">\([1;5]\)</span>, where 1 indicates the
+least deprived and 5 indicates the most deprived areas). We can inspect
+it as usual, using built-in <tt>R</tt> functions.</p>
+<pre class="r"><code># Loads survHE in the session
+head(dat)</code></pre>
+<pre><code>  ID_patient time event arm sex age imd
+1          1 0.03     0   0   1  32   2
+2          2 0.03     0   0   1  43   2
+3          3 0.92     0   0   1  25   4
+4          4 1.48     0   0   0  36   3
+5          5 1.64     0   0   1  38   5
+6          6 1.64     0   0   0  35   1</code></pre>
+<pre class="r"><code>table(dat$arm)</code></pre>
+<pre><code>
+  0   1 
+189 178 </code></pre>
+<pre class="r"><code>table(dat$arm,dat$event)</code></pre>
+<pre><code>   
+      0   1
+  0  90  99
+  1 105  73</code></pre>
+<p>There are 189 individuals in arm <code>0</code> (controls) and 178 in the arm <code>1</code>
+(some active drug). The data include a patient ID, the time at which the
+event has been observed (e.g. progression to a worse disease state) and
+an indicator for censoring. Individuals who are not fully observed are
+associated with <code>censored=1</code>.</p>
+</div>
+<div id="model-fitting-in-a-frequentist-setting" class="section level3 unnumbered">
+<h3>Model fitting in a frequentist setting</h3>
+<p>We are instructed to fit both the Exponential and the Weibull model to
+the data, assuming a linear predictor of the form
+<span class="math display">\[g(\mu_i) = \log(\mu_i) = \beta_0 + \beta_1\texttt{arm}_i.\]</span></p>
+<p>In order to analyse the data, we first need to define the model we want
+to use and the distributions we want to use. We can simply set this out
+using the following <tt>R</tt> commands.</p>
+<pre class="r"><code># Defines the model formula and the distributions
+formula=Surv(time,event)~as.factor(arm)
+mods=c(&quot;exp&quot;,&quot;weibull&quot;)
+
+# Then runs survHE to estimate the two models
+m1=fit.models(formula=formula,data=dat,distr=mods)</code></pre>
+<p>The <code>formula</code> specifies the model in terms of regression for the
+generalised linear predictor, which in this case only depends on the
+treatment arm (notice that, because <code>arm</code> is a categorical variable, we
+include it in our analysis as a <tt>R</tt> “<code>factor</code>”;
+the first value <code>arm=0</code> will be used as reference category). Notice also
+that we need to use the specific notation <code>Surv(time=time, event=event)</code>
+to tell <tt>R</tt> and <code>survHE</code> that our data are in
+survival analysis form. Then we set up a vector <code>mods</code> in which we
+include some string text identifying the Exponential and Weibull models
+(more details are available in the <a href="https://www.jstatsoft.org/article/view/v095i14"><code>survHE</code> documentation</a>).
+Finally, we are ready to run the function <code>fit.models</code>, which is used by
+<code>survHE</code> to perform the analysis and estimate the model parameters.</p>
+<p>The results of the models are stored in an object <code>m1</code>, which contains
+several elements.</p>
+<pre class="r"><code># Explores the model output
+names(m1)</code></pre>
+<pre><code>[1] &quot;models&quot;        &quot;model.fitting&quot; &quot;method&quot;        &quot;misc&quot;         </code></pre>
+<pre class="r"><code>lapply(m1,names)</code></pre>
+<pre><code>$models
+[1] &quot;Exponential&quot;   &quot;Weibull (AFT)&quot;
+
+$model.fitting
+[1] &quot;aic&quot; &quot;bic&quot; &quot;dic&quot;
+
+$method
+NULL
+
+$misc
+[1] &quot;time2run&quot;   &quot;formula&quot;    &quot;data&quot;       &quot;model_name&quot; &quot;km&quot;        </code></pre>
+<p>The <tt>R</tt> command <code>lapply</code> can be used to “apply”
+the function <code>names</code> to all the elements of the list <code>m1</code>, to provide
+details of each of its elements. So, for example, the object <code>m$models</code>
+contains two objects (<code>Exponential</code> and <code>Weibull (AFT)</code>), in which the
+estimates are stored.</p>
+<p>The output for the modelling can be visualised using the <code>print</code> method,
+as follows.</p>
+<pre class="r"><code># Defines the model formula and the distributions
+print(m1)</code></pre>
+<pre><code>
+Model fit for the Exponential model, obtained using Flexsurvreg 
+(Maximum Likelihood Estimate). Running time: 0.023 seconds
+
+                      mean         se       L95%      U95%
+rate             0.0824203 0.00828355  0.0676839  0.100365
+as.factor(arm)1 -0.4656075 0.15427131 -0.7679738 -0.163241
+
+Model fitting summaries
+Akaike Information Criterion (AIC)....: 1274.576
+Bayesian Information Criterion (BIC)..: 1282.387</code></pre>
+<pre class="r"><code>print(m1,2)</code></pre>
+<pre><code>
+Model fit for the Weibull AF model, obtained using Flexsurvreg 
+(Maximum Likelihood Estimate). Running time: 0.011 seconds
+
+                     mean        se     L95%      U95%
+shape            1.816383 0.1098390 1.613371  2.044941
+scale           10.220953 0.5705218 9.161747 11.402616
+as.factor(arm)1  0.342019 0.0855445 0.174355  0.509683
+
+Model fitting summaries
+Akaike Information Criterion (AIC)....: 1203.130
+Bayesian Information Criterion (BIC)..: 1214.846</code></pre>
+<p>This takes an optional argument, which allows to specify which model
+should be printed, in case more than one distribution has been selected
+(e.g. in this case). Notice that, by default, <code>survHE</code> uses maximum
+likelihood as the “<code>method</code>” to perform the estimation (as reported by
+the output of the <code>print</code> function).</p>
+<p>The model output can also be plotted in terms of the resulting survival
+curves, on top of the Kaplan-Meier estimate. This can be done using the
+<code>plot</code> command, using the option <code>add.km=TRUE</code>.</p>
+<pre class="r"><code># Defines the model formula and the distributions
+plot(m1,add.km=TRUE)</code></pre>
+<p><img src="/practical/08_survival/solutions_files/figure-html/model2-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>The resulting graph shows the survival curves within the observed
+time-frame (0.03—20.92), for all the models fitted in <code>m</code>. As expected
+from the theory, the Exponential model does not do a good job at
+following the observed shape of the data, as it is not flexible enough.
+The Weibull model is much closer to the empirical estimate provided by
+the Kaplan-Meier curve. This is confirmed by the analysis of the
+Information Criterion statistics (AIC and BIC): for the Exponential
+model they are both greater than the equivalent values obtained for the
+Weibull model, indicating that the latter fit the observed data better.</p>
+<p>In general terms, the survival curves (which are just 1 — the cumulative
+probability curves) can be used to read off the relevant probability at
+a given time. For example, if we consider the following graph, it would
+be fairly easy to read off that at time <span class="math inline">\(t=15\)</span>, the survival probability
+is roughly about 0.25 (in fact, to be precise, it can be computed with
+some algebra to be 0.3797412). Similar (approximate) computations can be
+made on a grid of values (as represented in the graph) for different
+times and or probability values.
+<img src="/practical/08_survival/solutions_files/figure-html/model2b-1.png" width="70%" style="display: block; margin: auto;" />
+It is often useful to compute, at least in an approximate ways,
+(survival) probabilities using this method.</p>
+</div>
+<div id="bayesian-modelling" class="section level3 unnumbered">
+<h3>Bayesian modelling</h3>
+<p>As mentioned in the lecture, standard MCMC algorithms may struggle with
+survival data, especially when they are characterised by a large number
+of censored observations. Thus, <code>survHE</code> implements Bayesian analysis
+using two alternative Bayesian computation methods. The first one is
+based on Integrated Nested Laplace Approximation (INLA), while the
+second uses a variant of MCMC called Hamiltonian Monte Carlo (HMC).</p>
+<p>Without going too much into the details (some of which are described in
+the <code>survHE</code> manual, INLA is very fast (almost as fast as the MLE procedure) and produces
+precise results, but is only available (at present) for a limited set of
+distributions. On the other hand, HMC is a little slower, but is perhaps
+a little more flexible and allows for more distributional assumptions.</p>
+<p>In <code>survHE</code>, it is very simple to specify what “method” of inference
+should be used, by simply setting the option <code>method</code> to either <code>mle</code>
+(the default), or <code>inla</code>, or <code>hmc</code>. So, for example, we could replicate
+the analysis above using INLA by simply using the following command.</p>
+<pre class="r"><code># Runs survHE to estimate the two models using INLA
+m2=fit.models(formula=formula,data=dat,distr=mods,method=&quot;inla&quot;)
+
+# Shows the output for the Exponential model
+print(m2)</code></pre>
+<pre><code>
+Model fit for the Exponential model, obtained using INLA (Bayesian inference via 
+Integrated Nested Laplace Approximation). Running time: 0.62141 seconds
+
+                      mean         se       L95%      U95%
+rate             0.0828715 0.00836297  0.0669431  0.100186
+as.factor(arm)1 -0.4665097 0.14721656 -0.7474321 -0.177349
+
+Model fitting summaries
+Akaike Information Criterion (AIC)....: 1276.583
+Bayesian Information Criterion (BIC)..: 1288.299
+Deviance Information Criterion (DIC)..: 1277.371</code></pre>
+<pre class="r"><code># And then for the Weibull model
+print(m2,2)</code></pre>
+<pre><code>
+Model fit for the Weibull AF model, obtained using INLA (Bayesian inference via 
+Integrated Nested Laplace Approximation). Running time: 1.284 seconds
+
+                     mean        se     L95%      U95%
+shape            1.764107 0.1114979 1.552269  1.973406
+scale           10.281869 0.6121163 9.186980 11.575483
+as.factor(arm)1  0.344241 0.0893014 0.182237  0.532154
+
+Model fitting summaries
+Akaike Information Criterion (AIC)....: 1205.359
+Bayesian Information Criterion (BIC)..: 1220.981
+Deviance Information Criterion (DIC)..: 1206.669</code></pre>
+<p>As is possible to see, many of the results are very similar to the MLE
+analysis above. This is because, by default, both the INLA and HMC
+implementation use relatively weak prior distributions for both the
+location <span class="math inline">\(\mu_i=g^{-1}(\boldsymbol\beta)\)</span> and the ancillary parameters
+<span class="math inline">\(\boldsymbol\alpha\)</span> (see lecture slides). These priors can be modified, but this
+requires some changes to the call to the <code>fit.models</code> function (see the
+manual for more details). Because INLA specifies a Bayesian model, there
+is an additional Information Criterion available, the DIC, which is also
+printed in the summary tables. Once again, the Weibull model is
+preferable as it is associated with lower values of the AIC, BIC and
+DIC.</p>
+<p>In a very similar way, we can specify the models using HMC as the
+inferential engine, by using the following command.</p>
+<pre class="r"><code># Runs survHE to estimate the two models using HMC
+m3=fit.models(formula=formula,data=dat,distr=mods,method=&quot;hmc&quot;)</code></pre>
+<p>and we can still use the <code>print</code> method to visualise the results.</p>
+<pre class="r"><code># Shows the output for the Exponential model
+print(m3)</code></pre>
+<pre><code>
+Model fit for the Exponential model, obtained using Stan (Bayesian inference via 
+Hamiltonian Monte Carlo). Running time: 1.1656 seconds
+
+                      mean         se       L95%       U95%
+rate             0.0821905 0.00792447  0.0676933  0.0988463
+as.factor(arm)1 -0.4626672 0.15001521 -0.7682862 -0.1793789
+
+Model fitting summaries
+Akaike Information Criterion (AIC)....: 1276.579
+Bayesian Information Criterion (BIC)..: 1288.295
+Deviance Information Criterion (DIC)..: 1274.295</code></pre>
+<pre class="r"><code># And then for the Weibull model
+print(m3,2)</code></pre>
+<pre><code>
+Model fit for the Weibull AF model, obtained using Stan (Bayesian inference via 
+Hamiltonian Monte Carlo). Running time: 2.6113 seconds
+
+                     mean        se     L95%      U95%
+shape            1.804606 0.1106481 1.594570  2.018583
+scale           10.273537 0.5923679 9.243481 11.492342
+as.factor(arm)1  0.346925 0.0892387 0.177872  0.518907
+
+Model fitting summaries
+Akaike Information Criterion (AIC)....: 1205.143
+Bayesian Information Criterion (BIC)..: 1220.765
+Deviance Information Criterion (DIC)..: 1203.313</code></pre>
+<p>Once again, the results are fairly similar, numerically, due to the fact
+that the priors are relatively weak and there are enough data to
+consistently inform the posterior distributions for the parameters.
+Again, the <code>survHE</code> manual explains in more details how the priors can
+be modified in order to include genuine information. Because HMC is an
+MCMC algorithm, we can check the convergence diagnostics, much as we had
+done for the <tt>BUGS</tt> output in the previous
+practicals. In particular, we could check the traceplots and histograms
+for the posterior distributions of the parameters using built-in
+functions in the <code>rstan</code> package, which <code>survHE</code> uses to perform the HMC
+analysis, as in the following.</p>
+<pre class="r"><code># Traceplots for the parameters of the Exponential model (the first element of m3$models)
+rstan::traceplot(m3$models[[1]])</code></pre>
+<p><img src="/practical/08_survival/solutions_files/figure-html/model6-1.png" width="80%" style="display: block; margin: auto;" /></p>
+<pre class="r"><code># Histograms for the parameters of the Weibull model (the second element of m3$models)
+rstan::stan_hist(m3$models[[1]])</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="/practical/08_survival/solutions_files/figure-html/model6-2.png" width="80%" style="display: block; margin: auto;" /></p>
+<p>A more familiar version of the summary statistics table for the HMC
+output can be obtained by adding another optional argument to the call
+to <code>print</code>, as follows.</p>
+<pre class="r"><code># Shows the output for the Exponential model
+print(m3,2,original=TRUE)</code></pre>
+<pre><code>Inference for Stan model: WeibullAF.
+2 chains, each with iter=2000; warmup=1000; thin=1; 
+post-warmup draws per chain=1000, total post-warmup draws=2000.
+
+               mean  se_mean       sd        2.5%         25%         50%
+beta[1]    2.327924 0.001666 0.057311    2.223919    2.286785    2.325146
+beta[2]    0.346925 0.002579 0.089239    0.177872    0.286620    0.343483
+alpha      1.804606 0.002958 0.110648    1.594570    1.726319    1.803580
+scale     10.273537 0.017270 0.592368    9.243481    9.843244   10.228174
+lp__    -600.346661 0.039879 1.251980 -603.624141 -600.881002 -600.046654
+                75%       97.5% n_eff     Rhat
+beta[1]    2.366375    2.441681  1184 0.999171
+beta[2]    0.407953    0.518907  1197 0.999553
+alpha      1.883740    2.018583  1399 0.999804
+scale     10.658682   11.492342  1177 0.999187
+lp__    -599.475113 -598.892282   986 1.002001
+
+Samples were drawn using NUTS(diag_e) at Mon Jun  6 14:39:34 2022.
+For each parameter, n_eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor on split chains (at 
+convergence, Rhat=1).</code></pre>
+<p>We can easily see that the <span class="math inline">\(\hat{R}\)</span> statistic is below the arbitrary
+threshold of 1.1 for all the nodes and that the effective sample size
+<code>n_eff</code> is also rather close to the nominal sample size of 2000,
+indicating that convergence is reached and autocorrelation is not an
+issue.</p>
+<p>We can plot the results of all the model, selectively, by specifying a
+more complex call to the <code>plot</code> function, for example as in the
+following.</p>
+<pre class="r"><code>plot(MLE=m1,INLA=m2,HMC=m3,
+     # Selects which models from the three fitted objects
+     mods=c(1,2,3,4,5,6),
+     # Specifies colours to plot the curves
+     colour=c(&quot;blue&quot;,&quot;green&quot;,&quot;red&quot;,&quot;yellow&quot;,&quot;magenta&quot;,&quot;orange&quot;),
+     # Defines the time horizon over which to make the plot
+     t=seq(0,50)
+)</code></pre>
+<p><img src="/practical/08_survival/solutions_files/figure-html/model8-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>Here, the option <code>MLE=m1,INLA=m2,HMC=m3,mod=c(1,2,3,4,5,6)</code> instructs
+<tt>R</tt> to first stack together the three objects
+<code>m1</code>, <code>m2</code> and <code>m3</code> (and give them the names <code>MLE</code>, <code>INLA</code> and <code>HMC</code>) and the to select the models 1 to 6 (in this case,
+all of them, because in each method we have fitted two distributions).
+Then we specify colours and labels. As is possible to see, there is
+virtually no difference in the estimates for the Exponential model,
+while there are some minor ones for the Weibull. We can also set an
+option <code>t=seq(0,50)</code>, which instructs <tt>R</tt> to
+extrapolate the survival curves beyond the observed data and up to time
+= 50.</p>
+</div>
+<div id="probabilistic-sensitivity-analysis" class="section level3 unnumbered">
+<h3>Probabilistic sensitivity analysis</h3>
+<p><code>survHE</code> is designed to perform automatically PSA on the survival curves, based
+on the underlying uncertainty in the model parameters. Irrespective of
+the inferential engine (MLE or Bayesian), the function <code>make.surv</code> uses
+a simulation approach (based either on boostrap in the case of MLE, or
+simulations from the posterior distributions in the case of the Bayesian
+models) to then reconstruct the entire probability distribution of the
+survival curves, in a specified time range.</p>
+<p>For example, the following code constructs an object <code>psa1</code> in which
+<code>nsim=1000</code> simulations for the survival curves of <code>mod=2</code> (the Weibull
+specification) in <code>m1</code> (the MLE analysis) are stored.</p>
+<pre class="r"><code># Performs PSA on the survival curves for the Weibull model (under MLE)
+psa1=make.surv(m1,mod=2,t=seq(0.01,50),nsim=1000)
+psa.plot(psa1,offset=2.5,col=c(&quot;blue&quot;,&quot;red&quot;))</code></pre>
+<p><img src="/practical/08_survival/solutions_files/figure-html/model9-1.png" width="70%" style="display: block; margin: auto;" /></p>
+<p>The specialised function <code>psa.plot</code> can be used to visualise the
+resulting survival curves and the underlying uncertainty. <code>psa.plot</code> can
+be customised, e.g. by specifying the colour with which the curves need
+to be plotted, or the distance between the terms of the label, which
+appears in the top part of the graph. These describe the combination of
+covariates associated with each curve — in this case, the blue curve is
+associated with a value of the intercept of 1 and a value of the
+treatment arm of 0 (i.e. the control arm), while the red curve is
+associated with a value of 1 for the treatment arm (i.e. the active
+treatment).</p>
+<p>In fact, the most recent (and current) version of <code>survHE</code> can use the simpler function <code>plot</code> to perform the extrapolation and PSA (see <a href="https://egon.stats.ucl.ac.uk/static/stat0019/slides/06_Survival/?panelset2=plotting-%282%292#26">here</a>).</p>
+<p>Without getting into the technical details, the process can be
+replicated for the Bayesian models — the main difference here is in the
+fact that in this case (and particularly under HMC), the resulting
+simulations will be a better approximation of the underlying joint
+probability distribution of all the model parameters. As mentioned in
+the classes, in cases where there is substantial correlation among the
+parameters of the survival model (<span class="math inline">\(\boldsymbol\alpha,\boldsymbol\beta\)</span>), then this is
+likely to give results that may differ from the rougher approximation
+based on bootstrap.</p>
+</div>
+</div>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          
+          
+
+          
+
+
+          
+          
+          
+          
+          
+
+
+          
+
+
+
+
+          
+
+
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+    
+      &copy;  2022-2024 &middot;
+
+    Based on
+    <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a>
+    
+    
+    (version 5.3.0)
+    
+    for <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
+    
+    
+    <i><b>Latest update: 23 Jun 2022 </i></b>
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/en/js/wowchemy.min.50d3bf3df0c53b31631bb48a62b35f92.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

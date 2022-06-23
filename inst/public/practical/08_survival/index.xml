@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practical 8. Survival analysis | Bayesian methods in health economics</title>
+    <link>/practical/08_survival/</link>
+      <atom:link href="/practical/08_survival/index.xml" rel="self" type="application/rss+xml" />
+    <description>Practical 8. Survival analysis</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Mon, 14 Mar 2022 11:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Practical 8. Survival analysis</title>
+      <link>/practical/08_survival/</link>
+    </image>
+    
+    <item>
+      <title>Practical 8. Survival analysis — SOLUTIONS</title>
+      <link>/practical/08_survival/solutions/</link>
+      <pubDate>Wed, 22 Jun 2022 11:00:00 +0000</pubDate>
+      <guid>/practical/08_survival/solutions/</guid>
+      <description>
+
+
+&lt;div id=&#34;survival-analysis-using-survhe&#34; class=&#34;section level2 unnumbered&#34;&gt;
+&lt;h2&gt;Survival analysis using &lt;code&gt;survHE&lt;/code&gt;&lt;/h2&gt;
+&lt;div id=&#34;preliminaries&#34; class=&#34;section level3 unnumbered&#34;&gt;
+&lt;h3&gt;Preliminaries&lt;/h3&gt;
+&lt;p&gt;This practical assumes that you have installed &lt;code&gt;survHE&lt;/code&gt;, a
+&lt;tt&gt;R&lt;/tt&gt; package specifically designed to perform
+survival analysis in health economic evaluation and with advanced
+facilities for Bayesian modelling.&lt;/p&gt;
+&lt;p&gt;You can install &lt;code&gt;survHE&lt;/code&gt; you can either use the “official” &lt;a href=&#34;https://cran.r-project.org/web/packages/survHE/index.html&#34;&gt;CRAN version&lt;/a&gt;, or the
+most-updated, &lt;a href=&#34;https://github.com/giabaio/survHE&#34;&gt;“development”&lt;/a&gt;. This can take a little time, as there
+are several “dependencies” (i.e. packages that are required for &lt;code&gt;survHE&lt;/code&gt;
+to work properly).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Install survHE from CRAN
+install.packages(&amp;quot;survHE&amp;quot;)
+
+# Or the development version fro GitHub
+devtools::install.github(&amp;quot;giabaio/survHE&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If &lt;code&gt;survHE&lt;/code&gt; is installed, you simply need to load it into your
+&lt;tt&gt;R&lt;/tt&gt; session, as usual and then we can also load
+some data.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Loads survHE in the session
+library(survHE)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Loading required package: flexsurv&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Loading required package: survival&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;load(&amp;quot;survival_data.Rdata&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This loads a dataset called &lt;code&gt;dat&lt;/code&gt;, which contains some survival data. In
+particular, the dataset includes the patients ID; the time of
+progression to a more severe stage of cancer; an indicator for the event
+of interest (mortality); an indicator for the treatment arm (coded as 0
+= control and 1 = active treatment); an indicator for the patients’ sex
+(0 = male; 1 = female); the patients’ age (in years); and the Index of
+Multiple Deprivation (IMD) score (this is a census-based, area-level
+measure of socio-economic circumstances. It is coded as categorical
+variable taking values in the interval &lt;span class=&#34;math inline&#34;&gt;\([1;5]\)&lt;/span&gt;, where 1 indicates the
+least deprived and 5 indicates the most deprived areas). We can inspect
+it as usual, using built-in &lt;tt&gt;R&lt;/tt&gt; functions.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Loads survHE in the session
+head(dat)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;  ID_patient time event arm sex age imd
+1          1 0.03     0   0   1  32   2
+2          2 0.03     0   0   1  43   2
+3          3 0.92     0   0   1  25   4
+4          4 1.48     0   0   0  36   3
+5          5 1.64     0   0   1  38   5
+6          6 1.64     0   0   0  35   1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;table(dat$arm)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+  0   1 
+189 178 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;table(dat$arm,dat$event)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;   
+      0   1
+  0  90  99
+  1 105  73&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There are 189 individuals in arm &lt;code&gt;0&lt;/code&gt; (controls) and 178 in the arm &lt;code&gt;1&lt;/code&gt;
+(some active drug). The data include a patient ID, the time at which the
+event has been observed (e.g. progression to a worse disease state) and
+an indicator for censoring. Individuals who are not fully observed are
+associated with &lt;code&gt;censored=1&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;model-fitting-in-a-frequentist-setting&#34; class=&#34;section level3 unnumbered&#34;&gt;
+&lt;h3&gt;Model fitting in a frequentist setting&lt;/h3&gt;
+&lt;p&gt;We are instructed to fit both the Exponential and the Weibull model to
+the data, assuming a linear predictor of the form
+&lt;span class=&#34;math display&#34;&gt;\[g(\mu_i) = \log(\mu_i) = \beta_0 + \beta_1\texttt{arm}_i.\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;In order to analyse the data, we first need to define the model we want
+to use and the distributions we want to use. We can simply set this out
+using the following &lt;tt&gt;R&lt;/tt&gt; commands.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Defines the model formula and the distributions
+formula=Surv(time,event)~as.factor(arm)
+mods=c(&amp;quot;exp&amp;quot;,&amp;quot;weibull&amp;quot;)
+
+# Then runs survHE to estimate the two models
+m1=fit.models(formula=formula,data=dat,distr=mods)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;formula&lt;/code&gt; specifies the model in terms of regression for the
+generalised linear predictor, which in this case only depends on the
+treatment arm (notice that, because &lt;code&gt;arm&lt;/code&gt; is a categorical variable, we
+include it in our analysis as a &lt;tt&gt;R&lt;/tt&gt; “&lt;code&gt;factor&lt;/code&gt;”;
+the first value &lt;code&gt;arm=0&lt;/code&gt; will be used as reference category). Notice also
+that we need to use the specific notation &lt;code&gt;Surv(time=time, event=event)&lt;/code&gt;
+to tell &lt;tt&gt;R&lt;/tt&gt; and &lt;code&gt;survHE&lt;/code&gt; that our data are in
+survival analysis form. Then we set up a vector &lt;code&gt;mods&lt;/code&gt; in which we
+include some string text identifying the Exponential and Weibull models
+(more details are available in the &lt;a href=&#34;https://www.jstatsoft.org/article/view/v095i14&#34;&gt;&lt;code&gt;survHE&lt;/code&gt; documentation&lt;/a&gt;).
+Finally, we are ready to run the function &lt;code&gt;fit.models&lt;/code&gt;, which is used by
+&lt;code&gt;survHE&lt;/code&gt; to perform the analysis and estimate the model parameters.&lt;/p&gt;
+&lt;p&gt;The results of the models are stored in an object &lt;code&gt;m1&lt;/code&gt;, which contains
+several elements.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Explores the model output
+names(m1)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;models&amp;quot;        &amp;quot;model.fitting&amp;quot; &amp;quot;method&amp;quot;        &amp;quot;misc&amp;quot;         &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;lapply(m1,names)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$models
+[1] &amp;quot;Exponential&amp;quot;   &amp;quot;Weibull (AFT)&amp;quot;
+
+$model.fitting
+[1] &amp;quot;aic&amp;quot; &amp;quot;bic&amp;quot; &amp;quot;dic&amp;quot;
+
+$method
+NULL
+
+$misc
+[1] &amp;quot;time2run&amp;quot;   &amp;quot;formula&amp;quot;    &amp;quot;data&amp;quot;       &amp;quot;model_name&amp;quot; &amp;quot;km&amp;quot;        &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;tt&gt;R&lt;/tt&gt; command &lt;code&gt;lapply&lt;/code&gt; can be used to “apply”
+the function &lt;code&gt;names&lt;/code&gt; to all the elements of the list &lt;code&gt;m1&lt;/code&gt;, to provide
+details of each of its elements. So, for example, the object &lt;code&gt;m$models&lt;/code&gt;
+contains two objects (&lt;code&gt;Exponential&lt;/code&gt; and &lt;code&gt;Weibull (AFT)&lt;/code&gt;), in which the
+estimates are stored.&lt;/p&gt;
+&lt;p&gt;The output for the modelling can be visualised using the &lt;code&gt;print&lt;/code&gt; method,
+as follows.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Defines the model formula and the distributions
+print(m1)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Model fit for the Exponential model, obtained using Flexsurvreg 
+(Maximum Likelihood Estimate). Running time: 0.023 seconds
+
+                      mean         se       L95%      U95%
+rate             0.0824203 0.00828355  0.0676839  0.100365
+as.factor(arm)1 -0.4656075 0.15427131 -0.7679738 -0.163241
+
+Model fitting summaries
+Akaike Information Criterion (AIC)....: 1274.576
+Bayesian Information Criterion (BIC)..: 1282.387&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;print(m1,2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Model fit for the Weibull AF model, obtained using Flexsurvreg 
+(Maximum Likelihood Estimate). Running time: 0.011 seconds
+
+                     mean        se     L95%      U95%
+shape            1.816383 0.1098390 1.613371  2.044941
+scale           10.220953 0.5705218 9.161747 11.402616
+as.factor(arm)1  0.342019 0.0855445 0.174355  0.509683
+
+Model fitting summaries
+Akaike Information Criterion (AIC)....: 1203.130
+Bayesian Information Criterion (BIC)..: 1214.846&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This takes an optional argument, which allows to specify which model
+should be printed, in case more than one distribution has been selected
+(e.g. in this case). Notice that, by default, &lt;code&gt;survHE&lt;/code&gt; uses maximum
+likelihood as the “&lt;code&gt;method&lt;/code&gt;” to perform the estimation (as reported by
+the output of the &lt;code&gt;print&lt;/code&gt; function).&lt;/p&gt;
+&lt;p&gt;The model output can also be plotted in terms of the resulting survival
+curves, on top of the Kaplan-Meier estimate. This can be done using the
+&lt;code&gt;plot&lt;/code&gt; command, using the option &lt;code&gt;add.km=TRUE&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Defines the model formula and the distributions
+plot(m1,add.km=TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/08_survival/solutions_files/figure-html/model2-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The resulting graph shows the survival curves within the observed
+time-frame (0.03—20.92), for all the models fitted in &lt;code&gt;m&lt;/code&gt;. As expected
+from the theory, the Exponential model does not do a good job at
+following the observed shape of the data, as it is not flexible enough.
+The Weibull model is much closer to the empirical estimate provided by
+the Kaplan-Meier curve. This is confirmed by the analysis of the
+Information Criterion statistics (AIC and BIC): for the Exponential
+model they are both greater than the equivalent values obtained for the
+Weibull model, indicating that the latter fit the observed data better.&lt;/p&gt;
+&lt;p&gt;In general terms, the survival curves (which are just 1 — the cumulative
+probability curves) can be used to read off the relevant probability at
+a given time. For example, if we consider the following graph, it would
+be fairly easy to read off that at time &lt;span class=&#34;math inline&#34;&gt;\(t=15\)&lt;/span&gt;, the survival probability
+is roughly about 0.25 (in fact, to be precise, it can be computed with
+some algebra to be 0.3797412). Similar (approximate) computations can be
+made on a grid of values (as represented in the graph) for different
+times and or probability values.
+&lt;img src=&#34;/practical/08_survival/solutions_files/figure-html/model2b-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;
+It is often useful to compute, at least in an approximate ways,
+(survival) probabilities using this method.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;bayesian-modelling&#34; class=&#34;section level3 unnumbered&#34;&gt;
+&lt;h3&gt;Bayesian modelling&lt;/h3&gt;
+&lt;p&gt;As mentioned in the lecture, standard MCMC algorithms may struggle with
+survival data, especially when they are characterised by a large number
+of censored observations. Thus, &lt;code&gt;survHE&lt;/code&gt; implements Bayesian analysis
+using two alternative Bayesian computation methods. The first one is
+based on Integrated Nested Laplace Approximation (INLA), while the
+second uses a variant of MCMC called Hamiltonian Monte Carlo (HMC).&lt;/p&gt;
+&lt;p&gt;Without going too much into the details (some of which are described in
+the &lt;code&gt;survHE&lt;/code&gt; manual, INLA is very fast (almost as fast as the MLE procedure) and produces
+precise results, but is only available (at present) for a limited set of
+distributions. On the other hand, HMC is a little slower, but is perhaps
+a little more flexible and allows for more distributional assumptions.&lt;/p&gt;
+&lt;p&gt;In &lt;code&gt;survHE&lt;/code&gt;, it is very simple to specify what “method” of inference
+should be used, by simply setting the option &lt;code&gt;method&lt;/code&gt; to either &lt;code&gt;mle&lt;/code&gt;
+(the default), or &lt;code&gt;inla&lt;/code&gt;, or &lt;code&gt;hmc&lt;/code&gt;. So, for example, we could replicate
+the analysis above using INLA by simply using the following command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Runs survHE to estimate the two models using INLA
+m2=fit.models(formula=formula,data=dat,distr=mods,method=&amp;quot;inla&amp;quot;)
+
+# Shows the output for the Exponential model
+print(m2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Model fit for the Exponential model, obtained using INLA (Bayesian inference via 
+Integrated Nested Laplace Approximation). Running time: 0.62141 seconds
+
+                      mean         se       L95%      U95%
+rate             0.0828715 0.00836297  0.0669431  0.100186
+as.factor(arm)1 -0.4665097 0.14721656 -0.7474321 -0.177349
+
+Model fitting summaries
+Akaike Information Criterion (AIC)....: 1276.583
+Bayesian Information Criterion (BIC)..: 1288.299
+Deviance Information Criterion (DIC)..: 1277.371&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# And then for the Weibull model
+print(m2,2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Model fit for the Weibull AF model, obtained using INLA (Bayesian inference via 
+Integrated Nested Laplace Approximation). Running time: 1.284 seconds
+
+                     mean        se     L95%      U95%
+shape            1.764107 0.1114979 1.552269  1.973406
+scale           10.281869 0.6121163 9.186980 11.575483
+as.factor(arm)1  0.344241 0.0893014 0.182237  0.532154
+
+Model fitting summaries
+Akaike Information Criterion (AIC)....: 1205.359
+Bayesian Information Criterion (BIC)..: 1220.981
+Deviance Information Criterion (DIC)..: 1206.669&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As is possible to see, many of the results are very similar to the MLE
+analysis above. This is because, by default, both the INLA and HMC
+implementation use relatively weak prior distributions for both the
+location &lt;span class=&#34;math inline&#34;&gt;\(\mu_i=g^{-1}(\boldsymbol\beta)\)&lt;/span&gt; and the ancillary parameters
+&lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\alpha\)&lt;/span&gt; (see lecture slides). These priors can be modified, but this
+requires some changes to the call to the &lt;code&gt;fit.models&lt;/code&gt; function (see the
+manual for more details). Because INLA specifies a Bayesian model, there
+is an additional Information Criterion available, the DIC, which is also
+printed in the summary tables. Once again, the Weibull model is
+preferable as it is associated with lower values of the AIC, BIC and
+DIC.&lt;/p&gt;
+&lt;p&gt;In a very similar way, we can specify the models using HMC as the
+inferential engine, by using the following command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Runs survHE to estimate the two models using HMC
+m3=fit.models(formula=formula,data=dat,distr=mods,method=&amp;quot;hmc&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and we can still use the &lt;code&gt;print&lt;/code&gt; method to visualise the results.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Shows the output for the Exponential model
+print(m3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Model fit for the Exponential model, obtained using Stan (Bayesian inference via 
+Hamiltonian Monte Carlo). Running time: 1.1656 seconds
+
+                      mean         se       L95%       U95%
+rate             0.0821905 0.00792447  0.0676933  0.0988463
+as.factor(arm)1 -0.4626672 0.15001521 -0.7682862 -0.1793789
+
+Model fitting summaries
+Akaike Information Criterion (AIC)....: 1276.579
+Bayesian Information Criterion (BIC)..: 1288.295
+Deviance Information Criterion (DIC)..: 1274.295&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# And then for the Weibull model
+print(m3,2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Model fit for the Weibull AF model, obtained using Stan (Bayesian inference via 
+Hamiltonian Monte Carlo). Running time: 2.6113 seconds
+
+                     mean        se     L95%      U95%
+shape            1.804606 0.1106481 1.594570  2.018583
+scale           10.273537 0.5923679 9.243481 11.492342
+as.factor(arm)1  0.346925 0.0892387 0.177872  0.518907
+
+Model fitting summaries
+Akaike Information Criterion (AIC)....: 1205.143
+Bayesian Information Criterion (BIC)..: 1220.765
+Deviance Information Criterion (DIC)..: 1203.313&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Once again, the results are fairly similar, numerically, due to the fact
+that the priors are relatively weak and there are enough data to
+consistently inform the posterior distributions for the parameters.
+Again, the &lt;code&gt;survHE&lt;/code&gt; manual explains in more details how the priors can
+be modified in order to include genuine information. Because HMC is an
+MCMC algorithm, we can check the convergence diagnostics, much as we had
+done for the &lt;tt&gt;BUGS&lt;/tt&gt; output in the previous
+practicals. In particular, we could check the traceplots and histograms
+for the posterior distributions of the parameters using built-in
+functions in the &lt;code&gt;rstan&lt;/code&gt; package, which &lt;code&gt;survHE&lt;/code&gt; uses to perform the HMC
+analysis, as in the following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Traceplots for the parameters of the Exponential model (the first element of m3$models)
+rstan::traceplot(m3$models[[1]])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/08_survival/solutions_files/figure-html/model6-1.png&#34; width=&#34;80%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Histograms for the parameters of the Weibull model (the second element of m3$models)
+rstan::stan_hist(m3$models[[1]])&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/08_survival/solutions_files/figure-html/model6-2.png&#34; width=&#34;80%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;A more familiar version of the summary statistics table for the HMC
+output can be obtained by adding another optional argument to the call
+to &lt;code&gt;print&lt;/code&gt;, as follows.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Shows the output for the Exponential model
+print(m3,2,original=TRUE)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Inference for Stan model: WeibullAF.
+2 chains, each with iter=2000; warmup=1000; thin=1; 
+post-warmup draws per chain=1000, total post-warmup draws=2000.
+
+               mean  se_mean       sd        2.5%         25%         50%
+beta[1]    2.327924 0.001666 0.057311    2.223919    2.286785    2.325146
+beta[2]    0.346925 0.002579 0.089239    0.177872    0.286620    0.343483
+alpha      1.804606 0.002958 0.110648    1.594570    1.726319    1.803580
+scale     10.273537 0.017270 0.592368    9.243481    9.843244   10.228174
+lp__    -600.346661 0.039879 1.251980 -603.624141 -600.881002 -600.046654
+                75%       97.5% n_eff     Rhat
+beta[1]    2.366375    2.441681  1184 0.999171
+beta[2]    0.407953    0.518907  1197 0.999553
+alpha      1.883740    2.018583  1399 0.999804
+scale     10.658682   11.492342  1177 0.999187
+lp__    -599.475113 -598.892282   986 1.002001
+
+Samples were drawn using NUTS(diag_e) at Mon Jun  6 14:39:34 2022.
+For each parameter, n_eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor on split chains (at 
+convergence, Rhat=1).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can easily see that the &lt;span class=&#34;math inline&#34;&gt;\(\hat{R}\)&lt;/span&gt; statistic is below the arbitrary
+threshold of 1.1 for all the nodes and that the effective sample size
+&lt;code&gt;n_eff&lt;/code&gt; is also rather close to the nominal sample size of 2000,
+indicating that convergence is reached and autocorrelation is not an
+issue.&lt;/p&gt;
+&lt;p&gt;We can plot the results of all the model, selectively, by specifying a
+more complex call to the &lt;code&gt;plot&lt;/code&gt; function, for example as in the
+following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(MLE=m1,INLA=m2,HMC=m3,
+     # Selects which models from the three fitted objects
+     mods=c(1,2,3,4,5,6),
+     # Specifies colours to plot the curves
+     colour=c(&amp;quot;blue&amp;quot;,&amp;quot;green&amp;quot;,&amp;quot;red&amp;quot;,&amp;quot;yellow&amp;quot;,&amp;quot;magenta&amp;quot;,&amp;quot;orange&amp;quot;),
+     # Defines the time horizon over which to make the plot
+     t=seq(0,50)
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/08_survival/solutions_files/figure-html/model8-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Here, the option &lt;code&gt;MLE=m1,INLA=m2,HMC=m3,mod=c(1,2,3,4,5,6)&lt;/code&gt; instructs
+&lt;tt&gt;R&lt;/tt&gt; to first stack together the three objects
+&lt;code&gt;m1&lt;/code&gt;, &lt;code&gt;m2&lt;/code&gt; and &lt;code&gt;m3&lt;/code&gt; (and give them the names &lt;code&gt;MLE&lt;/code&gt;, &lt;code&gt;INLA&lt;/code&gt; and &lt;code&gt;HMC&lt;/code&gt;) and the to select the models 1 to 6 (in this case,
+all of them, because in each method we have fitted two distributions).
+Then we specify colours and labels. As is possible to see, there is
+virtually no difference in the estimates for the Exponential model,
+while there are some minor ones for the Weibull. We can also set an
+option &lt;code&gt;t=seq(0,50)&lt;/code&gt;, which instructs &lt;tt&gt;R&lt;/tt&gt; to
+extrapolate the survival curves beyond the observed data and up to time
+= 50.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;probabilistic-sensitivity-analysis&#34; class=&#34;section level3 unnumbered&#34;&gt;
+&lt;h3&gt;Probabilistic sensitivity analysis&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;survHE&lt;/code&gt; is designed to perform automatically PSA on the survival curves, based
+on the underlying uncertainty in the model parameters. Irrespective of
+the inferential engine (MLE or Bayesian), the function &lt;code&gt;make.surv&lt;/code&gt; uses
+a simulation approach (based either on boostrap in the case of MLE, or
+simulations from the posterior distributions in the case of the Bayesian
+models) to then reconstruct the entire probability distribution of the
+survival curves, in a specified time range.&lt;/p&gt;
+&lt;p&gt;For example, the following code constructs an object &lt;code&gt;psa1&lt;/code&gt; in which
+&lt;code&gt;nsim=1000&lt;/code&gt; simulations for the survival curves of &lt;code&gt;mod=2&lt;/code&gt; (the Weibull
+specification) in &lt;code&gt;m1&lt;/code&gt; (the MLE analysis) are stored.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Performs PSA on the survival curves for the Weibull model (under MLE)
+psa1=make.surv(m1,mod=2,t=seq(0.01,50),nsim=1000)
+psa.plot(psa1,offset=2.5,col=c(&amp;quot;blue&amp;quot;,&amp;quot;red&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/08_survival/solutions_files/figure-html/model9-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The specialised function &lt;code&gt;psa.plot&lt;/code&gt; can be used to visualise the
+resulting survival curves and the underlying uncertainty. &lt;code&gt;psa.plot&lt;/code&gt; can
+be customised, e.g. by specifying the colour with which the curves need
+to be plotted, or the distance between the terms of the label, which
+appears in the top part of the graph. These describe the combination of
+covariates associated with each curve — in this case, the blue curve is
+associated with a value of the intercept of 1 and a value of the
+treatment arm of 0 (i.e. the control arm), while the red curve is
+associated with a value of 1 for the treatment arm (i.e. the active
+treatment).&lt;/p&gt;
+&lt;p&gt;In fact, the most recent (and current) version of &lt;code&gt;survHE&lt;/code&gt; can use the simpler function &lt;code&gt;plot&lt;/code&gt; to perform the extrapolation and PSA (see &lt;a href=&#34;https://egon.stats.ucl.ac.uk/static/stat0019/slides/06_Survival/?panelset2=plotting-%282%292#26&#34;&gt;here&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Without getting into the technical details, the process can be
+replicated for the Bayesian models — the main difference here is in the
+fact that in this case (and particularly under HMC), the resulting
+simulations will be a better approximation of the underlying joint
+probability distribution of all the model parameters. As mentioned in
+the classes, in cases where there is substantial correlation among the
+parameters of the survival model (&lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\alpha,\boldsymbol\beta\)&lt;/span&gt;), then this is
+likely to give results that may differ from the rougher approximation
+based on bootstrap.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

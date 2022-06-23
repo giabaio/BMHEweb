@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practicals | Bayesian methods in health economics</title>
+    <link>/tag/practicals/</link>
+      <atom:link href="/tag/practicals/index.xml" rel="self" type="application/rss+xml" />
+    <description>Practicals</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Fri, 24 Jun 2022 14:15:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Practicals</title>
+      <link>/tag/practicals/</link>
+    </image>
+    
+    <item>
+      <title>Practical 15. Computing EVSI using regression</title>
+      <link>/syllabus/practical15/</link>
+      <pubDate>Fri, 24 Jun 2022 14:15:00 +0000</pubDate>
+      <guid>/syllabus/practical15/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 14. Computing the EVSI using Monte Carlo simulations</title>
+      <link>/syllabus/practical14/</link>
+      <pubDate>Fri, 24 Jun 2022 13:00:00 +0000</pubDate>
+      <guid>/syllabus/practical14/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 13. Generating data for EVSI</title>
+      <link>/syllabus/practical13/</link>
+      <pubDate>Fri, 24 Jun 2022 10:30:00 +0000</pubDate>
+      <guid>/syllabus/practical13/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 12. Computing the EVPPI in BCEA and SAVI</title>
+      <link>/syllabus/practical12/</link>
+      <pubDate>Thu, 23 Jun 2022 15:00:00 +0000</pubDate>
+      <guid>/syllabus/practical12/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 11. Computing the EVPI using nested Monte Carlo simulations</title>
+      <link>/syllabus/practical11/</link>
+      <pubDate>Thu, 23 Jun 2022 13:00:00 +0000</pubDate>
+      <guid>/syllabus/practical11/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 10. Missing data</title>
+      <link>/syllabus/practical10/</link>
+      <pubDate>Thu, 23 Jun 2022 10:00:00 +0000</pubDate>
+      <guid>/syllabus/practical10/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 9. Markov models</title>
+      <link>/syllabus/practical9/</link>
+      <pubDate>Wed, 22 Jun 2022 15:15:00 +0000</pubDate>
+      <guid>/syllabus/practical9/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 8. Survival analysis</title>
+      <link>/syllabus/practical8/</link>
+      <pubDate>Wed, 22 Jun 2022 13:00:00 +0000</pubDate>
+      <guid>/syllabus/practical8/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 7. PSA to structural uncertainty</title>
+      <link>/syllabus/practical7/</link>
+      <pubDate>Wed, 22 Jun 2022 10:00:00 +0000</pubDate>
+      <guid>/syllabus/practical7/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 6. Network meta-analysis</title>
+      <link>/syllabus/practical6/</link>
+      <pubDate>Tue, 21 Jun 2022 15:30:00 +0000</pubDate>
+      <guid>/syllabus/practical6/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 5. Evidence synthesis and decision models</title>
+      <link>/syllabus/practical5/</link>
+      <pubDate>Tue, 21 Jun 2022 12:15:00 +0000</pubDate>
+      <guid>/syllabus/practical5/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 4. Cost-effectiveness analysis with individual-level data</title>
+      <link>/syllabus/practical4/</link>
+      <pubDate>Tue, 21 Jun 2022 10:00:00 +0000</pubDate>
+      <guid>/syllabus/practical4/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 3. Introduction to R and cost-effectiveness analysis using BCEA</title>
+      <link>/syllabus/practical3/</link>
+      <pubDate>Mon, 20 Jun 2022 16:30:00 +0000</pubDate>
+      <guid>/syllabus/practical3/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 2. MCMC in BUGS</title>
+      <link>/syllabus/practical2/</link>
+      <pubDate>Mon, 20 Jun 2022 14:00:00 +0000</pubDate>
+      <guid>/syllabus/practical2/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 1. Monte Carlo in BUGS</title>
+      <link>/syllabus/practical1/</link>
+      <pubDate>Mon, 20 Jun 2022 11:15:00 +0000</pubDate>
+      <guid>/syllabus/practical1/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

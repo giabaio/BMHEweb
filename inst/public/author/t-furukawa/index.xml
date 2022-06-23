@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>T Furukawa | Bayesian methods in health economics</title>
+    <link>/author/t-furukawa/</link>
+      <atom:link href="/author/t-furukawa/index.xml" rel="self" type="application/rss+xml" />
+    <description>T Furukawa</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 01 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>T Furukawa</title>
+      <link>/author/t-furukawa/</link>
+    </image>
+    
+    <item>
+      <title>Doing Meta-Analysis in R</title>
+      <link>/publication/harrer-etal-2020/</link>
+      <pubDate>Tue, 01 Dec 2020 00:00:00 +0000</pubDate>
+      <guid>/publication/harrer-etal-2020/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

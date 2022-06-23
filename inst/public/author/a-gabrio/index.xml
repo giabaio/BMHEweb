@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>A Gabrio | Bayesian methods in health economics</title>
+    <link>/author/a-gabrio/</link>
+      <atom:link href="/author/a-gabrio/index.xml" rel="self" type="application/rss+xml" />
+    <description>A Gabrio</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 01 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>A Gabrio</title>
+      <link>/author/a-gabrio/</link>
+    </image>
+    
+    <item>
+      <title>Bayesian Statistical Economic Evaluation Methods for Health Technology Assessment</title>
+      <link>/publication/gabrioetal-2019/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      <guid>/publication/gabrioetal-2019/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>A Full Bayesian Model to Handle Structural Ones and Missingness in Economic Evaluations from Individual-Level Data</title>
+      <link>/publication/gabrio-etal-2018/</link>
+      <pubDate>Thu, 01 Nov 2018 00:00:00 +0000</pubDate>
+      <guid>/publication/gabrio-etal-2018/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practical 7. PSA to structural uncertainty | Bayesian methods in health economics</title>
+    <link>/practical/07_structural/</link>
+      <atom:link href="/practical/07_structural/index.xml" rel="self" type="application/rss+xml" />
+    <description>Practical 7. PSA to structural uncertainty</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Wed, 22 Jun 2022 10:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Practical 7. PSA to structural uncertainty</title>
+      <link>/practical/07_structural/</link>
+    </image>
+    
+    <item>
+      <title>Practical 7. PSA to structural uncertainty — SOLUTIONS</title>
+      <link>/practical/07_structural/solutions/</link>
+      <pubDate>Wed, 22 Jun 2022 10:00:00 +0000</pubDate>
+      <guid>/practical/07_structural/solutions/</guid>
+      <description>
+
+
+&lt;p&gt;The first thing we do is loading and analysing the “base-case” model, which is stored in the object &lt;code&gt;statins_base.Rdata&lt;/code&gt; and the “robust” version of the model, stored in &lt;code&gt;statins_HC.Rdata&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(BCEA)
+library(R2OpenBUGS)
+load(&amp;quot;statins_base.Rdata&amp;quot;)
+load(&amp;quot;statins_HC.Rdata&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can use the &lt;code&gt;R&lt;/code&gt; function &lt;code&gt;print&lt;/code&gt; to visualise the output for the two models, for example as in the following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;print(statins_base)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The output to this call is a long list of summary statistics — it is also possible to visualise an excerpt by using code such as the following&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;head(statins_base$summary[,c(&amp;quot;mean&amp;quot;,&amp;quot;sd&amp;quot;,&amp;quot;2.5%&amp;quot;,&amp;quot;97.5%&amp;quot;,&amp;quot;Rhat&amp;quot;,&amp;quot;n.eff&amp;quot;)],n=15)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;                 mean       sd      2.5%     97.5%     Rhat n.eff
+cost.hosp[1] 238.7010 137.0428  91.68029  482.0066 1.001533   980
+cost.hosp[2] 315.6340 168.7579 124.20521  668.4667 1.002554  1000
+cost.hosp[3] 523.0695 451.0165 144.02705 1357.9918 1.002820  1000
+cost.hosp[4] 424.9861 232.1917 170.08732  877.9484 1.001743   980
+cost.hosp[5] 305.1978 172.3249 120.79156  656.3935 1.002747   550
+cost.hosp[6] 301.1282 163.4569 121.85935  618.0017 1.001342  1000
+cost.stat[1] 480.8821 289.1621 137.50194 1232.7586 1.004167   360
+cost.stat[2] 350.0194 201.6103 103.42871  871.5393 1.000252  1000
+cost.stat[3] 166.6851 125.6502  34.24849  498.3156 1.000219  1000
+cost.stat[4] 305.4061 261.7113  47.69648 1008.5598 1.004566  1000
+cost.stat[5] 346.9371 209.6277 103.21293  880.0139 1.006177   400
+cost.stat[6] 165.0717 129.7352  35.28509  526.9310 1.000074  1000
+cost.tot[1]  719.5831 324.8498 309.13357 1526.9058 1.005610   270
+cost.tot[2]  665.6534 265.4862 331.33786 1357.5038 1.001748  1000
+cost.tot[3]  689.7546 467.3877 242.54283 1629.7467 1.002190  1000&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;which produces the first &lt;code&gt;n=15&lt;/code&gt; rows (i.e. parameters) for the whole summary table. In particular, we only select the columns headed as &lt;code&gt;&#34;mean&#34;&lt;/code&gt;, &lt;code&gt;&#34;sd&#34;&lt;/code&gt;, etc. (we do so to exclude additional quantiles that are automatically stored in the object &lt;code&gt;statins_base$summary&lt;/code&gt;). We should make sure that the models have all converged and that autocorrelation is not an issue (by e.g. analysing the &lt;span class=&#34;math inline&#34;&gt;\(\hat{R}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(n_{eff}\)&lt;/span&gt; statistics).&lt;/p&gt;
+&lt;p&gt;We can already check the DIC associated with each of the two models, to get some ideas of which one will be given most weight in the structural PSA. We can do so by using the following command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Displays the DIC for the two models
+c(statins_base$DIC,statins_HC$DIC)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 2233.875 2225.988&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As is easy to see, the “robust” model is associated with a relatively lower DIC (by over 10 points).&lt;/p&gt;
+&lt;p&gt;We can now move on and use the results from the two Bayesian models as inputs to &lt;code&gt;BCEA&lt;/code&gt;. The objects &lt;code&gt;statins_base$sims.list&lt;/code&gt; and &lt;code&gt;statins_HC$sims.list&lt;/code&gt; contain the simulated values for all the model parameters monitored in &lt;code&gt;list&lt;/code&gt; format. We can follow the script and use the code&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Defines the intervention labels
+interventions &amp;lt;- c(&amp;quot;Atorvastatin&amp;quot;,&amp;quot;Fluvastatin&amp;quot;,&amp;quot;Lovastatin&amp;quot;,&amp;quot;Pravastatin&amp;quot;,
+                   &amp;quot;Rosuvastatin&amp;quot;,&amp;quot;Simvastatin&amp;quot;)
+# BCEA object with the economic analysis of the &amp;quot;base case&amp;quot; model
+m1 &amp;lt;- bcea(statins_base$sims.list$effect,statins_base$sims.list$cost.tot,
+           ref=1,interventions=interventions)
+# BCEA object with the economic analysis of the Half-Cauchy model
+m2 &amp;lt;- bcea(statins_HC$sims.list$effect,statins_HC$sims.list$cost.tot,
+           ref=1,interventions=interventions)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;to first define a vector of intervention labels and then apply the function &lt;code&gt;bcea&lt;/code&gt; to the suitable variables of effects and costs in the two models.&lt;/p&gt;
+&lt;p&gt;The two objects &lt;code&gt;m1&lt;/code&gt; and &lt;code&gt;m2&lt;/code&gt; can be post-processed as any &lt;code&gt;BCEA&lt;/code&gt; objects (e.g. using &lt;code&gt;plot&lt;/code&gt; or &lt;code&gt;print&lt;/code&gt; methods). But in addition to this, we can also combine them to perform the PSA to structural assumptions. To do so, we need to manipulate the original objects in a suitable way. Firstly, we need to create a &lt;code&gt;list&lt;/code&gt; of models, which we can simply do using the following command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Combines the BUGS models
+models &amp;lt;- list(statins_base,statins_HC)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;the newly created object contains the information from the two &lt;code&gt;BUGS&lt;/code&gt; models. We can also create suitable lists in which we store the relevant variables of effectiveness and costs from the two models, for example using code such as the following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Creates the variables of effectiveness and costs
+effects &amp;lt;- list(statins_base$sims.list$effect, statins_HC$sims.list$effect)
+costs &amp;lt;- list(statins_base$sims.list$cost.tot, statins_HC$sims.list$cost.tot)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Finally, we can feed these inputs to the &lt;code&gt;BCEA&lt;/code&gt; function &lt;code&gt;struct.psa&lt;/code&gt; as in the following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Finally uses BCEA to perform the structural PSA to consider the base and HC models
+m3 &amp;lt;- struct.psa(models,effects,costs,ref=1,interventions=interventions)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;struct.psa&lt;/code&gt; takes as basic arguments three lists, containing the &lt;code&gt;BUGS&lt;/code&gt; models, the list of effects and the list of costs simulations and combines them to compute the model weights (based on the DICs).&lt;/p&gt;
+&lt;p&gt;The object &lt;code&gt;m3&lt;/code&gt; is a &lt;code&gt;list&lt;/code&gt;, which contains 3 elements:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;lapply(m3,function(x) list(class(x),names(x))) &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$he
+$he[[1]]
+[1] &amp;quot;bcea&amp;quot; &amp;quot;list&amp;quot;
+
+$he[[2]]
+ [1] &amp;quot;n_sim&amp;quot;         &amp;quot;n_comparators&amp;quot; &amp;quot;n_comparisons&amp;quot; &amp;quot;delta_e&amp;quot;      
+ [5] &amp;quot;delta_c&amp;quot;       &amp;quot;ICER&amp;quot;          &amp;quot;Kmax&amp;quot;          &amp;quot;k&amp;quot;            
+ [9] &amp;quot;ceac&amp;quot;          &amp;quot;ib&amp;quot;            &amp;quot;eib&amp;quot;           &amp;quot;kstar&amp;quot;        
+[13] &amp;quot;best&amp;quot;          &amp;quot;U&amp;quot;             &amp;quot;vi&amp;quot;            &amp;quot;Ustar&amp;quot;        
+[17] &amp;quot;ol&amp;quot;            &amp;quot;evi&amp;quot;           &amp;quot;ref&amp;quot;           &amp;quot;comp&amp;quot;         
+[21] &amp;quot;step&amp;quot;          &amp;quot;interventions&amp;quot; &amp;quot;e&amp;quot;             &amp;quot;c&amp;quot;            
+
+
+$w
+$w[[1]]
+[1] &amp;quot;numeric&amp;quot;
+
+$w[[2]]
+NULL
+
+
+$DIC
+$DIC[[1]]
+[1] &amp;quot;numeric&amp;quot;
+
+$DIC[[2]]
+NULL&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;code&gt;R&lt;/code&gt; function &lt;code&gt;lapply&lt;/code&gt; applies iteratively the function &lt;code&gt;class&lt;/code&gt; and &lt;code&gt;names&lt;/code&gt; to each element of the object &lt;code&gt;m3&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;As is possible to see, the first one, named &lt;code&gt;he&lt;/code&gt;, is an object in the class &lt;code&gt;BCEA&lt;/code&gt; and so it contains the usual elements that such objects do (e.g. &lt;code&gt;n.sim&lt;/code&gt;, &lt;code&gt;n.comparators&lt;/code&gt;, etc). The elements &lt;code&gt;w&lt;/code&gt; and &lt;code&gt;DIC&lt;/code&gt; are numeric vectors and include the weights and the value of the DIC associated with each individual models. We can visualise for example the weights by using the command,&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;print(m3$w)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 0.01901127 0.98098873&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;which indicates that the second model (the “robust” Half-Cauchy) is given a weight of over 98%. This is consistent with the fact that its DIC is lower than the one for the base case model, which in turn indicates better fit.&lt;/p&gt;
+&lt;p&gt;We can also use all the methods implemented for &lt;code&gt;BCEA&lt;/code&gt; objects to analyse and visualise the output of the model averaging. For example, we can summarise the cost-effectiveness analysis by typing&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(m3$he)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Cost-effectiveness analysis summary 
+
+Reference intervention:  Atorvastatin
+Comparator intervention(s): Fluvastatin
+                          : Lovastatin
+                          : Pravastatin
+                          : Rosuvastatin
+                          : Simvastatin
+
+Optimal decision: choose Simvastatin for k &amp;lt;  and  for k &amp;gt;= 
+
+
+Analysis for willingness to pay parameter k = 25000
+
+             Expected utility
+Atorvastatin            22823
+Fluvastatin             22435
+Lovastatin              21381
+Pravastatin             21731
+Rosuvastatin            22526
+Simvastatin             22738
+
+                                  EIB  CEAC     ICER
+Atorvastatin vs Fluvastatin   388.695 0.768  3919.60
+Atorvastatin vs Lovastatin   1442.154 0.843  1432.44
+Atorvastatin vs Pravastatin  1092.152 0.958   336.72
+Atorvastatin vs Rosuvastatin  297.304 0.738  5227.07
+Atorvastatin vs Simvastatin    85.002 0.594 19129.49
+
+Optimal intervention (max expected utility) for k = 25000: Atorvastatin
+           
+EVPI 193.22&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and we could plot the cost-effectiveness plane with the following command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ceplane.plot(m3$he)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/07_structural/solutions_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;
+or generate multiple treatments comparison cost-effectiveness acceptability curves with the following commands.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m3.multi&amp;lt;-multi.ce(m3$he)
+ceac.plot(m3.multi)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/07_structural/solutions_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;70%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Notice that because &lt;em&gt;in this particular case&lt;/em&gt; one of the models is effectively given an almost 100% weight, the model average will resemble it almost identically.&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>⁣9. Markov models</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Nathan Green" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <script src="libs/freezeframe/freezeframe.min.js"></script>
+    <script src="libs/xaringanExtra-freezeframe/freezeframe-init.js"></script>
+    <script id="xaringanExtra-freezeframe-options" type="application/json">{"selector":"img[src$=\"gif\"]","trigger":"click","overlay":false,"responsive":true,"warnings":true}</script>
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
+    <!-- (Re)Defines a bunch of LaTeX commands that can then be used directly in the .Rmd file as '\command{...}' -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: {
+        /* This enables color macros */
+        extensions: ["color.js"],
+        Macros: {
+          /* Probability & mathematical symbols */
+          Pr: "{\\style{font-family:inherit; font-size: 110%;}{\\text{Pr}}}",
+          exp: "{\\style{font-family:inherit; font-size: 105%;}{\\text{exp}}}",
+          log: "{\\style{font-family:inherit; font-size: 105%;}{\\text{log}}}",
+          ln: "{\\style{font-family:inherit; font-size: 105%;}{\\text{ln}}}",
+          logit: "{\\style{font-family:inherit; font-size: 100%;}{\\text{logit}}}",
+          HR: "{\\style{font-family:inherit; font-size: 105%;}{\\text{HR}}}",
+          OR: "{\\style{font-family:inherit; font-size: 105%;}{\\text{OR}}}",
+          E: "{\\style{font-family:inherit; font-size: 105%;}{\\text{E}}}",
+          Var: "{\\style{font-family:inherit; font-size: 105%;}{\\text{Var}}}",
+          Cov: "{\\style{font-family:inherit; font-size: 105%;}{\\text{Cov}}}",
+          Corr: "{\\style{font-family:inherit; font-size: 105%;}{\\text{Corr}}}",
+          DIC: "{\\style{font-family:inherit; font-size: 105%;}{\\text{DIC}}}",
+          se: "{\\style{font-family:inherit; font-size: 100%;}{\\text{se}}}",
+          sd: "{\\style{font-family:inherit; font-size: 100%;}{\\text{sd}}}",
+          kld: "{\\style{font-family:inherit; font-size: 100%;}{\\text{KLD}}}",
+          /* Distributions */
+          dnorm: "{\\style{font-family:inherit;}{\\text{Normal}}}",
+          dt: "{\\style{font-family:inherit;}{\\text{t}}}",
+          ddirch: "{\\style{font-family:inherit;}{\\text{Dirichlet}}}",
+          dmulti: "{\\style{font-family:inherit;}{\\text{Multinomial}}}",
+          dbeta: "{\\style{font-family:inherit;}{\\text{Beta}}}",
+          dgamma: "{\\style{font-family:inherit;}{\\text{Gamma}}}",
+          dbern: "{\\style{font-family:inherit;}{\\text{Bernoulli}}}",
+          dbin: "{\\style{font-family:inherit;}{\\text{Binomial}}}",
+          dpois: "{\\style{font-family:inherit;}{\\text{Poisson}}}",
+          dweib: "{\\style{font-family:inherit;}{\\text{Weibull}}}",
+          dexp: "{\\style{font-family:inherit;}{\\text{Exponential}}}",
+          dlnorm: "{\\style{font-family:inherit;}{\\text{logNormal}}}",
+          dunif: "{\\style{font-family:inherit;}{\\text{Uniform}}}",
+          /* LaTeX formatting */
+          bm: ["{\\boldsymbol #1}",1],
+          /* These create macros to typeset numbers in maths with the basic font */
+          0: "{\\style{font-family:inherit; font-size: 105%;}{\\text{0}}}",
+          1: "{\\style{font-family:inherit; font-size: 105%;}{\\text{1}}}",
+          2: "{\\style{font-family:inherit; font-size: 105%;}{\\text{2}}}",
+          3: "{\\style{font-family:inherit; font-size: 105%;}{\\text{3}}}",
+          4: "{\\style{font-family:inherit; font-size: 105%;}{\\text{4}}}",
+          5: "{\\style{font-family:inherit; font-size: 105%;}{\\text{5}}}",
+          6: "{\\style{font-family:inherit; font-size: 105%;}{\\text{6}}}",
+          7: "{\\style{font-family:inherit; font-size: 105%;}{\\text{7}}}",
+          8: "{\\style{font-family:inherit; font-size: 105%;}{\\text{8}}}",
+          9: "{\\style{font-family:inherit; font-size: 105%;}{\\text{9}}}",
+          /* Health economics quantities */
+          icer: "{\\style{font-family:inherit; font-size: 100%;}{\\text{ICER}}}",
+          nb: "{\\style{font-family:inherit; font-size: 100%;}{\\text{NB}}}",
+          ib: "{\\style{font-family:inherit; font-size: 100%;}{\\text{IB}}}",
+          eib: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EIB}}}",
+          ol: "{\\style{font-family:inherit; font-size: 100%;}{\\text{OL}}}",
+          ceac: "{\\style{font-family:inherit; font-size: 100%;}{\\text{CEAC}}}",
+          evpi: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EVPI}}}",
+          evppi: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EVPPI}}}",
+          evsi: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EVSI}}}"
+        }
+      }
+    });
+    </script>
+    <link rel="stylesheet" href="../assets/beamer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+class: title-slide
+
+# &amp;#8291;9. Markov models
+
+## Nathan Green
+
+### [Department of Statistical Science](https://www.ucl.ac.uk/statistics/) | University College London    
+
+.title-small[
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#00acee;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"&gt;&lt;/path&gt;&lt;/svg&gt;  [n.green@ucl.ac.uk](mailto:n.green@ucl.ac.uk)
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#EA7600;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://n8thangreen.github.io/](https://n8thangreen.github.io/)
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#EA7600;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://egon.stats.ucl.ac.uk/research/statistics-health-economics/](https://egon.stats.ucl.ac.uk/research/statistics-health-economics/)
+&lt;svg viewBox="0 0 496 512" style="position:relative;display:inline-block;top:.1em;fill:black;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://github.com/n8thangreen](https://github.com/n8thangreen/)
+&lt;svg viewBox="0 0 496 512" style="position:relative;display:inline-block;top:.1em;fill:black;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://github.com/StatisticsHealthEconomics](https://github.com/StatisticsHealthEconomics)
+]
+
+### Bayesian Methods in Health Economics, Lausanne
+
+---
+
+layout: true
+
+.my-footer[ 
+.alignleft[
+&amp;nbsp; &amp;copy; Nathan Green (UCL) &amp;nbsp;&lt;a href="https://github.com/n8thangreen/"; title="Check out my repos"&gt;&lt;svg viewBox="0 0 496 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp; &amp;nbsp;&lt;a href="mailto:n.green@ucl.ac.uk"; title="Email me"&gt;&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp; &amp;nbsp;&lt;a href="https://n8thangreen.github.io/"; title="Visit my website"&gt;&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp;
+]
+.aligncenter[
+.mydropdown[ 
+.mydropbtn[
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M504 256c0 137-111 248-248 248S8 393 8 256 119 8 256 8s248 111 248 248zM273 369.9l135.5-135.5c9.4-9.4 9.4-24.6 0-33.9l-17-17c-9.4-9.4-24.6-9.4-33.9 0L256 285.1 154.4 183.5c-9.4-9.4-24.6-9.4-33.9 0l-17 17c-9.4 9.4-9.4 24.6 0 33.9L239 369.9c9.4 9.4 24.6 9.4 34 0z"&gt;&lt;/path&gt;&lt;/svg&gt; 
+]
+.mydropdown-content[
+[1. Introduction](../01_Intro/index.html)
+[2. MCMC](../02_MCMC/index.html)
+[3. Intro HTA](../03_Intro_HE/index.html)
+[4. ILD](../04_ILD/index.html)
+[5. ALD](../05_ALD/index.html)
+[6. NMA](../06_NMA/index.html)
+[7. Model uncertainty](../07_Model_uncertainty/index.html)
+[8. Survival](../06_Survival/index.html)
+[9. Markov models](../09_MM/index.html)
+[10. Missing data](../10_Missing/index.html)
+[11. VoI](../11_VoI/index.html)
+[12. EVPPI](../12_EVPPI/index.html)
+[13. Intro EVSI](../13_EVSI/index.html)
+[14. Data EVSI](../14_Data_EVSI/index.html)
+[15. EVSI MC](../15_EVSI_MC/index.html)
+[16. EVSI Regression](../16_EVSI_regression/index.html)
+]
+]
+&amp;#8291;9. Markov models 
+]
+.alignright[
+&amp;nbsp;&lt;a target="_self" href="../../index.html"; title="Back to the summer school website"&gt;&lt;svg viewBox="0 0 576 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:1em;bottom:1em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp; &amp;nbsp; BMHE 
+]
+] 
+
+---
+
+
+# Summary
+
+- Assess .red[**long-term**] cost-effectiveness based only on .red[**short-term**] data
+
+- State-transition (usually *Markov*) models for clinical histories
+
+- Commonly implemented in `Excel`, or specialized software (eg `TreeAge`)
+
+- Bayesian framework lets you .red[simultaneously] perform
+   - parameter estimation (from short-term data, eg meta-analysis), and
+   - probabilistic sensitivity analysis (long-term costs and benefits)
+   - uncertainty about parameters fully included
+
+- Example: 3-state cancer Markov model
+
+- Markov models &amp; survival analysis
+
+&lt;span style="display:block; margin-top: 4em ;"&gt;&lt;/span&gt;
+
+.content-box-beamer[
+### **References** 
+
+&lt;span style="display:block; margin-top: 20px ;"&gt;&lt;/span&gt;
+
+&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;
+  [ comment ]
+  &lt;path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"&gt;&lt;/path&gt;
+&lt;/svg&gt; &lt;i&gt;Bayesian Methods in Health Economics&lt;/i&gt;, chapter 5.5 .button[&lt;img src="../img/routledge.png" width="7%"&gt; [Book website (CRC)](https://www-taylorfrancis-com.libproxy.ucl.ac.uk/books/9780429111396)] .button[&lt;i class="fab fa-firefox"&gt;&lt;/i&gt; [Book website](https://gianluca.statistica.it/bmhe)] .button[&lt;i class="fab fa-github"&gt;&lt;/i&gt; [Code](https://github.com/giabaio/BCEA)]
+
+&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;
+  [ comment ]
+  &lt;path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"&gt;&lt;/path&gt;
+&lt;/svg&gt; &lt;i&gt;Decision Modelling for Health Economic Evaluation&lt;/i&gt;  .button[&lt;img src="../img/oup-1.png" width="10%"&gt;  [Book website](https://global.oup.com/academic/product/decision-modelling-for-health-economic-evaluation-9780198526629?cc=gb&amp;lang=en&amp;)]
+
+&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;
+  [ comment ]
+  &lt;path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"&gt;&lt;/path&gt;
+&lt;/svg&gt; &lt;i&gt;Evidence Synthesis for Decision Making in Healthcare&lt;/i&gt;  .button[&lt;img src="../img/wiley.png" width="10%"&gt; [Book website](https://www.wiley.com/en-gb/Evidence+Synthesis+for+Decision+Making+in+Healthcare-p-9780470061091)]
+
+&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;
+  [ comment ]
+  &lt;path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"&gt;&lt;/path&gt;
+&lt;/svg&gt; &lt;i&gt;Bayesian Cost-Effectiveness Analysis with the R package BCEA&lt;/i&gt;  .button[&lt;img src="../img/springer.png" width="8%"&gt; [Book website (Springer)](http://www.springer.com/us/book/9783319557168)] .button[&lt;i class="fab fa-firefox"&gt;&lt;/i&gt; [Book website](https://gianluca.statistica.it/book/bcea/)]
+
+]
+
+---
+
+# Markov models
+
+- Assume a set `\(\mathcal{S}\)` made of `\(S\)` "clinically relevant" states
+   - Exhaustive and mutually exclusive
+   
+- The structure (links among nodes) describes the dynamics of disease history
+   - Arrows connecting two states encode the assumption that a transition from the one where the arrow originates to the one reached by it is possible
+   - Absence of an arrow between two states implies that the transition from one to the other is not allowed by our model
+   
+--
+
+- From one period to the next, subjects can move among the states according to the rules specified by the arrows
+
+- Movements occur according to suitable transition probabilities
+`$$\color{#24568c}\bm\pi_j = \bm\pi_{j-1} \bm\Lambda_j$$`
+   where
+   - `\(\bm\pi_j=(\pi_{1j},\ldots,\pi_{Sj})\)` is the vector of probabilities for each state at time `\(j\)`
+   - `\(\bm\Lambda_j = [\Lambda_{j;s',s}]\)` is a transition matrix describing the probability of moving from state `\(s\)` to state `\(s'\)` at time `\(j\)`
+
+--
+
+- **NB** the matrix algebra simply computes for each state `\(s\)`
+
+`$$\color{blue}{\Pr(\style{font-family:inherit;}{\text{Being in state }} s \style{font-family:inherit;}{\text{ at time }} j)= \sum_{s'\in\mathcal{S}}\Pr(\style{font-family:inherit;}{\text{Being in state }} s' \style{font-family:inherit;}{\text{ at time }} j-1)\times \Pr(\style{font-family:inherit;}{\text{Moving from state }}s'\style{font-family:inherit;}{\text{ to state }}s)}$$`
+
+---
+
+count: false
+# Markov models
+
+### 1. Define a structure .alignright[("**Natural history**" of the disease)]
+
+&lt;center&gt;&lt;img src=./img/09_MM_5.png width='58%' title='A basic Markov model structure'&gt;&lt;/center&gt;
+
+---
+
+count: false
+# Markov model
+
+### 2. Estimate the transition probabilities
+
+&lt;center&gt;&lt;img src=./img/09_MM_6.png width='65%' title='A basic Markov model structure'&gt;&lt;/center&gt;
+
+&lt;span style="display:block; margin-top: -20px ;"&gt;&lt;/span&gt;
+For instance: 
+
+- `\(\lambda_{14} =\)` general (healthy) population mortality `\(\Rightarrow\)` Relevant data: Life tables/official records, . . .
+- `\(\lambda_{24} =\)` disease-specific mortality `\(\Rightarrow\)` Relevant data: Trial/observational studies, . . .
+- `\(\ldots\)`
+
+---
+
+count: false
+# Markov model
+
+### 3. Run the simulation: `\(j=0\)`
+
+&lt;center&gt;&lt;img src=./img/09_MM_7.png width='65%' title='Typically, at the beginning of the simulation, every individual is in the 'null' state (eg healthy)'&gt;&lt;/center&gt;
+
+&lt;span style="display:block; margin-top: 20px ;"&gt;&lt;/span&gt;
+Distribute the "virtual cohort" across the `\(S\)` states (typically, everybody starts in the "healthy" state...)
+
+---
+
+count: false
+# Markov model
+
+### 3. Run the simulation: `\(j=1\)`
+
+&lt;center&gt;&lt;img src=./img/09_MM_8.png width='65%' title='...Then, they start to move around, according to the transition probabilities...'&gt;&lt;/center&gt;
+
+&lt;span style="display:block; margin-top: 20px ;"&gt;&lt;/span&gt;
+Start moving people around...
+
+---
+
+count: false
+# Markov model
+
+## Matrix algebra and "state occupancy"
+
+- `\(m_{sj}\)` is the **number** of people in state `\(s\)` at time `\(j\)`
+
+- `\(\lambda_{s'sj}\)` is the probability of moving from state `\(s'\)` to state `\(s\)` between time `\(j\)` and `\(j+1\)`
+
+&lt;span style="display:block; margin-top: 20px ;"&gt;&lt;/span&gt;   
+- Thus:
+`$$\color{#24568c}{m_{s\, j+1} = m_{1j}\lambda_{1sj} + m_{2j}\lambda_{2sj} + \ldots + m_{Sj}\lambda_{Ssj}}$$`
+   which we can write in matrix algebra as
+`\begin{align}
+\color{#24568c}{(m_{1\, j+1},\ldots,m_{S\, j+1})} &amp; \color{#24568c}{=\, (m_{1\, j},\ldots,m_{S\, j})\left(\begin{array}{ccc}\lambda_{11j} &amp; \ldots &amp; \lambda_{1Sj} \\ \vdots &amp; \ddots &amp; \vdots \\ \lambda_{S1j} &amp; \ldots &amp; \lambda_{SSj}  \end{array}\right)} \\
+\color{#24568c}{\bm{m}_{j+1}} &amp; \color{#24568c}{= \, \bm{m}_{j} \bm\Lambda_j}
+\end{align}`
+
+&lt;span style="display:block; margin-top: 30px ;"&gt;&lt;/span&gt;   
+- **NB**: The transition matrix typically does depend on the time `\(j\)`, but sometimes we can relax this assumption
+
+---
+
+count: false
+# Markov model
+
+### 3. Run the simulation: `\(j=2\)`
+
+&lt;center&gt;&lt;img src=./img/09_MM_9.png width='65%' title='...They continue to move: for instance, more people are being affected by the disease and die...'&gt;&lt;/center&gt;
+
+&lt;span style="display:block; margin-top: 20px ;"&gt;&lt;/span&gt;
+
+Move people around according to the relationship `\(\bm{m}_{2}=\bm{m}_{1}\bm\Lambda_{1}\)`
+
+---
+
+count: false
+# Markov model
+
+### 3. Run the simulation: `\(j=3\)`
+
+&lt;center&gt;&lt;img src=./img/09_MM_10.png width='65%' title='...More of the same...'&gt;&lt;/center&gt;
+
+&lt;span style="display:block; margin-top: 20px ;"&gt;&lt;/span&gt;
+
+Move people around according to the relationship `\(\bm{m}_{3}=\bm{m}_{2}\bm\Lambda_{2}\)`
+---
+
+count: false
+# Markov model
+
+### 3. Run the simulation: `\(j=J\)` .alignright[("*lifetime* horizon")]
+
+&lt;center&gt;&lt;img src=./img/09_MM_11.png width='65%' title='...And if the virtual follow up (length of the simulation) is long enough, then everybody will have moved to the absorbing state (death, in this case)'&gt;&lt;/center&gt;
+
+---
+
+#  Cost-effectiveness modelling
+
+1. Assign .red[**benefits**] &amp; .blue[**costs**] to each state in the model and for each treatment `\(t\)` under study: `\(\color{black}{(e_{ts},c_{ts})}\)`
+   - A measure of QoL (e.g. QALYs associated with being "perfectly healthy") 
+   - A measure of cost (e.g. what does it cost the NHS for every person who has the disease?)
+
+2. "Cohort simulation": estimate the proportion of individuals in each state at each time point (cycle)
+   - Usually need to do this for a long enough "virtual follow up" so that everybody reach the "absorbing state" 
+   - That's a state from which you never move out (e.g. death)
+   
+3. For each treatment `\(t\)` under study, accumulate costs and benefits over time (slightly abusing the notation...)
+`\begin{align}
+\color{red}e_t\, &amp; \color{red}= \, \sum_{j=0}^J \sum_{s=1}^S m_{tsj}e_{ts} &amp; &amp; \color{black}\style{font-family:inherit;}{\text{ and }} &amp; &amp; &amp; \color{blue}c_t\, &amp; \color{blue} =\, \sum_{j=1}^J \sum_{s=1}^S m_{tsj}c_{ts} \\
+&amp; \color{red}\,= \, \sum_{j=0}^J e_{tj} &amp; &amp; &amp; &amp; &amp; \, &amp; \color{blue}= \, \sum_{j=0}^J c_{tj}
+\end{align}`
+
+   **NB**: Costs and benefits can also be modelled to describe the uncertainty around their value
+      - **For example**: QALYs over one year `\(\sim\dbeta(a,b)\)`; Costs `\(\sim\dgamma(\gamma,\rho)\)`; `\(\ldots\)`
+      - These may be informed by individual level data (see  &lt;a href="../04_ILD/index.html"&gt;Lecture 4&lt;/a&gt;) or evidence synthesis (see  &lt;a href="../05_ALD/index.html"&gt;Lecture 5&lt;/a&gt;)
+
+---
+
+count: false
+# Cost-effectiveness modelling
+
+## Discounting .alignright[See BMHE, chapter 1.5; 5.4]
+
+- Costs and outcomes can occur at different times with respect to when the intervention is implemented
+
+- **But**: society tends to value benefits that arrive closer to the present time more than those that will be achievable in the (possibly very distant) future
+
+  - Example: Human Papilloma Virus (HPV) vaccination is available for boys and girls as young as 12, but benefits (protection from cervical cancer) only materialises when they are well in their 40s...
+  
+--
+
+
+- .red[**Discounting**] accounts for differential timing by reducing the value of costs and effects in the future
+
+   - Particularly relevant for economic evaluation spanning over a time horizon `\(&gt;\)` 1 time unit (e.g. year) 
+   
+   - Markov models tend to do that, so discounting is a key issue when using them!
+   
+- Define a **discount rate** `\(d\)` to ensure that costs sustained and benefits gained closer to now have more value
+   
+- Compute the **Present Value** of intervention `\(t\)` as 
+
+`\begin{align}
+\color{red}\style{font-family:inherit;}{\text{PV}}_t^e = \sum_{j=0}^J \frac{e_{tj}}{(1+d)^j} \qquad \color{black}\style{font-family:inherit;}{\text{ and }} \qquad \color{blue}\style{font-family:inherit;}{\text{PV}}_t^c = \sum_{j=0}^J \frac{c_{tj}}{(1+d)^j}
+\end{align}`
+
+- NICE suggests using `\(d=3.5\%\)` for costs and outcomes &amp;ndash; but for some diseases can use different rates for costs and benefits...
+
+---
+
+# Example
+
+## 3-state cancer Markov model
+
+- This is one of the most popular structures developed as Markov models
+
+
+
+&lt;center&gt;&lt;img src=./img/3state-1.png width='85%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+&lt;span style="display:block; margin-top: 50px ;"&gt;&lt;/span&gt;
+- Patients typically enter the cohort in "pre-progression"
+- Then can either die or "progress" to a worst condition
+- From there they typically cannot revert to a better state
+
+---
+
+count: false
+# Example
+
+## 3-state cancer Markov model
+
+**Ideally**, we can access individual level data (e.g. from a randomised trial), describing the "event history" for each patient
+&lt;table class=" lightable-classic table" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+ &lt;thead&gt;
+  &lt;tr&gt;
+   &lt;th style="text-align:center;"&gt; Patient &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Treatment &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Progression? &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Death? &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Progression time &lt;/th&gt;
+   &lt;th style="text-align:center;"&gt; Death time &lt;/th&gt;
+  &lt;/tr&gt;
+ &lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 31.99 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 32.00 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 30.55 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 30.60 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; \(\ldots\) &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 10 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 0.17 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 0.46 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 11 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 1.27 &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; "&gt; 1.57 &lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:center;width: 1.5cm; border-bottom: 2px solid;"&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; border-bottom: 2px solid;"&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; border-bottom: 2px solid;"&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; border-bottom: 2px solid;"&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; border-bottom: 2px solid;"&gt; \(\ldots\) &lt;/td&gt;
+   &lt;td style="text-align:center;width: 1.5cm; border-bottom: 2px solid;"&gt; \(\ldots\) &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;span style="display:block; margin-top: 30px ;"&gt;&lt;/span&gt;
+
+This type of data would allow us to estimate **directly** all the relevant transition probabilities (with some extra work...)
+
+   - They contain information about the .blue[**complete history**] of each individual and so we can use them to construct the "risk set" for each possible transition and then estimate the time-to-event
+
+---
+
+# Reconstructing the data
+
+&lt;span style="display:block; margin-top: -10pt ;"&gt;&lt;/span&gt;
+
+## Subset 1: Progression
+
+&lt;span style="display:block; margin-top: -5pt ;"&gt;&lt;/span&gt;
+
+- Risk set: all individuals who are at risk of making progression
+
+   - The individuals in the risk set may or may not also die ("competing risks")
+   - But we consider "Progression" as the **event** and "Death" or "No progression" as **censoring**
+
+.panelset[
+
+.panel[
+.panel-name[Code]
+
+```r
+&gt;   data %&gt;% mutate(
++   id=patid,                             # patient ID
++   from=1,                               # starting state
++   to=2,                                 # arriving state 
++   trans=1,                              # transition code (1 = Pre -&gt; Progression) 
++   Tstart=0,                             # entry time
++   Tstop=prog_t,                         # exit time
++   time=Tstop-Tstart,                    # time-to-event = Tstop-Tstart
++   status=case_when(                     # censoring indicator: 
++     prog==1~1,                          #  1 if progressed; 0 otherwise
++     TRUE~0
++   ),
++   treat=treat                           # treatment arm
++   ) %&gt;% 
++   # Selects only the relevant rows
++    select(id,from,to,trans,Tstart,Tstop,time,prog,death,status,treat)
+```
+]
+
+.panel[
+.panel-name[Output]
+
+```
+# A tibble: 810 × 13
+      id  from    to trans Tstart Tstop  time  prog death status treat prog_t death_t
+   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+ 1   414     1     2     1      0 29    29        0     0      0     1  29      29   
+ 2   358     1     2     1      0 24    24        0     0      0     1  24      24   
+ 3   686     1     2     1      0 23    23        0     0      0     0  23      23   
+ 4    32     1     2     1      0 23.6  23.6      1     0      1     1  23.6    25   
+ 5   422     1     2     1      0 30    30        0     0      0     1  30      30   
+ 6   668     1     2     1      0 21.4  21.4      0     0      0     0  21.4    21.4 
+ 7    11     1     2     1      0  1.27  1.27     1     1      1     1   1.27    1.57
+ 8   149     1     2     1      0 27.5  27.5      1     0      1     0  27.5    36.0 
+ 9   484     1     2     1      0 38    38        0     0      0     1  38      38   
+10    48     1     2     1      0 26.0  26.0      1     0      1     1  26.0    28   
+# … with 800 more rows
+```
+]
+
+.panel[
+.panel-name[Examples (1)]
+Patients who have progressed but not died, e.g.
+
+```
+# A tibble: 1 × 13
+     id  from    to trans Tstart Tstop  time  prog death status treat prog_t death_t
+  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1     1     1     2     1      0  32.0  32.0     1     0      1     1   32.0      32
+```
+
+Patients who have died *at* or *after* progression, e.g.
+
+```
+# A tibble: 2 × 13
+     id  from    to trans Tstart Tstop  time  prog death status treat prog_t death_t
+  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1    10     1     2     1      0 0.173 0.173     1     1      1     1  0.173   0.458
+2   134     1     2     1      0 6.90  6.90      1     1      1     1  6.90   14.3  
+```
+]
+
+
+.panel[
+.panel-name[Examples (2)]
+Patients who have died before progression (NB: these are **censored** in this case!)
+
+```
+# A tibble: 2 × 13
+     id  from    to trans Tstart Tstop  time  prog death status treat prog_t death_t
+  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1   527     1     2     1      0  1.50  1.50     0     1      0     1   1.50    1.50
+2   528     1     2     1      0  2.07  2.07     0     1      0     1   2.07    2.07
+```
+
+
+Patients who have been fully censored 
+
+```
+# A tibble: 2 × 13
+     id  from    to trans Tstart  Tstop   time  prog death status treat prog_t death_t
+  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1   249     1     2     1      0 0.0575 0.0575     0     0      0     1 0.0575  0.0575
+2   250     1     2     1      0 3.80   3.80       0     0      0     1 3.80    3.80  
+```
+
+]
+]   
+
+---
+
+count: false
+# Reconstructing the data
+
+&lt;span style="display:block; margin-top: -10pt ;"&gt;&lt;/span&gt;
+
+## Subset 2: Death from pre-progression
+
+&lt;span style="display:block; margin-top: -5pt ;"&gt;&lt;/span&gt;
+
+- Risk set: all individuals who are at risk of dying
+
+   - The individuals in the risk set may or may not also progress ("competing risks")
+   - But we consider "Death" as the **event** and "Progression" or "No progression" as **censoring**
+
+.panelset[
+
+.panel[
+.panel-name[Code]
+
+```r
+&gt;   data %&gt;% mutate(
++   id=patid,                             # patient ID
++   from=1,                               # starting state
++   to=3,                                 # arriving state 
++   trans=2,                              # transition code (2 = Pre -&gt; Death)  
++   Tstart=0,                             # entry time
++   Tstop=prog_t,                         # exit time
++   time=Tstop-Tstart,                    # time-to-event = Tstop-Tstart
++   status=case_when(                     # censoring indicator: 
++     (death==1 &amp; prog_t==death_t)~1,     #  1 if died at progression; 0 otherwise
++     TRUE~0
++   ),
++   treat=treat                           # treatment arm
++   ) %&gt;% 
++   # Selects only the relevant rows
++    select(id,from,to,trans,Tstart,Tstop,time,prog,death,status,treat)
+```
+]
+
+.panel[
+.panel-name[Output]
+
+```
+# A tibble: 810 × 13
+      id  from    to trans Tstart Tstop  time  prog death status treat prog_t death_t
+   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+ 1   741     1     3     2      0  29.4  29.4     0     0      0     0   29.4    29.4
+ 2   515     1     3     2      0  44    44       0     0      0     1   44      44  
+ 3   664     1     3     2      0  21.4  21.4     0     0      0     0   21.4    21.4
+ 4   633     1     3     2      0  19.9  19.9     0     0      0     0   19.9    19.9
+ 5   270     1     3     2      0  19.2  19.2     0     0      0     1   19.2    19.2
+ 6   805     1     3     2      0  45    45       0     0      0     0   45      45  
+ 7   104     1     3     2      0  15.1  15.1     1     0      0     0   15.1    20.9
+ 8   394     1     3     2      0  27.5  27.5     0     0      0     1   27.5    27.5
+ 9    87     1     3     2      0  43.3  43.3     1     0      0     1   43.3    48  
+10   469     1     3     2      0  36.5  36.5     0     0      0     1   36.5    36.5
+# … with 800 more rows
+```
+]
+
+.panel[
+.panel-name[Examples (1)]
+Patients who have progressed, but not died, e.g. 
+
+```
+# A tibble: 1 × 13
+     id  from    to trans Tstart Tstop  time  prog death status treat prog_t death_t
+  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1     1     1     3     2      0  32.0  32.0     1     0      0     1   32.0      32
+```
+
+Patients who have died *at* or *after* progression (NB: these are **censored** in this case!), e.g.
+
+```
+# A tibble: 2 × 13
+     id  from    to trans Tstart Tstop  time  prog death status treat prog_t death_t
+  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1    10     1     3     2      0 0.173 0.173     1     1      0     1  0.173   0.458
+2   134     1     3     2      0 6.90  6.90      1     1      0     1  6.90   14.3  
+```
+]
+
+
+.panel[
+.panel-name[Examples (2)]
+Patients who have died before progression
+
+```
+# A tibble: 2 × 13
+     id  from    to trans Tstart Tstop  time  prog death status treat prog_t death_t
+  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1   527     1     3     2      0  1.50  1.50     0     1      1     1   1.50    1.50
+2   528     1     3     2      0  2.07  2.07     0     1      1     1   2.07    2.07
+```
+
+
+Patients who have been fully censored
+
+```
+# A tibble: 2 × 13
+     id  from    to trans Tstart  Tstop   time  prog death status treat prog_t death_t
+  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1   249     1     3     2      0 0.0575 0.0575     0     0      0     1 0.0575  0.0575
+2   250     1     3     2      0 3.80   3.80       0     0      0     1 3.80    3.80  
+```
+
+]
+]   
+
+---
+
+count: false
+# Reconstructing the data
+
+&lt;span style="display:block; margin-top: -10pt ;"&gt;&lt;/span&gt;
+
+## Subset 3: Death from progression
+
+&lt;span style="display:block; margin-top: -5pt ;"&gt;&lt;/span&gt;
+
+- Risk set: all individuals who have progressed and are at risk of dying
+
+   - The individuals in the risk set have certainly progressed and may or may not also die 
+   - But we consider "Death" as the **event** and "No death" as **censoring**
+
+
+.panelset[
+
+.panel[
+.panel-name[Code]
+
+```r
+*&gt;   data %&gt;% filter(prog==1) %&gt;% mutate(  # NB: Filter for patients who *have* progressed!
++   id=patid,                             # patient ID
++   from=2,                               # starting state
++   to=3,                                 # arriving state 
++   trans=3,                              # transition code (2 = Pre -&gt; Death)  
++   Tstart=prog_t,                        # entry time
++   Tstop=death_t,                        # exit time
++   time=Tstop-Tstart,                    # time-to-event = Tstop-Tstart
++   status=case_when(                     # censoring indicator: 
++     death==1~1,                         #  1 if died; 0 otherwise
++     TRUE~0
++   ),
++   treat=treat                           # treatment arm
++   ) %&gt;% 
++   # Selects only the relevant rows
++    select(id,from,to,trans,Tstart,Tstop,time,prog,death,status,treat)
+```
+]
+
+.panel[
+.panel-name[Output]
+
+```
+# A tibble: 248 × 13
+      id  from    to trans Tstart Tstop  time  prog death status treat prog_t death_t
+   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+ 1   229     2     3     3  14.3   37.4 23.1      1     0      0     0  14.3     37.4
+ 2   181     2     3     3   4.03  18.1 14.1      1     1      1     0   4.03    18.1
+ 3   231     2     3     3  14.4   37.6 23.2      1     0      0     0  14.4     37.6
+ 4   118     2     3     3   6.50  12.8  6.33     1     0      0     0   6.50    12.8
+ 5   113     2     3     3   9.44  15.6  6.15     1     0      0     0   9.44    15.6
+ 6   155     2     3     3  27.2   36.0  8.81     1     0      0     0  27.2     36.0
+ 7   211     2     3     3  17.0   35.1 18.1      1     0      0     0  17.0     35.1
+ 8    83     2     3     3  11.7   15.7  3.97     1     1      1     1  11.7     15.7
+ 9   154     2     3     3  14.0   22.7  8.68     1     1      1     0  14.0     22.7
+10    93     2     3     3  42.8   48    5.19     1     0      0     1  42.8     48  
+# … with 238 more rows
+```
+]
+
+.panel[
+.panel-name[Examples (1)]
+Patients who have died after progression, e.g. 
+
+```
+# A tibble: 1 × 13
+     id  from    to trans Tstart Tstop  time  prog death status treat prog_t death_t
+  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1    10     2     3     3  0.173 0.458 0.286     1     1      1     1  0.173   0.458
+```
+
+Patients who have not died (NB: these are **censored** in this case!), e.g.
+
+```
+# A tibble: 1 × 13
+     id  from    to trans Tstart Tstop    time  prog death status treat prog_t death_t
+  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt; &lt;int&gt;  &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1     1     2     3     3   32.0    32 0.00920     1     0      0     1   32.0      32
+```
+]
+
+]
+
+---
+
+# Example
+
+## Estimating the survival curves
+
+
+
+- We can use the models we saw in &lt;a href="../08_Survival/index.html"&gt;Lecture 8&lt;/a&gt; to estimate the survival curves for the 3 subsets
+- For example, we can test various alternative and settle for a Gompertz distribution
+
+
+```r
+&gt; # Sets up informative priors on the Gompertz parameters to stabilise inference
+&gt; priors=list(gom=list(a_alpha=1.5,b_alpha=1.5))
+&gt; 
+&gt; # Runs survival models on the specific subsets to obtain estimate of the various transition probabilities
+&gt; m_12=fit.models(Surv(time,status)~as.factor(treat),data=subdata1,distr="gom",method="hmc",priors=priors)
+&gt; m_13=fit.models(Surv(time,status)~as.factor(treat),data=subdata2,distr="gom",method="hmc",priors=priors)
+&gt; m_23=fit.models(Surv(time,status)~as.factor(treat),data=subdata3,distr="gom",method="hmc",priors=priors)
+```
+
+- Now can use the simulated values for the survival curves to *approximate* the transition probabilities
+
+   - Technically, the models above estimate survival over continuous times, while the Markov model assumes discrete cycles
+   
+- Can use the `survHE` function `make.surv` to generate simulations from the survival curves from each model over any arbitrary extrapolation
+
+---
+
+# Survival curves and transition probabilities
+&lt;img src="./img/survival1-1.png" style="display: block; margin: auto;" width="100%"&gt;
+
+In general, given a survival curve representing a suitable transition, we can compute
+`$$\color{#24568c}\lambda_{s'sj}\approx 1-\frac{S_{j+k}}{S_j}$$`
+&lt;span style="display:block; margin-top: -15px ;"&gt;&lt;/span&gt;
+(intuitively, the transition probability can be read off as the reduction in the proportion of individuals who have *not* experienced the event between two consecutive times)
+
+---
+
+count: false
+# Survival curves and transition probabilities 
+
+We can **directly** estimate
+
+- `\(\lambda_{12j}\)` from the survival curves derived with subset 1
+- `\(\lambda_{13j}\)` from the survival curves derived with subset 2
+- `\(\lambda_{23j}\)` from the survival curves derived with subset 3
+
+
+**Indirectly** (using the fact that the transitions are mutually exclusive and exhaustive)
+
+- `\(\lambda_{11j}=1-\lambda_{12j}-\lambda_{13j}\)`
+- `\(\lambda_{22j}=1-\lambda_{23j}\)`
+
+
+And because "Death" is an absorbing state, we can complete the transition matrix
+
+`\begin{align}
+\color{#24568c}\bm\Lambda_j = \left(\begin{array}{ccc} \lambda_{11j} &amp; \lambda_{12j} &amp; \lambda_{13j} \\ 0 &amp; \lambda_{22j} &amp; \lambda_{23j} \\ 0 &amp; 0 &amp; 1 \end{array}\right)
+\end{align}`
+
+&lt;span style="display:block; margin-top: 30px ;"&gt;&lt;/span&gt;
+
+We can also replicate this calculation for `\(n_{sim}\)` times to propagate the uncertainty in the survival curves onto the whole Markov model
+
+&lt;span style="display:block; margin-top: 20px ;"&gt;&lt;/span&gt;
+**NB**: May need more complex modelling (see for instance &lt;svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  &lt;g label="icon" id="layer6" groupmode="layer"&gt;    &lt;path id="path2" d="M 120.19265,177.73779 C 123.18778,77.35076 64.277527,63.999998 64.277527,63.999998 v 31.26245 C 40.834519,83.611374 18.32863,81.929634 18.32863,81.929634 V 337.10903 c 0,0 98.10414,-11.41744 98.10414,84.40952 0,0 36.58424,-153.37442 248.86103,26.48145 0,-61.59342 0.37757,-216.93925 0.37757,-268.28471 C 169.9561,37.131382 120.1931,177.73779 120.1931,177.73779 Z m 187.20631,173.82056 -12.37599,-97.65441 h -0.448 l -40.72819,97.65441 h -17.55994 l -38.9362,-97.65441 h -0.448 l -14.17589,97.65441 h -43.87514 l 28.8015,-169.61925 h 43.42716 l 34.43518,90.6496 36.46566,-90.6496 h 43.87513 l 25.6817,169.61925 h -44.13938 z" style="stroke-width:0.0675239"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt; [Williams et al, 2017](https://pubmed.ncbi.nlm.nih.gov/27698003/))
+
+---
+
+# Running the Markov model
+
+We can finally run the Markov model by initialising the state occupancy `\(\bm{m}_0\)` and simply apply the matrix algebra to determine the number of people in each state at each time point.
+
+
+
+&lt;center&gt;&lt;img src=./img/unnamed-chunk-21-1.png width='95%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+# Summary so far
+
+## If we have the individual level data...
+- In that case, we can recreate direct estimates of all the relevant transition probabilities
+
+   - In that case, running the Markov model is basically just a problem of matrix algebra
+   
+   - Modellers tend to do this using a combination of statistical software (for the survival analysis) and spreadsheet (to compute the actual Markov model)
+   
+   - ... But of course this can all be done in a **much** more efficient way using a proper statistical software (e.g. `R` &amp;ndash; see [Practical](../practical/07_MM/))
+
+--
+
+## What if we don't get the trial data?...
+
+- Unfortunately, very often we are **not** in a position of using individual level data
+
+   - Either because we have trial data for "our" study, but not for the comparators
+   
+   - Or because we do not have access to the ILD for any of the relevant treatments
+
+
+- In these cases, we need to resort to **sub-optimal** methods of analysis
+
+   - Specifically, we can use published summaries to obtain "pseudo-data" based on published Kaplan-Meier estimates
+   
+   - This practices is becoming very popular and is often termed as "modelling based on **digitised** data"
+
+---
+
+
+# Digitised data
+
+- Use specialised software to extract data values from published graphs
+
+   - Example: &lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;&lt;/svg&gt; [DigitizeIT](https://www.digitizeit.xyz/)
+   
+--
+
+- Point &amp; click on the curves from published papers
+
+- Save suitable text files that can be fed to appropriate `R` scripts and algorithms to reconstruct the underlying Kaplan Meier curves (&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;&lt;/svg&gt; [Guyot et al, 2012]( http://www.biomedcentral.com/1471-2288/12/9))
+
+&lt;center&gt;&lt;img src=./img/digitised.png width='85%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+count: false
+# Digitised data
+
+## What's wrong with that?...
+
+The problem is that often published papers report data on PFS and OS, **BUT**:
+
+1. The curves are reported **separately** and **independently**
+   - Although the data are correlated, because it is the same individuals undergoing the various transitions, there is no way to recover this level of correlation from the digitised data
+   
+2. The reported curves do not allow to control/stratify for a large number of covariates
+   - It is possible that KM curves are reported, say, for males and females, separately; but stratification for many other variables is rare
+   
+3. It is then impossible to subset the underlying data and estimate all the relevant transition probabilities!
+
+--
+
+&lt;span style="display:block; margin-top: 40px ;"&gt;&lt;/span&gt;
+
+So?... `\(\Rightarrow\)` .blue[**Partitioned Survival Modelling**]
+
+---
+
+# Partitioned Survival Modelling (PSM)
+
+### See &lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;&lt;/svg&gt; [NICE DSU report](http://scharr.dept.shef.ac.uk/nicedsu/wp-content/uploads/sites/7/2017/06/Partitioned-Survival-Analysis-final-report.pdf)
+&lt;img src="./img/unnamed-chunk-22-1.png" style="display: block; margin: auto;" width="75%" title="The survival curves for OS and PFS can be used to derive the proportion of individuals who at each time point are progressed as the difference between the other two: if you are not dead and you are not in progression free, then you are progressed..."&gt;
+
+&lt;!--
+&lt;center&gt;&lt;img src=./img/PartSA.png width='57%' title='The survival curves for OS and PFS can be used to derive the proportion of individuals who at each time point are progressed as the difference between the other two: if you are not dead and you are not in progression free, then you are progressed...'&gt;&lt;/center&gt;
+--&gt;
+
+---
+
+count: false
+# Partitioned Survival Modelling (PSM)
+
+### See &lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;&lt;/svg&gt; [NICE DSU report](http://scharr.dept.shef.ac.uk/nicedsu/wp-content/uploads/sites/7/2017/06/Partitioned-Survival-Analysis-final-report.pdf)
+
+&lt;img src="./img/unnamed-chunk-23-1.png" style="display: block; margin: auto;" width="75%" title="This representation makes it even clearer"&gt;
+
+
+&lt;!--
+&lt;center&gt;&lt;img src=./img/PartSA2.png width='57%' title='This representation makes it even clearer'&gt;&lt;/center&gt;
+--&gt;
+---
+
+# Markov models and PSM
+
+
+
+&lt;center&gt;&lt;img src=./img/3state2-1.png width='85%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+&lt;span style="display:block; margin-top: -20px ;"&gt;&lt;/span&gt;
+
+## Problem
+- **Ideally**, want to estimate the transition probabilities `\(\bm\lambda\)` to run the MM
+
+- But, we're likely to only have access to (most likely digitised!) data on PFS/OS **separately**
+
+   - PFS data record transition to either progression **or** death
+   
+   - **Digitised** OS data conflate `\(\lambda_{12}\)`, `\(\lambda_{13}\)` and `\(\lambda_{23}\)`
+   
+---
+
+count: false
+# Markov models and PSM
+
+
+
+&lt;center&gt;&lt;img src=./img/3state3-1.png width='85%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+&lt;span style="display:block; margin-top: -20px ;"&gt;&lt;/span&gt;
+
+## (PSM) Solution
+
+- Can estimate the .red[**proportion of people in each state**] at each time point
+
+   - Basically run the simulation to attach costs &amp; utilities to the number of individuals in each state at each time
+   
+   - **NB**: Partitioned survival analysis only applies for diseases where patients can only move .red[forward]
+   
+   - In a partitioned survival analysis, mortality is determined by time-to-death and not linked to concurring event
+
+---
+
+# Conclusions &amp; further tools
+
+- MMs are ubiquitous in health economic evaluation and HTA
+
+- Once the transition probabilities have been estimated, the actual MM part is fairly easy
+   - Based on matrix algebra &amp;ndash; even Excel can handle it (in combination with statistical software for the main analysis...)
+   - **But**: .red[**much**] more efficient to run the whole process through proper statistical software!
+
+.content-box-beamer[
+### Further tools
+
+&lt;svg viewBox="0 0 581 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt; [heemod](https://cran.r-project.org/web/packages/heemod/index.html)
+
+   - A general purpose package to run the whole MM process in &lt;tt&gt;R&lt;/tt&gt; (can be linked to `BCEA`, but fundamentally a frequentist analysis)
+
+&lt;svg viewBox="0 0 581 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M581 226.6C581 119.1 450.9 32 290.5 32S0 119.1 0 226.6C0 322.4 103.3 402 239.4 418.1V480h99.1v-61.5c24.3-2.7 47.6-7.4 69.4-13.9L448 480h112l-67.4-113.7c54.5-35.4 88.4-84.9 88.4-139.7zm-466.8 14.5c0-73.5 98.9-133 220.8-133s211.9 40.7 211.9 133c0 50.1-26.5 85-70.3 106.4-2.4-1.6-4.7-2.9-6.4-3.7-10.2-5.2-27.8-10.5-27.8-10.5s86.6-6.4 86.6-92.7-90.6-87.9-90.6-87.9h-199V361c-74.1-21.5-125.2-67.1-125.2-119.9zm225.1 38.3v-55.6c57.8 0 87.8-6.8 87.8 27.3 0 36.5-38.2 28.3-87.8 28.3zm-.9 72.5H365c10.8 0 18.9 11.7 24 19.2-16.1 1.9-33 2.8-50.6 2.9v-22.1z"&gt;&lt;/path&gt;&lt;/svg&gt; [hesim](https://cran.r-project.org/web/packages/hesim/index.html)
+
+   - A modular and computationally efficient &lt;tt&gt;R&lt;/tt&gt; package for MMs; supports &lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  &lt;g groupmode="layer" id="layer6" label="icon"&gt;    &lt;path style="stroke-width:0.07717" d="m 115.59247,222.50738 c -9.72601,0 -18.734334,7.07397 -24.986084,14.41694 -5.061076,5.95394 -7.591049,15.13238 -7.591049,22.77486 0,7.6402 2.870733,16.13879 7.931808,22.09274 6.152292,7.34297 12.778135,12.37522 22.603045,12.37522 8.83314,0 19.33786,-3.70766 25.389,-9.76105 6.1523,-6.05338 11.26931,-16.21737 11.26931,-25.04826 0,-8.73142 -2.39548,-19.18696 -8.54776,-25.24039 -6.15229,-6.15455 -17.33741,-11.61061 -26.06883,-11.61061 z m 174.6438,2.39944 c -10.12046,0 -18.35798,3.98058 -24.70919,11.93724 -5.15827,6.38628 -7.73967,13.66255 -7.73967,21.82831 0,8.27088 2.5814,15.59914 7.73967,21.98538 6.35064,7.95667 14.58873,11.93729 24.70919,11.93729 9.03149,0 16.67002,-3.25109 22.9212,-9.74241 6.25399,-6.59703 9.37846,-14.65259 9.37846,-24.18026 0,-9.422 -3.17646,-17.37639 -9.52708,-23.86775 -6.2495,-6.59477 -13.8428,-9.89721 -22.77258,-9.89721 z M 255.99998,7.9999981 C 119.03396,7.9999981 7.9999985,119.03394 7.9999985,255.99998 7.9999985,392.96602 119.03396,504 255.99998,504 392.96606,504 504,392.96602 504,255.99998 504,119.03394 392.96606,7.9999981 255.99998,7.9999981 Z M 197.17431,331.79065 h -45.93563 v -18.69931 c -4.66437,5.85506 -15.63869,11.82369 -20.40025,14.50172 -8.33473,4.66267 -19.65377,7.70067 -30.27265,7.70067 -17.167865,0 -32.44885,-5.425 -45.844653,-17.23173 -15.977193,-14.0903 -23.483472,-35.63322 -23.483472,-58.85447 0,-23.61798 8.186103,-42.47212 24.559999,-56.56242 12.999092,-11.21393 28.896046,-20.18949 45.766106,-20.18949 9.82264,0 21.93961,0.88269 30.57214,5.04865 4.96218,2.38076 13.84449,7.98548 19.10448,13.44381 v -98.50164 h 45.93564 v 229.34421 z m 157.21544,-21.13999 c -15.28099,17.58718 -36.66682,26.38303 -64.15348,26.38303 -27.58613,0 -49.01942,-8.79585 -64.30436,-26.38303 -12.60069,-14.44803 -18.90387,-32.19228 -18.90387,-53.23507 0,-18.94908 6.35065,-35.75132 19.0525,-50.4079 15.37988,-17.69285 37.26185,-26.54011 65.64139,-26.54011 26.09766,0 46.93585,8.84558 62.51694,26.54011 12.70185,14.44806 19.05247,31.66734 19.05247,51.66468 0.003,20.20586 -6.29921,37.53085 -18.90159,51.97886 z m 38.76899,-199.21794 c 5.35888,-5.35888 11.85868,-8.03746 19.49892,-8.03746 7.64024,0 14.14005,2.67858 19.49893,8.03746 5.35888,5.25945 8.03746,11.70955 8.03746,19.35034 0,7.73965 -2.67858,14.28864 -8.03746,19.64753 -5.25944,5.25944 -11.75925,7.8883 -19.49893,7.8883 -7.64247,0 -14.14227,-2.67861 -19.49892,-8.0375 -5.2594,-5.35885 -7.88829,-11.85871 -7.88829,-19.49892 -0.003,-7.6402 2.62889,-14.0903 7.88829,-19.35029 z m 43.91029,220.24265 H 388.24626 V 185.84118 h 48.82277 z" id="path2"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt; [cohort discrete time state transition models](doi:10.2165/00019053-199813040-00003), &lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  &lt;g groupmode="layer" id="layer6" label="icon"&gt;    &lt;path style="stroke-width:0.07717" d="m 115.59247,222.50738 c -9.72601,0 -18.734334,7.07397 -24.986084,14.41694 -5.061076,5.95394 -7.591049,15.13238 -7.591049,22.77486 0,7.6402 2.870733,16.13879 7.931808,22.09274 6.152292,7.34297 12.778135,12.37522 22.603045,12.37522 8.83314,0 19.33786,-3.70766 25.389,-9.76105 6.1523,-6.05338 11.26931,-16.21737 11.26931,-25.04826 0,-8.73142 -2.39548,-19.18696 -8.54776,-25.24039 -6.15229,-6.15455 -17.33741,-11.61061 -26.06883,-11.61061 z m 174.6438,2.39944 c -10.12046,0 -18.35798,3.98058 -24.70919,11.93724 -5.15827,6.38628 -7.73967,13.66255 -7.73967,21.82831 0,8.27088 2.5814,15.59914 7.73967,21.98538 6.35064,7.95667 14.58873,11.93729 24.70919,11.93729 9.03149,0 16.67002,-3.25109 22.9212,-9.74241 6.25399,-6.59703 9.37846,-14.65259 9.37846,-24.18026 0,-9.422 -3.17646,-17.37639 -9.52708,-23.86775 -6.2495,-6.59477 -13.8428,-9.89721 -22.77258,-9.89721 z M 255.99998,7.9999981 C 119.03396,7.9999981 7.9999985,119.03394 7.9999985,255.99998 7.9999985,392.96602 119.03396,504 255.99998,504 392.96606,504 504,392.96602 504,255.99998 504,119.03394 392.96606,7.9999981 255.99998,7.9999981 Z M 197.17431,331.79065 h -45.93563 v -18.69931 c -4.66437,5.85506 -15.63869,11.82369 -20.40025,14.50172 -8.33473,4.66267 -19.65377,7.70067 -30.27265,7.70067 -17.167865,0 -32.44885,-5.425 -45.844653,-17.23173 -15.977193,-14.0903 -23.483472,-35.63322 -23.483472,-58.85447 0,-23.61798 8.186103,-42.47212 24.559999,-56.56242 12.999092,-11.21393 28.896046,-20.18949 45.766106,-20.18949 9.82264,0 21.93961,0.88269 30.57214,5.04865 4.96218,2.38076 13.84449,7.98548 19.10448,13.44381 v -98.50164 h 45.93564 v 229.34421 z m 157.21544,-21.13999 c -15.28099,17.58718 -36.66682,26.38303 -64.15348,26.38303 -27.58613,0 -49.01942,-8.79585 -64.30436,-26.38303 -12.60069,-14.44803 -18.90387,-32.19228 -18.90387,-53.23507 0,-18.94908 6.35065,-35.75132 19.0525,-50.4079 15.37988,-17.69285 37.26185,-26.54011 65.64139,-26.54011 26.09766,0 46.93585,8.84558 62.51694,26.54011 12.70185,14.44806 19.05247,31.66734 19.05247,51.66468 0.003,20.20586 -6.29921,37.53085 -18.90159,51.97886 z m 38.76899,-199.21794 c 5.35888,-5.35888 11.85868,-8.03746 19.49892,-8.03746 7.64024,0 14.14005,2.67858 19.49893,8.03746 5.35888,5.25945 8.03746,11.70955 8.03746,19.35034 0,7.73965 -2.67858,14.28864 -8.03746,19.64753 -5.25944,5.25944 -11.75925,7.8883 -19.49893,7.8883 -7.64247,0 -14.14227,-2.67861 -19.49892,-8.0375 -5.2594,-5.35885 -7.88829,-11.85871 -7.88829,-19.49892 -0.003,-7.6402 2.62889,-14.0903 7.88829,-19.35029 z m 43.91029,220.24265 H 388.24626 V 185.84118 h 48.82277 z" id="path2"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt; [partitioned survival models](https://doi.org/10.1002/sim.4780091106) and &lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  &lt;g groupmode="layer" id="layer6" label="icon"&gt;    &lt;path style="stroke-width:0.07717" d="m 115.59247,222.50738 c -9.72601,0 -18.734334,7.07397 -24.986084,14.41694 -5.061076,5.95394 -7.591049,15.13238 -7.591049,22.77486 0,7.6402 2.870733,16.13879 7.931808,22.09274 6.152292,7.34297 12.778135,12.37522 22.603045,12.37522 8.83314,0 19.33786,-3.70766 25.389,-9.76105 6.1523,-6.05338 11.26931,-16.21737 11.26931,-25.04826 0,-8.73142 -2.39548,-19.18696 -8.54776,-25.24039 -6.15229,-6.15455 -17.33741,-11.61061 -26.06883,-11.61061 z m 174.6438,2.39944 c -10.12046,0 -18.35798,3.98058 -24.70919,11.93724 -5.15827,6.38628 -7.73967,13.66255 -7.73967,21.82831 0,8.27088 2.5814,15.59914 7.73967,21.98538 6.35064,7.95667 14.58873,11.93729 24.70919,11.93729 9.03149,0 16.67002,-3.25109 22.9212,-9.74241 6.25399,-6.59703 9.37846,-14.65259 9.37846,-24.18026 0,-9.422 -3.17646,-17.37639 -9.52708,-23.86775 -6.2495,-6.59477 -13.8428,-9.89721 -22.77258,-9.89721 z M 255.99998,7.9999981 C 119.03396,7.9999981 7.9999985,119.03394 7.9999985,255.99998 7.9999985,392.96602 119.03396,504 255.99998,504 392.96606,504 504,392.96602 504,255.99998 504,119.03394 392.96606,7.9999981 255.99998,7.9999981 Z M 197.17431,331.79065 h -45.93563 v -18.69931 c -4.66437,5.85506 -15.63869,11.82369 -20.40025,14.50172 -8.33473,4.66267 -19.65377,7.70067 -30.27265,7.70067 -17.167865,0 -32.44885,-5.425 -45.844653,-17.23173 -15.977193,-14.0903 -23.483472,-35.63322 -23.483472,-58.85447 0,-23.61798 8.186103,-42.47212 24.559999,-56.56242 12.999092,-11.21393 28.896046,-20.18949 45.766106,-20.18949 9.82264,0 21.93961,0.88269 30.57214,5.04865 4.96218,2.38076 13.84449,7.98548 19.10448,13.44381 v -98.50164 h 45.93564 v 229.34421 z m 157.21544,-21.13999 c -15.28099,17.58718 -36.66682,26.38303 -64.15348,26.38303 -27.58613,0 -49.01942,-8.79585 -64.30436,-26.38303 -12.60069,-14.44803 -18.90387,-32.19228 -18.90387,-53.23507 0,-18.94908 6.35065,-35.75132 19.0525,-50.4079 15.37988,-17.69285 37.26185,-26.54011 65.64139,-26.54011 26.09766,0 46.93585,8.84558 62.51694,26.54011 12.70185,14.44806 19.05247,31.66734 19.05247,51.66468 0.003,20.20586 -6.29921,37.53085 -18.90159,51.97886 z m 38.76899,-199.21794 c 5.35888,-5.35888 11.85868,-8.03746 19.49892,-8.03746 7.64024,0 14.14005,2.67858 19.49893,8.03746 5.35888,5.25945 8.03746,11.70955 8.03746,19.35034 0,7.73965 -2.67858,14.28864 -8.03746,19.64753 -5.25944,5.25944 -11.75925,7.8883 -19.49893,7.8883 -7.64247,0 -14.14227,-2.67861 -19.49892,-8.0375 -5.2594,-5.35885 -7.88829,-11.85871 -7.88829,-19.49892 -0.003,-7.6402 2.62889,-14.0903 7.88829,-19.35029 z m 43.91029,220.24265 H 388.24626 V 185.84118 h 48.82277 z" id="path2"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt; [individual-level continuous time state transition models](https://doi.org/10.1016/j.jval.2012.06.014)
+
+&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;&lt;/svg&gt; [Cost-effectiveness analysis in `R` using multi-state modelling](https://www.gla.ac.uk/researchinstitutes/healthwellbeing/research/hehta/reports/cwilliams/) 
+
+   - A set of &lt;tt&gt;R&lt;/tt&gt; scripts to run analyses based on individual level data (similar to the analysis shown in these slides + even more complex modelling structures)
+
+&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;
+  [ comment ]
+  &lt;path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"&gt;&lt;/path&gt;
+&lt;/svg&gt; &lt;i&gt;Bayesian Methods in Health Economics&lt;/i&gt;, chapter 5.4 .button[&lt;img src="../img/routledge.png" width="7%"&gt; [Book website (CRC)](https://www-taylorfrancis-com.libproxy.ucl.ac.uk/books/9780429111396)] .button[&lt;i class="fab fa-firefox"&gt;&lt;/i&gt; [Book website](https://gianluca.statistica.it/bmhe)] .button[&lt;i class="fab fa-github"&gt;&lt;/i&gt; [Code](https://github.com/giabaio/BCEA)] 
+&lt;span style="display:block; margin-top: 15px ;"&gt;&lt;/span&gt;
+
+   - (**NB** This includes a relatively old example, based on a [cohort discrete time state transition models](doi:10.2165/00019053-199813040-00003), &lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  &lt;g groupmode="layer" id="layer6" label="icon"&gt;    &lt;path style="stroke-width:0.07717" d="m 115.59247,222.50738 c -9.72601,0 -18.734334,7.07397 -24.986084,14.41694 -5.061076,5.95394 -7.591049,15.13238 -7.591049,22.77486 0,7.6402 2.870733,16.13879 7.931808,22.09274 6.152292,7.34297 12.778135,12.37522 22.603045,12.37522 8.83314,0 19.33786,-3.70766 25.389,-9.76105 6.1523,-6.05338 11.26931,-16.21737 11.26931,-25.04826 0,-8.73142 -2.39548,-19.18696 -8.54776,-25.24039 -6.15229,-6.15455 -17.33741,-11.61061 -26.06883,-11.61061 z m 174.6438,2.39944 c -10.12046,0 -18.35798,3.98058 -24.70919,11.93724 -5.15827,6.38628 -7.73967,13.66255 -7.73967,21.82831 0,8.27088 2.5814,15.59914 7.73967,21.98538 6.35064,7.95667 14.58873,11.93729 24.70919,11.93729 9.03149,0 16.67002,-3.25109 22.9212,-9.74241 6.25399,-6.59703 9.37846,-14.65259 9.37846,-24.18026 0,-9.422 -3.17646,-17.37639 -9.52708,-23.86775 -6.2495,-6.59477 -13.8428,-9.89721 -22.77258,-9.89721 z M 255.99998,7.9999981 C 119.03396,7.9999981 7.9999985,119.03394 7.9999985,255.99998 7.9999985,392.96602 119.03396,504 255.99998,504 392.96606,504 504,392.96602 504,255.99998 504,119.03394 392.96606,7.9999981 255.99998,7.9999981 Z M 197.17431,331.79065 h -45.93563 v -18.69931 c -4.66437,5.85506 -15.63869,11.82369 -20.40025,14.50172 -8.33473,4.66267 -19.65377,7.70067 -30.27265,7.70067 -17.167865,0 -32.44885,-5.425 -45.844653,-17.23173 -15.977193,-14.0903 -23.483472,-35.63322 -23.483472,-58.85447 0,-23.61798 8.186103,-42.47212 24.559999,-56.56242 12.999092,-11.21393 28.896046,-20.18949 45.766106,-20.18949 9.82264,0 21.93961,0.88269 30.57214,5.04865 4.96218,2.38076 13.84449,7.98548 19.10448,13.44381 v -98.50164 h 45.93564 v 229.34421 z m 157.21544,-21.13999 c -15.28099,17.58718 -36.66682,26.38303 -64.15348,26.38303 -27.58613,0 -49.01942,-8.79585 -64.30436,-26.38303 -12.60069,-14.44803 -18.90387,-32.19228 -18.90387,-53.23507 0,-18.94908 6.35065,-35.75132 19.0525,-50.4079 15.37988,-17.69285 37.26185,-26.54011 65.64139,-26.54011 26.09766,0 46.93585,8.84558 62.51694,26.54011 12.70185,14.44806 19.05247,31.66734 19.05247,51.66468 0.003,20.20586 -6.29921,37.53085 -18.90159,51.97886 z m 38.76899,-199.21794 c 5.35888,-5.35888 11.85868,-8.03746 19.49892,-8.03746 7.64024,0 14.14005,2.67858 19.49893,8.03746 5.35888,5.25945 8.03746,11.70955 8.03746,19.35034 0,7.73965 -2.67858,14.28864 -8.03746,19.64753 -5.25944,5.25944 -11.75925,7.8883 -19.49893,7.8883 -7.64247,0 -14.14227,-2.67861 -19.49892,-8.0375 -5.2594,-5.35885 -7.88829,-11.85871 -7.88829,-19.49892 -0.003,-7.6402 2.62889,-14.0903 7.88829,-19.35029 z m 43.91029,220.24265 H 388.24626 V 185.84118 h 48.82277 z" id="path2"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt;, but it's useful to have a look to!)
+
+]
+
+
+&lt;span style="display:block; margin-top: 2em ;"&gt;&lt;/span&gt;
+
+.alignright[.small[&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M256 8c137 0 248 111 248 248S393 504 256 504 8 393 8 256 119 8 256 8zm-28.9 143.6l75.5 72.4H120c-13.3 0-24 10.7-24 24v16c0 13.3 10.7 24 24 24h182.6l-75.5 72.4c-9.7 9.3-9.9 24.8-.4 34.3l11 10.9c9.4 9.4 24.6 9.4 33.9 0L404.3 273c9.4-9.4 9.4-24.6 0-33.9L271.6 106.3c-9.4-9.4-24.6-9.4-33.9 0l-11 10.9c-9.5 9.6-9.3 25.1.4 34.4z"&gt;&lt;/path&gt;&lt;/svg&gt; [Next lecture](../10_Missing/index.html)]]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<style>
+.logo {
+  background-image: url("../assets/beamer/UCL-beamer.png");
+  background-size: 14% 7%;
+  background-repeat: no-repeat;
+  position: absolute;
+  top:  2.625%; /* 2.65%em */
+  left: 85%;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)' +
+    ':not(.thankyou-michelle)' +
+    ':not(.thankyou-barney)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

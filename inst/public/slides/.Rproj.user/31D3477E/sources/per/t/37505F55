@@ -1,0 +1,26 @@
+{
+    "id": "37505F55",
+    "path": "~/Dropbox/UCL/3021/slides/assets/setup.R",
+    "project_path": "assets/setup.R",
+    "type": "r_source",
+    "hash": "1511234632",
+    "contents": "",
+    "dirty": false,
+    "created": 1606304538402.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "tempName": "Untitled1",
+        "cursorPosition": "116,86",
+        "scrollLine": "0",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1611046471,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1611046471329,
+    "read_only": false,
+    "read_only_alternatives": []
+}

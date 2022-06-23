@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practical 2. Markov Chain Monte Carlo | Bayesian methods in health economics</title>
+    <link>/practical/02_mcmc/</link>
+      <atom:link href="/practical/02_mcmc/index.xml" rel="self" type="application/rss+xml" />
+    <description>Practical 2. Markov Chain Monte Carlo</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Mon, 20 Jun 2022 14:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Practical 2. Markov Chain Monte Carlo</title>
+      <link>/practical/02_mcmc/</link>
+    </image>
+    
+    <item>
+      <title>Practical 2. Markov Chain Monte Carlo - SOLUTIONS</title>
+      <link>/practical/02_mcmc/solutions/</link>
+      <pubDate>Mon, 20 Jun 2022 14:00:00 +0000</pubDate>
+      <guid>/practical/02_mcmc/solutions/</guid>
+      <description>
+
+
+&lt;div id=&#34;understanding-gibbs-sampling&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Understanding Gibbs sampling&lt;/h2&gt;
+&lt;p&gt;Most of this exercise is actually fairly easy as it is performed directly in &lt;tt&gt;Excel&lt;/tt&gt;. In fact, the model does not need MCMC to be analysed and we could obtain analytic estimates for the two variables &lt;span class=&#34;math inline&#34;&gt;\((y_1,y_2)\)&lt;/span&gt;. Some clarifications are perhaps useful, though.&lt;/p&gt;
+&lt;p&gt;The main point is perhaps to realise that correlation across the model parameters may be a crucial factor in terms of convergence and the speed at which this may be reached when running MCMC. This is due to the fact that larger correlation implies that the joint distribution of the parameters has a ``narrower’’ shape. The figure below clarifies this point in the simplest two-dimensional, bi-variate Normal case — but the situation generalises to higher dimensions and different distributional shapes.&lt;/p&gt;
+&lt;div style=&#34;overflow:hidden;&#34;&gt;
+&lt;div style=&#34;float: left;margin-left: 20px;margin-top: 0px;margin-bottom:0px; width: 48%;&#34;&gt;
+&lt;img src=&#34;/practical/02_mcmc/solutions_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;80%&#34; /&gt;
+&lt;center&gt;
+&lt;ol style=&#34;list-style-type: lower-alpha&#34;&gt;
+&lt;li&gt;Low correlation &lt;span class=&#34;math inline&#34;&gt;\(\rho=0.08\)&lt;/span&gt;
+&lt;/center&gt;
+&lt;/div&gt;
+&lt;div style=&#34;float: left;margin-left: 20px;margin-top: 0px;margin-bottom:0px; width: 48%;&#34;&gt;
+&lt;img src=&#34;/practical/02_mcmc/solutions_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;80%&#34; /&gt;
+&lt;center&gt;
+&lt;ol start=&#34;2&#34; style=&#34;list-style-type: lower-alpha&#34;&gt;
+&lt;li&gt;High correlation &lt;span class=&#34;math inline&#34;&gt;\(\rho=0.98\)&lt;/span&gt;
+&lt;/center&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The graphs show the first 30 simulations in a Gibbs sampling process for the same set up as in the &lt;tt&gt;Excel&lt;/tt&gt; spreadsheet; the “true” underlying mean is &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\theta=(0,0)\)&lt;/span&gt; and the “true” underlying variances are &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\sigma^2=(1,1)\)&lt;/span&gt;. In the plot (panel a) we assume correlation &lt;span class=&#34;math inline&#34;&gt;\(\rho=0.08\)&lt;/span&gt; (i.e.~very low). This generates a joint distribution for (y_1,y_2)$ that is like a “ball”, with a wide radius. This means that even a relatively low number of simulations (and more importantly long moves across the parametric space) is almost sufficient to cover the underlying true joint distribution.&lt;/p&gt;
+&lt;p&gt;In panel (b), however, because we are assuming a large correlation (&lt;span class=&#34;math inline&#34;&gt;\(\rho=0.98\)&lt;/span&gt;), then the resulting distribution is very narrow and thus 30 simulations cannot cover the target portion of the space. In fact, in this case, the initial values make a difference — starting from values that are far awy from the bulk of the target distribution will generally mean that a longer running time is necessary.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;mcmc-in-bugs&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;MCMC in &lt;tt&gt;BUGS&lt;/tt&gt;&lt;/h2&gt;
+&lt;p&gt;As discussed in the lecture, the model is very similar to the one seen in Practical 1.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;model {
+   theta    ~ dbeta(a,b)         # prior distribution
+   y        ~ dbin(theta,m)      # sampling distribution
+   y.pred   ~ dbin(theta,n)      # predictive distribution
+   P.crit  &amp;lt;- step(y.pred - ncrit + 0.5) # =1 if y.pred &amp;gt;= ncrit,
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Again, we model our uncertainty on the underlying success rate for the drug using an informative, conjugate Beta prior distribution, which implies a mean of around 0.4 and a 95% interval spanning from 0.2 to 0.6. This time, however, we do have observed data on &lt;span class=&#34;math inline&#34;&gt;\(y\)&lt;/span&gt; — effectively now the objective of our analysis is estimate the &lt;em&gt;posterior&lt;/em&gt; distribution of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(p(\theta\mid y)\)&lt;/span&gt; and to predict the outcome of the next round of the trial, when we assume to observed &lt;span class=&#34;math inline&#34;&gt;\(n=40\)&lt;/span&gt; patients alltogether.&lt;/p&gt;
+&lt;p&gt;Notice that in the model code, we are making the assumption that the new patients are effectively drawn from the same population of those that we have already observed. This is expressed by assuming that they have the same distributional form — both &lt;code&gt;y&lt;/code&gt; and &lt;code&gt;y.pred&lt;/code&gt; are modelled using a sampling distribution that is assumed to be Binomial&lt;span class=&#34;math inline&#34;&gt;\((\theta, \mbox{sample size})\)&lt;/span&gt; and effectively all that we assume to vary is the sample size (&lt;span class=&#34;math inline&#34;&gt;\(m=20\)&lt;/span&gt; for the observed &lt;span class=&#34;math inline&#34;&gt;\(y\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(n=40\)&lt;/span&gt; for the new patients).&lt;/p&gt;
+&lt;p&gt;The actual &lt;code&gt;.odc&lt;/code&gt; file contains &lt;em&gt;all&lt;/em&gt; the relevant bits that &lt;tt&gt;BUGS&lt;/tt&gt; needs, in one place. In addition to the model code, it also contains the data, in the following format.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;list(
+a = 9.2, b = 13.8, # prior parameters
+y = 15,            # number of successes
+m = 20,            # number of trials
+n = 40,            # future number of trials
+ncrit = 25)        # critical value of future successes&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This is a “list” (we shall see a lot more of this when we start working in &lt;tt&gt;R&lt;/tt&gt;). As mentioned in the class, it is generally a good idea to keep the code general and then pass values that can be changed separately, rather than “hard-coding” them in the model code. In this simple case, however, you could “fix” the values of the parameters into the model code, as in the following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;model {
+   theta ~ dbeta(a,b)                   # prior distribution
+   y ~ dbin(theta,m)                    # sampling distribution
+   y.pred ~ dbin(theta,n)               # predictive distribution
+   P.crit &amp;lt;- step(y.pred - ncrit + 0.5) # =1 if y.pred &amp;gt;= ncrit,
+   y &amp;lt;- 15                              #  0 otherwise
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you wanted to use this latter format, you would not need to pass &lt;tt&gt;BUGS&lt;/tt&gt; any data, because all the relevant numbers would be included in the model code. Notice &lt;tt&gt;BUGS&lt;/tt&gt; accepts a `&lt;code&gt;double&#39;&#39; definition for the node&lt;/code&gt;y` — first as a random variable associated with a Binomial distribution and then as a fixed number (15, indicating the observed number of successess in the current trial). In general, however, you need to be careful — for example it is not possible to define a node twice with the same nature (i.e. twice as observed data, or twice with two different probabilistic assignments).&lt;/p&gt;
+&lt;p&gt;Finally, the &lt;code&gt;odc&lt;/code&gt; file contains the list for the initial values. In a &lt;tt&gt;BUGS&lt;/tt&gt; file, all variables that are associated with a probabilistic statement (i.e. a “&lt;code&gt;~&lt;/code&gt;” symbol after the variable name) &lt;strong&gt;and&lt;/strong&gt; are &lt;em&gt;not&lt;/em&gt; observed need to be initialised so that &lt;tt&gt;BUGS&lt;/tt&gt; can run the Gibbs sampler. So, in this particular case, although &lt;code&gt;y&lt;/code&gt; is defined as a random variable, because it is also observed, then there is no uncertainty about its value and so we should not initialise it. Conversely, although &lt;code&gt;y.pred&lt;/code&gt; has exactly the same nature as &lt;code&gt;y&lt;/code&gt;, because it is not observed, then we need to initialise it. In the &lt;code&gt;odc&lt;/code&gt; file we actually let &lt;tt&gt;BUGS&lt;/tt&gt; do this (effectively when clicking the &lt;code&gt;gen init&lt;/code&gt; button in the &lt;code&gt;Specification tool&lt;/code&gt;), but we do provide initial values for the other unobserved, random node, &lt;code&gt;theta&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;For the same reason mentioned above, &lt;tt&gt;BUGS&lt;/tt&gt; does not let us monitor the node &lt;code&gt;y&lt;/code&gt; — it has been already observed, so, as said above, there is nothing more to learn about it. It can be only used to learn about &lt;code&gt;theta&lt;/code&gt;, &lt;code&gt;y.pred&lt;/code&gt; and &lt;code&gt;P.crit&lt;/code&gt;, which will all be associated with a posterior distribution, given the evidence provided by the fact that &lt;span class=&#34;math inline&#34;&gt;\(y=15\)&lt;/span&gt; out of &lt;span class=&#34;math inline&#34;&gt;\(m=20\)&lt;/span&gt; trials.&lt;/p&gt;
+&lt;p&gt;When we actually run the model, we can monitor the relevant nodes and produce the following summary statistics.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;         mean     sd   2.5%    25%    50%    75%  97.5% Rhat n.eff
+y.pred 22.578 4.2649 14.000 20.000 23.000 25.000 31.000    1 10000
+theta   0.563 0.0749  0.414  0.512  0.563  0.614  0.706    1 10000
+P.crit  0.330 0.4701  0.000  0.000  0.000  1.000  1.000    1 10000&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;These indicate that, given current evidence, we revise our uncertainty about the true success rate of the drug from a distribution centered on 0.4 and with most of the mass in [0.2; 0.6] to another centered around 0.563 and with most of the probability mass included in [0.414; 0.706].&lt;/p&gt;
+&lt;p&gt;In fact, because we are using a Beta prior combined with a Binomial sampling distribution, then the model is &lt;em&gt;conjugated&lt;/em&gt; and so we &lt;strong&gt;know&lt;/strong&gt; that the form of the posterior distribution is another Beta (as seen in class), where the update from prior to posterior only involves the value of its parameters. This implies that we don’t need to worry about convergence of the MCMC model. This is confirmed by the inspection of the traceplots.&lt;/p&gt;
+&lt;div style=&#34;overflow:hidden;&#34;&gt;
+&lt;div style=&#34;float: left;margin-left: 20px;margin-top: 0px;margin-bottom:0px; width: 48%;&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/02_mcmc/solutions_files/figure-html/unnamed-chunk-9-1.png&#34; width=&#34;80%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div style=&#34;float: left;margin-left: 20px;margin-top: 0px;margin-bottom:0px; width: 48%;&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/02_mcmc/solutions_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;80%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;In all cases, already at iteration 1 of the MCMC the two chains that we’ve run in parallel are on top of each other and evidently visiting the same portion of the parametric space.&lt;/p&gt;
+&lt;p&gt;As for &lt;code&gt;y.pred&lt;/code&gt; and &lt;code&gt;P.crit&lt;/code&gt; we can see that the expected number of successes in the next phase of the trial is around 23 and the probability of exceeding the critical threshold (25) is 32.97.&lt;/p&gt;
+Notice finally that we can also look at the convergence statistics, &lt;span class=&#34;math inline&#34;&gt;\(\hat{R}\)&lt;/span&gt; (&lt;code&gt;Rhat&lt;/code&gt;, the Potential Scale Reduction, also known as “Gelman-Rubin Statistic”) and the effective sample size &lt;span class=&#34;math inline&#34;&gt;\(n_{\text{eff}}\)&lt;/span&gt; (&lt;code&gt;n.eff&lt;/code&gt;). The former has a value of 1 for all the nodes — again, given the fact that the model is conjugate, this is not surprising. The model does not present problems in terms of autocorrelation. The following graphs show the autocorrelation plot for the monitored nodes.
+&lt;div style=&#34;overflow:hidden;&#34;&gt;
+&lt;div style=&#34;float: left;margin-left: 20px;margin-top: 0px;margin-bottom:0px; width: 48%;&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/02_mcmc/solutions_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;80%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div style=&#34;float: left;margin-left: 20px;margin-top: 0px;margin-bottom:0px; width: 48%;&#34;&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/02_mcmc/solutions_files/figure-html/unnamed-chunk-12-1.png&#34; width=&#34;80%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The way in which we need to interpret these is to look at the level of autocorrelation across different lags. These indicate how much correlation exists across consecutive, lagged simulations in the MCMC procedure. It is expected that consecutive iterations be relatively correlated (if you recall how the Gibbs sampling is constructed, you should realise that the &lt;span class=&#34;math inline&#34;&gt;\(s-\)&lt;/span&gt;th simulated value for the &lt;span class=&#34;math inline&#34;&gt;\(p-\)&lt;/span&gt;th parameter &lt;span class=&#34;math inline&#34;&gt;\(\theta_p^{(s)}\)&lt;/span&gt; depends on the distribution at the &lt;span class=&#34;math inline&#34;&gt;\((s-1)-\)&lt;/span&gt;th run for all the other parameters). But it is also expected that this level of correlation should fade away as you consider simulations that are further apart. So if the autocorrelation graph looks like the ones above, you can say that actually the simulations are close to a series of independent values because the autocorrelation is very low, in fact at low lags as well.&lt;/p&gt;
+&lt;p&gt;In our case, we that the model converges (because of conjugacy), so it is not surprising to see these graphs. Numerically, when the effective sample size is “close enough” the the nominal sample size (i.e. the number of iterations you use to draw your inference), then autocorrelation is not a problem. In this case, we have considered 2 chains, each with 5000 iterations (so a total of 10000). The value of &lt;code&gt;n.eff&lt;/code&gt; is 10000 for &lt;code&gt;y.pred&lt;/code&gt;, 10000 for &lt;code&gt;theta&lt;/code&gt; and 10000 for &lt;code&gt;P.crit&lt;/code&gt;. Clearly, the ratio of effective to nominal sample size is then 1, 1 and 1, which clearly indicate no issues.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Covid vaccine: Bayesian modelling</title>
+      <link>/practical/02_mcmc/covid/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>/practical/02_mcmc/covid/</guid>
+      <description>
+
+
+&lt;div id=&#34;description&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Description&lt;/h2&gt;
+&lt;p&gt;In the wake of the COVID-19 pandemic, several biotechnology and pharmaceutical companies have started collaborating on the development of a vaccine, in an unprecedented effort to deliver vital innovation in a short amount of time. The first vaccine to be approved by the FDA in December 2020 was the one developed jointly by German biotech company BioNTech and US pharmaceutical giant Pfizer. The development of the vaccine was based on a Phase I/II/III multicenter, placebo-controlled trial to evaluate the safety, tolerability, immunogenicity and efficacy of the candidate vaccine.&lt;/p&gt;
+&lt;p&gt;The Phase II/III study was designed using a Bayesian approach based on the following setup. There are two arms: one is randomised to receive two doses of a placebo, while the active arm receives two doses of the candidate vaccine. The data relevant for the efficacy analysis are the number of individuals who in each arm are confirmed COVID-19 cases, over the total number of individuals randomised to the specific arm. This can be formalised as &lt;span class=&#34;math inline&#34;&gt;\(y_{\rm plac}\sim \mbox{Bin}(\pi_{\rm plac}, n_{\rm plac})\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(y_{\rm vac}\sim \mbox{Bin}(\pi_{\rm vac}, n_{\rm vac})\)&lt;/span&gt;, respectively. The actual measure of vaccine efficacy is defined as &lt;span class=&#34;math inline&#34;&gt;\(\mbox{VE}=\displaystyle\left(1-\frac{\pi_{\rm vac}}{\pi_{\rm plac}}\right)\)&lt;/span&gt;, assuming a 1:1 allocation ratio in the two arms and thus &lt;span class=&#34;math inline&#34;&gt;\(n_{\rm plac}=n_{\rm vac}=N\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;However, the analysis is based on a reformulation of the problem: the experimenters actually model &lt;span class=&#34;math inline&#34;&gt;\(y=y_{\rm vac}=\)&lt;/span&gt; number of COVID-19 cases among the individuals in the treatment arm over &lt;span class=&#34;math inline&#34;&gt;\(n=(y_{\rm vac}+y_{\rm plac})=\)&lt;/span&gt; the total number of COVID-19 cases in the two arms. This is modelled as &lt;span class=&#34;math inline&#34;&gt;\(y \sim \mbox{Bin}(\theta,n)\)&lt;/span&gt;, where
+&lt;span class=&#34;math display&#34;&gt;\[\begin{eqnarray}
+\theta&amp;amp; = &amp;amp; \displaystyle\frac{\pi_{\rm vac}}{\pi_{\rm vac}+\pi_{\rm plac}} \nonumber \\
+&amp;amp; = &amp;amp; \frac{1-\mbox{VE}}{2-\mbox{VE}}.
+\end{eqnarray}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;The reason for this seemingly overly-complex (and obscure) setup is that it allows the experimenters to only specify one observational model and, crucially a single prior distribution for the parameter &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; — of course, once &lt;span class=&#34;math inline&#34;&gt;\(p(\theta\mid {\rm data})\)&lt;/span&gt; is available, using the equation above, it is straightforward (e.g. through Monte Carlo simulation) to obtain directly the posterior distribution for the main parameter of interest &lt;span class=&#34;math inline&#34;&gt;\(p(\mbox{VE}\mid {\rm data})\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;sample-size-calculation&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Sample size calculation&lt;/h2&gt;
+&lt;p&gt;The determination of the sample size calculation is based on a simulation approach. The experimenter looked to determine a sample size large enough to be able to provide a probability exceeding 90% to conclude that &lt;span class=&#34;math inline&#34;&gt;\(\mbox{VE}&amp;gt;30\%\)&lt;/span&gt; with a “high probability” (we note here that the study protocol is vague on the actual threshold selected).&lt;/p&gt;
+&lt;p&gt;The simulation excercise proceeds in two steps. Firstly, the experimenters make assumptions about some of the features of the “data generating process”. For instance, in the study protocol, they stipulate a “true” vaccine efficacy &lt;span class=&#34;math inline&#34;&gt;\(\widehat{\mbox{VE}} =0.6\)&lt;/span&gt; (i.e. a reduction by 40% in the infection rate in the vaccine arm, in comparison to the placebo population). This implies that the “true” proportion of COVID-19 cases in the vaccine arm over the total of cases is
+&lt;span class=&#34;math display&#34;&gt;\[\hat\theta=\displaystyle\frac{1-\widehat{\mbox{VE}}}{2-\widehat{\mbox{VE}}}=0.2857.\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Using these assumption, we can simulate a large number &lt;span class=&#34;math inline&#34;&gt;\(S\)&lt;/span&gt; (say, 100,000) of potential trial data from the alleged generating process &lt;span class=&#34;math inline&#34;&gt;\(y^{(s)}\sim \mbox{Bin}(\hat\theta,n)\)&lt;/span&gt;, where the superscript &lt;span class=&#34;math inline&#34;&gt;\((s)\)&lt;/span&gt; indicates the &lt;span class=&#34;math inline&#34;&gt;\(s-\)&lt;/span&gt;th simulated dataset and given a fixed value of the overall number of cases &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt;. Typically, we repeat the simulation for a grid of possible values of &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; (e.g. &lt;span class=&#34;math inline&#34;&gt;\(n=[10,20,30,40,50,60,70,\ldots]\)&lt;/span&gt;).&lt;/p&gt;
+&lt;p&gt;Once the hypothetical trial data have been generated, the second step consists in analysing them according to the statistical analysis plan defined in the protocol. In this case, the full model specification is required, which involves defining a prior distribution for &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;For simplicity, the experimenters set a minimally informative Beta prior &lt;span class=&#34;math inline&#34;&gt;\(\theta \sim \mbox{Beta}(\alpha_0,\beta_0)\)&lt;/span&gt;, where the parameters &lt;span class=&#34;math inline&#34;&gt;\(\alpha_0\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\beta_0\)&lt;/span&gt; are selected to express the limited amount of information available a priori (recall that &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; represents the proportion of COVID-19 cases occurred in the vaccine group). &lt;a href=&#34;../../../slides/02_BUGS/index.html#27&#34;&gt;We know&lt;/a&gt; that &lt;span class=&#34;math inline&#34;&gt;\(\mbox{E}[\theta]=\displaystyle\frac{\alpha_0}{\alpha_0+\beta_0}\)&lt;/span&gt;. If we fix &lt;span class=&#34;math inline&#34;&gt;\(\beta_0=1\)&lt;/span&gt;, then we can solve for &lt;span class=&#34;math inline&#34;&gt;\(\alpha_0\)&lt;/span&gt; so that the prior mean for &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; is equal to some pre-specified value — in particular, the experimenters had chosen a threshold of &lt;span class=&#34;math inline&#34;&gt;\(\mbox{VE}=30\%\)&lt;/span&gt; as the minimum level of efficacy they were prepared to entertain. This value can be mapped to the scale of &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; as &lt;span class=&#34;math inline&#34;&gt;\(\displaystyle \frac{1-0.3}{2-0.3}=0.4117\)&lt;/span&gt; and thus solving
+&lt;span class=&#34;math display&#34;&gt;\[\begin{eqnarray*}
+\frac{\alpha_0}{\alpha_0+1} = 0.4117
+\end{eqnarray*}\]&lt;/span&gt;
+gives &lt;span class=&#34;math inline&#34;&gt;\(\alpha_0=0.700102\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Because of &lt;a href=&#34;../../../slides/03_MCMC/#18&#34;&gt;conjugacy&lt;/a&gt;, for each simulated dataset we can easily update the Beta&lt;span class=&#34;math inline&#34;&gt;\((0.700102,1)\)&lt;/span&gt; prior to a Beta&lt;span class=&#34;math inline&#34;&gt;\((\alpha_1,\beta_1)\)&lt;/span&gt; posterior distribution for &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, where &lt;span class=&#34;math inline&#34;&gt;\(\alpha_1=0.700102+y^{(s)}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\beta_1=1+n-y^{(s)}\)&lt;/span&gt;. Moreover, for each simulation &lt;span class=&#34;math inline&#34;&gt;\(s\)&lt;/span&gt;, we can compute &lt;em&gt;analytically&lt;/em&gt; any tail-area probability from &lt;span class=&#34;math inline&#34;&gt;\(p(\theta\mid{\rm data})\)&lt;/span&gt;. Once again, we are really interested in &lt;span class=&#34;math inline&#34;&gt;\(\Pr(\mbox{VE}&amp;gt;0.3\mid{\rm data})\)&lt;/span&gt;, but using the deterministic relationship linking VE to &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;, we can re-express this as
+&lt;span class=&#34;math display&#34;&gt;\[\begin{eqnarray*}
+\Pr(\mbox{VE}&amp;gt;0.3 \mid{\rm data}) &amp;amp; = &amp;amp; \Pr\left(\frac{1-2\theta}{1-\theta}&amp;gt;0.3\mid{\rm data}\right) \\
+&amp;amp; = &amp;amp; \Pr(\theta&amp;lt;0.4117 \mid {\rm data}),
+\end{eqnarray*}\]&lt;/span&gt;
+which can be computed for each simulation &lt;span class=&#34;math inline&#34;&gt;\(s\)&lt;/span&gt;. This produces a large number of simulations that can be used to determine the “power” for a given sample size, as the proportion of times in which this computed probability exceeds a set threshold (i.e. is “large enough” in the phrasing of the study protocol).&lt;/p&gt;
+&lt;p&gt;The experimenters compute &lt;span class=&#34;math inline&#34;&gt;\(n=164\)&lt;/span&gt; as the optimal number of total COVID-19 cases that are necessary to be able to ascertain that &lt;span class=&#34;math inline&#34;&gt;\(\mbox{VE}&amp;gt;30\%\)&lt;/span&gt; with a large probability.&lt;/p&gt;
+&lt;p&gt;Then, it is necessary to determine the overall sample size (i.e. the total number of individuals to be recruited in the study) so that a total of 164 cases is likely to be observed within the required time frame. Once again, it is necessary to make some assumption about the data generating process; specifically the experimenters consider a 1.3% illness rate per year in the placebo group. Because the study aims at accruing 164 cases within 6 months, this essentially amounts to assuming that &lt;span class=&#34;math inline&#34;&gt;\(\pi_{\rm plac} \approx 0.013/2\)&lt;/span&gt; and thus &lt;span class=&#34;math inline&#34;&gt;\(\pi_{\rm vac} \approx (\pi_{\rm plac}\times 0.4)/2\)&lt;/span&gt; (recall that we are assuming a 60% vaccine efficacy, or that &lt;span class=&#34;math inline&#34;&gt;\(\pi_{\rm vac}=0.4\times \pi_{\rm plac}\)&lt;/span&gt;).&lt;/p&gt;
+&lt;p&gt;We can once again resort to simulations to estimate what sample size in each arm &lt;span class=&#34;math inline&#34;&gt;\(N\)&lt;/span&gt; is necessary so that we can expect &lt;span class=&#34;math inline&#34;&gt;\(y_{\rm vac}+y_{\rm plac}\geq 164\)&lt;/span&gt; — this returns an optimal sample size of &lt;span class=&#34;math inline&#34;&gt;\(N=17\,600\)&lt;/span&gt; per group. Finally, considering an attrition rate of 20% (indicating that such proportion of individuals would not generate an evaluable outcome could be observed), the experimenters inflate the sample size to obtain &lt;span class=&#34;math inline&#34;&gt;\(N^*=\displaystyle\frac{N}{0.8}=21\,999\)&lt;/span&gt; per group (or a total of 43,998 individuals).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data-analysis&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Data analysis&lt;/h2&gt;
+&lt;p&gt;At the end of the actual study, there were &lt;span class=&#34;math inline&#34;&gt;\(y_{\rm vac}=8\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(y_{\rm plac}=162\)&lt;/span&gt; confirmed COVID-19 cases in the vaccine and the placebo group, respectively. These imply that &lt;span class=&#34;math inline&#34;&gt;\(y=8\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(n=(8+162)=170\)&lt;/span&gt;. However, there is a slight extra complication: the setup describe above implies the assumption of 1:1 allocation (i.e. &lt;span class=&#34;math inline&#34;&gt;\(n_{\rm plac}=n_{\rm vac}\)&lt;/span&gt;) — this is crucial to ensure the simple deterministic relationship between VE and &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;. In actual fact, the placebo group had a slightly higher number of individuals, by the time of the data analysis (there were 17,411 and 17,511 individuals with valid data in the vaccine and placebo group, respectively). Thus, we need to rescale the observed data, which can be done by considering &lt;span class=&#34;math inline&#34;&gt;\(y_{\rm vac}^*=y_{\rm vac}\displaystyle\frac{17\,461}{17\,411}=8.02297\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(y_{\rm plac}^*=y_{\rm plac}\displaystyle\frac{17\,461}{17\,511}=161.53743\)&lt;/span&gt;, where &lt;span class=&#34;math inline&#34;&gt;\(17\,461 = \displaystyle\frac{17\,411+17\,511}{2}\)&lt;/span&gt; and thus &lt;span class=&#34;math inline&#34;&gt;\(y^*=8.02297\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(n^*=169.5604\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;These data can be used to update the prior distribution Beta&lt;span class=&#34;math inline&#34;&gt;\((0.700102,1)\)&lt;/span&gt; into a Beta&lt;span class=&#34;math inline&#34;&gt;\((8.723072,162.5374)\)&lt;/span&gt; posterior for &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt;. Finally, we can rescale this posterior to determine the relevant posterior distribution &lt;span class=&#34;math inline&#34;&gt;\(p(\mbox{VE}\mid {\rm data})\)&lt;/span&gt;, for instance using Monte Carlo to simulate a large number &lt;span class=&#34;math inline&#34;&gt;\(S\)&lt;/span&gt; of values &lt;span class=&#34;math inline&#34;&gt;\(\theta^{(s)}\sim \mbox{Beta}(8.723072,162.5374)\)&lt;/span&gt; and then computing &lt;span class=&#34;math inline&#34;&gt;\(\mbox{VE}^{(s)}=\displaystyle\frac{1-2\theta^{(s)}}{1-\theta^{(s)}}\)&lt;/span&gt; and then use these to characterise the uncertainty around the vaccine efficacy.&lt;/p&gt;
+&lt;p&gt;In this case, the posterior distributions &lt;span class=&#34;math inline&#34;&gt;\(p(\theta\mid {\rm data})\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(p(\mbox{VE}\mid {\rm data})\)&lt;/span&gt; can be visualised below.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;alpha.0=0.700102
+beta.0=1
+y=c(8,162)
+n=c(17411,17511)
+# So needs to reproportion as if the treatment arms had the same sample size (to be in line with model assumptions!)
+y=y*mean(n)/n
+# Now can update the Beta prior with the observed data
+alpha.1=alpha.0+y[1]
+beta.1=beta.0+y[2]
+
+theta=rbeta(100000,alpha.1,beta.1)
+ve=(1-2*theta)/(1-theta)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/02_mcmc/covid_files/figure-html/unnamed-chunk-3-1.png&#34; width=&#34;50%&#34; /&gt;&lt;img src=&#34;/practical/02_mcmc/covid_files/figure-html/unnamed-chunk-3-2.png&#34; width=&#34;50%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;We can also use the resulting samples from the posterior distribution to estimate the 95% interval of &lt;span class=&#34;math inline&#34;&gt;\([0.9034; 0.9761]\)&lt;/span&gt; for the vaccine efficacy, indicating that we expect the vaccine to perform extremely well.&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>How do MCMC and Gibbs sampling really work?</title>
+      <link>/practical/02_mcmc/tutorial/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>/practical/02_mcmc/tutorial/</guid>
+      <description>
+
+
+&lt;div id=&#34;introduction&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;This short tutorial will guide you through the example of Gibbs sampling shown in class.&lt;/p&gt;
+&lt;p&gt;As a quick reminder, the example does not really require Gibbs sampling or any form of MCMC to estimate the joint posterior distribution for the parameters. However, because of its specific assumptions it is very helpful because essentially we can determine analytically the full conditional distributions for each parameter (details later). This means that we can directly and repeatedly sample from them (which is a pre-requisite of Gibbs sampling and what &lt;tt&gt;BUGS&lt;/tt&gt; does).&lt;/p&gt;
+&lt;p&gt;This document also includes the R code used to obtain the output.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;set-up&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Set up&lt;/h2&gt;
+&lt;p&gt;As discussed in class, we assume a set up such as the following.&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\begin{align}
+y_i &amp;amp; \stackrel{iid}{\sim} \mbox{Normal}(\mu,\sigma^2),\qquad \mbox{with } i=1,\ldots,n \\
+\mu &amp;amp; \sim \mbox{Normal}(\mu_0,\sigma^2_0) \\
+\tau = \frac{1}{\sigma^2} &amp;amp; \sim \mbox{Gamma} (\alpha_0,\beta_0)
+\end{align}\]&lt;/span&gt;
+Under these assumptions we can &lt;em&gt;prove&lt;/em&gt; analyticaly that the full conditional distributions for the two parameters &lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\tau\)&lt;/span&gt; are
+&lt;span class=&#34;math display&#34;&gt;\[\mu\mid \sigma^2,\boldsymbol{y} \sim \mbox{Normal}(\mu_1,\sigma^2_1) \qquad \mbox{with: } \mu_1=\sigma^2_1\left( \frac{\mu_0}{\sigma^2_0} + \frac{n\bar{y}}{\sigma^2}\right) \qquad \mbox{and: } \sigma^2_1=\left(\frac{1}{\sigma^2_0}+\frac{n}{\sigma^2}\right)^{-1}\]&lt;/span&gt;
+&lt;span class=&#34;math display&#34;&gt;\[\tau\mid\mu,\boldsymbol{y} \sim \mbox{Gamma}(\alpha_1,\beta_1) \qquad \mbox{with: }\,\alpha_1=\alpha_0+\frac{n}{2}\quad \mbox{and: } \quad \beta_1 = \beta_0 + \frac{1}{2}\sum_{i=1}^n (y_i-\mu)^2.\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Notice that the full conditionals are &lt;strong&gt;not&lt;/strong&gt; the target distributions for Bayesian inference.
+What we really want is the marginal posterior distributions &lt;span class=&#34;math inline&#34;&gt;\(p(\mu \mid \boldsymbol{y} )\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(p(\tau \mid \boldsymbol{y})\)&lt;/span&gt;, which
+can be simply obtained from the marginal joint posterior &lt;span class=&#34;math inline&#34;&gt;\(p(\mu, \tau \mid \boldsymbol{y} )\)&lt;/span&gt;.&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;However, in this case, for each of the two parameters, conditionally on (i.e. given)
+the other, the posterior is in the same family of the prior — the posterior for &lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt; is
+still a Normal and the posterior for &lt;span class=&#34;math inline&#34;&gt;\(\tau\)&lt;/span&gt; is still a Gamma; what changes is the value of
+the “hyper-parameters” (i.e. the parameters of these distributions), which move from
+(&lt;span class=&#34;math inline&#34;&gt;\(\mu_0\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\sigma_0^2)\)&lt;/span&gt; to &lt;span class=&#34;math inline&#34;&gt;\((\mu_1 , \sigma_1^2 )\)&lt;/span&gt; and from &lt;span class=&#34;math inline&#34;&gt;\((\alpha_0, \beta_0 )\)&lt;/span&gt; to &lt;span class=&#34;math inline&#34;&gt;\((\alpha_1 , \beta_1)\)&lt;/span&gt;. For this reason, this model is called
+“semi-conjugated”.&lt;/p&gt;
+&lt;p&gt;These relationships clarify that the (posterior) distribution of the mean &lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt; depends
+(among other things) on the variance &lt;span class=&#34;math inline&#34;&gt;\(\sigma^2 = 1/\tau\)&lt;/span&gt; as well as that the posterior for the
+precision &lt;span class=&#34;math inline&#34;&gt;\(\tau\)&lt;/span&gt; depends (among other things) on the mean &lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt;. Crucially, &lt;strong&gt;&lt;em&gt;in this example&lt;/em&gt;&lt;/strong&gt;,
+this dependence is known in closed form. A very useful implication of this set up is that
+it means that we can directly determine not just the distributional form of the posteriors
+(Normal for the mean and Gamma for the precision), but also the numerical value of
+the “hyper-parameters” (&lt;span class=&#34;math inline&#34;&gt;\(\mu_1, \sigma_1^2 , \alpha_1,\beta_1 )\)&lt;/span&gt;.&lt;/p&gt;
+&lt;div id=&#34;what-do-we-really-need-to-do&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;What do we really need to do?&lt;/h3&gt;
+&lt;p&gt;The point of this exercise is to create a routine that can simulate sequentially from these
+distributions, with the aim of obtaining a sample from the joint posterior distribution
+&lt;span class=&#34;math inline&#34;&gt;\(p(\mu, \tau \mid \boldsymbol{y})\)&lt;/span&gt;. So, once the data y have been observed and we have fixed the values for
+the parameters of the prior distributions (&lt;span class=&#34;math inline&#34;&gt;\(\mu_0, \sigma_0^2,\alpha_0,\beta_0)\)&lt;/span&gt;, we can use, for instance &lt;tt&gt;R&lt;/tt&gt;, to
+simulate from the resulting full conditionals.&lt;/p&gt;
+&lt;p&gt;At each iteration, we will update sequentially the values of the two parameters: first
+we update &lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt; by simulating from its full conditional, then we set the value of &lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt; to the
+one we have just simulated and update the value of &lt;span class=&#34;math inline&#34;&gt;\(\tau\)&lt;/span&gt; by randomly drawing from its
+full conditional. And we repeat this process “until convergence”.&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;running-the-example&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Running the example&lt;/h2&gt;
+&lt;div id=&#34;data-and-fixed-quantities&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Data and fixed quantities&lt;/h3&gt;
+&lt;p&gt;Suppose we have observed a sample of &lt;span class=&#34;math inline&#34;&gt;\(n = 30\)&lt;/span&gt; data points, for example, in &lt;tt&gt;R&lt;/tt&gt; you may
+input the data onto your workspace using the following command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Vector of observed data
+y = c(1.2697,7.7637,2.2532,3.4557,4.1776,6.4320,-3.6623,7.7567,5.9032,
+7.2671,-2.3447,8.0160,3.5013,2.8495,0.6467,3.2371,5.8573,-3.3749,
+4.1507,4.3092,11.7327,2.6174,9.4942,-2.7639,-1.5859,3.6986,2.4544,
+-0.3294,0.2329,5.2846)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Assume also that you want to set the value of the parameters for the priors as &lt;span class=&#34;math inline&#34;&gt;\(\mu_0 = 0\)&lt;/span&gt;,
+&lt;span class=&#34;math inline&#34;&gt;\(\sigma_0^2 = 10000\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\alpha_0 = \beta_0 = 0.1\)&lt;/span&gt;. In &lt;tt&gt;R&lt;/tt&gt; we could define these using the following
+commands.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# &amp;quot;Hyper-parameters&amp;quot; (ie parameters for the prior distributions)
+mu_0 = 0
+sigma2_0 = 10000
+alpha_0 = 0.01
+beta_0 = 0.01&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We may also want to define some “utility” variables, that can be used later on, for
+instance the sample size and observed sample mean, which we can input in R as in the
+following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Sample size and sample mean of the data
+n = length(y)
+ybar = mean(y)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The actual values of these variables are now stored in the respective “objects” and can
+be accessed at any point, for instance the commands:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;n&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 30&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;ybar&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 3.343347&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;will output the sample size and mean.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;initial-values&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Initial values&lt;/h3&gt;
+&lt;p&gt;As seen in the lecture, in order to run the Gibbs sampling algorithm, we need to initialise
+the Markov chains. This essentially means telling the computer what values should be
+used at iteration 0 of the process for anything that is a) associated with a probability
+distribution (i.e. it is not known with absolute certainty); and b) has not been observed.&lt;/p&gt;
+&lt;p&gt;We can do this in &lt;tt&gt;R&lt;/tt&gt; using the following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Sets the &amp;quot;seed&amp;quot; (for reproducibility). With this command, you will
+# *always* get the exact same output
+set.seed(13)
+# Initialises the parameters
+mu = tau = numeric()
+sigma2 = 1/tau
+mu[1] = rnorm(1,0,3)
+tau[1] = runif(1,0,3)
+sigma2[1] = 1/tau[1]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;First, we set the “random seed” (in this case to the value 13), which ensures replicability of the results. If you run this code on any machine, you will always and invariably obtain the same results.&lt;/p&gt;
+&lt;p&gt;Then, we define the parameters mu and tau to be vectors, which in &lt;tt&gt;R&lt;/tt&gt; we do by using the &lt;tt&gt;R&lt;/tt&gt; built-in command &lt;code&gt;numeric()&lt;/code&gt;. Basically, the command &lt;code&gt;mu = tau = numeric()&lt;/code&gt; instructs &lt;tt&gt;R&lt;/tt&gt; to expect these two objects to be vectors of (as yet) unspecified length (if you used the command &lt;code&gt;x = numeric(5)&lt;/code&gt; we would define a vector of length 5).&lt;/p&gt;
+&lt;p&gt;Finally, we set the first value of &lt;code&gt;mu&lt;/code&gt; and &lt;code&gt;tau&lt;/code&gt; to be randomly generated, respectively
+from a Normal(mean = 0, sd = 3) and a Uniform(0, 3). &lt;tt&gt;R&lt;/tt&gt; has built-in commands to
+draw (pseudo-)random numbers — typically these are constructed using the prefix &lt;code&gt;r&lt;/code&gt;
+(for “random”) and a string of text describing the distribution (e.g. &lt;code&gt;norm&lt;/code&gt; for “Normal”,
+&lt;code&gt;unif&lt;/code&gt; for “Uniform”, &lt;code&gt;bin&lt;/code&gt; for “Binomial”, etc.). The first argument (input) to a call to a
+&lt;code&gt;rxxxx(...)&lt;/code&gt; command is the number of values you want to simulate. So, for instance,
+&lt;code&gt;rnorm(1000,0,6)&lt;/code&gt; instructs &lt;tt&gt;R&lt;/tt&gt; to simulate 1000 values from a Normal distribution with
+mean 0 and standard deviation 6 — notice that, unlike &lt;tt&gt;BUGS&lt;/tt&gt;, &lt;tt&gt;R&lt;/tt&gt; parameterises the Normal in terms of mean and sd (instead of the precision).
+You can check the values that have been selected to initialise your Markov chain by
+simply typing the name of the variables (or some suitable function thereof).&lt;/p&gt;
+&lt;p&gt;You can check the values that have been selected to initialise your Markov chain by
+simply typing the name of the variables (or some suitable function thereof).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mu&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 1.662981&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sqrt(sigma2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 0.9249339&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;running-the-gibbs-sampling&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Running the Gibbs sampling&lt;/h3&gt;
+&lt;p&gt;Generally speaking, the actual Gibbs sampling is really simple (if the full conditionals
+are known analytically!) and reduces to code such as the following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Sets the number of iterations (nsim)
+nsim = 1000
+# Loops over to sequentially update the parameters
+for (i in 2:nsim) {
+  # 1. Updates the sd of the full conditional for mu
+  sigma_1 = sqrt(1/(1/sigma2_0 + n/sigma2[i-1]))
+  # 2. Updates the mean of the full conditional for mu
+  mu_1 = (mu_0/sigma2_0 + n*ybar/sigma2[i-1])*sigma_1^2
+  # 3. Samples from the updated full conditional for mu
+  mu[i] = rnorm(1,mu_1,sigma_1)
+  
+  # 4. Updates the 1st parameter of the full conditional for tau
+  alpha_1 = alpha_0+n/2
+  # 5. Updates the 2nd parameter of the full conditional for tau
+  beta_1 = beta_0 + sum((y-mu[i])^2)/2
+  # 6. Samples from the updated full conditional for tau
+  tau[i] = rgamma(1,alpha_1,beta_1)
+  # 7. Re-scales the sampled value on the variance scale
+  sigma2[i] = 1/tau[i]
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;If you check the code above, you should be able to see that it matches perfectly the
+mathematical expressions defined for the (updated) parameters of the full posterior
+distributions. The loop goes from 2 to &lt;code&gt;nsim&lt;/code&gt; — the first value of the vectors &lt;code&gt;mu&lt;/code&gt;, &lt;code&gt;tau&lt;/code&gt; and
+&lt;code&gt;sigma2&lt;/code&gt; are filled at initialisation.&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Note that the code above produces simulations from the full conditional of the precision
+&lt;span class=&#34;math inline&#34;&gt;\(\tau\)&lt;/span&gt; , which are then rescaled to produce a vector of simulations from the joint posterior
+distribution for the variance &lt;span class=&#34;math inline&#34;&gt;\(\sigma^2\)&lt;/span&gt; . It is of course very easy to also rescale these further to
+obtain a sample of values from the posterior of the standard deviation &lt;span class=&#34;math inline&#34;&gt;\(\sigma\)&lt;/span&gt;, for example
+using the following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sigma = sqrt(sigma2)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Once this code has been executed in &lt;tt&gt;R&lt;/tt&gt; your output is made by vectors that, if the procedure has worked (i.e. it has converged), are drawn, at least with a very good degree of approximation, from the joint posterior distribution of the parameters.&lt;/p&gt;
+&lt;p&gt;You can also visualise a traceplot — in this particular case, convergence is not an issue
+(as the model is “semi-conjugated”) and even with a single chain, you can get a sense
+that all the traceplots are &lt;a href=&#34;/slides/02_mcmc/#34&#34;&gt;“fat, hairy caterpillars”&lt;/a&gt;, which indicates all is well.&lt;/p&gt;
+&lt;p&gt;A simple code needed to produce these two plots is the following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Histograms from the posterior distributions
+hist(mu)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/02_mcmc/tutorial_files/figure-html/unnamed-chunk-10-1.png&#34; width=&#34;50%&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;hist(sigma)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/02_mcmc/tutorial_files/figure-html/unnamed-chunk-10-2.png&#34; width=&#34;50%&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Traceplots
+plot(mu,t=&amp;quot;l&amp;quot;,bty=&amp;quot;l&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/02_mcmc/tutorial_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;50%&#34; /&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(sigma,t=&amp;quot;l&amp;quot;,bty=&amp;quot;l&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/02_mcmc/tutorial_files/figure-html/unnamed-chunk-11-2.png&#34; width=&#34;50%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Once again, notice how powerful MCMC is: technically, you may not model directly a
+(highly non-linear) function of the main parameters; for example, all the computation
+is made in terms of the precision &lt;code&gt;tau&lt;/code&gt;, although you may be much more interested in
+learning the standard deviation sigma. MCMC lets you obtain all the relevant informa-
+tion on the latter by simply creating simulations from the posterior distributions using
+the relevant inverse function &lt;code&gt;sigma = 1/sqrt(tau)&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We can also depict the trajectories of the MCMC samples in the first 10 iterations of the proecess. The arrows follow
+the moves of the Markov chain during the updates of the parameters, from the initial&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/02_mcmc/tutorial_files/figure-html/unnamed-chunk-19-1.png&#34; style=&#34;width:50.0%&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes footnotes-end-of-document&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;The main intuition here is to do with the basic properties of conditional probabilities. Recall that given two events &lt;span class=&#34;math inline&#34;&gt;\(A\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(B\)&lt;/span&gt;, then by definition &lt;span class=&#34;math inline&#34;&gt;\(\Pr(A \mid B) = \frac{\Pr(A,B)}{\Pr(B)}\)&lt;/span&gt;. Now we can extend this to the case of three events &lt;span class=&#34;math inline&#34;&gt;\(A\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(B\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(C\)&lt;/span&gt;, by adding &lt;span class=&#34;math inline&#34;&gt;\(C\)&lt;/span&gt; to the conditioning set (i.e. to the right of the “&lt;span class=&#34;math inline&#34;&gt;\(\mid\)&lt;/span&gt;” symbol throughout the equation) and get &lt;span class=&#34;math inline&#34;&gt;\(\Pr(A \mid B, C ) = \frac{\Pr(A,B\mid C)}{Pr(B\mid C)}\)&lt;/span&gt;. If we replace &lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt; for &lt;span class=&#34;math inline&#34;&gt;\(A\)&lt;/span&gt;, &lt;span class=&#34;math inline&#34;&gt;\(\sigma^2\)&lt;/span&gt; for &lt;span class=&#34;math inline&#34;&gt;\(B\)&lt;/span&gt; ,&lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol{y}\)&lt;/span&gt; for &lt;span class=&#34;math inline&#34;&gt;\(C\)&lt;/span&gt; and a probability distribution &lt;span class=&#34;math inline&#34;&gt;\(p(\cdot)\)&lt;/span&gt; for the probability associated with an event &lt;span class=&#34;math inline&#34;&gt;\(\Pr(\cdot)\)&lt;/span&gt;, we can write &lt;span class=&#34;math inline&#34;&gt;\(p(\mu \mid \sigma^2, \boldsymbol{y} ) = \frac{p(\mu,\sigma^2\mid \boldsymbol{y})}{p(\sigma^2\mid \boldsymbol{y})}\propto p(\mu, \sigma^2 \mid \boldsymbol{y} )\)&lt;/span&gt;. Similarly, &lt;span class=&#34;math inline&#34;&gt;\(p(\sigma^2 \mid \mu, \boldsymbol{y}) = \frac{p(\mu,\sigma^2\mid\boldsymbol{y})}{p(\mu\mid\boldsymbol{y})} \propto p(\mu,\sigma^2\mid\boldsymbol{y})\)&lt;/span&gt;. We can then see that each full conditional is proportional to the target distribution (i.e. the joint posterior of all the parameters). Thus, sampling repeatedly from all the full conditionals essentially gives us something that is, broadly speaking, proportional to our target joint posterior distribution. Formal theorems ensure that
+if we do this long enough, we are guaranteed to actually approximate the target to an arbitrary degree of precision.&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn2&#34;&gt;&lt;p&gt;&lt;strong&gt;NB&lt;/strong&gt;: there is a slight confusion in the terminology: usually, we refer the initialisation of the process as iteration 0. However, &lt;tt&gt;R&lt;/tt&gt; does not let you index a vector with the number 0, i.e. the first element of a vector is indexed by the number 1. Thus, what in the &lt;a href=&#34;/slides/02_mcmc/#27&#34;&gt;Lecture 2&lt;/a&gt; was indicated as &lt;span class=&#34;math inline&#34;&gt;\(\mu^{(0)}\)&lt;/span&gt; is actually &lt;code&gt;mu[1]&lt;/code&gt; in the &lt;tt&gt;R&lt;/tt&gt; code. Similarly, the updated value for &lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt; at iteration 2 is indicated as &lt;span class=&#34;math inline&#34;&gt;\(\mu^{(2)}\)&lt;/span&gt; in the slides, but as &lt;code&gt;mu[3]&lt;/code&gt; in the &lt;tt&gt;R&lt;/tt&gt; code.&lt;a href=&#34;#fnref2&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

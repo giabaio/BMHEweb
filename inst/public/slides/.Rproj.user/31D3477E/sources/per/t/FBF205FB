@@ -1,0 +1,25 @@
+{
+    "id": "FBF205FB",
+    "path": "~/Dropbox/UCL/3021/slides/03_MCMC/index.Rmd",
+    "project_path": "03_MCMC/index.Rmd",
+    "type": "r_markdown",
+    "hash": "3930329832",
+    "contents": "",
+    "dirty": false,
+    "created": 1607961310145.0,
+    "source_on_save": false,
+    "relative_order": 7,
+    "properties": {
+        "cursorPosition": "54,37",
+        "scrollLine": "0",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1611072294,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1611072294826,
+    "read_only": false,
+    "read_only_alternatives": []
+}

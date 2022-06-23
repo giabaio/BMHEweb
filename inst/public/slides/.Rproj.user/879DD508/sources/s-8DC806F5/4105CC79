@@ -1,0 +1,26 @@
+{
+    "id": "4105CC79",
+    "path": "~/Dropbox/EcSan/ShortCourses/Lausanne/static/slides/assets/setup.R",
+    "project_path": "assets/setup.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1647355987846.0,
+    "source_on_save": false,
+    "relative_order": 6,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "415,11",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1654761508,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1654761508139,
+    "read_only": false,
+    "read_only_alternatives": []
+}

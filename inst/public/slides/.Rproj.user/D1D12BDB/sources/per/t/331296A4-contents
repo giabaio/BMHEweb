@@ -1,0 +1,204 @@
+---
+title: "&#8291;10. Markov models"
+author: Gianluca Baio
+date: "16 March 2021"
+institute: "[Department of Statistical Science](https://www.ucl.ac.uk/statistics/) | University College London"
+params: 
+   conference: "STAT0019 &ndash; Bayesian Methods in Health Economics"
+   location: "UCL &ndash; 2020/2021"
+output:
+  xaringan::moon_reader:
+    includes: 
+       in_header: "../assets/latex_macros.html"
+    seal: false
+    yolo: no
+    lib_dir: libs
+    nature:
+      beforeInit: ["https://platform.twitter.com/widgets.js"]
+      highlightStyle: github
+      highlightLines: yes
+      countIncrementalSlides: no
+      ratio: '16:9'
+      titleSlideClass:
+      - center
+      - middle
+    self_contained: false 
+    css:
+    - "../assets/ucl-powerpoint.css"
+---
+
+```{r echo=F,message=FALSE,warning=FALSE,comment=NA}
+# Sources the R file with all the relevant setup and commands
+source("../assets/setup.R")
+
+# Stuff from 'xaringanExtra' (https://pkg.garrickadenbuie.com/xaringanExtra)
+# This allows the use of panels (from 'xaringanExtra')
+use_panelset()
+# This allows to copy code from the slides directly
+use_clipboard()
+```
+
+class: title-slide
+
+# `r rmarkdown::metadata$title`
+
+## `r rmarkdown::metadata$author`
+
+### `r rmarkdown::metadata$institute`    
+
+.title-small[
+`r icon::icon_style(icon::fontawesome("envelope",style = "solid"),scale=.8,fill="#00acee")`  [g.baio@ucl.ac.uk](mailto:g.baio@ucl.ac.uk)
+`r icon::icon_style(icon::fontawesome("firefox"),scale=.8,fill="#EA7600")`  [http://www.statistica.it/gianluca/](http://www.statistica.it/gianluca/)
+`r icon::icon_style(icon::fontawesome("firefox"),scale=.8,fill="#EA7600")`  [https://egon.stats.ucl.ac.uk/research/statistics-health-economics/](https://egon.stats.ucl.ac.uk/research/statistics-health-economics/)
+`r icon::icon_style(icon::fontawesome("github"),scale=.8,fill="black")`  [https://github.com/giabaio](https://github.com/giabaio)
+`r icon::icon_style(icon::fontawesome("github"),scale=.8,fill="black")`  [https://github.com/StatisticsHealthEconomics](https://github.com/StatisticsHealthEconomics)
+`r icon::icon_style(icon::fontawesome("twitter"),scale=.8,fill="#00acee")`  [@gianlubaio](https://twitter.com/gianlubaio)     
+]
+
+### `r rmarkdown::metadata$params`
+
+`r date`
+
+.small[.alignleft[`r previous_slide("nma")`]]
+
+.footer[
+`r go_home(path="../assets/home-icon.png")`
+]
+
+---
+
+layout: true
+.footer[
+`r go_home(path="../assets/home-icon.png")` <span style="position: relative; bottom: 10px; color: #D5D5D5;"> &nbsp; &copy; Gianluca Baio. STAT0019</span>
+]
+.footer-center[
+`r rmarkdown::metadata$title`
+]
+
+---
+
+# Summary
+
+- Assess .red[**long-term**] cost-effectiveness based only on .red[**short-term**] data
+
+- State-transition (usually *Markov*) models for clinical histories
+
+- Commonly implemented in `Excel`, or specialized software (eg `TreeAge`)
+
+- Bayesian framework lets you .red[simultaneously] perform
+   - parameter estimation (from short-term data, eg meta-analysis), and
+   - probabilistic sensitivity analysis (long-term costs and benefits)
+   - uncertainty about parameters fully included
+
+- Simple example: estimate transition probabilities using *multinomial* distribution in `BUGS`
+
+- Markov models & survival analysis
+
+`r vspace("4em")`
+
+.content-box-beamer[
+### **References** 
+
+`r vspace("20px")`
+
+`r bmhe(5.5)`
+
+`r briggs()`
+
+`r esdm()`
+
+`r bcea_book()`
+
+]
+
+---
+
+# Markov models
+
+- Assume a set of $S$ "clinically relevant" states
+   - Exhaustive and mutually exclusive
+   
+- The structure (links among nodes) describes the dynamics of disease history
+   - Arrows connecting two states encode the assumption that a transition from the one where the arrow originates to the one reached by it is possible
+   - Absence of an arrow between two states implies that the transition from one to the other is not allowed by our model
+   
+--
+
+- From one period to the next, subjects can move among the states according to the rules specified by the arrows
+
+- Movements occur according to suitable transition probabilities
+$$\color{#24568c}\bm\pi_j = \bm\pi_{j-1} \bm\Lambda_j$$
+   where
+   - $\bm\pi_j$ is the vector of probabilities for each state at time $j$
+   - $\bm\Lambda_j = [\Lambda_{j;s,s'}]$ is a transition matrix describing the probability of moving from state $s$ to state $s'$ at time $j$
+
+---
+
+# Markov models
+
+### 1. Define a structure .alignright[("**Natural history**" of the disease)]
+
+`r include_fig("09_MM_5.png",width="58%",title="A basic Markov model structure")`
+
+---
+
+count: false
+# Markov model
+
+### 2. Estimate the transition probabilities
+
+`r include_fig("09_MM_6.png",width="65%",title="A basic Markov model structure")`
+
+`r vspace("-20px")`
+For instance: 
+
+- $\lambda_{14} =$ general (healthy) population mortality $\Rightarrow$ Relevant data: Life tables/official records, . . .
+- $\lambda_{24} =$ disease-specific mortality $\Rightarrow$ Relevant data: Trial/observational studies, . . .
+- $\ldots$
+
+---
+
+count: false
+# Markov model
+
+### 3. Run the simulation: $j=0$
+
+`r include_fig("09_MM_7.png",width="65%",title="Typically, at the beginning of the simulation, every individual is in the 'null' state (eg healthy)")`
+
+---
+
+count: false
+# Markov model
+
+### 3. Run the simulation: $j=1$
+
+`r include_fig("09_MM_8.png",width="65%",title="...Then, they start to move around, according to the transition probabilities...")`
+
+---
+
+count: false
+# Markov model
+
+### 3. Run the simulation: $j=2$
+
+`r include_fig("09_MM_9.png",width="65%",title="...They continue to move: for instance, more people are being affected by the disease and die...")`
+
+---
+
+count: false
+# Markov model
+
+### 3. Run the simulation: $j=3$
+
+`r include_fig("09_MM_10.png",width="65%",title="...More of the same...")`
+
+---
+
+count: false
+# Markov model
+
+### 3. Run the simulation: $j=J$ .alignright[("*lifetime* horizon")]
+
+`r include_fig("09_MM_11.png",width="65%",title="...And if the virtual follow up (length of the simulation) is long enough, then everybody will have moved to the absorbing state (death, in this case)")`
+
+---

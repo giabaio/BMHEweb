@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>A Manca | Bayesian methods in health economics</title>
+    <link>/author/a-manca/</link>
+      <atom:link href="/author/a-manca/index.xml" rel="self" type="application/rss+xml" />
+    <description>A Manca</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 01 Jan 2019 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>A Manca</title>
+      <link>/author/a-manca/</link>
+    </image>
+    
+    <item>
+      <title>Bayesian Statistical Economic Evaluation Methods for Health Technology Assessment</title>
+      <link>/publication/gabrioetal-2019/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      <guid>/publication/gabrioetal-2019/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

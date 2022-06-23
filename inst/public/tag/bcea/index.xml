@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>BCEA | Bayesian methods in health economics</title>
+    <link>/tag/bcea/</link>
+      <atom:link href="/tag/bcea/index.xml" rel="self" type="application/rss+xml" />
+    <description>BCEA</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Mon, 20 Jun 2022 16:30:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>BCEA</title>
+      <link>/tag/bcea/</link>
+    </image>
+    
+    <item>
+      <title>Practical 3. Introduction to R and cost-effectiveness analysis using BCEA</title>
+      <link>/syllabus/practical3/</link>
+      <pubDate>Mon, 20 Jun 2022 16:30:00 +0000</pubDate>
+      <guid>/syllabus/practical3/</guid>
+      <description>
+
+
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

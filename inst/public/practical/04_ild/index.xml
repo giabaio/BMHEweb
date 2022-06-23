@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practical 4. Cost-effectiveness analysis with individual-level data | Bayesian methods in health economics</title>
+    <link>/practical/04_ild/</link>
+      <atom:link href="/practical/04_ild/index.xml" rel="self" type="application/rss+xml" />
+    <description>Practical 4. Cost-effectiveness analysis with individual-level data</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 21 Jun 2022 10:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Practical 4. Cost-effectiveness analysis with individual-level data</title>
+      <link>/practical/04_ild/</link>
+    </image>
+    
+    <item>
+      <title>Linear regression Tutorial</title>
+      <link>/practical/04_ild/tutorial-regression/</link>
+      <pubDate>Tue, 21 Jun 2022 10:00:00 +0000</pubDate>
+      <guid>/practical/04_ild/tutorial-regression/</guid>
+      <description>
+
+
+&lt;p&gt;When dealing with individual level data, &lt;em&gt;regression&lt;/em&gt; models are arguably one of the most commonly used tools in statistical analysis. As discussed &lt;a href=&#34;https://gianluca.statistica.it/teaching/intro-stats/regression-to-the-mean.html&#34;&gt;here&lt;/a&gt; (which gives more details and background), the term “regression” was introduced by Francis Galton.&lt;/p&gt;
+&lt;p&gt;&lt;div class=&#34;alert alert-warning&#34;&gt;
+  &lt;div&gt;
+    &lt;strong&gt;Historical background&lt;/strong&gt; Galton was a very controversial figure. He was a polyscientist, who made contributions to Statistics, Psychology, Sociology, Anthropology and many other sciences. He was the half-cousin of Charles Darwin and was inspired by his work on the origin of species to study hereditary traits in humans, including height, which he used to essentially invent regression. He also established and then financed the “Galton Laboratory” at UCL (that is the first incarnation of the UCL Department of Statistical Science), which Karl Pearson (another important and controversial figure) went on to lead. Alas, both Galton and Pearson wer also a major proponent of eugenics (in fact, Galton is credited with the invention of the term) and has thus left a troubling legacy behind them. You can read more about UCL’s own enquiry &lt;a href=&#34;https://www.ucl.ac.uk/provost/inquiry-history-eugenics-ucl&#34;&gt;here&lt;/a&gt;.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;Galton worked to study hereditary traits. In particular, he collected data on &lt;span class=&#34;math inline&#34;&gt;\(n=898\)&lt;/span&gt; children from 197 families. The original data are stored in the file &lt;a href=&#34;Galton.txt&#34;&gt;&lt;code&gt;Galton.txt&lt;/code&gt;&lt;/a&gt;. The data comprise the height of each child &lt;span class=&#34;math inline&#34;&gt;\(y_i\)&lt;/span&gt;, as well as the height of the father &lt;span class=&#34;math inline&#34;&gt;\(X_{1i}\)&lt;/span&gt; and the mother &lt;span class=&#34;math inline&#34;&gt;\(X_{2i}\)&lt;/span&gt;, for &lt;span class=&#34;math inline&#34;&gt;\(i=1,\ldots,n\)&lt;/span&gt;, all measured in inches.&lt;/p&gt;
+&lt;p&gt;Galton’s objective was to find out whether there was some consistent relationship between the outcome and the predictor and, if so, to quantify the strength of this relationship. His original analysis was based on &lt;a href=&#34;https://gianluca.statistica.it/teaching/intro-stats/regression-to-the-mean.html#fn5&#34;&gt;&lt;em&gt;least squares fitting&lt;/em&gt;&lt;/a&gt;. But in general terms, regression can be framed as a statistical model; in its simplest form (which we are using here), we can assume that the sampling variability underlying the observed data can be described by a Normal distribution. This amount to assuming that
+&lt;span class=&#34;math display&#34; id=&#34;eq:regmodstats2&#34;&gt;\[\begin{align}
+y_i &amp;amp; \sim \mbox{Normal}(\mu_i,\sigma^2) \\
+\mu_i &amp;amp; = \beta_0 + \beta_1 X_{1i} + \ldots + \beta_K X_{Ki}.\tag{1}
+\end{align}\]&lt;/span&gt;
+for &lt;span class=&#34;math inline&#34;&gt;\(i=1,\ldots,n\)&lt;/span&gt; (and assuming that there are &lt;span class=&#34;math inline&#34;&gt;\(K\)&lt;/span&gt; “covariates” &lt;span class=&#34;math inline&#34;&gt;\(X_1,\ldots,X_K\)&lt;/span&gt;). This notation highlights the probabilistic nature of the assumed regression relationship between &lt;span class=&#34;math inline&#34;&gt;\(y\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol{X}\)&lt;/span&gt;: we are assuming that the &lt;strong&gt;linear predictor&lt;/strong&gt; of Equation &lt;a href=&#34;#eq:regmodstats2&#34;&gt;(1)&lt;/a&gt; is &lt;em&gt;on average&lt;/em&gt; the best estimate of the outcome, given a specific “profile”, i.e. a set of values for the observed covariates. But we do not impose determinism on this relationship: there is a variance, which is determined by the sampling variability in the observed data and expressed by the population parameter &lt;span class=&#34;math inline&#34;&gt;\(\sigma^2\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    &lt;p&gt;An alternative (but entirely equivalent!) way of writing the regression model (which is perhaps more common in Econometrics than it is in Statistics) is to consider&lt;/p&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&#34;math display&#34;&gt;\[\begin{align}y_i = \beta_0 + \beta_1 X_{1i} + \ldots + \beta_K X_{Ki} + \varepsilon_i,\end{align}\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;with &lt;span class=&#34;math inline&#34;&gt;\(\varepsilon_i \sim \mbox{Normal}(0,\sigma^2)\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;This formulation explicitly describes the assumption mentioned above. The quantity &lt;span class=&#34;math inline&#34;&gt;\(\varepsilon_i\)&lt;/span&gt; represents some kind of “white noise”, or, in other words, a random error, that is centered on 0 and whose variance basically depends on the population variability.
+
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;We can follow the model specification described &lt;a href=&#34;https://gianluca.statistica.it/teaching/intro-stats/linearregressionsec.html&#34;&gt;here&lt;/a&gt;. The data can be loaded up in the &lt;tt&gt;R&lt;/tt&gt; workspace using the following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Load the whole dataset
+data=read.table(&amp;quot;tutorial-regression/Galton.txt&amp;quot;,header=TRUE)
+
+# Creates the covariates matrix. Notice that the first column is made by &amp;#39;1&amp;#39; and the father&amp;#39;s and mother&amp;#39;s heights are &amp;quot;centered&amp;quot;
+X=cbind(rep(1,nrow(data)),scale(data$Father,scale=F),scale(data$Mother,scale=F))
+colnames(X)=c(&amp;quot;Intercept&amp;quot;,&amp;quot;Father&amp;quot;,&amp;quot;Mother&amp;quot;)
+
+# Creates the outcome (children&amp;#39;s height)
+y=data$Height&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The assumptions about the model for the data and the priors described &lt;a href=&#34;https://gianluca.statistica.it/teaching/intro-stats/linearregressionsec.html&#34;&gt;here&lt;/a&gt; can be coded up into the following &lt;code&gt;BUGS&lt;/code&gt; model&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;model {
+   for(i in 1:n) {
+      y[i] ~ dnorm(mu[i],tau)
+      # If you are using R2jags, you can take advantage of the &amp;#39;%*%&amp;#39; operator 
+      mu[i] &amp;lt;- X[i,]%*%beta
+      # If you are using R2OpenBUGS, you need to specify the full linear predictor
+      # mu[i] &amp;lt;- X[i,1]*beta[1] + X[i,2]*beta[2] + X[i,3]*beta[3]
+   }
+   for(k in 1:K) {
+      beta[k] ~ dnorm(mu.beta[k],tau.beta[k])
+   }
+   tau ~ dgamma(a,b)
+   sigma &amp;lt;- pow(tau,-.5)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can save this model into a &lt;code&gt;.txt&lt;/code&gt; file (say, &lt;code&gt;model.txt&lt;/code&gt;) and use it to run &lt;code&gt;BUGS&lt;/code&gt; or &lt;code&gt;JAGS&lt;/code&gt;. Notice that if you’re doing the former, you will need to use the specification of the linear predictor &lt;code&gt;mu[i]&lt;/code&gt; that is currently commented out (ie it is prefixed by a “&lt;code&gt;#&lt;/code&gt;” in the code above). This is because &lt;code&gt;JAGS&lt;/code&gt; implements the operator “&lt;code&gt;%*%&lt;/code&gt;”, which is the sum of the products between the covariate &lt;span class=&#34;math inline&#34;&gt;\(X_k\)&lt;/span&gt; and its coefficient &lt;span class=&#34;math inline&#34;&gt;\(\beta_k\)&lt;/span&gt;. So the notation&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mu[i] &amp;lt;- X[i,]%*%beta&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;is equivalent to
+&lt;span class=&#34;math display&#34;&gt;\[\sum_{k=1}^3 X_{ik}\beta_k\]&lt;/span&gt;
+(assuming that &lt;code&gt;X&lt;/code&gt; is a matrix with &lt;span class=&#34;math inline&#34;&gt;\(n\)&lt;/span&gt; rows and &lt;span class=&#34;math inline&#34;&gt;\(K=3\)&lt;/span&gt; columns and &lt;code&gt;beta&lt;/code&gt; is a vector with length &lt;span class=&#34;math inline&#34;&gt;\(K=3\)&lt;/span&gt;).&lt;/p&gt;
+&lt;p&gt;You now need to define the data list, the parameters to be monitored and the other relevant quantities (number of chains, iterations, burn-in — as seen in class). For example, you can use the following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Defines the data list
+dataList &amp;lt;- list(
+  y=y,        # outcome (children&amp;#39;s heights)
+  X=X,        # covariates matrix (including a column of &amp;#39;1&amp;#39; for the intercept)
+  n=nrow(X),  # number of data points (= rows of X)
+  K=ncol(X),  # number of covariates (= columns of X)
+  # &amp;quot;hyper-parameters&amp;quot;
+  a=0.1,b=0.1,mu.beta=c(65,0,0),tau.beta=c(20,10,10)^-2
+)
+
+# MCMC-related variables
+n.chains=2                             # 2 chains
+n.iter=10000                           # 10000 iterations
+n.burnin=5000                          # 5000 to be discarded as burn-in
+parameters.to.save=c(&amp;quot;beta&amp;quot;,&amp;quot;sigma&amp;quot;)   # monitored parameters&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;At this point, you can use &lt;code&gt;R2OpenBUGS&lt;/code&gt; or &lt;code&gt;R2jags&lt;/code&gt; to run the model. If you’re using the former, the following code would do the job&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(R2OpenBUGS)
+model=bugs(data=dataList,model.file=&amp;quot;model.txt&amp;quot;,n.chains=n.chains,n.iter=n.iter,n.burnin=n.burnin)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;while if you want to use &lt;code&gt;R2jags&lt;/code&gt; you can simply replace the command &lt;code&gt;library(R2OpenBUGS)&lt;/code&gt; with &lt;code&gt;library(R2jags)&lt;/code&gt; and call &lt;code&gt;jags(...)&lt;/code&gt; instead of &lt;code&gt;bugs(...)&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;With this setup, you should be able to replicate the results shown in the &lt;a href=&#34;https://gianluca.statistica.it/teaching/intro-stats/linearregressionsec.html&#34;&gt;notes&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    You can also use &lt;a href=&#34;galton_regression.R&#34;&gt;this&lt;/a&gt; script, which is annotated with instructions and will allow you to replicate the whole analysis presented in the notes (including the graphs and the post-processing). For simplicity, the &lt;code&gt;BUGS&lt;/code&gt; code is also stored &lt;a href=&#34;model_galton.txt&#34;&gt;here&lt;/a&gt;.
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    &lt;p&gt;&lt;strong&gt;NB&lt;/strong&gt;: &lt;a href=&#34;https://gianluca.statistica.it/teaching/intro-stats/regression.html&#34;&gt;This&lt;/a&gt; document shows a more detailed introduction to the basics of regression and &lt;a href=&#34;https://gianluca.statistica.it/teaching/intro-stats/regression-to-the-mean.html&#34;&gt;this&lt;/a&gt; also describes the issue related with centering covariates in a regression model.&lt;/p&gt;&lt;/p&gt;
+&lt;p&gt;The impact of covariate centering on Bayesian computation is also presented in Chapter 2 of &lt;a href=&#34;https://gianluca.statistica.it/book/bmhe/&#34;&gt;BMHE&lt;/a&gt;.
+
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Practical 4. Cost-effectiveness analysis with individual level data — SOLUTIONS</title>
+      <link>/practical/04_ild/solutions/</link>
+      <pubDate>Tue, 21 Jun 2022 10:00:00 +0000</pubDate>
+      <guid>/practical/04_ild/solutions/</guid>
+      <description>
+
+
+&lt;p&gt;This document comments more in details the &lt;tt&gt;R&lt;/tt&gt; script used to perform
+the whole analysis. Similar results can be obtained using the &lt;tt&gt;BUGS&lt;/tt&gt;
+interface directly — but as we mentioned in the class, this is usually
+less efficient and so we focus here on the &lt;tt&gt;R&lt;/tt&gt; script.&lt;/p&gt;
+&lt;p&gt;The first thing to do is to make sure that you are in the correct
+folder. You can check the location of your
+&lt;tt&gt;R&lt;/tt&gt; workspace by typing the following command&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;getwd()&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;which would return something like&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;[1] &amp;quot;/home/gianluca&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;— the symbol &lt;code&gt;[1]&lt;/code&gt; here indicates the the answer is a vector and the
+current rows starts with its first (and, in this case, only) element.&lt;/p&gt;
+&lt;p&gt;You can move to different directories by using a command like the
+following&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;setwd(&amp;quot;/home/gianluca/Mystuff&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;which, in this case, would move the workspace in the subfolder
+&lt;code&gt;Mystuff&lt;/code&gt;. In &lt;code&gt;Rstudio&lt;/code&gt; you can also use the menus under &lt;code&gt;Session&lt;/code&gt; to
+move across the folders on your computer.&lt;/p&gt;
+&lt;p&gt;The next step is to load in the &lt;tt&gt;R&lt;/tt&gt; workspace
+the relevant “packages”. In this case, this is done using the following
+command (that are typeset in red).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(R2OpenBUGS)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can of course load any other package you require at any point in
+your script.&lt;/p&gt;
+&lt;div id=&#34;question-1&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Question 1&lt;/h2&gt;
+&lt;p&gt;We now proceed to load the data on costs, using the following
+&lt;tt&gt;R&lt;/tt&gt; command (here the hash symbol “&lt;code&gt;#&lt;/code&gt;” indicates a comment)&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Loads the data on costs only into R from the txt file (list originally prepared for BUGS)
+cost.data=source(&amp;quot;cost-data.txt&amp;quot;)$value&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;tt&gt;R&lt;/tt&gt; command &lt;code&gt;source&lt;/code&gt; executes into the
+&lt;tt&gt;R&lt;/tt&gt; workspace the commands included in the file
+that is used as its argument. In this case, the file &lt;code&gt;cost-data.txt&lt;/code&gt;
+contains a &lt;em&gt;list&lt;/em&gt; of values for a set of different variables and the
+above comment assigns this list to a new
+&lt;tt&gt;R&lt;/tt&gt; variable named &lt;code&gt;cost.data&lt;/code&gt;. Notice here
+that we also add the suffix &lt;code&gt;$value&lt;/code&gt; to the &lt;code&gt;source&lt;/code&gt; command. The reason
+for this is that in this way, &lt;tt&gt;R&lt;/tt&gt; can strip the
+values for the elements of the list contained in the &lt;code&gt;.txt&lt;/code&gt; file from
+all the “meta-data”” (i.e. external information that is irrelevant to
+us). For example, compare the following output&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cost.data=source(&amp;quot;cost-data.txt&amp;quot;)$value
+names(cost.data)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;N1&amp;quot;    &amp;quot;N2&amp;quot;    &amp;quot;cost1&amp;quot; &amp;quot;cost2&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;with the one obtained by omitting the &lt;code&gt;$value&lt;/code&gt; suffix.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;cost.data=source(&amp;quot;cost-data.txt&amp;quot;)
+names(cost.data)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;value&amp;quot;   &amp;quot;visible&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;names(cost.data$value)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;N1&amp;quot;    &amp;quot;N2&amp;quot;    &amp;quot;cost1&amp;quot; &amp;quot;cost2&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the first case, the elements of the object &lt;code&gt;cost.data&lt;/code&gt; are the
+variables that we need to use as data for the
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;model. In the second one, these are
+actually “hidden” inside the object &lt;code&gt;values&lt;/code&gt; that is stored inside the
+object &lt;code&gt;cost.data&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We are now ready to start setting everything up to run
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;remotely from our
+&lt;tt&gt;R&lt;/tt&gt; session. The first things to do are to
+define the relevant inputs to the &lt;tt&gt;BUGS&lt;/tt&gt; function that will do just
+that.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Runs the BUGS model from R
+model.file=&amp;quot;normal-mod.txt&amp;quot;
+params &amp;lt;- c(&amp;quot;mu&amp;quot;,&amp;quot;ss&amp;quot;,&amp;quot;ls&amp;quot;,&amp;quot;delta.c&amp;quot;,&amp;quot;dev&amp;quot;,&amp;quot;total.dev&amp;quot;)
+n.chains=2
+n.burnin=1000
+n.iter=2000
+n.thin=1
+debug=FALSE&lt;/code&gt;&lt;/pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;The first command here defines a string with the path to the file in
+which we have saved the model code. This will instruct
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;about where to read the
+model assumptions.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The second line defines the parameters to be monitored and stores
+them (as strings of names) into the vector &lt;code&gt;params&lt;/code&gt; — of course you
+can use any naming convention you like; so this vector may be called
+&lt;code&gt;parameters&lt;/code&gt;, or &lt;code&gt;x&lt;/code&gt; instead.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The third line defines a numeric variable in which we specify the
+number of Markov chains we want to run — in this case 2. It is
+usually a good idea to run more than one chain, because by starting
+them from different initial values, this helps assessing convergence
+to the target posterior distributions of all the relevant variables
+in our model.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The fourth line defines the number of iterations to be used as
+“burn-in”, i.e. to get closer to the core of the target
+posterior distributions. In this case, we are selecting 1000 — there
+is no reason why 1000 should &lt;em&gt;always&lt;/em&gt; be sufficient, so we should
+assess convergence very carefully (more on this later).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The fifth line defines the total number of simulations to be run,
+which will be used to obtain the samples that we will use for the
+analysis after discarding the burn-in. In this case, we set
+&lt;code&gt;n.iter&lt;/code&gt;=2000, which means that, in total, we will run the MCMC for
+&lt;span class=&#34;math inline&#34;&gt;\(2\times(2000)=4000\)&lt;/span&gt; simulations (because we have selected
+2 chains). Of these, the first &lt;span class=&#34;math inline&#34;&gt;\(2\times 1000=2000\)&lt;/span&gt; will be discarded
+as burn-in, which means that the summary statistics will be computed
+on a sample of &lt;span class=&#34;math inline&#34;&gt;\(2000\)&lt;/span&gt; simulations.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;The sixth line defines the “thinning” of the chains. In this case,
+&lt;code&gt;n.thin&lt;/code&gt;=1, which means that we are actually storing every single
+iteration after the burn-in for our analysis. In general,
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;will save 1 every &lt;code&gt;n.thin&lt;/code&gt;
+simulations, so using a thinning level above 1 means that some of
+the simulations will be discarded (and consequently, to have the
+same overall sample size we will need a longer run of the MCMC).
+This may help reduce autocorrelation in our results (see the lecture
+slides and both &lt;em&gt;BMHE&lt;/em&gt; and &lt;em&gt;The BUGS Book&lt;/em&gt;, for more details).&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Finally, the seventh line defines a logical variable &lt;code&gt;debug&lt;/code&gt;. In
+this case we set it to the value &lt;code&gt;FALSE&lt;/code&gt;, which means that
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;will be called remotely and we will
+not see it in action. If we set &lt;code&gt;debug=TRUE&lt;/code&gt;, then
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;would forcibly take over from
+&lt;tt&gt;R&lt;/tt&gt; and we would see it opening its windows
+and spitting out its output. This works &lt;strong&gt;under &lt;code&gt;MS Windows&lt;/code&gt; only&lt;/strong&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;At this point we are finally ready to call
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;, which we do using the following
+command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m=bugs(data=cost.data,inits=NULL,model.file=model.file,parameters.to.save=params,
+       n.chains=n.chains,n.iter=n.iter,n.burnin=n.burnin,n.thin=n.thin,DIC=T,debug=debug)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The model is run by &lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;and while this is
+happening, we lose access to the &lt;tt&gt;R&lt;/tt&gt; session
+(i.e. you cannot use &lt;tt&gt;R&lt;/tt&gt; to make other
+calculations while &lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;is running). When
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;is finished, then
+&lt;tt&gt;R&lt;/tt&gt; takes over again and if everything has
+worked, the object &lt;code&gt;m&lt;/code&gt; is stored in our workspace. We can inspect it by
+using the following command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;names(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; [1] &amp;quot;n.chains&amp;quot;        &amp;quot;n.iter&amp;quot;          &amp;quot;n.burnin&amp;quot;        &amp;quot;n.thin&amp;quot;         
+ [5] &amp;quot;n.keep&amp;quot;          &amp;quot;n.sims&amp;quot;          &amp;quot;sims.array&amp;quot;      &amp;quot;sims.list&amp;quot;      
+ [9] &amp;quot;sims.matrix&amp;quot;     &amp;quot;summary&amp;quot;         &amp;quot;mean&amp;quot;            &amp;quot;sd&amp;quot;             
+[13] &amp;quot;median&amp;quot;          &amp;quot;root.short&amp;quot;      &amp;quot;long.short&amp;quot;      &amp;quot;dimension.short&amp;quot;
+[17] &amp;quot;indexes.short&amp;quot;   &amp;quot;last.values&amp;quot;     &amp;quot;isDIC&amp;quot;           &amp;quot;DICbyR&amp;quot;         
+[21] &amp;quot;pD&amp;quot;              &amp;quot;DIC&amp;quot;             &amp;quot;model.file&amp;quot;     &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;There are many variables inside the object &lt;code&gt;m&lt;/code&gt; and we can use the “$”
+operator in &lt;tt&gt;R&lt;/tt&gt; to access them. For example,
+the command&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m$n.sims&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 2000&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;returns the total number of simulations used by
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;to compute the posterior distributions.&lt;/p&gt;
+&lt;p&gt;The first thing to do once the model has run is to check the summary
+statistics for the posterior distributions, together with the
+convergence diagnostics. We can do this using the &lt;code&gt;print&lt;/code&gt; function. For
+example, the command&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;print(m,digits=2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Inference for Bugs model at &amp;quot;normal-mod.txt&amp;quot;, 
+Current: 2 chains, each with 2000 iterations (first 1000 discarded)
+Cumulative: n.sims = 2000 iterations saved
+             mean    sd    2.5%     25%     50%     75%   97.5% Rhat n.eff
+mu[1]       22.72  1.18   20.46   21.90   22.71   23.51   25.10    1  2000
+mu[2]       24.53  1.28   22.09   23.69   24.52   25.39   27.12    1  2000
+ss[1]      486.18 38.60  418.00  459.65  483.50  509.12  568.61    1  2000
+ss[2]      550.47 41.47  477.48  520.80  548.55  576.90  634.80    1  2000
+ls[1]        3.09  0.04    3.02    3.06    3.09    3.12    3.17    1  2000
+ls[2]        3.15  0.04    3.08    3.13    3.15    3.18    3.23    1  2000
+delta.c      1.81  1.74   -1.62    0.63    1.83    3.04    5.06    1  2000
+dev[1]    2995.63  2.02 2994.00 2994.00 2995.00 2996.00 3001.00    1  1900
+dev[2]    3064.17  2.07 3062.00 3063.00 3064.00 3065.00 3070.00    1  2000
+total.dev 6059.77  2.81 6056.00 6058.00 6059.00 6061.00 6067.00    1  2000
+deviance  6059.77  2.81 6056.00 6058.00 6059.00 6061.00 6067.00    1  2000
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = Dbar-Dhat)
+pD = 3.90 and DIC = 6064.00
+DIC is an estimate of expected predictive error (lower deviance is better).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;shows the summary table for the nodes (variables) we have chosen to
+monitor. The optional input &lt;code&gt;digits=2&lt;/code&gt; instructs
+&lt;tt&gt;R&lt;/tt&gt; to show the results using 2 significant
+figures. The table reports the mean, standard deviation and selected
+quantiles of the posterior distributions. We can typically use the 2.5%
+and the 97.5% quantiles to approximate a 95% &lt;em&gt;credible&lt;/em&gt; interval. In
+addition, the table reports the values for &lt;span class=&#34;math inline&#34;&gt;\(\hat{R}\)&lt;/span&gt;, the potential
+scale reduction (or Gelman-Rubin statistic) and the effective sample
+size (&lt;code&gt;n.eff&lt;/code&gt;) — see the lecture slides and both &lt;em&gt;BMHE&lt;/em&gt; and &lt;em&gt;The BUGS
+Book&lt;/em&gt;, for more details.&lt;/p&gt;
+&lt;p&gt;Given this analysis, the mean cost is 22.72 for the control arm and
+24.53 for the intervention arm. The mean difference in costs is 1.81 —
+recall that costs are entered in
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;math inline&#34;&gt;\(\times 1000\)&lt;/span&gt;. We can also manipulate
+the simulations to produce further analyses. For example, we can use the
+code&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(
+    m$sims.list$mu[,1],
+    m$sims.list$mu[,2],
+    xlab=&amp;quot;Population average cost in arm 1 (x 1000)&amp;quot;,
+    ylab=&amp;quot;Population average cost in arm 2 (x 1000)&amp;quot;,
+    pch=20,
+    cex=.6,
+    main=&amp;quot;Joint distribution of mean costs&amp;quot;
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;to display (in the graph below) the posterior joint distribution of the
+population average costs in the two arms (the
+&lt;tt&gt;R&lt;/tt&gt; script provided for the practical provides
+also some description of the graphical parameters used in this call).&lt;/p&gt;
+&lt;p&gt;Notice again the use of the “$” operator to access elements of the
+object &lt;code&gt;m&lt;/code&gt;. In this case, the element &lt;code&gt;sims.list&lt;/code&gt; is a list containing
+&lt;code&gt;all&lt;/code&gt; the simulated values for all the monitored nodes. You can actually
+inspect them with the following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;names(m$sims.list)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] &amp;quot;mu&amp;quot;        &amp;quot;ss&amp;quot;        &amp;quot;ls&amp;quot;        &amp;quot;delta.c&amp;quot;   &amp;quot;dev&amp;quot;       &amp;quot;total.dev&amp;quot;
+[7] &amp;quot;deviance&amp;quot; &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;head(m$sims.list$mu[,1])&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 21.77 23.83 20.31 22.58 23.79 23.76&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;tt&gt;R&lt;/tt&gt; command &lt;code&gt;head&lt;/code&gt; shows by default the
+first 6 values of a variable.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/04_ild/solutions_files/figure-html/inspectBUGS44-1.png&#34; width=&#34;460.8&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Notice here the interesting fact that
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;effectively adds a dimension to each
+node. So the node &lt;code&gt;mu&lt;/code&gt; is defined in the model code as a vector with 2
+values (one for arm 1 and the other for arm 2). But because when
+processed by &lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;we record for each of these
+two elements &lt;code&gt;n.sims&lt;/code&gt; simulations, then the resulting object turns into
+a matrix with &lt;code&gt;n.sims&lt;/code&gt; = 2000 rows and 2 columns. So, in reference to
+the code used to generate the plot of the joint distribution of the mean
+costs, &lt;code&gt;m$sims.list$mu[,1]&lt;/code&gt; indicates all the rows and the first column
+and &lt;code&gt;m$sims.list$mu[,2]&lt;/code&gt; indicates all the rows and the second column of
+the matrix &lt;code&gt;m$mu&lt;/code&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;question-2&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Question 2&lt;/h2&gt;
+&lt;p&gt;We have already included in the vector &lt;code&gt;params&lt;/code&gt; the nodes related to the
+deviance — these are &lt;code&gt;dev&lt;/code&gt; and &lt;code&gt;total.dev&lt;/code&gt;, which are coded in the
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;model to compute manually the deviance
+associated with the underlying Normal model. In practice you do not need
+to do this and &lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;will calculate (and
+monitor) the deviance automatically — assuming that there is at least
+one observed variable (you can think of why this is!).&lt;/p&gt;
+&lt;p&gt;Going back to the summary statistics table, we can see that the overall
+model deviance is, on average, 6059.77. This is the same value, whether
+computed manually (in the node &lt;code&gt;total.dev&lt;/code&gt;) or automatically (in the
+node &lt;code&gt;deviance&lt;/code&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;question-3&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Question 3&lt;/h2&gt;
+&lt;p&gt;The first thing to do now is to load the new dataset, which includes
+data on costs as well as utilities. Then we can setup our call to
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;pointing to the correct model file.
+Finally, because this new model (based on Gamma-Gamma structure — see
+the lecture slides) is more complex, we need to provide
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;with a set of suitable initial values
+(identified using a trial-and-error procedure). We do this using the
+following &lt;tt&gt;R&lt;/tt&gt; commands.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Loads the data on costs only into R from the txt file (list originally prepared for BUGS)
+cost.utility=source(&amp;quot;cost-util-data.txt&amp;quot;)$value
+
+# Specifies the new model file
+model.file=&amp;quot;cgeg-mod.txt&amp;quot;
+
+# Loads the 3 sets of initial values from the .txt files
+inits1=source(&amp;quot;cgeg-inits1.txt&amp;quot;)$value
+inits2=source(&amp;quot;cgeg-inits2.txt&amp;quot;)$value
+inits3=source(&amp;quot;cgeg-inits3.txt&amp;quot;)$value
+# And combines them into a single list
+inits=list(inits1,inits2,inits3)
+
+# Re-defines the list of parameters to be monitored
+params=c(&amp;quot;mu.c&amp;quot;,&amp;quot;mu.e&amp;quot;,&amp;quot;delta.c&amp;quot;,&amp;quot;delta.e&amp;quot;,&amp;quot;shape.c&amp;quot;,&amp;quot;shape.e&amp;quot;,&amp;quot;beta&amp;quot;,&amp;quot;INB&amp;quot;,&amp;quot;CEAC&amp;quot;)
+
+# Re-defines the burn-in, number of simulations and number of chains
+n.burnin=1000
+n.iter=4000         # NB: this adds 3000 simulations to the 1000 of burnin
+n.chains=3&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Notice that we need to be consistent in the definition of the number of
+chains and the set up of the &lt;code&gt;inits&lt;/code&gt;. So if we select 3 chains, then
+&lt;code&gt;inits&lt;/code&gt; needs to be a list comprising of 3 lists (as in this case) —
+failure to do this will result in
+&lt;tt&gt;R&lt;/tt&gt; complaining and stopping with an error
+message.&lt;/p&gt;
+&lt;p&gt;After that, we are ready to call &lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;and run
+the new model, which we do using the following command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m2=bugs(data=cost.utility,inits=inits,model.file=model.file,parameters.to.save=params,
+    n.chains=n.chains,n.iter=n.iter,n.burnin=n.burnin,n.thin=n.thin,DIC=T,debug=debug)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The results can be again printed in the form of a summary table.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;print(m2,digits=2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Inference for Bugs model at &amp;quot;cgeg-mod.txt&amp;quot;, 
+Current: 3 chains, each with 4000 iterations (first 1000 discarded)
+Cumulative: n.sims = 9000 iterations saved
+              mean    sd    2.5%     25%     50%     75%   97.5% Rhat n.eff
+mu.c[1]      23.47  1.99   20.02   22.09   23.31   24.69   27.83    1   700
+mu.c[2]      25.99  2.02   22.47   24.57   25.84   27.24   30.38    1  3000
+mu.e[1]      74.70  7.13   61.77   69.81   74.28   79.17   90.15    1  1300
+mu.e[2]      81.05  8.14   66.62   75.26   80.63   86.45   97.78    1  6100
+delta.c       2.52  2.80   -3.02    0.66    2.55    4.38    7.94    1   660
+delta.e      -6.34 10.74  -27.39  -13.84   -6.27    1.02   14.81    1  1800
+shape.c[1]    1.18  0.09    1.01    1.12    1.18    1.24    1.36    1  3300
+shape.c[2]    1.67  0.13    1.43    1.58    1.67    1.76    1.95    1  9000
+shape.e[1]    0.41  0.03    0.35    0.39    0.41    0.43    0.46    1  9000
+shape.e[2]    0.37  0.03    0.32    0.36    0.37    0.39    0.43    1  9000
+beta[1]       0.16  0.02    0.12    0.14    0.16    0.18    0.21    1  1100
+beta[2]       0.17  0.02    0.13    0.15    0.17    0.18    0.21    1  3100
+INB[1]       -2.52  2.80   -7.94   -4.38   -2.55   -0.66    3.02    1   660
+INB[2]       -3.15  3.57  -10.17   -5.55   -3.18   -0.74    3.81    1   730
+INB[3]       -3.79  4.46  -12.59   -6.81   -3.82   -0.74    4.87    1   810
+INB[4]       -4.42  5.43  -14.98   -8.15   -4.41   -0.68    6.01    1   900
+INB[5]       -5.06  6.42  -17.57   -9.50   -5.05   -0.62    7.23    1   970
+INB[6]       -5.69  7.44  -20.19  -10.84   -5.68   -0.61    8.70    1  1000
+INB[7]       -6.33  8.47  -23.01  -12.18   -6.36   -0.54   10.07    1  1100
+INB[8]       -6.96  9.51  -25.67  -13.52   -6.93   -0.46   11.42    1  1100
+INB[9]       -7.59 10.56  -28.38  -14.90   -7.60   -0.39   12.83    1  1200
+INB[10]      -8.23 11.61  -31.06  -16.23   -8.20   -0.27   14.26    1  1200
+INB[11]      -8.86 12.67  -33.72  -17.60   -8.83   -0.18   15.60    1  1300
+CEAC[1]       0.18  0.39    0.00    0.00    0.00    0.00    1.00    1   680
+CEAC[2]       0.19  0.39    0.00    0.00    0.00    0.00    1.00    1   810
+CEAC[3]       0.20  0.40    0.00    0.00    0.00    0.00    1.00    1   910
+CEAC[4]       0.21  0.41    0.00    0.00    0.00    0.00    1.00    1  1200
+CEAC[5]       0.22  0.41    0.00    0.00    0.00    0.00    1.00    1  1300
+CEAC[6]       0.23  0.42    0.00    0.00    0.00    0.00    1.00    1  2200
+CEAC[7]       0.23  0.42    0.00    0.00    0.00    0.00    1.00    1  2800
+CEAC[8]       0.23  0.42    0.00    0.00    0.00    0.00    1.00    1  2600
+CEAC[9]       0.24  0.43    0.00    0.00    0.00    0.00    1.00    1  2000
+CEAC[10]      0.24  0.43    0.00    0.00    0.00    0.00    1.00    1  2200
+CEAC[11]      0.24  0.43    0.00    0.00    0.00    0.00    1.00    1  2300
+deviance   9756.35  4.44 9750.00 9753.00 9756.00 9759.00 9766.00    1  2600
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = Dbar-Dhat)
+pD = 9.93 and DIC = 9766.00
+DIC is an estimate of expected predictive error (lower deviance is better).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As is possible to see, all values for &lt;span class=&#34;math inline&#34;&gt;\(\hat{R}\)&lt;/span&gt; are essentially 1,
+indicating that the model has converged. Autocorrelation is somewhat
+large, as confirmed by the fact that the effective sample size is
+relatively small in comparison to the actual sample size (9000
+simulations) for many if not all the nodes. In real-world analyses, this
+would grant further analysis — for example by inspecting the traceplots
+of the nodes and possibly running the model for longer or using thinning
+(see &lt;em&gt;BMHE&lt;/em&gt;, chapter 4 for &lt;tt&gt;R&lt;/tt&gt; code to create
+traceplots).&lt;/p&gt;
+&lt;p&gt;The next part consists in manipulating the object &lt;code&gt;m2&lt;/code&gt; in order to
+obtain more advanced analyses. Notice that in fact, we can use &lt;code&gt;BCEA&lt;/code&gt; to
+do all these, but for the sake of practice, we use our own
+&lt;tt&gt;R&lt;/tt&gt; code, in this case.&lt;/p&gt;
+&lt;p&gt;The first thing to do is a cost-effectiveness plot. Recall that this is
+obtained by plotting the joint distribution of &lt;span class=&#34;math inline&#34;&gt;\(\Delta_e,\Delta_c\)&lt;/span&gt;.
+Thus, it is sufficient to access the nodes &lt;code&gt;delta.e&lt;/code&gt; and &lt;code&gt;delta.c&lt;/code&gt;
+inside the object &lt;code&gt;m2&lt;/code&gt; and the &lt;tt&gt;R&lt;/tt&gt; function
+&lt;code&gt;plot&lt;/code&gt;, as shown below.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(m2$sims.list$delta.e,m2$sims.list$delta.c,pch=20,cex=.8,xlab=&amp;quot;Effectiveness differential&amp;quot;,
+    ylab=&amp;quot;Cost differential&amp;quot;,main=&amp;quot;Cost-effectiveness plane&amp;quot;)
+abline(v=0,lwd=2,col=&amp;quot;gray&amp;quot;)
+abline(h=0,lwd=2,col=&amp;quot;gray&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/04_ild/solutions_files/figure-html/inspectBUGS7-1.png&#34; width=&#34;460.8&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;The command &lt;code&gt;abline&lt;/code&gt; can be used to add a line to the graph. The input
+&lt;code&gt;v=0&lt;/code&gt; indicates a vertical line at 0, while the input &lt;code&gt;h=0&lt;/code&gt; specifies a
+horizontal line at 0. The extra parameters &lt;code&gt;lwd&lt;/code&gt; and &lt;code&gt;col&lt;/code&gt; specify the
+width of the line and the color used, respectively (you can use
+&lt;code&gt;help(plot)&lt;/code&gt; and &lt;code&gt;help(colours)&lt;/code&gt; in your
+&lt;tt&gt;R&lt;/tt&gt; terminal to get more information).&lt;/p&gt;
+&lt;p&gt;We can use this graph to assess the uncertainty around the overall
+cost-effectiveness analysis; for example, we can visually assess the
+proportion of points lying in each of the four quadrants — for instance,
+the vast majority seems to be in the NW quadrant, where the new
+intervention is more expensive and less effective.&lt;/p&gt;
+&lt;p&gt;Next we turn to the analysis of the Incremental Net Benefit (INB). We
+are asked to assess its value for a willingness to pay of
+&lt;span class=&#34;math inline&#34;&gt;\(k=\)&lt;/span&gt;£500. So, using the code provided in the model file, we
+can use the following &lt;tt&gt;R&lt;/tt&gt; commands to identify
+the corresponding index.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;K=numeric()
+K.space=0.1
+for (j in 1:11) {
+    K[j]=(j-1)*K.space
+}
+idx=which(K==0.5)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Firstly, we recreate in the &lt;tt&gt;R&lt;/tt&gt; workspace the
+vector of possible willingness to pay thresholds, &lt;code&gt;K&lt;/code&gt;. Unlike
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;, &lt;tt&gt;R&lt;/tt&gt; requires
+us to define any non-scalar quantity before we can use it, e.g. inside a
+loop. We can do this using the command &lt;code&gt;K=numeric()&lt;/code&gt;, which effectively
+creates a new variable &lt;code&gt;K&lt;/code&gt; and tells &lt;tt&gt;R&lt;/tt&gt; to
+expect a numeric vector (which can also be length 1, i.e. be a scalar).
+Next, we set the step of 0.1 (=£100) in the variable &lt;code&gt;K.space&lt;/code&gt; and use
+it to fill in the vector &lt;code&gt;K&lt;/code&gt;. Notice that in
+&lt;tt&gt;R&lt;/tt&gt; we create loops using the &lt;code&gt;for&lt;/code&gt; function,
+which takes as arguments&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;the index (in this case &lt;code&gt;j&lt;/code&gt;);&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the starting point (in this case 1);&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;the ending point (in this case 11).&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The &lt;tt&gt;R&lt;/tt&gt; notation is fairly straightforward as
+basically instructs the computer to move &lt;code&gt;j&lt;/code&gt; “in 1 to 11” — this means
+that &lt;tt&gt;R&lt;/tt&gt; will repeat the commands specified
+inside the loop (delimited by the two curly brackets “{” and “}”) upon
+varying the index &lt;code&gt;j&lt;/code&gt; from 1 to 2, 3, …, 11.&lt;/p&gt;
+&lt;p&gt;The resulting vector is&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;K&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; [1] 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and the variable &lt;code&gt;idx&lt;/code&gt; is computed as the element of &lt;code&gt;K&lt;/code&gt; that is exactly
+equal to 0.5, as defined in the function &lt;code&gt;which&lt;/code&gt; above. Notice that in
+logical functions (e.g. &lt;code&gt;if&lt;/code&gt;, &lt;code&gt;while&lt;/code&gt;, &lt;code&gt;which&lt;/code&gt;),
+&lt;tt&gt;R&lt;/tt&gt; requires that the equality condition is
+represented by “&lt;code&gt;==&lt;/code&gt;” (notice the double sign of equality).&lt;/p&gt;
+&lt;p&gt;At this point, we can use the &lt;tt&gt;R&lt;/tt&gt; built-in
+functions &lt;code&gt;mean&lt;/code&gt; and &lt;code&gt;quantile&lt;/code&gt; to estimate the average and 95% interval
+for the INB at &lt;span class=&#34;math inline&#34;&gt;\(k=\mbox{\pounds}500\)&lt;/span&gt;. We can do this using the following
+commands.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mean(m2$sims.list$INB[,idx])&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] -5.691401&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;quantile(m2$sims.list$INB[,idx],.025)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;     2.5% 
+-20.19075 &lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;quantile(m2$sims.list$INB[,idx],.975)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;  97.5% 
+8.70215 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Notice again that &lt;code&gt;INB&lt;/code&gt; is defined as a vector in the
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;model (with one value for each value of
+&lt;code&gt;K&lt;/code&gt;). This means that resulting object from the
+&lt;span&gt;&lt;span&gt;&lt;tt&gt;BUGS&lt;/tt&gt;&lt;/span&gt;&lt;/span&gt;simulations is turned into a matrix
+(increased by one dimension) and what we need is to access all the rows
+of the &lt;code&gt;idx&lt;/code&gt;-th column (which is associated with
+&lt;span class=&#34;math inline&#34;&gt;\(k=\mbox{\pounds}500\)&lt;/span&gt;).&lt;/p&gt;
+&lt;p&gt;We can manipulate the simulation further to obtain an estimate of the
+probability that the INB is positive at this threshold. This can be
+easily obtained by computing the proportion of simulations for which
+this is true, which we do using the following command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;sum(m2$sims.list$INB[,idx]&amp;gt;0)/m2$n.sims&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 0.227&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The logical expression &lt;code&gt;m2$sims.list$INB[,idx]&amp;gt;0&lt;/code&gt; checks whether each of
+the &lt;code&gt;m2$n.sims&lt;/code&gt; simulations in the &lt;code&gt;idx&lt;/code&gt;-th column of the matrix
+&lt;code&gt;m2$sims.list$INB&lt;/code&gt; is positive. If so, it returns a 1, while if not, it
+will return a 0. Thus to sum over all these 1s and 0s and then divide by
+the total number of simulations, will provide an estimate of the
+probability that INB is positive.&lt;/p&gt;
+&lt;p&gt;Finally, we can compute and plot the Cost-Effectiveness Acceptability
+Curve (CEAC), using the following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;CEAC=numeric()
+for (i in 1:length(K)) {
+    CEAC[i]=mean(m2$sims.list$CEAC[,i]) 
+}
+plot(K,CEAC,xlab=&amp;quot;Willingness to pay (x 1000)&amp;quot;,ylab=&amp;quot;Cost-effectiveness acceptability curve&amp;quot;,
+     main=&amp;quot;&amp;quot;,t=&amp;quot;l&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/04_ild/solutions_files/figure-html/inspectBUGS12-1.png&#34; width=&#34;460.8&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Firstly, recall that the CEAC is in fact the probability that INB is
+positive, for each selected value of the willingness to pay. So we
+define a vector &lt;code&gt;CEAC&lt;/code&gt;, in which we want to store the best estimate
+(i.e. the mean of the posterior distribution) from our model. To do
+this, we create a &lt;code&gt;for&lt;/code&gt; loop. Notice that this time, we are being a bit
+clever and instead of specifying the ending point of the loop, we let
+&lt;tt&gt;R&lt;/tt&gt; compute it itself by defining it equal to
+&lt;code&gt;length(K)&lt;/code&gt; — that is, obviously, the length of the vector &lt;code&gt;K&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Once the vector &lt;code&gt;CEAC&lt;/code&gt; has been filled in, we can simply plot it agains
+the values of the willingness to pay using the &lt;code&gt;plot&lt;/code&gt; function. Notice
+that, by default, &lt;code&gt;plot&lt;/code&gt; uses open dots to display the selected values.
+To overwrite this behaviour, we need to specify the option &lt;code&gt;t=l&lt;/code&gt;, which
+instructs &lt;tt&gt;R&lt;/tt&gt; to use a line (curve) instead.&lt;/p&gt;
+&lt;p&gt;We can link the CEAC with the Cost-Effectiveness plane by noticing that the former is essentially the proportion of “futures” (i.e. simulated points in the latter) that lie below the line &lt;span class=&#34;math inline&#34;&gt;\(\Delta_e=k\Delta_c\)&lt;/span&gt;, for a given willingness to pay threshold, &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/04_ild/solutions_files/figure-html/inspectBUGS13-1.png&#34; width=&#34;460.8&#34; style=&#34;display: block; margin: auto;&#34; /&gt;
+For example, the graph above plots the line &lt;span class=&#34;math inline&#34;&gt;\(\Delta_e=0.4\Delta_c\)&lt;/span&gt;, which implies we’re considering &lt;span class=&#34;math inline&#34;&gt;\(k=0.4\)&lt;/span&gt; (recall that the costs are scaled by £1000, so in fact, we mean &lt;span class=&#34;math inline&#34;&gt;\(k=\)&lt;/span&gt;£400!). As is possible to see, most of the points lie &lt;strong&gt;above&lt;/strong&gt; the willingness to pay. In other words, it is much more likely that the intervention &lt;span class=&#34;math inline&#34;&gt;\(t=1\)&lt;/span&gt; is &lt;em&gt;not&lt;/em&gt; cost-effective. The proportion of points below the line (&lt;a href=&#34;https://gianluca.statistica.it/book/bmhe/&#34;&gt;BMHE&lt;/a&gt; refers to this as the “sustainability area”) is below 0.5 and it indicates, for that given willingness to pay, the CEAC.&lt;/p&gt;
+&lt;p&gt;In reality, we do not really need to perform the economic evaluation “by hand”, ie programming the code above to compute the various health economic summaries and graphical representations. This is the point of &lt;code&gt;BCEA&lt;/code&gt;!… In this case, the output of the &lt;code&gt;BUGS&lt;/code&gt; model does contain the population average measures of costs and effectiveness — these are the parameters &lt;code&gt;mu.c&lt;/code&gt; and &lt;code&gt;mu.e&lt;/code&gt;. We can simply pass these as “input” to &lt;code&gt;bcea&lt;/code&gt; and obtain all the necessary and relevant economic summaries and plots. For instance, we can use the following code to create two matrices &lt;code&gt;e&lt;/code&gt; and &lt;code&gt;c&lt;/code&gt;, which we can then feed to &lt;code&gt;BCEA&lt;/code&gt; as input.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Defines the population average &amp;quot;effectiveness measures&amp;quot; (NB: days in hospital are bad so take -e!)
+e = -m2$sims.list$mu.e
+# Defines the population average &amp;quot;cost measures&amp;quot;
+c = m2$sims.list$mu.c
+# Calls BCEA
+library(BCEA)
+# Runs the function `bcea` to obtain the health economics summary
+he=bcea(
+  # Defines the inputs
+  e,c,
+  # Labels for the two intervention groups
+  interventions=c(&amp;quot;Standard case management&amp;quot;,&amp;quot;Intensive case management&amp;quot;),
+  # Defines the &amp;quot;reference&amp;quot; interventions (the one that is evaluated)
+  ref=2,
+  # Selects the maximum value for the willingness to pay threshold
+  Kmax=1000
+)
+# Now can summarise the decision problem
+summary(he)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;NB: k (wtp) is defined in the interval [0 - 1000]
+
+Cost-effectiveness analysis summary 
+
+Reference intervention:  Intensive case management
+Comparator intervention: Standard case management
+
+Standard case management dominates for all k in [0 - 1000] 
+
+
+Analysis for willingness to pay parameter k = 1000
+
+                          Expected utility
+Standard case management            -74728
+Intensive case management           -81073
+
+                                                          EIB    CEAC    ICER
+Intensive case management vs Standard case management -6345.2 0.28222 -0.3973
+
+Optimal intervention (max expected utility) for k = 1000: Standard case management
+           
+EVPI 1834.8&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Or plot the results
+ceplane.plot(he) &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/04_ild/solutions_files/figure-html/hebcea-1.png&#34; width=&#34;55%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;br&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;running-the-model-using-r2jags&#34; class=&#34;section level1&#34;&gt;
+&lt;h1&gt;Running the model using R2jags&lt;/h1&gt;
+&lt;p&gt;In general, there aren’t many differences in running a model using &lt;code&gt;JAGS&lt;/code&gt; or &lt;code&gt;BUGS&lt;/code&gt;. In this particular case, however, a “vanilla” run of the code in the file &lt;a href=&#34;IPD_analysis.R&#34;&gt;&lt;code&gt;IPD_analysis.R&lt;/code&gt;&lt;/a&gt; may give some interesting inconsistency.&lt;/p&gt;
+&lt;p&gt;&lt;div class=&#34;alert alert-warning&#34;&gt;
+  &lt;div&gt;
+    You do &lt;strong&gt;NOT&lt;/strong&gt; need to run the model using &lt;code&gt;R2jags&lt;/code&gt; — this is just so you are aware of the potential issues. Or, of course, in case you &lt;em&gt;are&lt;/em&gt; running &lt;code&gt;JAGS&lt;/code&gt; and have encountered this first hand!
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;The script basically is identical — the only differences are that&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;You load the package &lt;code&gt;R2jags&lt;/code&gt; instead of &lt;code&gt;R2OpenBUGS&lt;/code&gt;;&lt;/li&gt;
+&lt;li&gt;You call the function &lt;code&gt;jags&lt;/code&gt; instead of the function &lt;code&gt;bugs&lt;/code&gt;. Specifically, the call to &lt;code&gt;jags&lt;/code&gt; should &lt;strong&gt;not&lt;/strong&gt; include the option &lt;code&gt;debug&lt;/code&gt;, which is specific to &lt;code&gt;R2OpenBUGS&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;However, if you run the script and call&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;model.file=&amp;quot;normal-mod.txt&amp;quot;
+params &amp;lt;- c(&amp;quot;mu&amp;quot;,&amp;quot;ss&amp;quot;,&amp;quot;ls&amp;quot;,&amp;quot;delta.c&amp;quot;,&amp;quot;dev&amp;quot;,&amp;quot;total.dev&amp;quot;)
+n.chains=2
+n.burnin=1000
+n.iter=2000
+n.thin=1
+m=jags(data=cost.data,inits=NULL,model.file=model.file,parameters.to.save=params,
+       n.chains=n.chains,n.iter=n.iter,n.burnin=n.burnin,n.thin=n.thin,DIC=T)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;interestingly the summary table looks like this.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;print(m,digits=2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Inference for Bugs model at &amp;quot;normal-mod.txt&amp;quot;, fit using jags,
+ 2 chains, each with 2000 iterations (first 1000 discarded)
+ n.sims = 2000 iterations saved
+           mu.vect sd.vect     2.5%      25%      50%      75%    97.5% Rhat n.eff
+delta.c       1.63    9.35   -16.96    -4.54     1.86     7.93    19.73 1.01  2000
+dev[1]     3583.82  378.94  2994.04  3200.21  3815.87  3925.86  3934.52 4.76     2
+dev[2]     3891.97   67.47  3749.52  3836.38  3928.69  3942.13  3972.89 3.48     3
+ls[1]         4.36    0.71     3.07     3.77     4.81     4.98     4.99 3.77     2
+ls[2]         4.87    0.10     4.65     4.79     4.93     4.95     5.00 3.46     3
+mu[1]        22.70    5.93    10.01    19.78    22.66    25.39    36.14 1.22   110
+mu[2]        24.33    7.23    10.15    19.65    24.39    29.46    38.22 1.09   390
+ss[1]     12042.81 9274.28   463.50  1888.71 15634.44 21181.73 21746.46 4.19     2
+ss[2]     17410.39 3360.54 10968.97 14388.13 19129.83 19906.17 21902.75 3.50     3
+total.dev  7475.79  339.34  6924.63  7142.32  7658.96  7760.59  7862.98 3.87     2
+deviance   7475.79  339.34  6924.63  7142.32  7658.96  7760.59  7862.98 3.87     2
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = var(deviance)/2)
+pD = 16814.4 and DIC = 24290.2
+DIC is an estimate of expected predictive error (lower deviance is better).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The exact same model, with the exact same data, shows different results with evidence of &lt;strong&gt;very&lt;/strong&gt; poor mixing in the chains (high values of &lt;code&gt;Rhat&lt;/code&gt; and very low values for &lt;code&gt;n.eff&lt;/code&gt;)!&lt;/p&gt;
+&lt;p&gt;The reason for this is in the different way in which &lt;code&gt;OpenBUGS&lt;/code&gt; and &lt;code&gt;JAGS&lt;/code&gt; handle the generation of initial values: the former uses a random draw from the prior distribution, while the latter uses values that are restricted to be in the proximity of the mean of the prior distribution&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In this case, &lt;code&gt;R2OpenBUGS&lt;/code&gt; does a better job at selecting initial values that are closer to the main mass in the posterior distribution, which means that the
+process converges much more easily and quickly. The process can be “saved” either by running the chains for longer, or by selecting “better” initial values. For instance, running the code&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m=jags(data=cost.data,inits=NULL,model.file=model.file,parameters.to.save=params,
+       n.chains=n.chains,n.iter=10000,n.burnin=9000,n.thin=n.thin,DIC=T)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;(which creates 10000 simulations, discards the first 9000 and thus saves 1000 per chain — or 2000 in total). The summary statistics look &lt;em&gt;much&lt;/em&gt; better now:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;print(m,digits=2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Inference for Bugs model at &amp;quot;normal-mod.txt&amp;quot;, fit using jags,
+ 2 chains, each with 10000 iterations (first 9000 discarded)
+ n.sims = 2000 iterations saved
+          mu.vect sd.vect    2.5%     25%     50%     75%   97.5% Rhat n.eff
+delta.c      1.90    1.74   -1.53    0.71    1.91    3.03    5.30 1.00   570
+dev[1]    2995.58    2.02 2993.68 2994.20 2994.94 2996.28 3000.71 1.01  2000
+dev[2]    3064.08    1.86 3062.30 3062.79 3063.55 3064.69 3068.71 1.01  1100
+ls[1]        3.09    0.04    3.02    3.07    3.09    3.12    3.17 1.00  2000
+ls[2]        3.15    0.04    3.08    3.13    3.15    3.18    3.22 1.01  1500
+mu[1]       22.68    1.19   20.34   21.92   22.68   23.48   24.99 1.00   870
+mu[2]       24.58    1.25   22.15   23.75   24.57   25.42   27.02 1.00  1200
+ss[1]      487.75   37.82  418.52  461.10  485.74  511.92  569.74 1.00  2000
+ss[2]      549.30   40.44  476.95  520.62  547.32  577.18  632.35 1.01  1600
+total.dev 6059.66    2.75 6056.41 6057.67 6058.93 6060.96 6066.85 1.00  2000
+deviance  6059.66    2.75 6056.41 6057.67 6058.93 6060.96 6066.85 1.00  2000
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = var(deviance)/2)
+pD = 3.8 and DIC = 6063.5
+DIC is an estimate of expected predictive error (lower deviance is better).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;All the &lt;code&gt;Rhat&lt;/code&gt; statistics are below 1.1 and the &lt;code&gt;n.eff&lt;/code&gt; values are much closer, in general, to the “nominal” sample size &lt;code&gt;n.sims=2000&lt;/code&gt;. Even better, we can pass “reasonable” initial values and ensure even better and quicker convergence. For instance, we could use the files &lt;a href=&#34;normal-inits1.txt&#34;&gt;&lt;code&gt;normal-initis1.txt&lt;/code&gt;&lt;/a&gt; and &lt;a href=&#34;normal-inits2.txt&#34;&gt;&lt;code&gt;normal-inits2.txt&lt;/code&gt;&lt;/a&gt;, which can be loaded into the workspace and stored in a &lt;code&gt;list&lt;/code&gt; using the following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;inits=list(source(&amp;quot;normal-inits1.txt&amp;quot;)$value,source(&amp;quot;normal-inits2.txt&amp;quot;)$value)
+inits&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [[1]]
+## [[1]]$mu
+## [1] 0.316036 1.282370
+## 
+## [[1]]$ls
+## [1] 0.437099 0.493518
+## 
+## 
+## [[2]]
+## [[2]]$mu
+## [1] 1.73574 1.31659
+## 
+## [[2]]$ls
+## [1] -1.96202 -1.06980&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can run the original model by specifying these&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m=jags(data=cost.data,inits=inits,model.file=model.file,parameters.to.save=params,
+       n.chains=n.chains,n.iter=n.iter,n.burnin=n.burnin,n.thin=n.thin,DIC=T)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and see that convergence is &lt;em&gt;not&lt;/em&gt; an issue, even with simply &lt;code&gt;n.iter=&lt;/code&gt; 2000 total iterations and &lt;code&gt;n.burnin=&lt;/code&gt; 1000 discarded as burn-in.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;print(m,digits=2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Inference for Bugs model at &amp;quot;normal-mod.txt&amp;quot;, fit using jags,
+ 2 chains, each with 2000 iterations (first 1000 discarded)
+ n.sims = 2000 iterations saved
+          mu.vect sd.vect    2.5%     25%     50%     75%   97.5% Rhat n.eff
+delta.c      1.92    1.73   -1.39    0.75    1.94    3.07    5.33 1.00  2000
+dev[1]    2995.61    2.03 2993.67 2994.16 2994.98 2996.31 3001.05 1.00  2000
+dev[2]    3064.19    1.84 3062.30 3062.85 3063.58 3065.00 3068.91 1.00  1400
+ls[1]        3.09    0.04    3.02    3.07    3.09    3.12    3.17 1.01   210
+ls[2]        3.15    0.04    3.08    3.13    3.15    3.18    3.23 1.00   810
+mu[1]       22.65    1.20   20.22   21.85   22.63   23.43   25.01 1.00  1100
+mu[2]       24.57    1.26   22.12   23.73   24.60   25.43   27.06 1.00  2000
+ss[1]      486.70   37.71  418.45  461.68  484.59  510.23  568.02 1.01   210
+ss[2]      551.06   42.28  473.12  520.73  549.09  578.76  641.82 1.00   820
+total.dev 6059.79    2.67 6056.44 6057.71 6059.21 6061.27 6066.09 1.00  1400
+deviance  6059.79    2.67 6056.44 6057.71 6059.21 6061.27 6066.09 1.00  1400
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = var(deviance)/2)
+pD = 3.6 and DIC = 6063.3
+DIC is an estimate of expected predictive error (lower deviance is better).&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes footnotes-end-of-document&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;The &lt;a href=&#34;https://sourceforge.net/projects/mcmc-jags/files/Manuals/4.x/jags_user_manual.pdf/download&#34;&gt;&lt;code&gt;JAGS&lt;/code&gt; manual&lt;/a&gt; states on page 16 that “&lt;em&gt;initial values are not supplied by the user, then each parameter chooses its own initial value based on the values of its parents. The initial value is chosen to be a ‘typical value’ from the prior distribution. The exact meaning of ‘typical value’ depends on the distribution of the stochastic node, but is usually the mean, median, or mode&lt;/em&gt;”&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

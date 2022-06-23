@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>5 | Bayesian methods in health economics</title>
+    <link>/publication-type/5/</link>
+      <atom:link href="/publication-type/5/index.xml" rel="self" type="application/rss+xml" />
+    <description>5</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 01 Dec 2020 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>5</title>
+      <link>/publication-type/5/</link>
+    </image>
+    
+    <item>
+      <title>Doing Meta-Analysis in R</title>
+      <link>/publication/harrer-etal-2020/</link>
+      <pubDate>Tue, 01 Dec 2020 00:00:00 +0000</pubDate>
+      <guid>/publication/harrer-etal-2020/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bayesian Cost-Effectiveness Analysis with the R package BCEA</title>
+      <link>/publication/baioetal-2016/</link>
+      <pubDate>Sat, 01 Jul 2017 00:00:00 +0000</pubDate>
+      <guid>/publication/baioetal-2016/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R for Data Science</title>
+      <link>/publication/wickham-etal-2020/</link>
+      <pubDate>Wed, 01 Jun 2016 00:00:00 +0000</pubDate>
+      <guid>/publication/wickham-etal-2020/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Doing Bayesian Data Analysis</title>
+      <link>/publication/kruschke-2015/</link>
+      <pubDate>Mon, 01 Jun 2015 00:00:00 +0000</pubDate>
+      <guid>/publication/kruschke-2015/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hands-On Programming with R</title>
+      <link>/publication/gromelund-2014/</link>
+      <pubDate>Sun, 01 Jun 2014 00:00:00 +0000</pubDate>
+      <guid>/publication/gromelund-2014/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bayesian Data Analysis, 3rd edition</title>
+      <link>/publication/gelman-etal-2013/</link>
+      <pubDate>Mon, 04 Nov 2013 00:00:00 +0000</pubDate>
+      <guid>/publication/gelman-etal-2013/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bayesian Methods in Health Economics</title>
+      <link>/publication/baio-2012/</link>
+      <pubDate>Thu, 01 Nov 2012 00:00:00 +0000</pubDate>
+      <guid>/publication/baio-2012/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>The BUGS Book</title>
+      <link>/publication/lunn-etal-2012/</link>
+      <pubDate>Thu, 01 Nov 2012 00:00:00 +0000</pubDate>
+      <guid>/publication/lunn-etal-2012/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Evidence Synthesis for Decision Making in Healthcare</title>
+      <link>/publication/welton-etal-2012/</link>
+      <pubDate>Tue, 01 May 2012 00:00:00 +0000</pubDate>
+      <guid>/publication/welton-etal-2012/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Missing data in longitudinal studies: strategies for Bayesian modeling and sensitivity analysis</title>
+      <link>/publication/daniels-hogan-2008/</link>
+      <pubDate>Sun, 01 Jun 2008 00:00:00 +0000</pubDate>
+      <guid>/publication/daniels-hogan-2008/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Data Analysis Using Regression and Multilevel/Hierarchical Models</title>
+      <link>/publication/gelman-hill-2007/</link>
+      <pubDate>Sat, 01 Sep 2007 00:00:00 +0000</pubDate>
+      <guid>/publication/gelman-hill-2007/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Decision Modelling for Health Economic Evaluation</title>
+      <link>/publication/briggs-etal-2006/</link>
+      <pubDate>Thu, 01 Jun 2006 00:00:00 +0000</pubDate>
+      <guid>/publication/briggs-etal-2006/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bayesian approaches to clinical trials and health care evaluation</title>
+      <link>/publication/spiegelhalter-etal-2004/</link>
+      <pubDate>Mon, 01 Nov 2004 00:00:00 +0000</pubDate>
+      <guid>/publication/spiegelhalter-etal-2004/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

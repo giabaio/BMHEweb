@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practical 5. Evidence synthesis and decision models | Bayesian methods in health economics</title>
+    <link>/practical/05_ald/</link>
+      <atom:link href="/practical/05_ald/index.xml" rel="self" type="application/rss+xml" />
+    <description>Practical 5. Evidence synthesis and decision models</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 21 Jun 2022 12:15:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Practical 5. Evidence synthesis and decision models</title>
+      <link>/practical/05_ald/</link>
+    </image>
+    
+    <item>
+      <title>Practical 5. Evidence synthesis and decision models — SOLUTIONS</title>
+      <link>/practical/05_ald/solutions/</link>
+      <pubDate>Tue, 21 Jun 2022 12:15:00 +0000</pubDate>
+      <guid>/practical/05_ald/solutions/</guid>
+      <description>
+
+
+&lt;div id=&#34;decision-modelling&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Decision modelling&lt;/h2&gt;
+&lt;p&gt;Once you have checked the model code in the file &lt;code&gt;EvSynth.txt&lt;/code&gt;, you can concentrate on the &lt;tt&gt;R&lt;/tt&gt; script. The first part
+is fairly simple.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Influenza example --- source: Cooper et al (2004); Baio (2012)
+
+# Sets up the working directory to the current one
+working.dir &amp;lt;- getwd()
+setwd(working.dir)
+
+# Defines the data
+# Number of interventions (t=0: control; t=1: prophylactic use of Neuramidase Inhibitors (NI) 
+T &amp;lt;- 2                  
+
+# Evidence synthesis on effectiveness of NIs prophylaxis vs placebo
+r0 &amp;lt;- r1 &amp;lt;- n0 &amp;lt;- n1 &amp;lt;- numeric()   # defines observed cases &amp;amp; sample sizes
+r0 &amp;lt;- c(34,40,9,19,6,34)
+r1 &amp;lt;- c(11,7,3,3,3,4)
+n0 &amp;lt;- c(554,423,144,268,251,462)
+n1 &amp;lt;- c(553,414,144,268,252,493)
+S &amp;lt;- length(r0)             # number of relevant studies
+
+# Evidence synthesis on incidence of influenza in healthy adults (under t=0)
+x &amp;lt;- m &amp;lt;- numeric()         # defines observed values for baseline risk
+x &amp;lt;- c(0,6,5,6,25,18,14,3,27)
+m &amp;lt;- c(23,241,159,137,519,298,137,24,132)
+H &amp;lt;- length(x)
+
+# Data on costs
+unit.cost.drug &amp;lt;- 2.4       # unit (daily) cost of NI
+length.treat &amp;lt;- 6*7     # 6 weeks course of treatment
+c.gp &amp;lt;- 19          # cost of GP visit to administer prophylactic NI
+vat &amp;lt;- 1.175            # VAT
+c.ni &amp;lt;- unit.cost.drug*length.treat*vat 
+
+# Informative prior on cost of influenza 
+mu.inf &amp;lt;- 16.78         # mean cost of influenza episode
+sigma.inf &amp;lt;- 2.34       # sd cost of influenza episode
+tau.inf &amp;lt;- 1/sigma.inf^2    # precision cost of influenza episode&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The First couple of lines set up the working directory. In previous practicals, we have seen how you can do this by setting a path to the
+folder you want to use. In this case, we first define a variable &lt;code&gt;working.dir&lt;/code&gt;, which we set equal to the current directory (accessed by
+the &lt;tt&gt;R&lt;/tt&gt; command &lt;code&gt;getwd()&lt;/code&gt;). The second line is actually not necessary, strictly speaking, because we already are in the
+current directory. But this shows, again, how we can use &lt;code&gt;getwd()&lt;/code&gt; and &lt;code&gt;setwd()&lt;/code&gt; to move across the folders in our computer. Notice that we are using in the script the assign “&lt;code&gt;-&amp;gt;&lt;/code&gt;” sign, while in previous practicals we have used the equal “&lt;code&gt;=&lt;/code&gt;” sign. For all intents and purposes,
+&lt;tt&gt;R&lt;/tt&gt; considers them as meaning the same thing.&lt;/p&gt;
+&lt;p&gt;Then we start to define the data. Some of the variables we need to define are simple scalars, e.g. &lt;code&gt;T &amp;lt;- 2&lt;/code&gt;, the number of interventions.
+Others are vectors, in which case we need to first define them as &lt;code&gt;numeric()&lt;/code&gt;. Notice that you can cascade the &lt;code&gt;-&amp;gt;&lt;/code&gt; operator as in
+&lt;code&gt;r0 &amp;lt;- r1 &amp;lt;- n0 &amp;lt;- n1 &amp;lt;- numeric()&lt;/code&gt;, which defines several objects as equal to each other and to an empty vector.&lt;/p&gt;
+&lt;p&gt;The next bit of code defines a &lt;tt&gt;R&lt;/tt&gt; function that we will use to compute the value of the parameters to associate with a logNormal distribution so that the mean and standard deviation &lt;em&gt;on the natural scale&lt;/em&gt; are (approximately) equal to some input values.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Informative prior on length of influenza episodes
+## Compute the value of parameters (mulog,sigmalog) for a logNormal 
+## distribution to have mean and sd (m,s)
+lognPar &amp;lt;- function(m,s) {
+  s2 &amp;lt;- s^2
+  mulog &amp;lt;- log(m) - 0.5 * log(1+s2/m^2)
+  s2log &amp;lt;- log(1+(s2/m^2))
+  sigmalog &amp;lt;- sqrt(s2log)
+  list(mulog = mulog, sigmalog = sigmalog)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;tt&gt;R&lt;/tt&gt; functions are defined by the keyword &lt;code&gt;function&lt;/code&gt; and may or may not have arguments. If you want to specify a function without argument, you can use the following code: &lt;code&gt;myfn &amp;lt;- function()&lt;/code&gt;. The commands included between the two curly brackets &lt;code&gt;{&lt;/code&gt; and &lt;code&gt;}&lt;/code&gt; are those that the function will execute.&lt;/p&gt;
+&lt;p&gt;In this case, we are specifying that the function called &lt;code&gt;lognPar&lt;/code&gt; has two inputs (arguments). &lt;code&gt;m&lt;/code&gt; is the mean that you want your logNormal
+distribution to have on the natural scale, while &lt;code&gt;s&lt;/code&gt; indicates its intended standard deviation. The function proceeds to first defining the
+variance &lt;code&gt;s2&lt;/code&gt; by squaring the standard deviation; then it creates a new variable &lt;code&gt;mulog&lt;/code&gt; defined as the mean on the log scale (cfr. &lt;a href=&#34;https://egon.stats.ucl.ac.uk/static/stat0019/slides/07_ALD/&#34;&gt;Lecture 7&lt;/a&gt;) in terms of the mean and standard deviation on the natural scale; then
+it creates &lt;code&gt;s2log&lt;/code&gt;, the variance on the log scale, as well as &lt;code&gt;sigmalog&lt;/code&gt;, the standard deviation on the log scale. Finally, the variables that we want the function to output are included in a (named) list. When this code is “sourced” (or executed), &lt;code&gt;lognPar&lt;/code&gt; becomes available to your &lt;tt&gt;R&lt;/tt&gt; workspace and for example you can use it using a command like the following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;lognPar(3,2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$mulog
+[1] 0.9147499
+
+$sigmalog
+[1] 0.6064031&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;x &amp;lt;- rlnorm(10000,lognPar(3,2)$mulog,lognPar(3,2)$sigmalog)
+c(mean(x),sd(x),quantile(x,0.025),quantile(x,0.975))&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;                         2.5%     97.5% 
+2.9924542 2.0223211 0.7648183 8.1689680 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;which returns the values you should use to model a logNormal distribution so that its mean and standard deviation match your intended
+values. You can check that all works the way you want by simulating a variable &lt;code&gt;x&lt;/code&gt; using the &lt;tt&gt;R&lt;/tt&gt; built-in function &lt;code&gt;rlnorm&lt;/code&gt; — in this case we can do 10000 simulations using &lt;code&gt;lognPar(3,2)$mulog&lt;/code&gt; as the mean and &lt;code&gt;lognPar(3,2)$sigmalog&lt;/code&gt; as the standard deviation. The summary statistics provided above shows that effectively this works perfectly.&lt;/p&gt;
+&lt;p&gt;In fact, we can use the newly created function to complete the definition of the main data for our model, as shown below.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m.l &amp;lt;- 8.2                              # original value in the paper: 8.2
+s.l &amp;lt;- sqrt(2)                          # original value in the paper: sqrt(2)
+mu.l &amp;lt;- lognPar(m.l,s.l)$mulog          # mean time to recovery (log scale)
+sigma.l &amp;lt;- lognPar(m.l,s.l)$sigmalog    # sd time to recovery (log scale)
+tau.l &amp;lt;- 1/sigma.l^2                    # precision time to recovery (log scale)
+
+# Parameters of unstructured effects
+mean.alpha &amp;lt;- 0
+sd.alpha &amp;lt;- sqrt(10)
+prec.alpha &amp;lt;- 1/sd.alpha^2
+mean.mu.delta &amp;lt;- 0
+sd.mu.delta &amp;lt;- sqrt(10)
+prec.mu.delta &amp;lt;- 1/sd.mu.delta^2
+mean.mu.gamma &amp;lt;- 0
+sd.mu.gamma &amp;lt;- 1000
+prec.mu.gamma &amp;lt;- 1/sd.mu.gamma^2&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;All these are fairly simple. The only thing that is perhaps worth noticing is that the &lt;tt&gt;BUGS&lt;/tt&gt; model will use some Normal and logNormal distributions and so we will need to use precisions. For this reason, we create for example the quantity &lt;code&gt;tau.l&lt;/code&gt;, which is 1 divided by a variance (i.e. a precision), which we can directly use.&lt;/p&gt;
+&lt;p&gt;We can now call &lt;tt&gt;BUGS&lt;/tt&gt; and run the model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Prepares to launch OpenBUGS
+library(R2OpenBUGS)
+
+# Creates the data list
+data &amp;lt;- list(S=S,H=H,r0=r0,r1=r1,n0=n0,n1=n1,x=x,m=m,mu.inf=mu.inf,tau.inf=tau.inf,
+             mu.l=mu.l,tau.l=tau.l,mean.alpha=mean.alpha,prec.alpha=prec.alpha,
+             mean.mu.delta=mean.mu.delta,prec.mu.delta=prec.mu.delta,
+             mean.mu.gamma=mean.mu.gamma,prec.mu.gamma=prec.mu.gamma)
+
+# Points to the txt file where the OpenBUGS model is saved
+filein &amp;lt;- &amp;quot;EvSynth.txt&amp;quot;
+
+# Defines the parameters list
+params &amp;lt;- c(&amp;quot;p1&amp;quot;,&amp;quot;p2&amp;quot;,&amp;quot;rho&amp;quot;,&amp;quot;l&amp;quot;,&amp;quot;c.inf&amp;quot;,&amp;quot;alpha&amp;quot;,&amp;quot;delta&amp;quot;,&amp;quot;gamma&amp;quot;)
+
+# Creates a function to draw random initial values 
+inits &amp;lt;- function(){
+    list(alpha=rnorm(S,0,1),delta=rnorm(S,0,1),mu.delta=rnorm(1),
+       sigma.delta=runif(1),gamma=rnorm(H,0,1),mu.gamma=rnorm(1),
+       sigma.gamma=runif(1),c.inf=rnorm(1))
+}
+
+# Sets the number of iterations, burnin and thinning
+n.iter &amp;lt;- 10000
+n.burnin &amp;lt;- 9500
+n.thin &amp;lt;- 20
+
+# Finally calls OpenBUGS to do the MCMC run and saves results to the object &amp;quot;es&amp;quot;
+es &amp;lt;- bugs(data=data,inits=inits,parameters.to.save=params,model.file=filein,
+    n.chains=2, n.iter, n.burnin, n.thin, DIC=TRUE, working.directory=working.dir)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Most of these commands should be fairly familiar by now. We first load &lt;code&gt;R2OpenBUGS&lt;/code&gt;, then include all the relevant data in a list and define
+the path to the file where the model is saved (here we assume that the file is in the working directory) and then define the parameters to
+monitor.&lt;/p&gt;
+&lt;p&gt;When it comes to defining the inital values, we use this time a bespoke function that we create to simulate suitable values for the variables we want to initialise. For example, the &lt;tt&gt;BUGS&lt;/tt&gt; model defines&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;...
+# Evidence synthesis for efffectiveness of NIs
+    for (s in 1:S) { 
+        r0[s] ~ dbin(pi0[s],n0[s])
+      ...
+        delta[s] ~ dnorm(mu.delta,tau.delta)
+        alpha[s] ~ dnorm(mean.alpha,prec.alpha)
+    } 
+...&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;which implies that the node &lt;code&gt;alpha&lt;/code&gt; is a vector with length &lt;code&gt;S&lt;/code&gt;. Thus, when we initialise it, we need to provide &lt;tt&gt;R&lt;/tt&gt; and &lt;tt&gt;BUGS&lt;/tt&gt; with &lt;code&gt;S&lt;/code&gt; values. We do this in our &lt;code&gt;inits&lt;/code&gt; function by defining &lt;code&gt;alpha=rnorm(S,0,1)&lt;/code&gt; — this creates &lt;code&gt;S&lt;/code&gt; random draws from a Uniform(0,1)
+distribution.&lt;/p&gt;
+&lt;p&gt;In fact, we are &lt;em&gt;not&lt;/em&gt; initialising all the unobserved nodes associated with a probability distribution: if you look at the &lt;tt&gt;BUGS&lt;/tt&gt; model code, you will notice that the nodes &lt;code&gt;phi&lt;/code&gt; and &lt;code&gt;l&lt;/code&gt; are also of this kind and so, technically, they need initialisation. If we do not do anything, &lt;tt&gt;BUGS&lt;/tt&gt; will take care of it itself. But we can simply add them by simply modifying the &lt;code&gt;inits&lt;/code&gt; function as following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Creates a function to draw random initial values 
+inits &amp;lt;- function(){
+    list(alpha=rnorm(S,0,1),delta=rnorm(S,0,1),mu.delta=rnorm(1),
+       sigma.delta=runif(1),gamma=rnorm(H,0,1),mu.gamma=rnorm(1),
+       sigma.gamma=runif(1),c.inf=rnorm(1)
+         # Now add the new variables
+         , # Make sure you include a &amp;#39;comma&amp;#39; between variables! 
+         l=runif(1),phi=rnorm(1)
+         )
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Notice that we need to separate the variables included in the list using commas. You can see what this function does by simply calling it,
+e.g. &lt;code&gt;inits()&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We instruct &lt;tt&gt;R&lt;/tt&gt; and &lt;tt&gt;BUGS&lt;/tt&gt; to run this model for 2 chains — notice we hard-code this in the call to the function &lt;code&gt;bugs&lt;/code&gt;. You can always do this, although it is &lt;em&gt;not&lt;/em&gt; best practice (and you are probably better off by creating suitable variables and then referring to them as inputs to functions). We select a burn-in of 9500 iterations and then do a further 10000 iterations, which we thin by 20. This means we run the model for a total of &lt;span class=&#34;math inline&#34;&gt;\(2\times (9500+10000)=39000\)&lt;/span&gt; iterations and then because we throw away the first &lt;span class=&#34;math inline&#34;&gt;\(2\times 9500\)&lt;/span&gt; and we only store 1 in 20 of the remaining, the final analysis is based on &lt;span class=&#34;math inline&#34;&gt;\(1000\)&lt;/span&gt; iterations.&lt;/p&gt;
+&lt;p&gt;Once &lt;tt&gt;BUGS&lt;/tt&gt; has finished, we regain control of the &lt;tt&gt;R&lt;/tt&gt; session and we can print the output.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Displays the summary statistics
+print(es,digits=2)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Inference for Bugs model at &amp;quot;EvSynth.txt&amp;quot;, 
+Current: 2 chains, each with 10000 iterations (first 9500 discarded), n.thin = 20
+Cumulative: n.sims = 1000 iterations saved
+          mean   sd  2.5%   25%   50%   75%  97.5% Rhat n.eff
+p1        0.02 0.01  0.00  0.01  0.02  0.03   0.06 1.01   290
+p2        0.00 0.01  0.00  0.00  0.00  0.01   0.01 1.01   240
+rho       0.22 0.18  0.11  0.17  0.21  0.24   0.39 1.00  1000
+l         8.15 1.41  5.74  7.22  8.01  8.97  11.18 1.00   550
+c.inf    16.90 2.33 12.63 15.18 16.90 18.45  21.66 1.00   520
+alpha[1] -2.68 0.17 -3.06 -2.79 -2.67 -2.57  -2.39 1.00  1000
+alpha[2] -2.29 0.16 -2.63 -2.40 -2.29 -2.19  -1.98 1.00   590
+alpha[3] -2.65 0.32 -3.29 -2.86 -2.65 -2.44  -2.07 1.00   560
+alpha[4] -2.63 0.23 -3.09 -2.79 -2.63 -2.47  -2.21 1.00  1000
+alpha[5] -3.57 0.38 -4.34 -3.82 -3.55 -3.29  -2.91 1.01   290
+alpha[6] -2.62 0.18 -2.96 -2.73 -2.62 -2.50  -2.28 1.00   430
+delta[1] -1.41 0.30 -1.95 -1.63 -1.43 -1.22  -0.78 1.00  1000
+delta[2] -1.69 0.33 -2.40 -1.89 -1.66 -1.47  -1.13 1.00   710
+delta[3] -1.50 0.43 -2.36 -1.75 -1.52 -1.25  -0.54 1.01   540
+delta[4] -1.71 0.41 -2.68 -1.93 -1.66 -1.44  -1.03 1.02   140
+delta[5] -1.40 0.48 -2.22 -1.70 -1.45 -1.15  -0.37 1.00  1000
+delta[6] -1.89 0.43 -2.94 -2.13 -1.81 -1.58  -1.27 1.01   260
+gamma[1] -3.12 0.87 -4.89 -3.70 -3.05 -2.52  -1.63 1.01   290
+gamma[2] -4.59 0.62 -5.95 -4.94 -4.53 -4.17  -3.53 1.00   610
+gamma[3] -4.98 0.87 -7.11 -5.46 -4.87 -4.37  -3.63 1.01   260
+gamma[4] -3.23 0.43 -4.14 -3.51 -3.20 -2.95  -2.44 1.00  1000
+gamma[5] -5.24 0.57 -6.60 -5.56 -5.19 -4.85  -4.28 1.00  1000
+gamma[6] -4.00 0.43 -4.93 -4.26 -3.97 -3.71  -3.19 1.01   240
+gamma[7] -4.77 0.82 -6.55 -5.25 -4.70 -4.19  -3.42 1.00  1000
+gamma[8] -1.50 0.55 -2.66 -1.84 -1.46 -1.14  -0.51 1.01   330
+gamma[9] -4.68 0.81 -6.43 -5.15 -4.58 -4.13  -3.40 1.00   330
+deviance 93.98 5.87 84.56 89.65 93.39 97.90 107.00 1.00  1000
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = Dbar-Dhat)
+pD = 16.84 and DIC = 110.80
+DIC is an estimate of expected predictive error (lower deviance is better).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;All seems reasonable — the value for &lt;span class=&#34;math inline&#34;&gt;\(\hat{R}\)&lt;/span&gt; is below the 1.1 threshold for all the monitored nodes and the effective sample size is reasonably large (and close to the nominal value &lt;code&gt;n.sims&lt;/code&gt;=1000). You can play around with reducing the level of thinning (to increase the sample size) or increasing the total number of iterations to see how the results are affected, but in general terms, the model seems to have
+reached convergence.&lt;/p&gt;
+&lt;p&gt;One graphical way of confirming this is to create “traceplots” of the simulations, which you can do using the following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Convergence check through traceplots (example for node p1)
+plot(es$sims.list$p1[1:500],t=&amp;quot;l&amp;quot;,col=&amp;quot;blue&amp;quot;,ylab=&amp;quot;p1&amp;quot;)
+points(es$sims.list$p1[501:1000],t=&amp;quot;l&amp;quot;,col=&amp;quot;red&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/05_ald/solutions_files/figure-html/bugs5-1.png&#34; width=&#34;460.8&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;Here we first plot the first half of the simulations (in this case for the node &lt;code&gt;p1&lt;/code&gt;). &lt;tt&gt;BUGS&lt;/tt&gt; stores the simulations for all the different chains by stacking one chain after the other and thus we do this by accessing the first 500 values of the simulations for &lt;code&gt;p1&lt;/code&gt;, which are stored inside the &lt;tt&gt;BUGS&lt;/tt&gt; object as &lt;code&gt;es$sims.list$p1&lt;/code&gt;. The &lt;tt&gt;R&lt;/tt&gt; notation &lt;code&gt;[1:500]&lt;/code&gt; instructs &lt;tt&gt;R&lt;/tt&gt; to access the positions 1 to 500 of a vector. The options used in the &lt;code&gt;plot&lt;/code&gt; function specify that we want to plot lines (&lt;code&gt;t=l&lt;/code&gt;) in blue (&lt;code&gt;col=blue&lt;/code&gt;) and use a &lt;span class=&#34;math inline&#34;&gt;\(y-\)&lt;/span&gt;axis label “p1”. Then we add to the existing plot using the &lt;tt&gt;R&lt;/tt&gt; built-in function &lt;code&gt;points&lt;/code&gt;. This has a
+syntax very similar to &lt;code&gt;plot&lt;/code&gt; but does not overwrite an existing graph. In this case, we superimpose the elements from position 501 to position 1000 of the vector &lt;code&gt;es$sims.list$p1&lt;/code&gt; (the simulations for the second chain). We use the options &lt;code&gt;t=l&lt;/code&gt; and &lt;code&gt;col=red&lt;/code&gt; to instruct
+&lt;tt&gt;R&lt;/tt&gt; to plot red lines.&lt;/p&gt;
+&lt;p&gt;As is possible to see, the traceplot “looks good” — the two chains are well mixed and on top of each other, confirming convergence (which ties up with the analysis of &lt;code&gt;Rhat&lt;/code&gt; and &lt;code&gt;n.eff&lt;/code&gt; for this particular node). You can try and replicate this analysis for other nodes.&lt;/p&gt;
+&lt;p&gt;Finally, we need to perform the full economic analysis. We could programme all the commands we need ourselves, but we can use &lt;code&gt;BCEA&lt;/code&gt; to
+do most of the work for us.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Attaches the es object to the R workspace (to use the posteriors for the economic analysis)
+attach.bugs(es)
+
+# Runs economic analysis 
+# cost of treatment
+c &amp;lt;- e &amp;lt;- matrix(NA,n.sims,T)
+c[,1] &amp;lt;- (1-p1)*(c.gp) + p1*(c.gp+c.inf)
+c[,2] &amp;lt;- (1-p2)*(c.gp+c.ni) + p2*(c.gp+c.ni+c.inf)
+e[,1] &amp;lt;- -l*p1
+e[,2] &amp;lt;- -l*p2
+
+library(BCEA)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;
+Attaching package: &amp;#39;BCEA&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;The following object is masked from &amp;#39;package:graphics&amp;#39;:
+
+    contour&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;treats &amp;lt;- c(&amp;quot;status quo&amp;quot;,&amp;quot;prophylaxis with NIs&amp;quot;)
+m &amp;lt;- bcea(e,c,ref=2,treats,Kmax=10000)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Notice that in this case we “attach” the &lt;tt&gt;BUGS&lt;/tt&gt; object &lt;code&gt;es&lt;/code&gt; to the &lt;tt&gt;R&lt;/tt&gt; workspace. This will allow us to access all the relevant quantites stored inside of it directly by calling their name, i.e. we will not need to use the clunky notation &lt;code&gt;es$sims.list$p1&lt;/code&gt; to access the simulated values for the parameter &lt;span class=&#34;math inline&#34;&gt;\(p_1\)&lt;/span&gt;, but we will just need to call &lt;code&gt;p1&lt;/code&gt;. This is handy, but, again, we need to be careful because attaching an object will overwrite any other object with the same name that already exists in the &lt;tt&gt;R&lt;/tt&gt; workspace.&lt;/p&gt;
+&lt;p&gt;Once we have done this, we define the suitable economic summaries. We can think of this step as moving from the “Statistical model” to the
+“Economic model” box (as in &lt;a href=&#34;https://egon.stats.ucl.ac.uk/static/stat0019/slides/04_Intro_HE/#7&#34;&gt;here&lt;/a&gt;) — cfr. also the slides for &lt;a href=&#34;https://egon.stats.ucl.ac.uk/static/stat0019/slides/07_ALD/&#34;&gt;Lecture 7&lt;/a&gt;. This step is fairly simple – we first create two matrices &lt;code&gt;e&lt;/code&gt; and &lt;code&gt;c&lt;/code&gt;, which we will then fill with the simulations for the effectiveness and cost variables for the &lt;span class=&#34;math inline&#34;&gt;\(T=2\)&lt;/span&gt; treatments considered. Notice that we define &lt;code&gt;e&lt;/code&gt; and &lt;code&gt;c&lt;/code&gt; as matrices filled with &lt;code&gt;NA&lt;/code&gt; (&lt;tt&gt;R&lt;/tt&gt; notation for “null” or missing values), with &lt;code&gt;n.sims&lt;/code&gt;=1000 rows and &lt;code&gt;T&lt;/code&gt;=2 columns. The notation &lt;code&gt;c[,1]&lt;/code&gt; should be clear by now. With this, we mean to talk all the rows and only the first column of the matrix &lt;code&gt;c&lt;/code&gt;. We fill this with suitable values obtained by combining the probabilities of infection and the relevant
+costs.&lt;/p&gt;
+&lt;p&gt;At this point, we are ready to load &lt;code&gt;BCEA&lt;/code&gt; and then call the function &lt;code&gt;bcea&lt;/code&gt;, which performs the basic economic analysis for us. Before we do
+so, we define for convenience a vector of names, to associate with the interventions we are considering. In this case, the index 1 is associated with the status quo (so the first column of &lt;code&gt;c&lt;/code&gt; and &lt;code&gt;e&lt;/code&gt; contains the simulations for this treatment), while the second is associated with the active intervention.&lt;/p&gt;
+&lt;p&gt;Finally, we create an object &lt;code&gt;m&lt;/code&gt; in which we store the output of the call to &lt;code&gt;bcea&lt;/code&gt;. There are some mandatory and some optional inputs to
+this function — check &lt;code&gt;help(bcea)&lt;/code&gt; as well as &lt;em&gt;BMHE&lt;/em&gt; and &lt;em&gt;Bayesian Cost-Effectiveness Analysis with the R package BCEA&lt;/em&gt; to see more
+details. At the very minimum, &lt;code&gt;bcea&lt;/code&gt; expects that you pass as arguments the matrices including the simulations for effects and costs, in this
+order. Thus, unless you specify a name for the arguments, &lt;tt&gt;R&lt;/tt&gt; will assume you are following the default. For example, the function &lt;code&gt;bcea&lt;/code&gt; uses the following arguments in exactly this order.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;e&lt;/code&gt; = a numeric matrix with simulations for the effectiveness
+variable, for all the treatments considered (must have more than 1
+column);&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;c&lt;/code&gt; = a numeric matrix with simulations for the cost variable, for
+all the treatments considered (must have more than 1 column);&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;ref&lt;/code&gt; = a number to identify the treatment to be considered as the
+“reference”, i.e. the one we are comparing against the other(s).
+This is an optional argument and unless specified differently, the
+default is &lt;code&gt;1&lt;/code&gt;, in which case &lt;tt&gt;BCEA&lt;/tt&gt; will
+assume that the intervention of interest is in the first column of
+&lt;code&gt;e&lt;/code&gt; and &lt;code&gt;c&lt;/code&gt;. In this case, however, we specify &lt;code&gt;ref=2&lt;/code&gt;;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;interventions&lt;/code&gt; = a vector of strings of length equal to the number
+of columns in &lt;code&gt;e&lt;/code&gt;, giving names to the interventions. This is also
+an optional argument and unless otherwise specified,
+&lt;tt&gt;BCEA&lt;/tt&gt; will create labels in the form
+&lt;code&gt;Intervention1&lt;/code&gt;, &lt;code&gt;Intervention2&lt;/code&gt;, …;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;Kmax&lt;/code&gt; = a number specifying the maximum value for the willingness
+to pay to be considered. The default value is &lt;code&gt;k=50000&lt;/code&gt;. The
+willingness to pay is then approximated on a discrete grid in the
+interval &lt;code&gt;[0,Kmax]&lt;/code&gt;. The grid is equal to the argument &lt;code&gt;wtp&lt;/code&gt; — see
+below — if that parameter is provided, or simply composed of 501
+elements if &lt;code&gt;wtp=NULL&lt;/code&gt; (the default);&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;wtp&lt;/code&gt; = an optional vector containing specific values for the
+willingness to pay grid. If not specified then
+&lt;tt&gt;BCEA&lt;/tt&gt; will construct a grid of 501 values
+from 0 to &lt;code&gt;Kmax&lt;/code&gt; (see point above). This option is useful when
+performing intensive computations (e.g. for the EVPPI);&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;plot&lt;/code&gt; = a logical value (i.e. &lt;code&gt;TRUE&lt;/code&gt; or &lt;code&gt;FALSE&lt;/code&gt;), indicating
+whether the function should produce the summary plot or not. The
+default is set to &lt;code&gt;FALSE&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

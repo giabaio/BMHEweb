@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>⁣10. Missing data in cost-effectiveness modelling</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Nathan Green" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-clipboard/xaringanExtra-clipboard.js"></script>
+    <script>window.xaringanExtraClipboard(null, {"button":"Copy Code","success":"Copied!","error":"Press Ctrl+C to Copy"})</script>
+    <script src="libs/freezeframe/freezeframe.min.js"></script>
+    <script src="libs/xaringanExtra-freezeframe/freezeframe-init.js"></script>
+    <script id="xaringanExtra-freezeframe-options" type="application/json">{"selector":"img[src$=\"gif\"]","trigger":"click","overlay":false,"responsive":true,"warnings":true}</script>
+    <script src="libs/kePrint/kePrint.js"></script>
+    <link href="libs/lightable/lightable.css" rel="stylesheet" />
+    <!-- (Re)Defines a bunch of LaTeX commands that can then be used directly in the .Rmd file as '\command{...}' -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: {
+        /* This enables color macros */
+        extensions: ["color.js"],
+        Macros: {
+          /* Probability & mathematical symbols */
+          Pr: "{\\style{font-family:inherit; font-size: 110%;}{\\text{Pr}}}",
+          exp: "{\\style{font-family:inherit; font-size: 105%;}{\\text{exp}}}",
+          log: "{\\style{font-family:inherit; font-size: 105%;}{\\text{log}}}",
+          ln: "{\\style{font-family:inherit; font-size: 105%;}{\\text{ln}}}",
+          logit: "{\\style{font-family:inherit; font-size: 100%;}{\\text{logit}}}",
+          HR: "{\\style{font-family:inherit; font-size: 105%;}{\\text{HR}}}",
+          OR: "{\\style{font-family:inherit; font-size: 105%;}{\\text{OR}}}",
+          E: "{\\style{font-family:inherit; font-size: 105%;}{\\text{E}}}",
+          Var: "{\\style{font-family:inherit; font-size: 105%;}{\\text{Var}}}",
+          Cov: "{\\style{font-family:inherit; font-size: 105%;}{\\text{Cov}}}",
+          Corr: "{\\style{font-family:inherit; font-size: 105%;}{\\text{Corr}}}",
+          DIC: "{\\style{font-family:inherit; font-size: 105%;}{\\text{DIC}}}",
+          se: "{\\style{font-family:inherit; font-size: 100%;}{\\text{se}}}",
+          sd: "{\\style{font-family:inherit; font-size: 100%;}{\\text{sd}}}",
+          kld: "{\\style{font-family:inherit; font-size: 100%;}{\\text{KLD}}}",
+          /* Distributions */
+          dnorm: "{\\style{font-family:inherit;}{\\text{Normal}}}",
+          dt: "{\\style{font-family:inherit;}{\\text{t}}}",
+          ddirch: "{\\style{font-family:inherit;}{\\text{Dirichlet}}}",
+          dmulti: "{\\style{font-family:inherit;}{\\text{Multinomial}}}",
+          dbeta: "{\\style{font-family:inherit;}{\\text{Beta}}}",
+          dgamma: "{\\style{font-family:inherit;}{\\text{Gamma}}}",
+          dbern: "{\\style{font-family:inherit;}{\\text{Bernoulli}}}",
+          dbin: "{\\style{font-family:inherit;}{\\text{Binomial}}}",
+          dpois: "{\\style{font-family:inherit;}{\\text{Poisson}}}",
+          dweib: "{\\style{font-family:inherit;}{\\text{Weibull}}}",
+          dexp: "{\\style{font-family:inherit;}{\\text{Exponential}}}",
+          dlnorm: "{\\style{font-family:inherit;}{\\text{logNormal}}}",
+          dunif: "{\\style{font-family:inherit;}{\\text{Uniform}}}",
+          /* LaTeX formatting */
+          bm: ["{\\boldsymbol #1}",1],
+          /* These create macros to typeset numbers in maths with the basic font */
+          0: "{\\style{font-family:inherit; font-size: 105%;}{\\text{0}}}",
+          1: "{\\style{font-family:inherit; font-size: 105%;}{\\text{1}}}",
+          2: "{\\style{font-family:inherit; font-size: 105%;}{\\text{2}}}",
+          3: "{\\style{font-family:inherit; font-size: 105%;}{\\text{3}}}",
+          4: "{\\style{font-family:inherit; font-size: 105%;}{\\text{4}}}",
+          5: "{\\style{font-family:inherit; font-size: 105%;}{\\text{5}}}",
+          6: "{\\style{font-family:inherit; font-size: 105%;}{\\text{6}}}",
+          7: "{\\style{font-family:inherit; font-size: 105%;}{\\text{7}}}",
+          8: "{\\style{font-family:inherit; font-size: 105%;}{\\text{8}}}",
+          9: "{\\style{font-family:inherit; font-size: 105%;}{\\text{9}}}",
+          /* Health economics quantities */
+          icer: "{\\style{font-family:inherit; font-size: 100%;}{\\text{ICER}}}",
+          nb: "{\\style{font-family:inherit; font-size: 100%;}{\\text{NB}}}",
+          ib: "{\\style{font-family:inherit; font-size: 100%;}{\\text{IB}}}",
+          eib: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EIB}}}",
+          ol: "{\\style{font-family:inherit; font-size: 100%;}{\\text{OL}}}",
+          ceac: "{\\style{font-family:inherit; font-size: 100%;}{\\text{CEAC}}}",
+          evpi: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EVPI}}}",
+          evppi: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EVPPI}}}",
+          evsi: "{\\style{font-family:inherit; font-size: 100%;}{\\text{EVSI}}}"
+        }
+      }
+    });
+    </script>
+    <link rel="stylesheet" href="../assets/beamer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+class: title-slide
+
+# &amp;#8291;10. Missing data in cost-effectiveness modelling
+
+## Nathan Green
+
+### [Department of Statistical Science](https://www.ucl.ac.uk/statistics/) | University College London    
+
+.title-small[
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#00acee;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"&gt;&lt;/path&gt;&lt;/svg&gt;  [n.green@ucl.ac.uk](mailto:n.green@ucl.ac.uk)
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#EA7600;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://n8thangreen.github.io/](https://n8thangreen.github.io/)
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#EA7600;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://egon.stats.ucl.ac.uk/research/statistics-health-economics/](https://egon.stats.ucl.ac.uk/research/statistics-health-economics/)
+&lt;svg viewBox="0 0 496 512" style="position:relative;display:inline-block;top:.1em;fill:black;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://github.com/n8thangreen](https://github.com/n8thangreen/)
+&lt;svg viewBox="0 0 496 512" style="position:relative;display:inline-block;top:.1em;fill:black;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;&lt;/svg&gt;  [https://github.com/StatisticsHealthEconomics](https://github.com/StatisticsHealthEconomics)
+]
+
+### Bayesian Methods in Health Economics, Lausanne
+
+---
+
+layout: true
+
+.my-footer[ 
+.alignleft[
+&amp;nbsp; &amp;copy; Nathan Green (UCL) &amp;nbsp;&lt;a href="https://github.com/n8thangreen/"; title="Check out my repos"&gt;&lt;svg viewBox="0 0 496 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp; &amp;nbsp;&lt;a href="mailto:n.green@ucl.ac.uk"; title="Email me"&gt;&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M502.3 190.8c3.9-3.1 9.7-.2 9.7 4.7V400c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V195.6c0-5 5.7-7.8 9.7-4.7 22.4 17.4 52.1 39.5 154.1 113.6 21.1 15.4 56.7 47.8 92.2 47.6 35.7.3 72-32.8 92.3-47.6 102-74.1 131.6-96.3 154-113.7zM256 320c23.2.4 56.6-29.2 73.4-41.4 132.7-96.3 142.8-104.7 173.4-128.7 5.8-4.5 9.2-11.5 9.2-18.9v-19c0-26.5-21.5-48-48-48H48C21.5 64 0 85.5 0 112v19c0 7.4 3.4 14.3 9.2 18.9 30.6 23.9 40.7 32.4 173.4 128.7 16.8 12.2 50.2 41.8 73.4 41.4z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp; &amp;nbsp;&lt;a href="https://n8thangreen.github.io/"; title="Visit my website"&gt;&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M503.52,241.48c-.12-1.56-.24-3.12-.24-4.68v-.12l-.36-4.68v-.12a245.86,245.86,0,0,0-7.32-41.15c0-.12,0-.12-.12-.24l-1.08-4c-.12-.24-.12-.48-.24-.6-.36-1.2-.72-2.52-1.08-3.72-.12-.24-.12-.6-.24-.84-.36-1.2-.72-2.4-1.08-3.48-.12-.36-.24-.6-.36-1-.36-1.2-.72-2.28-1.2-3.48l-.36-1.08c-.36-1.08-.84-2.28-1.2-3.36a8.27,8.27,0,0,0-.36-1c-.48-1.08-.84-2.28-1.32-3.36-.12-.24-.24-.6-.36-.84-.48-1.2-1-2.28-1.44-3.48,0-.12-.12-.24-.12-.36-1.56-3.84-3.24-7.68-5-11.4l-.36-.72c-.48-1-.84-1.8-1.32-2.64-.24-.48-.48-1.08-.72-1.56-.36-.84-.84-1.56-1.2-2.4-.36-.6-.6-1.2-1-1.8s-.84-1.44-1.2-2.28c-.36-.6-.72-1.32-1.08-1.92s-.84-1.44-1.2-2.16a18.07,18.07,0,0,0-1.2-2c-.36-.72-.84-1.32-1.2-2s-.84-1.32-1.2-2-.84-1.32-1.2-1.92-.84-1.44-1.32-2.16a15.63,15.63,0,0,0-1.2-1.8L463.2,119a15.63,15.63,0,0,0-1.2-1.8c-.48-.72-1.08-1.56-1.56-2.28-.36-.48-.72-1.08-1.08-1.56l-1.8-2.52c-.36-.48-.6-.84-1-1.32-1-1.32-1.8-2.52-2.76-3.72a248.76,248.76,0,0,0-23.51-26.64A186.82,186.82,0,0,0,412,62.46c-4-3.48-8.16-6.72-12.48-9.84a162.49,162.49,0,0,0-24.6-15.12c-2.4-1.32-4.8-2.52-7.2-3.72a254,254,0,0,0-55.43-19.56c-1.92-.36-3.84-.84-5.64-1.2h-.12c-1-.12-1.8-.36-2.76-.48a236.35,236.35,0,0,0-38-4H255.14a234.62,234.62,0,0,0-45.48,5c-33.59,7.08-63.23,21.24-82.91,39-1.08,1-1.92,1.68-2.4,2.16l-.48.48H124l-.12.12.12-.12a.12.12,0,0,0,.12-.12l-.12.12a.42.42,0,0,1,.24-.12c14.64-8.76,34.92-16,49.44-19.56l5.88-1.44c.36-.12.84-.12,1.2-.24,1.68-.36,3.36-.72,5.16-1.08.24,0,.6-.12.84-.12C250.94,20.94,319.34,40.14,367,85.61a171.49,171.49,0,0,1,26.88,32.76c30.36,49.2,27.48,111.11,3.84,147.59-34.44,53-111.35,71.27-159,24.84a84.19,84.19,0,0,1-25.56-59,74.05,74.05,0,0,1,6.24-31c1.68-3.84,13.08-25.67,18.24-24.59-13.08-2.76-37.55,2.64-54.71,28.19-15.36,22.92-14.52,58.2-5,83.28a132.85,132.85,0,0,1-12.12-39.24c-12.24-82.55,43.31-153,94.31-170.51-27.48-24-96.47-22.31-147.71,15.36-29.88,22-51.23,53.16-62.51,90.36,1.68-20.88,9.6-52.08,25.8-83.88-17.16,8.88-39,37-49.8,62.88-15.6,37.43-21,82.19-16.08,124.79.36,3.24.72,6.36,1.08,9.6,19.92,117.11,122,206.38,244.78,206.38C392.77,503.42,504,392.19,504,255,503.88,250.48,503.76,245.92,503.52,241.48Z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp;
+]
+.aligncenter[
+.mydropdown[ 
+.mydropbtn[
+&lt;svg viewBox="0 0 512 512" style="position:relative;display:inline-block;top:.1em;fill:white;height:0.8em;" xmlns="http://www.w3.org/2000/svg"&gt;  &lt;path d="M504 256c0 137-111 248-248 248S8 393 8 256 119 8 256 8s248 111 248 248zM273 369.9l135.5-135.5c9.4-9.4 9.4-24.6 0-33.9l-17-17c-9.4-9.4-24.6-9.4-33.9 0L256 285.1 154.4 183.5c-9.4-9.4-24.6-9.4-33.9 0l-17 17c-9.4 9.4-9.4 24.6 0 33.9L239 369.9c9.4 9.4 24.6 9.4 34 0z"&gt;&lt;/path&gt;&lt;/svg&gt; 
+]
+.mydropdown-content[
+[1. Introduction](../01_Intro/index.html)
+[2. MCMC](../02_MCMC/index.html)
+[3. Intro HTA](../03_Intro_HE/index.html)
+[4. ILD](../04_ILD/index.html)
+[5. ALD](../05_ALD/index.html)
+[6. NMA](../06_NMA/index.html)
+[7. Model uncertainty](../07_Model_uncertainty/index.html)
+[8. Survival](../08_Survival/index.html)
+[9. Markov models](../09_MM/index.html)
+[10. Missing data](../10_Missing/index.html)
+[11. VoI](../11_VoI/index.html)
+[12. EVPPI](../12_EVPPI/index.html)
+[13. Intro EVSI](../13_EVSI/index.html)
+[14. Data EVSI](../14_Data_EVSI/index.html)
+[15. EVSI MC](../15_EVSI_MC/index.html)
+[16. EVSI Regression](../16_EVSI_regression/index.html)
+]
+]
+&amp;#8291;10. Missing data in cost-effectiveness modelling 
+]
+.alignright[
+&amp;nbsp;&lt;a target="_self" href="../../index.html"; title="Back to the summer school website"&gt;&lt;svg viewBox="0 0 576 512" style="position:relative;display:inline-block;top:.1em;fill:#bcc0c4;height:1em;bottom:1em;" xmlns="http://www.w3.org/2000/svg"&gt;
+  &lt;path d="M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z"&gt;&lt;/path&gt;
+&lt;/svg&gt;&lt;/a&gt;&amp;nbsp; &amp;nbsp; BMHE 
+]
+] 
+
+---
+
+# Summary
+
+-  Background &amp;ndash; what's difficult about missing data?
+
+- Missing data mechanisms
+
+- Missing data in health economic evaluation
+ 
+- Example &amp;ndash; the MenSS Trial
+
+&lt;span style="display:block; margin-top: 4em ;"&gt;&lt;/span&gt;
+
+.content-box-beamer[
+### **References** 
+
+&lt;span style="display:block; margin-top: 20px ;"&gt;&lt;/span&gt;
+
+&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;
+  [ comment ]
+  &lt;path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"&gt;&lt;/path&gt;
+&lt;/svg&gt; &lt;i&gt;The BUGS Book&lt;/i&gt;, chapter 9.1 .button[&lt;img src="../img/routledge.png" width="10%"&gt; [Book website](https://www.routledge.com/The-BUGS-Book-A-Practical-Introduction-to-Bayesian-Analysis/Lunn-Jackson-Best-Thomas-Spiegelhalter/p/book/9781584888499)]
+
+&lt;svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;
+  [ comment ]
+  &lt;path d="M448 360V24c0-13.3-10.7-24-24-24H96C43 0 0 43 0 96v320c0 53 43 96 96 96h328c13.3 0 24-10.7 24-24v-16c0-7.5-3.5-14.3-8.9-18.7-4.2-15.4-4.2-59.3 0-74.7 5.4-4.3 8.9-11.1 8.9-18.6zM128 134c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm0 64c0-3.3 2.7-6 6-6h212c3.3 0 6 2.7 6 6v20c0 3.3-2.7 6-6 6H134c-3.3 0-6-2.7-6-6v-20zm253.4 250H96c-17.7 0-32-14.3-32-32 0-17.6 14.4-32 32-32h285.4c-1.9 17.1-1.9 46.9 0 64z"&gt;&lt;/path&gt;
+&lt;/svg&gt; &lt;i&gt;Missing data in longitudinal studies&lt;/i&gt;  .button[&lt;img src="../img/routledge.png" width="10%"&gt; [Book website](https://www.routledge.com/Missing-Data-in-Longitudinal-Studies-Strategies-for-Bayesian-Modeling-and/Daniels-Hogan/p/book/9781584886099)] 
+
+&lt;svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  &lt;g label="icon" id="layer6" groupmode="layer"&gt;    &lt;path id="path2" d="M 120.19265,177.73779 C 123.18778,77.35076 64.277527,63.999998 64.277527,63.999998 v 31.26245 C 40.834519,83.611374 18.32863,81.929634 18.32863,81.929634 V 337.10903 c 0,0 98.10414,-11.41744 98.10414,84.40952 0,0 36.58424,-153.37442 248.86103,26.48145 0,-61.59342 0.37757,-216.93925 0.37757,-268.28471 C 169.9561,37.131382 120.1931,177.73779 120.1931,177.73779 Z m 187.20631,173.82056 -12.37599,-97.65441 h -0.448 l -40.72819,97.65441 h -17.55994 l -38.9362,-97.65441 h -0.448 l -14.17589,97.65441 h -43.87514 l 28.8015,-169.61925 h 43.42716 l 34.43518,90.6496 36.46566,-90.6496 h 43.87513 l 25.6817,169.61925 h -44.13938 z" style="stroke-width:0.0675239"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt; [Gabrio et al (2018)](https://pubmed.ncbi.nlm.nih.gov/30565727/)    
+
+&lt;svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zM64 72c0-4.42 3.58-8 8-8h80c4.42 0 8 3.58 8 8v16c0 4.42-3.58 8-8 8H72c-4.42 0-8-3.58-8-8V72zm0 64c0-4.42 3.58-8 8-8h80c4.42 0 8 3.58 8 8v16c0 4.42-3.58 8-8 8H72c-4.42 0-8-3.58-8-8v-16zm192.81 248H304c8.84 0 16 7.16 16 16s-7.16 16-16 16h-47.19c-16.45 0-31.27-9.14-38.64-23.86-2.95-5.92-8.09-6.52-10.17-6.52s-7.22.59-10.02 6.19l-7.67 15.34a15.986 15.986 0 0 1-14.31 8.84c-.38 0-.75-.02-1.14-.05-6.45-.45-12-4.75-14.03-10.89L144 354.59l-10.61 31.88c-5.89 17.66-22.38 29.53-41 29.53H80c-8.84 0-16-7.16-16-16s7.16-16 16-16h12.39c4.83 0 9.11-3.08 10.64-7.66l18.19-54.64c3.3-9.81 12.44-16.41 22.78-16.41s19.48 6.59 22.77 16.41l13.88 41.64c19.77-16.19 54.05-9.7 66 14.16 2.02 4.06 5.96 6.5 10.16 6.5zM377 105L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9z"&gt;&lt;/path&gt;&lt;/svg&gt; [Gabrio et al (2020)](https://rss.onlinelibrary.wiley.com/doi/abs/10.1111/rssa.12522)
+
+]
+
+---
+
+# Background
+
+## The problems with missing data...
+
+- We plan to observe `\(n_{\rm{planned}}\)` data points, but end up with a (much) lower number of observations `\(n_{\rm{observed}}\)`   
+
+   - What is the proportion of missing data? 
+   - Does it matter?...
+   
+- We typically don't know **why** the unobserved points are missing and **what** their value might have been   
+   – Missingness can be differential in treatment/exposure groups
+
+
+--
+
+
+- ... Basically, not very very much we can do about it!
+   - Any modelling based on at least some .red[**untestable**] assumptions
+   - Cannot check model fit to unobserved data
+   - Have to accept inherent uncertainty in our analysis!
+
+---
+
+# **Types** of missing data
+
+
+&lt;center&gt;&lt;img src=./img/unnamed-chunk-2-1.png width='85%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+
+# Missing data **mechanism**
+
+### Missing Completely at Random (MCAR)
+&lt;style type="text/css"&gt;
+.left-column60 {
+  width: 60%;
+  float: left;
+  padding-top: 0em;
+}
+.right-column35 h2, .left-column h3 {
+  color: #035AA699;
+}
+.right-column35 h2:last-of-type, .left-column h3:last-child {
+  color: #035AA6;
+}
+.right-column35 {
+  height: 92%;
+  float: right;
+  width: 38%
+}
+
+&lt;/style&gt;
+
+
+
+
+.left-column60[
+&lt;center&gt;&lt;img src=./img/MCAR-1.png width='95%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+]
+.right-column35[
+- `\(y_i=\)` Outcome subject to missingness
+
+- `\(m_i=1\)` if `\(y_i\)` missing or 0 if `\(y_i\)` observed ("missingness indicator")
+
+- `\(\bm\theta=\left(\bm\theta^{\rm{MoA}},\bm\theta^{\rm{MoM}}\right)=\)` model parameters
+   - `\(\bm\theta^{\rm{MoA}}=(\beta,\sigma)\)` 
+   - `\(\bm\theta^{\rm{MoM}}=\delta\)` 
+
+&lt;span style="display:block; margin-top: 4em ;"&gt;&lt;/span&gt;
+**NB**: things are even more complicated when missing is (also) for the predictors/covariates!
+]
+
+---
+
+count: false
+# Missing data **mechanism**
+
+### Missing at Random (MAR)
+
+
+
+.left-column60[
+&lt;center&gt;&lt;img src=./img/MAR-1.png width='85%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+]
+.right-column35[
+- `\(y_i=\)` Outcome subject to missingness
+
+- `\(m_i=1\)` if `\(y_i\)` missing or 0 if `\(y_i\)` observed ("missingness indicator")
+
+- `\(\bm\theta=\left(\bm\theta^{\rm{MoA}},\bm\theta^{\rm{MoM}}\right)=\)` model parameters
+   - `\(\bm\theta^{\rm{MoA}}=(\beta,\sigma)\)` 
+   - `\(\bm\theta^{\rm{MoM}}=\delta\)` 
+
+&lt;span style="display:block; margin-top: 4em ;"&gt;&lt;/span&gt;
+**NB**: things are even more complicated when missing is (also) for the predictors/covariates!
+]
+
+---
+
+count: false
+# Missing data **mechanism**
+
+### Missing Not at Random (MNAR)
+
+
+
+
+.left-column60[
+&lt;center&gt;&lt;img src=./img/MNAR-1.png width='85%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+]
+.right-column35[
+- `\(y_i=\)` Outcome subject to missingness
+
+- `\(m_i=1\)` if `\(y_i\)` missing or 0 if `\(y_i\)` observed ("missingness indicator")
+
+- `\(\bm\theta=\left(\bm\theta^{\rm{MoA}},\bm\theta^{\rm{MoM}}\right)=\)` model parameters
+   - `\(\bm\theta^{\rm{MoA}}=(\beta,\sigma)\)` 
+   - `\(\bm\theta^{\rm{MoM}}=\delta\)` 
+
+&lt;span style="display:block; margin-top: 4em ;"&gt;&lt;/span&gt;
+**NB**: things are even more complicated when missing is (also) for the predictors/covariates!
+]
+
+---
+
+# Missing data **analysis methods**
+
+- Complete Case Analysis
+   - Elimination of partially observed cases
+   - Simple but reduce efficiency and possibly give bias parameter estimates
+   
+.lightgray[
+
+- Inverse probability weighting
+   - Weigh the original data (subject to missingness) to account for the fact that the actual sample size is smaller than originally planned
+   - Weigh up(down) units that have a low(high) chance of actually being observed
+   
+- Single (deterministic) imputation
+   - Imputation of missing data with a single value (mean, median, LVCF)
+   - Does not account for the uncertainty in the imputation process
+   
+-  Multiple (stochastic) imputation (MI)
+   - Missing data imputed `\(K\)` times to obtain `\(K\)` different imputed datasets
+   - Each dataset is analysed and `\(K\)` sets of estimates are derived
+   - Parameter estimates are combined into a single quantity
+   - The uncertainty due to imputation is incorporated but the validity relies on the correct specification of the imputation model
+   
+- "Full Bayesian"
+   -  Basically extends MI to model formally the missing mechanism
+]
+
+---
+
+# Complete Case Analysis (CCA)
+
+- Essentially swipes the problem under the rug and restricts the analysis to only "valid" cases (ie those completely observed on **all** the variables under consideration) 
+
+- Typically, common statistical packages take this approach by default
+
+.panelset[
+
+.panel[
+.panel-name[Code]
+
+```r
+&gt; # A very simple simulation study...
+&gt; 
+&gt; # 1. Generates 100 data points for a covariate 'x', assuming x~Normal(mean=2,sd=5)
+&gt; x=rnorm(100,2,5)
+&gt; 
+&gt; # 2. Generates 100 data points for the outcome 'y', assuming a linear regression with 
+&gt; # a. intercept (alpha) = 0.5
+&gt; # b. "effect" of x (beta) = 1.5
+&gt; # c. error variance = 1 (ie add 'rnorm(100)', which simulates 100 values from Normal(0,1))
+&gt; y=.5+1.5*x+rnorm(100)
+&gt; 
+&gt; # 3. Removes 20 values at random and replaces them with 'NA' (missing)
+&gt; y[sample(1:100,20)]=NA
+&gt; 
+&gt; # 4. Runs a linear regression model (y on x) and print results (see 'Output' panel...)
+&gt; summary(lm(y~x))
+```
+]
+
+.panel[
+.panel-name[Output]
+
+```
+
+Call:
+lm(formula = y ~ x)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-2.94899 -0.55114 -0.04028  0.53460  2.19876 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  0.71609    0.13254   5.403  6.9e-07 ***
+x            1.52352    0.02436  62.547  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.06 on 78 degrees of freedom
+*  (20 observations deleted due to missingness)
+Multiple R-squared:  0.9805,	Adjusted R-squared:  0.9802 
+F-statistic:  3912 on 1 and 78 DF,  p-value: &lt; 2.2e-16
+```
+]
+
+]
+
+---
+
+count: false
+# Complete Case Analysis (CCA)
+
+## Advantages
+
+- Clearly very easy to implement
+
+- If data are MCAR or MAR (and the model is correctly specified!), the results are unbiased
+
+&lt;span style="display:block; margin-top: 4em ;"&gt;&lt;/span&gt;
+
+## Disadvantages
+
+- The sample size is reduced, due to the fact that units subject to missingness are dropped out
+   -  If missing data affect more than one variable, this has an even bigger impact
+
+- Consequently, the estimates will be associated with (artificially) larger standard errors
+   - **NB**: this is a feature of analyses that are characterised by missing data 
+   - Intuitively, it makes sense: we do not have all the possible relevant information, and thus our estimation will be less precise than we would obtain, had we been able to observe all the relevant data!
+   
+- Does not account for the missing generating mechanism
+
+- Can affect sample size calculations
+
+---
+
+# Missing data **analysis methods**
+
+.lightgray[
+- Complete Case Analysis
+   - Elimination of partially observed cases
+   - Simple but reduce efficiency and possibly give bias parameter estimates
+]
+
+- Inverse probability weighting
+   - Weigh the original data (subject to missingness) to account for the fact that the actual sample size is smaller than originally planned
+   - Weigh up(down) units that have a low(high) chance of actually being observed
+
+.lightgray[
+- Single (deterministic) imputation
+   - Imputation of missing data with a single value (mean, median, LVCF)
+   - Does not account for the uncertainty in the imputation process
+   
+-  Multiple (stochastic) imputation (MI)
+   - Missing data imputed `\(K\)` times to obtain `\(K\)` different imputed datasets
+   - Each dataset is analysed and `\(K\)` sets of estimates are derived
+   - Parameter estimates are combined into a single quantity
+   - The uncertainty due to imputation is incorporated but the validity relies on the correct specification of the imputation model
+   
+- "Full Bayesian"
+   -  Basically extends MI to model formally the missing mechanism
+]
+
+---
+
+# Inverse probability weighting
+
+-  The basic idea is to estimate, for each unit `\(i = 1,\ldots , n_{\rm{obs}}\)`, the probability of being observed, `\(\hat{p}_i\)`
+
+
+-  Then, each unit is weighted by the inverse of this value, `\(w_i = \hat{p}_i^{-1}\)`
+   - Thus units that are observed and actually have a large chance of being observed are "normal" &amp;ndash; since we do expect to see them
+   - Hence they will be multiplied by a small factor
+   - Conversely, units that are observed but are associated with a small chance of being available are assumed to be representative of "underrepresented" cases
+   - Hence they will be multiplied by a larger factor to “balance” the sample
+
+
+- This is effective particularly (but not necessarily only!) in stratified cases
+
+
+- **NB**: `\(\hat{p}_i\)` is a kind of .blue[**propensity score**] &amp;ndash; and this procedure is similar to increasingly popular methods in health economics (e.g. .red[**Multiple Adjusted Indirect Comparisons**])
+
+---
+
+count: false
+# Inverse probability weighting
+
+## (Ridiculously simplified!) Example
+
+Suppose we *know* the data to be
+&lt;table class=" lightable-classic table" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+&lt;thead&gt;&lt;tr&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;Group&lt;/div&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;Group A&lt;/div&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;Group B&lt;/div&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;Group C&lt;/div&gt;&lt;/th&gt;
+&lt;/tr&gt;&lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Response &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 0 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+- The "true" estimation given the complete data set is
+`$$\class{blue}{\hat\mu=\frac{18}{9}=2}$$`
+
+--
+
+&lt;span style="display:block; margin-top: 2em ;"&gt;&lt;/span&gt;
+But actually, some of the values are missing and thus the *actual* data are
+&lt;table class=" lightable-classic table" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; margin-left: auto; margin-right: auto; width: auto !important; margin-left: auto; margin-right: auto;'&gt;
+&lt;thead&gt;&lt;tr&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;Group&lt;/div&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;Group A&lt;/div&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;Group B&lt;/div&gt;&lt;/th&gt;
+&lt;th style="padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="3"&gt;&lt;div style="border-bottom: 1px solid #111111; margin-bottom: -1px; "&gt;Group C&lt;/div&gt;&lt;/th&gt;
+&lt;/tr&gt;&lt;/thead&gt;
+&lt;tbody&gt;
+  &lt;tr&gt;
+   &lt;td style="text-align:left;"&gt; Response &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ? &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ? &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 1 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 3 &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 2 &lt;/td&gt;
+   &lt;td style="text-align:left;"&gt; ? &lt;/td&gt;
+   &lt;td style="text-align:right;"&gt; 4 &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+- The CCA of the observed data would give an estimate of 
+`$$\class{red}{\hat\mu=\frac{13}{6}\neq 2}$$`
+
+---
+
+count: false
+# Inverse probability weighting
+
+- We had originally planned 3 observations in group A 
+
+- However, because of missingness, only 1 observation is available
+
+- IPW assumes that the available data will carry information **also** for those that are missing and thus re-weight the observation by `\(w_i = \hat{p}^{−1}\)`
+
+--
+
+&lt;span style="display:block; margin-top: 1em ;"&gt;&lt;/span&gt;
+-  In this case, **assuming the missingness mechanism is MCAR**
+   - `\(\hat{p}_i^A= 1/3 \Rightarrow w_i^A = 1/\hat{p}_i^A = 3\)`
+   - `\(\hat{p}_i^B= 3/3 \Rightarrow w_i^B = 1/\hat{p}_i^B = 1\)`
+   - `\(\hat{p}_i^C= 2/3 \Rightarrow w_i^C = 1/\hat{p}_i^C = 3/2\)`
+
+--
+
+&lt;span style="display:block; margin-top: 2em ;"&gt;&lt;/span&gt;
+-  The IPW estimator can be computed as
+`\begin{align}
+\hat{\mu}_{\tiny\mbox{IPW}} &amp; = \frac{\sum_i y_i w_i}{\sum_i n_i w_i} \\
+&amp; = \frac{1\times 3 + (1+2+3)\times 1 + (2+4)\times 1.5}{(1\times 3) + (3\times 1) + (2\times 1.5)} \\
+&amp; = \frac{18}{9} = 2
+\end{align}`
+
+---
+
+count: false
+# Inverse probability weighting
+
+## Advantages
+
+- Not too complex &amp;ndash; only requires that we are able to estimate the weigths (i.e. the probability of being observed)
+   - IPW estimates are generally consistent
+   - With large enought sample size, they produce an unbiased estimation
+   - This does not necessarily apply for moderate to small sample sizes
+   
+## Disadvantages
+
+- We need to estimate the probability of being observed &amp;ndash; this might not be so easy!
+
+- Even when we can estimate the "inclusion" probabilities, these estimations might be highly unstable
+   - When `\(p_i\)` is close to 0, then the resulting weight tends to `\(\infty\)`
+   - If the inclusion probabilities are not estimated with precision, neither will the weights thus rendering the procedure unreliable
+
+---
+
+# Missing data **analysis methods**
+
+.lightgray[
+- Complete Case Analysis
+   - Elimination of partially observed cases
+   - Simple but reduce efficiency and possibly give bias parameter estimates
+
+- Inverse probability weighting
+   - Weigh the original data (subject to missingness) to account for the fact that the actual sample size is smaller than originally planned
+   - Weigh up(down) units that have a low(high) chance of actually being observed
+]
+
+- Single (deterministic) imputation
+   - Imputation of missing data with a single value (mean, median, LVCF)
+   - Does not account for the uncertainty in the imputation process
+
+.lightgray[   
+-  Multiple (stochastic) imputation (MI)
+   - Missing data imputed `\(K\)` times to obtain `\(K\)` different imputed datasets
+   - Each dataset is analysed and `\(K\)` sets of estimates are derived
+   - Parameter estimates are combined into a single quantity
+   - The uncertainty due to imputation is incorporated but the validity relies on the correct specification of the imputation model
+   
+- "Full Bayesian"
+   -  Basically extends MI to model formally the missing mechanism
+]
+
+---
+
+# Single (deterministic) imputation
+
+-  Another approach to handling missing data is to impute the missing values, using available information
+
+- The most straightforward way of doing this is to substitute missing values with the mean of the observed values
+
+&lt;center&gt;&lt;img src=./img/table_si.png width='57%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+count: false
+# Single (deterministic) imputation
+
+## Advantages
+
+-  Again, very easy to use
+
+
+## Disadvantages
+
+- If observed data are on an ordinal scale, strictly speaking not applicable
+
+- Assumes no underlying individual variability around missing data
+   - All missing data points are treated as if they came from the exact same generating process
+   - This goes even beyond (= it’s worse than) the assumption of MCAR!
+
+---
+
+# Missing data **analysis methods**
+
+.lightgray[
+- Complete Case Analysis
+   - Elimination of partially observed cases
+   - Simple but reduce efficiency and possibly give bias parameter estimates
+
+- Inverse probability weighting
+   - Weigh the original data (subject to missingness) to account for the fact that the actual sample size is smaller than originally planned
+   - Weigh up(down) units that have a low(high) chance of actually being observed
+
+- Single (deterministic) imputation
+   - Imputation of missing data with a single value (mean, median, LVCF)
+   - Does not account for the uncertainty in the imputation process
+]
+
+-  Multiple (stochastic) imputation (MI)
+   - Missing data imputed `\(K\)` times to obtain `\(K\)` different imputed datasets
+   - Each dataset is analysed and `\(K\)` sets of estimates are derived
+   - Parameter estimates are combined into a single quantity
+   - The uncertainty due to imputation is incorporated but the validity relies on the correct specification of the imputation model
+   
+.lightgray[   
+- "Full Bayesian"
+   -  Basically extends MI to model formally the missing mechanism
+]
+
+---
+
+# Multiple imputation
+
+## Example
+
+- Suppose we partially observe a continuous variable `\(y\)` on `\(n_{\rm{obs}} &lt; n\)` individuals
+
+- Also, we completely observe an additional variable `\(x\)` on the `\(n\)` individuals in the sample
+
+- The simplest way in which we can describe the relationship between `\(y\)` and `\(x\)` is through linear regression
+
+`$$\class{myblue}{y_i = \beta_0 + \beta_1 x_i + \varepsilon_i \qquad \varepsilon_i \sim \dnorm(0,\sigma^2)}$$`
+
+--
+
+-  We can procede in the following way
+
+   1. Fit the regression model to the complete cases and estimate the parameters `\(\bm{\theta} = (\beta_0, \beta_1, \sigma^2 )\)`
+   2. Build a linear predictor for the missing data points `\(\mu^{\rm{mis}} = \hat\beta_0 + \hat\beta_1 x_i\)`
+   3. Simulate a random value from the induced distribution of the missing data
+   `$$\class{myblue}{y_i^{\rm{mis}}\sim \dnorm(\mu^{\rm{mis}},\hat\sigma^2)}$$`
+
+---
+
+count: false
+# Multiple imputation
+
+
+
+&lt;center&gt;&lt;img src=./img/unnamed-chunk-7-1.png width='48%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+count: false
+# Multiple imputation
+
+- If we had infinite data on which to base our estimation of the parameters `\(\class{myblue}{\bm{\theta} = (\beta_0, \beta_1, \sigma^2 )}\)` for the imputation model, then a single draw would be sufficient to fully represent our uncertainty in the missingness patterns (provided that the imputation model is correctly specified!)
+
+
+--
+
+
+- However, in general that is .red[**not**] the case
+   - The dataset is typically small to moderate
+   - We are only using the complete cases anyway to estimate `\(\class{myblue}{\bm\theta}\)`
+   - The imputation model is possibly mis-specified
+
+- Consequently, the resulting linear predictor and the estimation of the individual variance are likely to be with limited precision
+
+
+--
+
+
+- To deal with this...
+   - Simulate multiple instances of the possible value that the missing observations might have had (if we had been able to observe them), by considering a number `\(K\)` of draws from their distribution
+
+---
+
+count: false
+# Multiple imputation
+
+
+1. **Imputation**
+
+   - Impute (fill in) the missing entries of the incomplete data sets `\(K\)` (typically 5-10) times, by simulating from a given model (e.g. linear regression, in the previous case)    
+   - This step results in `\(K\)` complete data sets
+   
+--
+
+2. **Analysis**
+   - Analyse each of the `\(K\)` completed datasets using standard methods
+   - This amounts to computing the estimate `\(\class{myblue}{\bar{y}_k}\)` with variance `\(\class{myblue}{\sigma^2_k}\)`
+   
+--
+
+3. **Pooling** ("Rubin's rule")
+   -  Combine the `\(K\)` analysis results into a single final result
+   `$$\class{myblue}{\bar{y}_{\rm{MI}} = \frac{1}{K}\sum_{k=1}^K \bar{y}_k}$$`
+   &lt;span style="display:block; margin-top: -10px ;"&gt;&lt;/span&gt;
+   with variance
+   &lt;span style="display:block; margin-top: -10px ;"&gt;&lt;/span&gt;
+   `$$\class{myblue}{\sigma^2_{\rm{MI}} = \left(1 + \frac{1}{K}\right)\underbrace{\left[\frac{1}{K-1}\sum_{k=1}^K \left(\bar{y}_k - \bar{y}_{\rm{MI}}\right)^2\right]}_{\style{font-family:inherit;}{\text{between imputation}}} + \underbrace{\left[ \frac{1}{K}\sum_{k=1}^K \sigma^2_k \right]}_{\style{font-family:inherit;}{\text{within imputation}}}}$$`
+   
+---
+
+count: false
+# Multiple imputation
+
+&lt;style type="text/css"&gt;
+.right-column30 {
+  width: 30%;
+  height: 92%;
+  float: right;
+}
+.right-column30 h2, .right-column h3 {
+  color: #035AA699;
+}
+.right-column30 h2:last-of-type, .left-column h3:last-child {
+  color: #035AA6;
+}
+.left-column70 {
+  width: 65%;
+  float: left;
+  padding-top: 0em;
+}
+&lt;/style&gt;
+
+.left-column70[
+## Advantages
+
+- (Generally) valid under MCAR and MAR assumptions
+
+- Makes use of the whole dataset
+
+- Can be extended to MNAR, although models become more complex and untestable assumptions are necessary
+
+## Disadvantages
+
+- Leads to biased results if the imputation model is completely mis-specifed ("**congeniality**")
+
+- Can be computationally intensive
+
+]
+
+.right-column30[
+&lt;center&gt;&lt;img src=./img/mscongeniality.jpeg width='100%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+]
+
+---
+
+# Missing data **analysis methods**
+
+.lightgray[
+- Complete Case Analysis
+   - Elimination of partially observed cases
+   - Simple but reduce efficiency and possibly give bias parameter estimates
+
+- Inverse probability weighting
+   - Weigh the original data (subject to missingness) to account for the fact that the actual sample size is smaller than originally planned
+   - Weigh up(down) units that have a low(high) chance of actually being observed
+
+- Single (deterministic) imputation
+   - Imputation of missing data with a single value (mean, median, LVCF)
+   - Does not account for the uncertainty in the imputation process
+
+-  Multiple (stochastic) imputation (MI)
+   - Missing data imputed `\(K\)` times to obtain `\(K\)` different imputed datasets
+   - Each dataset is analysed and `\(K\)` sets of estimates are derived
+   - Parameter estimates are combined into a single quantity
+   - The uncertainty due to imputation is incorporated but the validity relies on the correct specification of the imputation model
+]
+   
+- "Full Bayesian"
+   -  Basically extends MI to model formally the missing mechanism
+
+---
+
+# (Bayesian) Modelling for missing data
+
+- Effectively, need to model a bivariate outcome `\((y, m)\)`, depending on the model parameters (see &lt;a href="../04_ILD/#factorisation"&gt;Lecture 4&lt;/a&gt;)
+`\begin{align}
+\class{myblue}{p(y,m \mid \bm\theta)} &amp; \class{myblue}{= p\left(y \mid m,\bm\theta^{\rm{MoA}}\right) p\left(m\mid \bm\theta^{\rm{MoM}}\right)} &amp;&amp; \class{blue}{\style{font-family:inherit;}{\text{Pattern mixture model}}} \\
+&amp; \class{myblue}{=   p\left(m \mid y,\bm\theta^{\rm{MoM}}\right) p\left(y\mid \bm\theta^{\rm{MoA}}\right)} &amp;&amp; \class{red}{\style{font-family:inherit;}{\text{Selection model}}} 
+\end{align}`
+   -  Common assumption (explicit in a Bayesian setup): the two blocks of model parameters are independent (at least a priori)
+
+
+--
+
+
+-  .blue[**Pattern mixture models**]
+   - Needs to model the full possible missingness "patterns" `\(m\)` using a marginal distribution
+   - Models for data more natural
+
+
+- .red[**Selection models**]
+   -  Models directly the marginal distribution of the observable data
+   - Needs to figure out how the missingness model may be affected by it
+
+---
+
+# Missing data **in HTA**
+
+- Missing data are complicated in any context
+
+   - But are fairly established in medical/bio-statistical research
+  
+  
+-  In HTA it's even more complicated...
+
+   - Bivariate outcome, usually correlated
+   - Normality not reasonable (skewness)
+   - Other features of the data ("spikes")
+   - Main objective: decision-making, not inference! (See &lt;a href="../03_Intro_HE/#he-scheme"&gt;Lecture 3&lt;/a&gt;)
+   
+---
+
+count: false
+# Missing data **in HTA**
+
+### Selection models: MCAR `\((e,c)\)`
+
+
+
+&lt;center&gt;&lt;img src=./img/unnamed-chunk-9-1.png width='72%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+
+&lt;span style="display:block; margin-top: 8px ;"&gt;&lt;/span&gt;
+- `\(\class{olive}{m_{ei}\sim\dbern(\pi_{ei}); \qquad \logit(\pi_{ei})=\gamma_{e0}}\)`
+
+- `\(\class{orange}{m_{ci}\sim\dbern(\pi_{ci}); \qquad \logit(\pi_{ci})=\gamma_{c0}}\)`
+
+---
+
+count: false
+# Missing data **in HTA**
+
+### Selection models: MAR `\((e,c)\)`
+
+
+
+
+&lt;center&gt;&lt;img src=./img/unnamed-chunk-10-1.png width='72%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+
+&lt;span style="display:block; margin-top: 11px ;"&gt;&lt;/span&gt;
+- `\(\class{olive}{m_{ei}\sim\dbern(\pi_{ei}); \qquad \logit(\pi_{ei})=\gamma_{e0} + \sum_{k=1}^K \gamma_{ek}x_{eik}}\)`
+
+- `\(\class{orange}{m_{ci}\sim\dbern(\pi_{ci}); \qquad \logit(\pi_{ci})=\gamma_{c0} + \sum_{h=1}^H \gamma_{ch}x_{cih}}\)`
+
+---
+
+count: false
+# Missing data **in HTA**
+
+### Selection models: MNAR `\((e,c)\)`
+
+
+
+
+&lt;center&gt;&lt;img src=./img/unnamed-chunk-11-1.png width='72%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+
+&lt;span style="display:block; margin-top: 11px ;"&gt;&lt;/span&gt;
+- `\(\class{olive}{m_{ei}\sim\dbern(\pi_{ei}); \qquad \logit(\pi_{ei})=\gamma_{e0} + \sum_{k=1}^K \gamma_{ek}x_{eik} + \gamma_{eK+1}e_i;} \class{blue}{\quad \gamma_{eK+1}\sim\style{font-family:inherit;}{\text{Informative Prior}}}\)` 
+
+- `\(\class{orange}{m_{ci}\sim\dbern(\pi_{ci}); \qquad \logit(\pi_{ci})=\gamma_{c0} + \sum_{h=1}^H \gamma_{ch}x_{cih} + \gamma_{cH+1}c_i;} \class{blue}{\quad \gamma_{cK+1}\sim\style{font-family:inherit;}{\text{Informative Prior}}}\)`
+
+---
+
+# Motivating example: MenSS trial
+
+- The MenSS pilot RCT evaluates the cost-effectiveness of a new digital intervention to reduce the incidence of STI in young men with respect to the SOC
+   - QALYs calculated from utilities (EQ-5D 3L)
+   - Total costs calculated from different components (no baseline)
+  
+ 
+--
+
+### Partially observed data
+
+&lt;center&gt;&lt;img src=./img/tab_menss.png width='75%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+   
+---
+
+count: 
+# Motivating example: MenSS trial
+
+- The MenSS pilot RCT evaluates the cost-effectiveness of a new digital intervention to reduce the incidence of STI in young men with respect to the SOC
+   - QALYs calculated from utilities (EQ-5D 3L)
+   - Total costs calculated from different components (no baseline)
+
+
+### Skewness and "structural values"
+
+&lt;span style="display:block; margin-top: -10pt ;"&gt;&lt;/span&gt;
+
+&lt;center&gt;&lt;img src=./img/menss_data.png width='48%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+# Modelling
+
+.alignright[&lt;svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  &lt;g label="icon" id="layer6" groupmode="layer"&gt;    &lt;path id="path2" d="M 120.19265,177.73779 C 123.18778,77.35076 64.277527,63.999998 64.277527,63.999998 v 31.26245 C 40.834519,83.611374 18.32863,81.929634 18.32863,81.929634 V 337.10903 c 0,0 98.10414,-11.41744 98.10414,84.40952 0,0 36.58424,-153.37442 248.86103,26.48145 0,-61.59342 0.37757,-216.93925 0.37757,-268.28471 C 169.9561,37.131382 120.1931,177.73779 120.1931,177.73779 Z m 187.20631,173.82056 -12.37599,-97.65441 h -0.448 l -40.72819,97.65441 h -17.55994 l -38.9362,-97.65441 h -0.448 l -14.17589,97.65441 h -43.87514 l 28.8015,-169.61925 h 43.42716 l 34.43518,90.6496 36.46566,-90.6496 h 43.87513 l 25.6817,169.61925 h -44.13938 z" style="stroke-width:0.0675239"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt; [Gabrio et al (2018)](https://pubmed.ncbi.nlm.nih.gov/30565727/)]
+1. **Bivariate Normal**     
+   - Simpler and closer to "standard" frequentist models     
+   - Accounts for .red65blue[correlation between QALYs and costs]     
+
+&lt;center&gt;&lt;img src=./img/unnamed-chunk-12-1.png width='75%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+count: false
+# Modelling
+
+.alignright[&lt;svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  &lt;g label="icon" id="layer6" groupmode="layer"&gt;    &lt;path id="path2" d="M 120.19265,177.73779 C 123.18778,77.35076 64.277527,63.999998 64.277527,63.999998 v 31.26245 C 40.834519,83.611374 18.32863,81.929634 18.32863,81.929634 V 337.10903 c 0,0 98.10414,-11.41744 98.10414,84.40952 0,0 36.58424,-153.37442 248.86103,26.48145 0,-61.59342 0.37757,-216.93925 0.37757,-268.28471 C 169.9561,37.131382 120.1931,177.73779 120.1931,177.73779 Z m 187.20631,173.82056 -12.37599,-97.65441 h -0.448 l -40.72819,97.65441 h -17.55994 l -38.9362,-97.65441 h -0.448 l -14.17589,97.65441 h -43.87514 l 28.8015,-169.61925 h 43.42716 l 34.43518,90.6496 36.46566,-90.6496 h 43.87513 l 25.6817,169.61925 h -44.13938 z" style="stroke-width:0.0675239"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt; [Gabrio et al (2018)](https://pubmed.ncbi.nlm.nih.gov/30565727/)]
+1. **Bivariate Normal**     
+   - Simpler and closer to "standard" frequentist models     
+   - Accounts for .red65blue[correlation between QALYs and costs]     
+&lt;span style="display:block; margin-top: -10px ;"&gt;&lt;/span&gt;
+2. **Beta-Gamma**     
+   - Account for .red65blue[correlation between outcomes] **and** model the relevant ranges: QALYs `\(\in (0,1)\)` and costs `\(\in (0,\infty)\)`    
+   - **But**: needs to rescale the observed data `\(\class{myblue}{e^*_{it}=(e_{it}-\epsilon)}\)` to avoid spikes at 1    
+
+&lt;center&gt;&lt;img src=./img/unnamed-chunk-13-1.png width='75%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+count: false
+# Modelling
+
+.alignright[&lt;svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  &lt;g label="icon" id="layer6" groupmode="layer"&gt;    &lt;path id="path2" d="M 120.19265,177.73779 C 123.18778,77.35076 64.277527,63.999998 64.277527,63.999998 v 31.26245 C 40.834519,83.611374 18.32863,81.929634 18.32863,81.929634 V 337.10903 c 0,0 98.10414,-11.41744 98.10414,84.40952 0,0 36.58424,-153.37442 248.86103,26.48145 0,-61.59342 0.37757,-216.93925 0.37757,-268.28471 C 169.9561,37.131382 120.1931,177.73779 120.1931,177.73779 Z m 187.20631,173.82056 -12.37599,-97.65441 h -0.448 l -40.72819,97.65441 h -17.55994 l -38.9362,-97.65441 h -0.448 l -14.17589,97.65441 h -43.87514 l 28.8015,-169.61925 h 43.42716 l 34.43518,90.6496 36.46566,-90.6496 h 43.87513 l 25.6817,169.61925 h -44.13938 z" style="stroke-width:0.0675239"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt; [Gabrio et al (2018)](https://pubmed.ncbi.nlm.nih.gov/30565727/)]
+1. **Bivariate Normal**     
+   - Simpler and closer to "standard" frequentist models     
+   - Accounts for .red65blue[correlation between QALYs and costs]    
+&lt;span style="display:block; margin-top: -10px ;"&gt;&lt;/span&gt;
+2. **Beta-Gamma**     
+   - Account for .red65blue[correlation between outcomes] **and** model the relevant ranges: QALYs `\(\in (0,1)\)` and costs `\(\in (0,\infty)\)`    
+   - **But**: needs to rescale the observed data `\(\class{myblue}{e^*_{it}=(e_{it}-\epsilon)}\)` to avoid spikes at 1    
+&lt;span style="display:block; margin-top: -10px ;"&gt;&lt;/span&gt;
+3. **Hurdle model**    
+   - Model `\(e_{it}\)` as a .blue[**mixture**] to account for .red65blue[correlation between outcomes] + relevant ranges + .olive[structural values]
+   - May expand further to account for partially observed baseline utilities `\(u_{0it}\)` (needs untestable assumptions!)
+
+&lt;center&gt;&lt;img src=./img/unnamed-chunk-14-1.png width='75%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+count: false
+# Modelling
+
+.alignright[&lt;svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  &lt;g label="icon" id="layer6" groupmode="layer"&gt;    &lt;path id="path2" d="M 120.19265,177.73779 C 123.18778,77.35076 64.277527,63.999998 64.277527,63.999998 v 31.26245 C 40.834519,83.611374 18.32863,81.929634 18.32863,81.929634 V 337.10903 c 0,0 98.10414,-11.41744 98.10414,84.40952 0,0 36.58424,-153.37442 248.86103,26.48145 0,-61.59342 0.37757,-216.93925 0.37757,-268.28471 C 169.9561,37.131382 120.1931,177.73779 120.1931,177.73779 Z m 187.20631,173.82056 -12.37599,-97.65441 h -0.448 l -40.72819,97.65441 h -17.55994 l -38.9362,-97.65441 h -0.448 l -14.17589,97.65441 h -43.87514 l 28.8015,-169.61925 h 43.42716 l 34.43518,90.6496 36.46566,-90.6496 h 43.87513 l 25.6817,169.61925 h -44.13938 z" style="stroke-width:0.0675239"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt; [Gabrio et al (2018)](https://pubmed.ncbi.nlm.nih.gov/30565727/)]
+1. **Bivariate Normal**     
+   - Simpler and closer to "standard" frequentist models     
+   - Accounts for .red65blue[correlation between QALYs and costs]    
+&lt;span style="display:block; margin-top: -10px ;"&gt;&lt;/span&gt;
+2. **Beta-Gamma**     
+   - Account for .red65blue[correlation between outcomes] **and** model the relevant ranges: QALYs `\(\in (0,1)\)` and costs `\(\in (0,\infty)\)`    
+   - **But**: needs to rescale the observed data `\(\class{myblue}{e^*_{it}=(e_{it}-\epsilon)}\)` to avoid spikes at 1    
+&lt;span style="display:block; margin-top: -10px ;"&gt;&lt;/span&gt;
+3. **Hurdle model**    
+   - Model `\(e_{it}\)` as a .blue[**mixture**] to account for .red65blue[correlation between outcomes] + relevant ranges + .olive[structural values]
+   - May expand further to account for partially observed baseline utilities `\(u_{0it}\)` (needs untestable assumptions!)
+
+&lt;center&gt;&lt;img src=./img/unnamed-chunk-15-1.png width='75%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+count: false
+# Modelling
+
+.alignright[&lt;svg viewBox="0 0 384 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  &lt;g label="icon" id="layer6" groupmode="layer"&gt;    &lt;path id="path2" d="M 120.19265,177.73779 C 123.18778,77.35076 64.277527,63.999998 64.277527,63.999998 v 31.26245 C 40.834519,83.611374 18.32863,81.929634 18.32863,81.929634 V 337.10903 c 0,0 98.10414,-11.41744 98.10414,84.40952 0,0 36.58424,-153.37442 248.86103,26.48145 0,-61.59342 0.37757,-216.93925 0.37757,-268.28471 C 169.9561,37.131382 120.1931,177.73779 120.1931,177.73779 Z m 187.20631,173.82056 -12.37599,-97.65441 h -0.448 l -40.72819,97.65441 h -17.55994 l -38.9362,-97.65441 h -0.448 l -14.17589,97.65441 h -43.87514 l 28.8015,-169.61925 h 43.42716 l 34.43518,90.6496 36.46566,-90.6496 h 43.87513 l 25.6817,169.61925 h -44.13938 z" style="stroke-width:0.0675239"&gt;&lt;/path&gt;  &lt;/g&gt;&lt;/svg&gt; [Gabrio et al (2018)](https://pubmed.ncbi.nlm.nih.gov/30565727/)]
+1. **Bivariate Normal**     
+   - Simpler and closer to "standard" frequentist models     
+   - Accounts for .red65blue[correlation between QALYs and costs]    
+&lt;span style="display:block; margin-top: -10px ;"&gt;&lt;/span&gt;
+2. **Beta-Gamma**     
+   - Account for .red65blue[correlation between outcomes] **and** model the relevant ranges: QALYs `\(\in (0,1)\)` and costs `\(\in (0,\infty)\)`    
+   - **But**: needs to rescale the observed data `\(\class{myblue}{e^*_{it}=(e_{it}-\epsilon)}\)` to avoid spikes at 1    
+&lt;span style="display:block; margin-top: -10px ;"&gt;&lt;/span&gt;
+3. **Hurdle model**    
+   - Model `\(e_{it}\)` as a .blue[**mixture**] to account for .red65blue[correlation between outcomes] + relevant ranges + .olive[structural values]
+   - May expand further to account for partially observed baseline utilities `\(u_{0it}\)` (needs untestable assumptions!)
+
+&lt;center&gt;&lt;img src=./img/unnamed-chunk-16-1.png width='75%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+# Bayesian multiple imputation (MAR)
+&lt;span style="display:block; margin-top: -5px ;"&gt;&lt;/span&gt;
+
+&lt;center&gt;&lt;img src=./img/results.png width='69%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+---
+
+# Cost-effectiveness analysis
+
+.pull-left[
+&lt;center&gt;&lt;img src=./img/CEP_comparison_bg.png width='100%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+]
+.pull-right[
+&lt;center&gt;&lt;img src=./img/CEAC_comparison_bg.png width='100%' title='INCLUDE TEXT HERE'&gt;&lt;/center&gt;
+
+.alignright[.small[&lt;svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" style="height:1em;fill:currentColor;position:relative;display:inline-block;top:.1em;"&gt;  [ comment ]  &lt;path d="M256 8c137 0 248 111 248 248S393 504 256 504 8 393 8 256 119 8 256 8zm-28.9 143.6l75.5 72.4H120c-13.3 0-24 10.7-24 24v16c0 13.3 10.7 24 24 24h182.6l-75.5 72.4c-9.7 9.3-9.9 24.8-.4 34.3l11 10.9c9.4 9.4 24.6 9.4 33.9 0L404.3 273c9.4-9.4 9.4-24.6 0-33.9L271.6 106.3c-9.4-9.4-24.6-9.4-33.9 0l-11 10.9c-9.5 9.6-9.3 25.1.4 34.4z"&gt;&lt;/path&gt;&lt;/svg&gt; [Next lecture](../11_VoI/index.html)]]
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"highlightSpans": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<style>
+.logo {
+  background-image: url("../assets/beamer/UCL-beamer.png");
+  background-size: 14% 7%;
+  background-repeat: no-repeat;
+  position: absolute;
+  top:  2.625%; /* 2.65%em */
+  left: 85%;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)' +
+    ':not(.thankyou-michelle)' +
+    ':not(.thankyou-barney)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

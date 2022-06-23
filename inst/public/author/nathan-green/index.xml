@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Nathan Green | Bayesian methods in health economics</title>
+    <link>/author/nathan-green/</link>
+      <atom:link href="/author/nathan-green/index.xml" rel="self" type="application/rss+xml" />
+    <description>Nathan Green</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Thu, 23 Jun 2022 09:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/author/nathan-green/avatar_hued50479971cda85e62e28baf6fb0a91e_5130_270x270_fill_q75_lanczos_center.jpg</url>
+      <title>Nathan Green</title>
+      <link>/author/nathan-green/</link>
+    </image>
+    
+    <item>
+      <title>Lecture 10: Missing data in cost-effectiveness modelling</title>
+      <link>/syllabus/lecture10/</link>
+      <pubDate>Thu, 23 Jun 2022 09:00:00 +0000</pubDate>
+      <guid>/syllabus/lecture10/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Background – what’s difficult about missing data?&lt;/li&gt;
+&lt;li&gt;Missing data mechanisms&lt;/li&gt;
+&lt;li&gt;Missing data in health economic evaluation&lt;/li&gt;
+&lt;li&gt;Applications/examples&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 9: Markov models</title>
+      <link>/syllabus/lecture9/</link>
+      <pubDate>Wed, 22 Jun 2022 14:15:00 +0000</pubDate>
+      <guid>/syllabus/lecture9/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;State-transition models for clinical history&lt;/li&gt;
+&lt;li&gt;Bayesian implementation&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Markov models &amp;amp; survival analysis&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 5: Aggregated level data</title>
+      <link>/syllabus/lecture5/</link>
+      <pubDate>Tue, 21 Jun 2022 11:15:00 +0000</pubDate>
+      <guid>/syllabus/lecture5/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Role of evidence synthesis in decision modelling: Absolute and relative effects&lt;/li&gt;
+&lt;li&gt;Meta-analysis of aggregated summaries from RCTs&lt;/li&gt;
+&lt;li&gt;Evidence synthesis in health economics: Influenza example&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 2: Learning from data using MCMC and BUGS</title>
+      <link>/syllabus/lecture2/</link>
+      <pubDate>Mon, 20 Jun 2022 12:00:00 +0000</pubDate>
+      <guid>/syllabus/lecture2/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Bayes theorem for learning about parameters from observed data.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Introduction to Markov chain Monte Carlo (MCMC)&lt;/li&gt;
+&lt;li&gt;Introduction to BUGS for estimating posterior distributions of parameters given data&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

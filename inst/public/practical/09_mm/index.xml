@@ -1,0 +1,566 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practical 9 Markov models in health economic evaluations | Bayesian methods in health economics</title>
+    <link>/practical/09_mm/</link>
+      <atom:link href="/practical/09_mm/index.xml" rel="self" type="application/rss+xml" />
+    <description>Practical 9 Markov models in health economic evaluations</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Wed, 22 Jun 2022 15:15:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Practical 9 Markov models in health economic evaluations</title>
+      <link>/practical/09_mm/</link>
+    </image>
+    
+    <item>
+      <title>Practical 9. Markov models — SOLUTIONS</title>
+      <link>/practical/09_mm/solutions/</link>
+      <pubDate>Wed, 22 Jun 2022 15:15:00 +0000</pubDate>
+      <guid>/practical/09_mm/solutions/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/kePrint/kePrint.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;/rmarkdown-libs/lightable/lightable.css&#34; rel=&#34;stylesheet&#34; /&gt;
+
+
+&lt;div id=&#34;individual-level-data-on-event-history-and-markov-models&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;2. Individual level data on event history and Markov models&lt;/h2&gt;
+&lt;p&gt;In this case, we consider individual level data, e.g. derived from a randomised study, in which patients have been:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Randomised to either standard of care (&lt;span class=&#34;math inline&#34;&gt;\(t=0\)&lt;/span&gt;) or an innovative &lt;a href=&#34;https://en.wikipedia.org/wiki/Cancer_immunotherapy&#34;&gt;immuno-oncologic&lt;/a&gt; drug;&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Followed up for a period of time during which their “event history” has been recorded. In particular, we know whether or not the individuals have “&lt;em&gt;progressed&lt;/em&gt;” to a more serious stage of the cancer (and in that case, the time since enrollement at which this has been confirmed), as well as whether or not the individual has “&lt;em&gt;died&lt;/em&gt;” (again with the exact time of death being recorded).&lt;/li&gt;
+&lt;/ol&gt;
+As shown in class, the data look like this.
+&lt;table class=&#34; lightable-classic table&#34; style=&#34;font-family: &amp;quot;Arial Narrow&amp;quot;, &amp;quot;Source Sans Pro&amp;quot;, sans-serif; margin-left: auto; margin-right: auto; margin-left: auto; margin-right: auto;&#34;&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;
+Patient
+&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;
+Treatment
+&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;
+Progression?
+&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;
+Death?
+&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;
+Progression time
+&lt;/th&gt;
+&lt;th style=&#34;text-align:center;&#34;&gt;
+Death time
+&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+0
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+31.99
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+32.00
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+2
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+0
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+30.55
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+30.60
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(\ldots\)&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(\ldots\)&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(\ldots\)&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(\ldots\)&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(\ldots\)&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(\ldots\)&lt;/span&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+10
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+0.17
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+0.46
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+11
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+1
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+1.27
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;&#34;&gt;
+1.57
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td style=&#34;text-align:center;border-bottom: 2px solid;&#34;&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(\ldots\)&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;border-bottom: 2px solid;&#34;&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(\ldots\)&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;border-bottom: 2px solid;&#34;&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(\ldots\)&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;border-bottom: 2px solid;&#34;&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(\ldots\)&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;border-bottom: 2px solid;&#34;&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(\ldots\)&lt;/span&gt;
+&lt;/td&gt;
+&lt;td style=&#34;text-align:center;border-bottom: 2px solid;&#34;&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(\ldots\)&lt;/span&gt;
+&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;The time is recorded in months; from the modelling point of view, this is not a problem; however, for the sake of running the Markov model for a “lifetime horizon”, it may be more efficient to convert the times in, say, years — this means that the values are rescaled (by 12, in this case) and so the overall number of cycles becomes smaller (so, instead of running the Markov model for 120 months, which implies a relatively large computational burden), we can do it for 10 years.&lt;/p&gt;
+&lt;p&gt;As shown in class, this dataset has the advantage of using the nature of the data — for each individual we know whether and when they experience the two events of interest (progression and death). This is not possible when we use digitised data on PFS and OS separately. However to run the analysis, we need to convert the data to a suitable format (often referred to as “multistate”). For example, we can use the &lt;a href=&#34;https://www.tidyverse.org/&#34;&gt;tidyverse&lt;/a&gt; and re-arrange the data in a very efficient way.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# &amp;#39;tidyverse&amp;#39; code to re-arrange the data in &amp;quot;multistate&amp;quot; format
+msmdata=
+  # Transition Pre to Post
+  data %&amp;gt;% mutate(                                                        # use the original data and start making changes to them
+  id=patid,                                                               # patient ID
+  from=1,                                                                 # starting state (1=&amp;quot;Pre-progression&amp;quot;)
+  to=2,                                                                   # arriving state (2=&amp;quot;Progressed&amp;quot;)
+  trans=1,                                                                # transition ID (1=&amp;quot;Pre-progression -&amp;gt; Progressed&amp;quot;)
+  Tstart=0,                                                               # entry time
+  Tstop=prog_t,                                                           # exit time (time at which the event happens)
+  time=Tstop-Tstart,                                                      # observed time
+  status=case_when(                                                       # event indicator
+    prog==1~1,                                                            #   if progressed then 1
+    TRUE~0                                                                #   otherwise 0 (censored for progression)
+  ),
+  treat=treat                                                             # treatment arm
+) %&amp;gt;% select(id,from,to,trans,Tstart,Tstop,time,status,treat) %&amp;gt;%         # selects only the relevant columns (for simplicity)
+  bind_rows(                                                              # stack these new rows below those selected above
+  # Transition Pre to Death
+    data %&amp;gt;% mutate(                                                      # use the original data and start making changes to them
+      id=patid,                                                           # patient ID
+      from=1,                                                             # starting state (1=&amp;quot;Pre-progression&amp;quot;)
+      to=3,                                                               # arriving state (3=&amp;quot;Death&amp;quot;)
+      trans=2,                                                            # transition ID (2=&amp;quot;Pre-progression -&amp;gt; Death&amp;quot;)
+      Tstart=0,                                                           # entry time
+      Tstop=death_t,                                                      # exit time (time at which the event happens)
+      time=Tstop-Tstart,                                                  # observed time
+      status=case_when(                                                   # event indicator
+        (death==1 &amp;amp; prog_t==death_t)~1,                                   #   if death then 1
+        TRUE~0                                                            #   otherwise 0 (censored for death)
+      ),
+      treat=treat                                                         # treatment arm
+    ) %&amp;gt;% select(id,from,to,trans,Tstart,Tstop,time,status,treat)         # selects only the relevant columns (for simplicity)
+  ) %&amp;gt;% 
+  bind_rows(                                                              # stack these new rows below those selected above
+  # Transition Post to Death
+    data %&amp;gt;% filter(prog==1) %&amp;gt;% mutate(                                  # use the original data, but **filter only those who have progressed**
+      id=patid,                                                           # patient ID
+      from=2,                                                             # starting state (2=&amp;quot;Progressed&amp;quot;)
+      to=3,                                                               # arriving state (3=&amp;quot;Death&amp;quot;)
+      trans=3,                                                            # transition ID (3=&amp;quot;Progressed -&amp;gt; Death&amp;quot;)
+      Tstart=prog_t,                                                      # entry time. NB: this time is the time of progression!
+      Tstop=death_t,                                                      # exit time (time at which the event happens). NB: this time it&amp;#39;s death!
+      time=Tstop-Tstart,                                                  # observed time
+      status=case_when(                                                   # event indicator
+        death==1~1,                                                       #   if death then 1
+        TRUE~0                                                            #   otherwise 0 (censored for death **after progression**)
+      ),
+      treat=treat                                                         # treatment arm
+    ) %&amp;gt;% select(id,from,to,trans,Tstart,Tstop,time,status,treat)         # selects only the relevant columns (for simplicity)
+  ) %&amp;gt;% arrange(id,trans)
+
+# Visualise the data
+msmdata&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## # A tibble: 1,868 × 9
+##       id  from    to trans Tstart Tstop     time status treat
+##    &amp;lt;int&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;    &amp;lt;dbl&amp;gt;  &amp;lt;dbl&amp;gt; &amp;lt;int&amp;gt;
+##  1     1     1     2     1    0   32.0  32.0          1     1
+##  2     1     1     3     2    0   32    32            0     1
+##  3     1     2     3     3   32.0 32     0.00920      0     1
+##  4     2     1     2     1    0   30.6  30.6          1     1
+##  5     2     1     3     2    0   30.6  30.6          0     1
+##  6     2     2     3     3   30.6 30.6   0.0476       0     1
+##  7     3     1     2     1    0   27.9  27.9          1     1
+##  8     3     1     3     2    0   28    28            0     1
+##  9     3     2     3     3   27.9 28     0.0944       0     1
+## 10     4     1     2     1    0    2.88  2.88         1     0
+## # … with 1,858 more rows&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can now run three separate survival analyses for each of the three transitions, for instance using &lt;code&gt;survHE&lt;/code&gt; (but you don’t have to do this — in case you need it, notice that &lt;code&gt;survHE&lt;/code&gt; is installed in the &lt;a href=&#34;../../tips/#virtual-machine&#34;&gt;Binder remote server&lt;/a&gt;). This step is &lt;strong&gt;much&lt;/strong&gt; more complicated than shown here. For example, we would need to test several parametric models (as discussed in &lt;a href=&#34;../../slides/06_Survival&#34;&gt;Lecture 6&lt;/a&gt;). Then we would need to validate the different models — on the basis of their fit to the observed data, but more importantly in relation to the &lt;strong&gt;extrapolation&lt;/strong&gt; over times that have not been observed.&lt;/p&gt;
+&lt;p&gt;In this case, we can simplify things and assume that, for all three models (PFS, OS and OS after progression, which we indicate respectively as &lt;code&gt;m_12&lt;/code&gt;, &lt;code&gt;m_13&lt;/code&gt; and &lt;code&gt;m_23&lt;/code&gt; — the reason for this terminology will be obvious later), we select a Gompertz distribution as the best one. In &lt;code&gt;survHE&lt;/code&gt;, the models would be fitted using the following commands.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Loads survHE
+library(survHE)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: flexsurv&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## Loading required package: survival&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Attaching package: &amp;#39;survHE&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## The following objects are masked _by_ &amp;#39;.GlobalEnv&amp;#39;:
+## 
+##     data, msmdata&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Runs survival models on the specific subsets to obtain estimate of the various transition probabilities
+m_12=fit.models(Surv(time,status)~as.factor(treat),              # model &amp;#39;formula&amp;#39;: defines the time and censoring indicator and the covariates
+                data=msmdata %&amp;gt;% filter(trans==1),               # subsets the msmdata by filtering transition number 1 (pre-progression-&amp;gt;progressed)
+                distr=&amp;quot;gom&amp;quot;,                                     # selects the Gompertz model
+                method=&amp;quot;hmc&amp;quot;,                                    # instructs R to use HMC/Bayesian modelling
+                priors=list(gom=list(a_alpha=1.5,b_alpha=1.5)))  # specifies the informative prior
+
+m_13=fit.models(Surv(time,status)~as.factor(treat),              # model &amp;#39;formula&amp;#39;: defines the time and censoring indicator and the covariates
+                data=msmdata %&amp;gt;% filter(trans==2),               # subsets the msmdata by filtering transition number 2 (pre-progression-&amp;gt;death)
+                distr=&amp;quot;gom&amp;quot;,                                     # selects the Gompertz model
+                method=&amp;quot;hmc&amp;quot;,                                    # instructs R to use HMC/Bayesian modelling
+                priors=list(gom=list(a_alpha=1.5,b_alpha=1.5)))  # specifies the informative prior
+
+m_23=fit.models(Surv(time,status)~as.factor(treat),              # model &amp;#39;formula&amp;#39;: defines the time and censoring indicator and the covariates
+                data=msmdata %&amp;gt;% filter(trans==3),               # subsets the msmdata by filtering transition number 3 (progressed-&amp;gt;death)
+                distr=&amp;quot;gom&amp;quot;,                                     # selects the Gompertz model
+                method=&amp;quot;hmc&amp;quot;,                                    # instructs R to use HMC/Bayesian modelling
+                priors=list(gom=list(a_alpha=1.5,b_alpha=1.5)))  # specifies the informative prior```&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;When we fit these models, we obtain the estimates for the model parameters (which in the case of the Gompertz are the shape &lt;span class=&#34;math inline&#34;&gt;\(\alpha\)&lt;/span&gt; and the rate &lt;span class=&#34;math inline&#34;&gt;\(\mu\)&lt;/span&gt;). These can be used to reconstruct the full survival curves for an arbitrary time interval — for example in the case of the Gompertz model, for any given time &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt;, the survival curve is
+&lt;span class=&#34;math display&#34;&gt;\[S(t) = 1-\exp\left(-\frac{\mu}{\alpha} \exp(\alpha t)-1\right).\]&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;In &lt;code&gt;survHE&lt;/code&gt; the function &lt;code&gt;make.surv&lt;/code&gt; can be used to construct &lt;code&gt;nsim&lt;/code&gt; simulations of the survival curves for any specific interval of time &lt;code&gt;t=...&lt;/code&gt;. Once these are obtained, we can use them to compute the approximated transition probabilities using the formula
+&lt;span class=&#34;math display&#34;&gt;\[\lambda_{s&amp;#39;sj}\approx 1-\frac{S_{t+k}}{S_t}\]&lt;/span&gt;
+for a given pair of times &lt;span class=&#34;math inline&#34;&gt;\(t\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(t+k\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;The script provided contains a few functions that code up this process. We can load up the functions contained in the script &lt;code&gt;survHE_utils.R&lt;/code&gt;; these essentially use &lt;code&gt;dplyr&lt;/code&gt; and &lt;code&gt;ggplot2&lt;/code&gt; to manipulate the output of the models using the following steps.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Compute the survival curves using the &lt;code&gt;make.surv&lt;/code&gt; function in &lt;code&gt;survHE&lt;/code&gt;&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Use the approximation formula to translate these into the probabilities &lt;span class=&#34;math inline&#34;&gt;\(\lambda_{12}\)&lt;/span&gt; (transition from Pre-progression to Progressed), &lt;span class=&#34;math inline&#34;&gt;\(\lambda_{13}\)&lt;/span&gt; (transition from Pre-progressed to Death) and &lt;span class=&#34;math inline&#34;&gt;\(\lambda_{23}\)&lt;/span&gt; (transition from Progressed to Death).&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;Run the specialised function &lt;code&gt;three_state_mm&lt;/code&gt; that:&lt;br /&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;first completes the transition matrix by retrieving the remaining transition probabilities (&lt;span class=&#34;math inline&#34;&gt;\(\lambda_{11}=1-\lambda_{12}-\lambda_{13}\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(\lambda_{22}=1-\lambda_{23}\)&lt;/span&gt;;&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;then move people around according to the Markov matrix algebra.&lt;br /&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;4&#34; style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Run the specialised function &lt;code&gt;markov_trace&lt;/code&gt; to manipulate the resulting state occupancy tibble and then use &lt;code&gt;ggplot2&lt;/code&gt; to plot the Markov trace.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Sources the specialised functions
+source(&amp;quot;survHE_utils.R&amp;quot;)
+
+# Then run the Markov model using the specialised function &amp;#39;three_state_mm&amp;#39;
+mm=three_state_mm(
+  m_12,m_13,m_23,         # these are the three objects containing the parameters estimates
+  t=seq(0,130),           # specifies that the Markov model needs to be run for discrete times from 0 to 130 (months)
+  nsim=1,                 # only uses 1 simulation from the distribution of the model parameters (the mean)
+  start=c(1000,0,0)       # initial population: 1000 in pre-progression, 0 in progressed and 0 in death
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can visualise the resulting object&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;mm&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## $m
+## # A tibble: 260 × 11
+##    treat     t `Pre-progressed` Progressed Death sim_idx lambda_11 lambda_12
+##    &amp;lt;int&amp;gt; &amp;lt;int&amp;gt;            &amp;lt;dbl&amp;gt;      &amp;lt;dbl&amp;gt; &amp;lt;dbl&amp;gt;   &amp;lt;int&amp;gt;     &amp;lt;dbl&amp;gt;     &amp;lt;dbl&amp;gt;
+##  1     1     1            1000        0     0          1     0.993   0.00506
+##  2     1     2             993.       5.06  1.67       1     0.993   0.00527
+##  3     1     3             986.      10.2   3.45       1     0.993   0.00550
+##  4     1     4             979.      15.4   5.33       1     0.993   0.00574
+##  5     1     5             972.      20.7   7.32       1     0.992   0.00599
+##  6     1     6             964.      26.1   9.43       1     0.992   0.00625
+##  7     1     7             957.      31.6  11.7        1     0.992   0.00652
+##  8     1     8             949.      37.2  14.0        1     0.991   0.00680
+##  9     1     9             941.      42.8  16.5        1     0.991   0.00710
+## 10     1    10             932.      48.6  19.1        1     0.991   0.00740
+## # … with 250 more rows, and 3 more variables: lambda_13 &amp;lt;dbl&amp;gt;, lambda_22 &amp;lt;dbl&amp;gt;,
+## #   lambda_23 &amp;lt;dbl&amp;gt;
+## 
+## $running_time
+## Time difference of 0.121031 secs
+## 
+## $base_case
+## NULL&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This includes three elements:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;The tibble &lt;code&gt;m&lt;/code&gt;; this includes the state occupancy as well as the value of the relevant transition probabilities for each time point in the “virtual follow up”.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;The running time; this is a function of the number of simulations used — in this case, we’re only using &lt;code&gt;nsim&lt;/code&gt;=1 and so the computation is very fast. Note that in general, running this &lt;code&gt;R&lt;/code&gt; is more efficient than any implementation in spreadsheets.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;The user can instruct &lt;code&gt;R&lt;/code&gt; to also compute the Markov model for the “base-case” scenario, which is essentially the same as the case with &lt;code&gt;nsim&lt;/code&gt;=1. So in this case, the element &lt;code&gt;base_case&lt;/code&gt; is not computed and it is set to &lt;code&gt;NULL&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Finally, we can visualise the results using the following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;markov_trace(mm)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/09_mm/solutions_files/figure-html/unnamed-chunk-5-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;note-on-using-survhe&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Note on using survHE&lt;/h2&gt;
+&lt;p&gt;The code above uses the current &lt;code&gt;CRAN&lt;/code&gt; version of &lt;code&gt;survHE&lt;/code&gt;, which you can install by using the &lt;code&gt;R&lt;/code&gt; command &lt;code&gt;install.packages(&#39;survHE&#39;)&lt;/code&gt; or from the GitHub repository &lt;code&gt;remotes::install_github(&#39;giabaio/survHE&#39;)&lt;/code&gt; – assuming you have installed &lt;code&gt;remotes&lt;/code&gt; (check &lt;a href=&#34;../../../tips/computer-specification&#34;&gt;here&lt;/a&gt; for more details on &lt;code&gt;remotes&lt;/code&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;survHE&lt;/code&gt; is a bit of a complicated package – it’s not like most of its functions are difficult, it’s just that it is designed to “wrap up” complex packages doing the survival modelling. In particular, the two Bayesian versions are performed using very structured and heavy &lt;code&gt;R&lt;/code&gt; packages (&lt;code&gt;rstan&lt;/code&gt; and &lt;code&gt;INLA&lt;/code&gt;), which means that its installation can be long. If you’re on the &lt;a href=&#34;../../../tips/computer-specification#virtual-machine&#34;&gt;Binder VM&lt;/a&gt;, the installation of the whole thing may break it. In that case, you can resort to doing a “cheat” and installing the frequentist module only. You can do this by using the &lt;code&gt;R&lt;/code&gt; command &lt;code&gt;remotes::install_github(&#34;giabaio/survHE&#34;,ref=&#34;devel&#34;)&lt;/code&gt;. Note that in this case we use the extra option &lt;code&gt;ref=&#34;devel&#34;&lt;/code&gt;, which instructs &lt;code&gt;R&lt;/code&gt; to install the version contained in the GitHub branch named &lt;code&gt;devel&lt;/code&gt;, which contains the code to run the frequentist version of the models, only.&lt;/p&gt;
+&lt;p&gt;In this case, you will need to slightly modify the code above, to remove the reference to the &lt;code&gt;&#34;hmc&#34;&lt;/code&gt; method. For instance, you need to modify the call to &lt;code&gt;fit.models&lt;/code&gt; to the following&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m_12=fit.models(Surv(time,status)~as.factor(treat),              # model &amp;#39;formula&amp;#39;: defines the time and censoring indicator and the covariates
+                data=msmdata %&amp;gt;% filter(trans==1),               # subsets the msmdata by filtering transition number 1 (pre-progression-&amp;gt;progressed)
+                distr=&amp;quot;gom&amp;quot;                                      # selects the Gompertz model
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;(notice the removal to the &lt;code&gt;prior&lt;/code&gt; argument too: this is a frequentist model, so there’s no space for priors…).&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Cohort discrete Markov model</title>
+      <link>/practical/09_mm/cohort-model/</link>
+      <pubDate>Wed, 22 Jun 2022 15:15:00 +0000</pubDate>
+      <guid>/practical/09_mm/cohort-model/</guid>
+      <description> 
+
+
+
+&lt;div id=&#34;instructions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Instructions&lt;/h2&gt;
+&lt;p&gt;The following exercise helps you run the Markov model and the underlying Bayesian model to estimate the transition probabilities in &lt;span&gt;&lt;span&gt;&lt;code&gt;R&lt;/code&gt;&lt;/span&gt;&lt;/span&gt;and &lt;span&gt;&lt;span&gt;&lt;code&gt;BUGS&lt;/code&gt;&lt;/span&gt;&lt;/span&gt;. You should also look specifically at BMHE and actually run through the calculations to make sure you understand how the process works. In particular, look at the part relative to discounting and how you do that, which is very prevelent in real applied work.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;p&gt;Open the file &lt;a href=&#34;MarkovModel1.txt&#34;&gt;&lt;code&gt;MarkovModel1.txt&lt;/code&gt;&lt;/a&gt; and inspect the &lt;code&gt;BUGS&lt;/code&gt; model code.
+Make sure you understand the assumptions encoded in the model.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Follow the script &lt;a href=&#34;MarkovModel1.R&#34;&gt;&lt;code&gt;MarkovModel1.R&lt;/code&gt;&lt;/a&gt;, which will guide you through the
+necessary steps to create the data, run the MCMC model and then
+perform the relevant economic analysis from &lt;code&gt;R&lt;/code&gt;.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div id=&#34;solutions&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Solutions&lt;/h2&gt;
+&lt;p&gt;The &lt;tt&gt;R&lt;/tt&gt; script guides you through the process of running the Markov model analysis for the asthma problem seen in the lecture.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;images/5state.png&#34; width=&#34;500&#34; alt=&#34;&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;The graphical representation of the Markov model for the ‘asthma’ problem discussed in section 5.4 of BMHE&lt;/p&gt;
+&lt;/div&gt;
+&lt;p&gt;The script first sets up the number of states &lt;span class=&#34;math inline&#34;&gt;\(S=5\)&lt;/span&gt; and the number of time points &lt;span class=&#34;math inline&#34;&gt;\(J=12\)&lt;/span&gt; weeks in the virtual follow up. Also, we load the data, given in the form of matrices with the observed transitions across the states, during the actual follow up in the trial. The code is relatively straightforward — we use the &lt;tt&gt;R&lt;/tt&gt; command &lt;code&gt;matrix&lt;/code&gt; to define the data. Notice that the numbers included in the matrix are read by row (as the command &lt;code&gt;byrow=TRUE&lt;/code&gt; suggests).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;S = 5
+r.0 = (matrix(c(
+66,32,0,0,2, 
+42,752,0,5,20, 
+0,4,0,1,0, 
+0,0,0,0,0, 
+0,0,0,0,156),c(S,S),byrow=TRUE))
+
+r.0&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;     [,1] [,2] [,3] [,4] [,5]
+[1,]   66   32    0    0    2
+[2,]   42  752    0    5   20
+[3,]    0    4    0    1    0
+[4,]    0    0    0    0    0
+[5,]    0    0    0    0  156&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You can check that these tie up with the matrix presented in the lecture slides — notice that &lt;code&gt;r.0&lt;/code&gt; indicates the data for the control arm.&lt;/p&gt;
+&lt;p&gt;Perhaps more interestingly, the script also defines the prior distribution for the parameters &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\lambda\)&lt;/span&gt; in terms of a Dirichlet distribution.&lt;/p&gt;
+&lt;details class=&#34;spoiler &#34;  id=&#34;spoiler-0&#34;&gt;
+  &lt;summary&gt;Click to view more details on the Dirichlet distribution&lt;/summary&gt;
+  &lt;p&gt;&lt;p&gt;The Dirichlet distribution is a multivariate generalisation of the Beta. Specifically, where the Beta$(\alpha,\beta)$ is a good model for a single parameter ranging between 0 and 1, the Dirichlet can be used to model $S$ parameters $\lambda_1,\ldots,\lambda_S$ that are all constrained in the range $[0;1]$ and such that $\sum_{s=1}^S \lambda_s = 1$. This fits nicely the property that transition probabilites off a given state $s$ are **exhaustive and mutually exclusive**, meaning that all are between 0 and 1 and that they must sum to 1.&lt;/p&gt;
+&lt;p&gt;Like the Beta distribution is related to the Binomial sampling distribution, so the Dirichlet is to the multivariate generalisation of the Binomial, i.e. the &lt;em&gt;Multinomial&lt;/em&gt; distribution. So, if our situation involves $S$ possible outcomes each of which occurs in $y_1,\ldots,y_S$ counts out of the total sample size $n$, we can model the sampling distribution as $y_1,\ldots,y_S \sim {\sf Multinomial}(\boldsymbol\lambda)$, where $\boldsymbol\lambda=(\lambda_1,\ldots,\lambda_S)$ is the vector of probabilities associated with each possible outcome.&lt;/p&gt;
+&lt;p&gt;Modelling $\boldsymbol\lambda \sim {\sf Dirichlet}(\boldsymbol{a})$ for a vector of parameters $\boldsymbol{a}=(a_1,\ldots,a_S)$ is the equivalent of the &lt;em&gt;conjugated&lt;/em&gt; Beta-Binomial model &amp;mdash; with the added benefit that the posterior distribution is also a Dirichlet:
+$$\boldsymbol\lambda\mid \boldsymbol{y}\sim {\sf Dirichlet}(a_1+y_1, \ldots, a_S+y_S).$$&lt;/p&gt;
+&lt;p&gt;In a Dirichlet distribution, the parameters $\boldsymbol{a}$ have a relatively intuitive interpretation, as they are proportional to the expected probability associated with the various outcomes. So if $a_S$ is very large in comparison to the other parameters $a_1,\ldots,a_{s-1},a_{s+1},\ldots,a_S$, then we are encoding the fact that outcome $s$ is much more likely to occur than the others. The scale of the parameters indicates the precision. So for example, a Dirichlet$(1,1,1)$ encodes the assumption that the three possible categories are all equally likely (because the underlying parameters $a_1,a_2,a_3$ are all the same). But in the same way, so would a Dirichlet$(100,100,100)$, or for that matter a Dirichlet$(0.01,0.01,0.01)$. In all cases the three parameters have the same value. The third distribution implies the lowest level of precision, while the second one implies large precision: intuitively, the larger the value, the more prior knowledge we consider.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/dirichlets.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
+&lt;p&gt;The graph above shows four &lt;a href=&#34;https://en.wikipedia.org/wiki/Simplex&#34;&gt;&lt;em&gt;symplexes&lt;/em&gt;&lt;/a&gt;: each side of the triangles represent one of the Dirichlet parameters (in this case we assume an underlying variable with three possible categories). When $a_1=a_2=a_3=1$, the mass of points (representing simulations from the underlying Dirichlet distribution) is spread all over the area in the triangle. This is the equivalent of a vague prior where the probability mass is spread all over the range of the variable. Conversely, when $a_1=a_2=a_3=50$, the mass is concentrated in a small, central part of the triangle &amp;mdash; intuitively, this means that the three dimensions carry the same weight (because the parameters have the same value); because that value is large, then the variance of the points is relatively low. When one of the dimensions has a much larger value than the others, the points tend to be pulled towards that area, as happens when we consider a Dirichlet$(2,5,10)$.&lt;/p&gt;
+&lt;/p&gt;
+&lt;/details&gt;
+&lt;p&gt;In this case, the “scale” parameter of the Dirichlet distribution is assumed to be &lt;span class=&#34;math inline&#34;&gt;\(\alpha_0=\alpha_1=10\)&lt;/span&gt;. This assumption implies:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;We effectively assume the same prior distribution in both arms of the trial. &lt;span class=&#34;math inline&#34;&gt;\(\alpha_0\)&lt;/span&gt; governs the behaviour of the control arm, while &lt;span class=&#34;math inline&#34;&gt;\(\alpha_1\)&lt;/span&gt; is the parameter defining how the probabilities &lt;span class=&#34;math inline&#34;&gt;\(\lambda_1,\ldots,\lambda_S\)&lt;/span&gt; act in the treatment arm.&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;We define &lt;code&gt;alpha.0 = alpha.1 = rep(scale, S)&lt;/code&gt;; this implies that&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;scale=10
+alpha.0 = alpha.1 = rep(scale,S)    
+alpha.1&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;[1] 10 10 10 10 10&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;i.e. that &lt;em&gt;in the prior&lt;/em&gt;, each of the &lt;span class=&#34;math inline&#34;&gt;\(S=5\)&lt;/span&gt; categories (STW, UTW, Pex, Hex, TF) is assumed to have the same probability &lt;code&gt;scale&lt;/code&gt;/ &lt;span class=&#34;math inline&#34;&gt;\(\sum_{s=1}^S\)&lt;/span&gt; &lt;code&gt;scale&lt;/code&gt;. Intuitively, we specify our prior by imagining a “thought experiment” in which the sample size is &lt;span class=&#34;math inline&#34;&gt;\(\sum_{s=1}^S\)&lt;/span&gt; &lt;code&gt;scale&lt;/code&gt;=50, in this case. This sample size is assumed in our prior to be distributed equally across the &lt;span class=&#34;math inline&#34;&gt;\(S=5\)&lt;/span&gt; states, so that we think that there are &lt;code&gt;scale&lt;/code&gt;=10 individuals in each of the states. This is a relatively strong prior. For example, a Dirichlet(0.1,0,1,0.1,0.1,0.1) would indicate the same thought experiment with a sample size of just &lt;span class=&#34;math inline&#34;&gt;\(5\times 0.1=0.5\)&lt;/span&gt; individuals, of which &lt;span class=&#34;math inline&#34;&gt;\(0.1\)&lt;/span&gt; is allocated to each of the states.&lt;/p&gt;
+&lt;p&gt;Of course, there’s nothing special about this construction — in fact simply convenience. We may have thought about this problem much more carefully and determined that in fact we would expect, in the prior, more individuals to be in the STW state, say twice as many as in UTW, three times as many as in Pex, four times as many as in Hex and 10 times as many as in TF. This could translate, for example, into a Dirichlet(10,5,3.3,2.5,1) prior. If we felt very confident about this, we may even express our prior into a Dirichlet(1000,500,330,250,100) prior — i.e. with the same proportionality but much larger numbers, to imply bigger precision.&lt;/p&gt;
+&lt;p&gt;The script also proceeds to define the initial values. This is also interesting. We use the mathematical results whereby we can simulate from a Dirichlet distribution by first constructing independent Gamma variables and then rescaling the simulated values by their sum. In &lt;tt&gt;R&lt;/tt&gt;, we create the &lt;code&gt;inits&lt;/code&gt; function, in which we first simulate a matrix of Gamma(scale, 1) values using the command &lt;code&gt;rgamma(4*S,scale,1)&lt;/code&gt;; then we place the resulting vector of &lt;span class=&#34;math inline&#34;&gt;\(4\times S\)&lt;/span&gt; values into a matrix of dimension &lt;span class=&#34;math inline&#34;&gt;\(4\times S\)&lt;/span&gt;, e.g. the object &lt;code&gt;temp.0&lt;/code&gt;. Notice that because TF is assumed to be an &lt;em&gt;absorbing&lt;/em&gt; state, by definition &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\lambda_{S}=(0,0,0,0,1)\)&lt;/span&gt;. Thus, we do not need to initialise this row of the matrix of parameters &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\lambda\)&lt;/span&gt; and therefore, we only need a matrix of size &lt;span class=&#34;math inline&#34;&gt;\(4\times S\)&lt;/span&gt;. Next, we create the variable &lt;code&gt;sum.temp.0&lt;/code&gt; in which we record the row totals of &lt;code&gt;temp.0&lt;/code&gt; and then construct the matrix &lt;code&gt;mat.0&lt;/code&gt; by rescaling &lt;code&gt;temp.0&lt;/code&gt; by these totals. Finally, we use the command &lt;code&gt;list&lt;/code&gt; to store the named variables we want to output in the function &lt;code&gt;inits&lt;/code&gt;, i.e. &lt;code&gt;lambda.0&lt;/code&gt; and &lt;code&gt;lambda.1&lt;/code&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;inits &amp;lt;- function(){
+    temp.0 &amp;lt;- matrix(rgamma(4*S,scale,1),4,S)
+    sum.temp.0 &amp;lt;- apply(temp.0,1,sum)
+    mat.0 &amp;lt;- temp.0/sum.temp.0
+    temp.1 &amp;lt;- matrix(rgamma(4*S,scale,1),4,S)
+    sum.temp.1 &amp;lt;- apply(temp.1,1,sum)
+    mat.1 &amp;lt;- temp.1/sum.temp.1 
+    list(lambda.0=rbind(mat.0,rep(NA,S)),lambda.1=rbind(mat.1,rep(NA,S)))
+}
+
+inits()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;$lambda.0
+          [,1]      [,2]      [,3]      [,4]      [,5]
+[1,] 0.2620049 0.1656849 0.1735277 0.1906087 0.2081738
+[2,] 0.1721008 0.1694657 0.3168546 0.1709276 0.1706513
+[3,] 0.2621914 0.2312971 0.2281732 0.1588414 0.1194969
+[4,] 0.1646739 0.1817589 0.2073144 0.1667142 0.2795386
+[5,]        NA        NA        NA        NA        NA
+
+$lambda.1
+          [,1]      [,2]      [,3]      [,4]      [,5]
+[1,] 0.1258738 0.1952657 0.3466712 0.1115298 0.2206596
+[2,] 0.1677436 0.1495265 0.2917020 0.2010646 0.1899634
+[3,] 0.2207405 0.1171875 0.2113657 0.2074268 0.2432796
+[4,] 0.1412204 0.1312841 0.2364687 0.1709408 0.3200860
+[5,]        NA        NA        NA        NA        NA&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Once the &lt;code&gt;BUGS&lt;/code&gt; model has run, we have estimates for the transition probabilities &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\lambda\)&lt;/span&gt;. Given these simulations, we can construct the Markov model “virtual” follow up, using the following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Now run the Markov model from R
+start &amp;lt;- c(1,0,0,0,0)   # NB analysis for 1 single patient!
+                        # (can create a &amp;quot;virtual&amp;quot; population of N individuals
+                        #  and allocate them across the states at time j=0)
+
+# Markov transitions
+m.0 &amp;lt;- m.1 &amp;lt;- array(NA,c(n.sims,S,(J+1)))
+for (s in 1:S){
+    m.0[,s,1] &amp;lt;- start[s]
+    m.1[,s,1] &amp;lt;- start[s]
+}
+
+lam0=lam1=array(NA,c(n.sims,S,S))
+for (i in 1:n.sims) {
+  lam0[i,,]=rbind(lambda.0[i,,],c(0,0,0,0,1))
+  lam1[i,,]=rbind(lambda.1[i,,],c(0,0,0,0,1))
+    for (j in 2:(J+1)){
+        for (s in 1:S){
+           # Use the new matrices lam0 and lam1 to do the matrix multiplication
+            m.0[i,s,j] &amp;lt;- sum(m.0[i,,j-1]*lam0[i,,s])
+            m.1[i,s,j] &amp;lt;- sum(m.1[i,,j-1]*lam1[i,,s])
+        }
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;For simplicity, we run the MM for a single patient and we initialise the “cohort” so that the patient is in state &lt;span class=&#34;math inline&#34;&gt;\(s=1\)&lt;/span&gt; (STW) at the beginning of the follow up (&lt;span class=&#34;math inline&#34;&gt;\(j=0\)&lt;/span&gt;). There’s no special reason for this; we could have a larger size of the cohort (e.g. the sum of the vector &lt;code&gt;start&lt;/code&gt;); or we may have a different initial distribution across the states.&lt;/p&gt;
+&lt;p&gt;Then we construct the arrays &lt;code&gt;m.0&lt;/code&gt; and &lt;code&gt;m.1&lt;/code&gt; in which we will store the total transitions in each state and for each time. We use the recursive relationship &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol{m}_{j+1}=\boldsymbol{m}_j \boldsymbol\Lambda_j\)&lt;/span&gt;, where &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\Lambda_j\)&lt;/span&gt; is the &lt;span class=&#34;math inline&#34;&gt;\(S\times S\)&lt;/span&gt; matrix storing the transition probabilities for all the states, at time &lt;span class=&#34;math inline&#34;&gt;\(j\)&lt;/span&gt;. Notice that because the objects &lt;code&gt;lambda.0&lt;/code&gt; and &lt;code&gt;lambda.1&lt;/code&gt; are obtained as output from &lt;tt&gt;bugs&lt;/tt&gt;, they are arrays where the first dimension is the number of simulations produced.&lt;/p&gt;
+&lt;p&gt;Notice that &lt;code&gt;BUGS&lt;/code&gt; stores the simulations for the “random” part of the matrix &lt;span class=&#34;math inline&#34;&gt;\(\boldsymbol\Lambda_j\)&lt;/span&gt;. In fact, because the last row (containing the transition probabilities off the absorbing state TF) is deterministically defined, &lt;code&gt;BUGS&lt;/code&gt; doesn’t consider it a parameter. Thus, before we can apply the matrix multiplication, we need to construct a matrix, which we call &lt;code&gt;lam0&lt;/code&gt; and &lt;code&gt;lam1&lt;/code&gt; respectively for the control and active treatment arm, in the code above, in which we stack up the &lt;span class=&#34;math inline&#34;&gt;\(i-\)&lt;/span&gt; MCMC simulated values for the first &lt;span class=&#34;math inline&#34;&gt;\((S-1)\)&lt;/span&gt; rows of the transition probability matrix (estimating the transitions off the states STW, UTW, Pex and Hex) and a row vector of values &lt;span class=&#34;math inline&#34;&gt;\((0 0 0 0 1)\)&lt;/span&gt;, which indicates that for the state TF, the only possible movement is to remain in it.&lt;/p&gt;
+&lt;p&gt;The rest of the script post-process the output of the Bayesian model to create a “Markov trace”, i.e. a barplot displaying the number/proportion of patients transitioning in each state at each time point. This is a useful graph, as it allows us to try and make sense of the underlying population dynamics that is implied by the Markov model we have constructed. In real-life applications, we would want to produce this graph and validate it with the help of the wider research team (including clinicians and experts of the subject matter).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/barplot-1.png&#34; style=&#34;width:45.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;images/barplot-2.png&#34; style=&#34;width:45.0%&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;In the above barplots, the darker bar indicates the proportion of individuals in STW and increasingly lighter colours indicate, respectively, the proportion of people in UTW, Pex, Hex and TF. As is possible to see, the active treatment (SFC) seems to be associated with a population dynamics in which more people tend to remain in the most favourable outcome (STW).&lt;/p&gt;
+&lt;p&gt;Finally, we define and apply discounting to the resulting costs and effects and then use &lt;code&gt;BCEA&lt;/code&gt; to produce the economic analysis. The code is fairly straighforward. Firstly, we define the discount rate, set at 3.5% for both benefits and costs. Notice that this is the “standard” &lt;em&gt;annual&lt;/em&gt; discount rate suggested by NICE. In this particular example, the virtual follow up is set at &lt;span class=&#34;math inline&#34;&gt;\(J=12\)&lt;/span&gt; weeks, so technically we don’t really need to discount the output (as 12 weeks is barely 4 months, let alone more than one year!). Then we fill in the elements of the vectors &lt;code&gt;disc.b&lt;/code&gt; and &lt;code&gt;disc.c&lt;/code&gt; with the discounted series of values.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## General formulation to apply discount
+delta.b &amp;lt;- 0.035    # discount rate for benefits (3.5%)
+delta.c &amp;lt;- 0.035    # discount rate for costs (3.5%)
+# Defines the discount factors
+disc.b &amp;lt;- numeric(); disc.c &amp;lt;- numeric()
+disc.b[1] &amp;lt;- 1; disc.c[1] &amp;lt;- 1
+for (j in 2:J) {
+    disc.b[j] &amp;lt;- (1+delta.b)^(j-1)
+    disc.c[j] &amp;lt;- (1+delta.c)^(j-1)
+}
+
+disc.b&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; [1] 1.000000 1.035000 1.071225 1.108718 1.147523 1.187686 1.229255 1.272279
+ [9] 1.316809 1.362897 1.410599 1.459970&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Essentially, the discounted multiplier for time &lt;span class=&#34;math inline&#34;&gt;\(j=0\)&lt;/span&gt; is simply 1 (no discounting); at time &lt;span class=&#34;math inline&#34;&gt;\(j=1\)&lt;/span&gt; it is 1.035; and at the end of follow up is 1.45997.&lt;/p&gt;
+&lt;p&gt;Then, we actually apply these discounting multipliers to the estimated effects and costs.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;disc.cost0 &amp;lt;- disc.eff0 &amp;lt;- disc.cost1 &amp;lt;- disc.eff1 &amp;lt;- matrix(NA,mm1$n.sims,J)
+for (j in 1:J) {
+    disc.cost0[,j] &amp;lt;- cost0[,j]/disc.c[j]
+    disc.cost1[,j] &amp;lt;- cost1[,j]/disc.c[j]
+    disc.eff0[,j] &amp;lt;- m.0[,1,j]/disc.b[j]
+    disc.eff1[,j] &amp;lt;- m.1[,1,j]/disc.b[j]
+}
+
+# Shows difference between raw and discounted costs (for 1st simulation)
+cost0[1,]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; [1] 100.23659 104.27436  89.77322  76.01900  66.42544  60.41060  56.81619
+ [8]  54.71874  53.50987  52.81776  52.42299  52.19835&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;disc.cost0[1,]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt; [1] 100.23659 100.74817  83.80426  68.56478  57.88594  50.86410  46.22001
+ [8]  43.00843  40.63601  38.75402  37.16364  35.75304&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As is possible to see, the raw costs are actually higher than the discounted counterparts (apart from the first element, for which the discounting multiplier is 1 and so, effectively, no discounting occurs).&lt;/p&gt;
+&lt;p&gt;At this point, we define the economic outcome as the sum of the discounted series of values for benefits and costs, over the &lt;span class=&#34;math inline&#34;&gt;\(J=12\)&lt;/span&gt; time points, using the following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Sums the values across all time points and creates matrix of costs
+c &amp;lt;- matrix(NA,n.sims,2)
+c[,1] &amp;lt;- apply(cost0,1,sum)
+c[,2] &amp;lt;- apply(cost1,1,sum)
+
+# Effectiveness
+e &amp;lt;- matrix(NA,n.sims,2)
+e[,1] &amp;lt;- apply(m.0[,1,],1,sum)
+e[,2] &amp;lt;- apply(m.1[,1,],1,sum)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;And to complete the analysis, we run &lt;code&gt;BCEA&lt;/code&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Cost-effectiveness analysis
+library(BCEA)
+ints &amp;lt;- c(&amp;quot;FP&amp;quot;,&amp;quot;SFC&amp;quot;)
+m &amp;lt;- bcea(e,c,ref=2,interventions=ints,Kmax=300)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;which can be used to summarise the economic model.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;summary(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;NB: k (wtp) is defined in the interval [0 - 300]
+
+Cost-effectiveness analysis summary 
+
+Reference intervention:  SFC
+Comparator intervention: FP
+
+SFC dominates for all k in [0 - 300] 
+
+
+Analysis for willingness to pay parameter k = 300
+
+    Expected utility
+FP           -250.17
+SFC           523.57
+
+             EIB   CEAC   ICER
+SFC vs FP 773.74 0.9995 -94.31
+
+Optimal intervention (max expected utility) for k = 300: SFC
+             
+EVPI 0.018456&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

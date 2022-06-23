@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gianluca Baio | Bayesian methods in health economics</title>
+    <link>/author/gianluca-baio/</link>
+      <atom:link href="/author/gianluca-baio/index.xml" rel="self" type="application/rss+xml" />
+    <description>Gianluca Baio</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Fri, 24 Jun 2022 09:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/author/gianluca-baio/avatar_hu6ed39de258007db8881b29c05d7845d1_70101_270x270_fill_q75_lanczos_center.jpg</url>
+      <title>Gianluca Baio</title>
+      <link>/author/gianluca-baio/</link>
+    </image>
+    
+    <item>
+      <title>Lecture 13: Expected value of sample information</title>
+      <link>/syllabus/lecture13/</link>
+      <pubDate>Fri, 24 Jun 2022 09:00:00 +0000</pubDate>
+      <guid>/syllabus/lecture13/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Theory behind the EVSI&lt;/li&gt;
+&lt;li&gt;Expected net benefit of sampling&lt;/li&gt;
+&lt;li&gt;Optimising trial design&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 8: Survival analysis in HTA</title>
+      <link>/syllabus/lecture8/</link>
+      <pubDate>Wed, 22 Jun 2022 11:00:00 +0000</pubDate>
+      <guid>/syllabus/lecture8/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Survival data in health economic evaluations&lt;/li&gt;
+&lt;li&gt;Issues with Bayesian modelling&lt;/li&gt;
+&lt;li&gt;PSA in survival analysis&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div id=&#34;notes&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;&lt;strong&gt;Notes&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;The practical uses the &lt;tt&gt;R&lt;/tt&gt; packages &lt;a href=&#34;https://gianluca.statistica.it/software/survhe/&#34;&gt;&lt;code&gt;survHE&lt;/code&gt;&lt;/a&gt;. If you are interested, you can look at the extended &lt;code&gt;survHE&lt;/code&gt; tutorial (&lt;a href=&#34;http://www.statistica.it/gianluca/software/survhe/tutorial/&#34;&gt;here&lt;/a&gt;) and the &lt;code&gt;survHE&lt;/code&gt; &lt;a href=&#34;../../publication/baio-2019/&#34;&gt;paper&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 7: Model error and structural analysis</title>
+      <link>/syllabus/lecture7/</link>
+      <pubDate>Wed, 22 Jun 2022 09:00:00 +0000</pubDate>
+      <guid>/syllabus/lecture7/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;The rationale for structural uncertainty&lt;/li&gt;
+&lt;li&gt;Model error and PSA to model uncertainty&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 6: Evidence synthesis and network meta-analysis</title>
+      <link>/syllabus/lecture6/</link>
+      <pubDate>Tue, 21 Jun 2022 14:15:00 +0000</pubDate>
+      <guid>/syllabus/lecture6/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Motivation&lt;/li&gt;
+&lt;li&gt;Fixed effects NMA&lt;/li&gt;
+&lt;li&gt;Random effects NMA&lt;/li&gt;
+&lt;li&gt;Applications/examples&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 3: Introduction to health economic evaluation</title>
+      <link>/syllabus/lecture3/</link>
+      <pubDate>Mon, 20 Jun 2022 15:30:00 +0000</pubDate>
+      <guid>/syllabus/lecture3/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Health economic evaluation: What is and why do we need health economics?&lt;/li&gt;
+&lt;li&gt;A framework for health economic evaluation&lt;/li&gt;
+&lt;li&gt;Standard vs Bayesian HTA&lt;/li&gt;
+&lt;li&gt;Decision-making: Cost-effectiveness plane; ICER; EIB&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 1: Introduction to Bayesian reasoning, computation and BUGS</title>
+      <link>/syllabus/lecture1/</link>
+      <pubDate>Mon, 20 Jun 2022 10:00:00 +0000</pubDate>
+      <guid>/syllabus/lecture1/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;The Bayesian paradigm — expressing uncertainty using probabilities&lt;/li&gt;
+&lt;li&gt;Overview of probability distributions for different types of quantities&lt;/li&gt;
+&lt;li&gt;Inductive inference: Bayesian reasoning, Basic ideas, Forming ‘priors’”&lt;/li&gt;
+&lt;li&gt;Predicting data with uncertain parameters.&lt;/li&gt;
+&lt;li&gt;Introduction to Monte Carlo sampling in BUGS&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Introduction to statistical concepts</title>
+      <link>/publication/baio-notes/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      <guid>/publication/baio-notes/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>survHE: Survival analysis for health economic evaluation and cost-effectiveness modelling</title>
+      <link>/publication/baio-2019/</link>
+      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
+      <guid>/publication/baio-2019/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bayesian Statistical Economic Evaluation Methods for Health Technology Assessment</title>
+      <link>/publication/gabrioetal-2019/</link>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 +0000</pubDate>
+      <guid>/publication/gabrioetal-2019/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>A Full Bayesian Model to Handle Structural Ones and Missingness in Economic Evaluations from Individual-Level Data</title>
+      <link>/publication/gabrio-etal-2018/</link>
+      <pubDate>Thu, 01 Nov 2018 00:00:00 +0000</pubDate>
+      <guid>/publication/gabrio-etal-2018/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bayesian Cost-Effectiveness Analysis with the R package BCEA</title>
+      <link>/publication/baioetal-2016/</link>
+      <pubDate>Sat, 01 Jul 2017 00:00:00 +0000</pubDate>
+      <guid>/publication/baioetal-2016/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Bayesian Methods in Health Economics</title>
+      <link>/publication/baio-2012/</link>
+      <pubDate>Thu, 01 Nov 2012 00:00:00 +0000</pubDate>
+      <guid>/publication/baio-2012/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

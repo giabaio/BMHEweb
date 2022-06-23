@@ -1,0 +1,1254 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.3.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Gianluca Baio" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Running a model in OpenBUGS Start OpenBUGS by double clicking on the OpenBUGS icon (or double click on the file OpenBUGS.exe, typically in somewhere like the OpenBUGS\OpenBUGS322 directory in C:\Program Files (x86))." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="/tips/using-bugs/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+      
+    
+
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.3ef10ad94e43ba7ad3f08b0b007578ae.css" />
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="/tips/using-bugs/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+  <meta property="og:site_name" content="Bayesian methods in health economics" />
+  <meta property="og:url" content="/tips/using-bugs/" />
+  <meta property="og:title" content="Using BUGS | Bayesian methods in health economics" />
+  <meta property="og:description" content="Running a model in OpenBUGS Start OpenBUGS by double clicking on the OpenBUGS icon (or double click on the file OpenBUGS.exe, typically in somewhere like the OpenBUGS\OpenBUGS322 directory in C:\Program Files (x86))." /><meta property="og:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" />
+    <meta property="twitter:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2020-01-10T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2020-01-10T00:00:00&#43;00:00">
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Using BUGS | Bayesian methods in health economics</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="68b882587b8f3193fd02ce63c4d3153a" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.da42964e270e05a6063fbca894d7ccff.js"></script>
+
+  
+
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container-xl">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+          
+          ></a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+        
+        ></a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#timetable"><span>Timetable</span></a>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Slides</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/slides/01_Intro"><span>Introduction</span></a>
+            
+              <a class="dropdown-item" href="/slides/02_MCMC"><span>Bayesian computation</span></a>
+            
+              <a class="dropdown-item" href="/slides/03_Intro_HE"><span>Introduction to Health Economics</span></a>
+            
+              <a class="dropdown-item" href="/slides/04_ILD"><span>Individual level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/05_ALD"><span>Aggregated level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/06_NMA"><span>Network meta-analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/07_Model_uncertainty"><span>Model error and structural analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/08_Survival"><span>Survival modelling in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/09_MM"><span>Markov models</span></a>
+            
+              <a class="dropdown-item" href="/slides/10_Missing"><span>Missing data in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/11_VoI"><span>Introduction to Value of information</span></a>
+            
+              <a class="dropdown-item" href="/slides/12_EVPPI"><span>Expected value of partial information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture13/13_EVSI.pdf"><span>Expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture14/14_Data_EVSI.pdf"><span>Generating data for the analysis of the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture15/15_EVSI_MC.pdf"><span>Calculating expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture16/16_EVSI_regression.pdf"><span>Regression-based EVSI</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Practicals</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/practical/01_monte-carlo"><span>Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/02_mcmc"><span>MCMC</span></a>
+            
+              <a class="dropdown-item" href="/practical/03_bcea"><span>Cost-effectiveness analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/04_ild"><span>HTA with individual level data</span></a>
+            
+              <a class="dropdown-item" href="/practical/05_ald"><span>Evidence synthesis and decision models</span></a>
+            
+              <a class="dropdown-item" href="/practical/06_nma"><span>NMA</span></a>
+            
+              <a class="dropdown-item" href="/practical/07_structural"><span>PSA to structural uncertainty</span></a>
+            
+              <a class="dropdown-item" href="/practical/08_survival"><span>Survival analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/09_mm"><span>Markov and multistate models</span></a>
+            
+              <a class="dropdown-item" href="/practical/10_missing"><span>Missing data</span></a>
+            
+              <a class="dropdown-item" href="/practical/11_intro_voi"><span>Computing the EVPI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/12_evppi"><span>Computing the EVPPI in BCEA and SAVI</span></a>
+            
+              <a class="dropdown-item" href="/practical/13_data_evsi"><span>Generating data for the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/practical/14_evsi_mc"><span>Computing the EVSI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/15_evsi_regression"><span>Computing the EVSI using regression</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Instructions</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/tips/computer-specification"><span>Computer specification</span></a>
+            
+              <a class="dropdown-item" href="/tips/using-bugs"><span>Using BUGS</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/publication"><span>Reading list</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Using BUGS</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Friday, 10 January 2020.
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      
+
+
+<div id="running-a-model-in-openbugs" class="section level2">
+<h2>Running a model in <code>OpenBUGS</code></h2>
+<ol style="list-style-type: decimal">
+<li><p>Start <code>OpenBUGS</code> by double clicking on the <code>OpenBUGS</code> icon (or double click on the file <code>OpenBUGS.exe</code>, typically in somewhere like the <code>OpenBUGS\OpenBUGS322</code> directory in <code>C:\Program Files (x86)</code>).</p></li>
+<li><p>Open the file containing model code as follows:</p>
+<ul>
+<li>Point to <code>File</code> on the tool bar and click once with left mouse button (LMB);</li>
+<li>Highlight <code>Open</code> option and click once with LMB;</li>
+<li>Select appropriate directory and double click on file to open. Files for <code>OpenBUGS</code> input are sometimes in <code>.txt</code> plain text format rather than the default <code>.odc</code> “compound document” format — so you may need to select “Files of type” <code>.txt</code>.</li>
+</ul></li>
+<li><p>Select the <code>Model</code> menu as follows:</p>
+<ul>
+<li>Point to <code>Model</code> on the tool bar and click once with LMB.</li>
+<li>Highlight <code>Specification</code> option and click once with LMB.</li>
+</ul></li>
+<li><p>Focus the window containing the model code by clicking the LMB once anywhere in the window — the top panel of the window should then become highlighted in blue to indicate that the window is currently in focus.</p></li>
+<li><p>Highlight the word <code>model</code> at the beginning of the code by dragging the mouse over the word whilst holding down the LMB.</p></li>
+<li><p>Check the model syntax by moving the mouse over the check model box in the <code>Specification Tool</code> window and clicking once with the LMB.</p>
+<ul>
+<li><p>A message saying</p>
+<blockquote>
+<p>model is syntactically correct</p>
+</blockquote>
+<p>should appear in the bottom left of the <code>OpenBUGS</code> program window. Any error messages will appear in the same place if there is a syntax error.</p></li>
+</ul></li>
+<li><p>Open the data, if there are observed data in the model. The data can either be stored in a separate file, in which case open this file (or multiple files), or they may be stored in the same file as the model code.</p></li>
+<li><p>Load the data as follows:</p>
+<ul>
+<li><p>Highlight the word <code>list</code> at the beginning of the data file.</p></li>
+<li><p>Click once with the LMB on the load data box in the <code>Specification Tool</code> window.</p></li>
+<li><p>A message saying</p>
+<blockquote>
+<p>data loaded</p>
+</blockquote>
+<p>should appear in the bottom left of the <code>OpenBUGS</code> program window.</p></li>
+</ul></li>
+<li><p>Select number of chains (sets of samples to simulate) by typing the number of chains required in the white box in the <code>Specification Tool</code> window.</p>
+<ul>
+<li>The default is 1, but we will typically use 2 or more. Running more than one chain, starting from different initial values, makes convergence checking easier (see later).</li>
+</ul></li>
+<li><p>Compile the model by clicking once with the LMB on the <code>compile</code> box in the <code>Specification Tool</code> window.</p>
+<ul>
+<li><p>A message saying</p>
+<blockquote>
+<p>model compiled</p>
+</blockquote>
+<p>should appear in the bottom left of the <code>OpenBUGS</code> program window.</p></li>
+</ul></li>
+<li><p>Open the initial values files. The initial values can either be stored in separate file(s), in which case open these files, or they may be stored in the same file as the model code.</p></li>
+<li><p>Load any initial values as follows:</p>
+<ul>
+<li><p>Highlight the word <code>list</code> at the beginning of the first set of initial values.</p></li>
+<li><p>Click once with LMB on the load inits box in the <code>Specification Tool</code> window.</p></li>
+<li><p>A message saying</p>
+<blockquote>
+<p>initial values loaded: model contains uninitialized nodes (try running gen inits or loading more files)</p>
+</blockquote>
+<p>should appear in the bottom left of the <code>OpenBUGS</code> program window.</p></li>
+<li><p>Repeat process for the second set of initial values, if running two chains.</p></li>
+<li><p>A message saying</p>
+<blockquote>
+<p>initial values loaded: model initialized</p>
+</blockquote>
+<p>should now appear in the bottom left of the <code>OpenBUGS</code> program window.</p></li>
+<li><p>Sometimes we can get away with not supplying any initial values ourselves, and we can just click gen inits to let <code>OpenBUGS</code> generate these automatically. Though this won’t generally work if any of the priors are vague. Also it is handy to start different chains at widely dispersed initial values to assess convergence.</p></li>
+</ul></li>
+<li><p>Close the <code>Specification Tool</code> window by clicking once with LMB on the <code>X</code> button in top right corner of window.</p></li>
+<li><p>You are now ready to start running the simulation:</p>
+<ul>
+<li>Before doing so, you may want to set some monitors to store the sampled values for selected parameters (see section Monitoring parameter values below).</li>
+<li>To run the simulation, select the <code>Update</code> option from the <code>Model</code> menu.</li>
+<li>Type the number of updates (iterations of the simulation) you require in the appropriate white box (default is 1000).</li>
+<li>Click once on the <code>update</code> box. The program will now start simulating values for each parameter in the model. This may take a few seconds — the box marked iteration will tell you how many updates have currently been completed. The number of times this value is revised depends on the value you have set for refresh (see white box above iteration). The default is every 100 iterations. If the model is very fast, you should increase this to, e.g. 1000 or 10000, then the model will run even faster since <code>OpenBUGS</code> is not unnecessarily redrawing the screen hundreds of times in a split second. If the model is very slow, you may like to decrease it to, e.g. 10 or 1 so that <code>OpenBUGS</code> does not appear to “freeze” during sampling.</li>
+</ul></li>
+<li><p>When the updates are finished, the message</p>
+<blockquote>
+<p>updates took *** s</p>
+</blockquote>
+<p>will appear in the bottom left of the <code>OpenBUGS</code> program window (where <code>***</code> is the number of seconds taking to complete the simulation).</p></li>
+<li><p>If you set monitors for any parameters you can now check convergence and view graphical and numerical summaries of the samples (see below).</p></li>
+<li><p>To save any files created during your <code>OpenBUGS</code> run, focus the window containing the information you want to save, and select the <code>Save As</code> option from the <code>File</code> menu.</p></li>
+<li><p>To quit <code>OpenBUGS</code>, select the <code>Exit</code> option from the <code>File</code> menu.</p></li>
+</ol>
+</div>
+<div id="monitoring-parameter-values" class="section level2">
+<h2>Monitoring parameter values</h2>
+<p>In order to check convergence and obtain posterior summaries of the model parameters, you first need to set monitors for each parameter of interest. This tells <code>OpenBUGS</code> to store the values sampled for those parameters; otherwise, <code>OpenBUGS</code> automatically discards the simulated values. There are
+two types of monitors in <code>OpenBUGS</code>:</p>
+<ol style="list-style-type: decimal">
+<li>Sample monitors
+<ul>
+<li>Setting a sample monitor tells <code>OpenBUGS</code> to store every value it simulates for that parameter.</li>
+<li>You will need to set sample monitors if you want to view trace plots of the samples to check convergence (see section Checking convergence below) and if you want to obtain posterior quantiles, for example, the posterior 95% Bayesian credible interval for that parameter.</li>
+<li>To set a sample monitor:
+<ul>
+<li>Select <code>Samples</code> from the <code>Inference</code> menu.</li>
+<li>Type the name of the parameter to be monitored in the white box marked node.</li>
+<li>Click once with the LMB on the box marked set</li>
+<li>Repeat for each parameter to be monitored.</li>
+</ul></li>
+</ul></li>
+<li>Summary monitors
+<ul>
+<li>Setting a summary monitor tells <code>OpenBUGS</code> to store the running mean and standard deviation for the parameter.</li>
+<li>The values saved contain less information than saving each individual sample in the simulation, but require much less storage. This is an important consideration when running long simulations (1000’s of iterations) and storing values for many variables.</li>
+<li>To set a summary monitor:
+<ul>
+<li>Select <code>Summary</code> from the <code>Inference</code> menu.</li>
+<li>Type the name of the parameter to be monitored in the white box marked node.</li>
+<li>Click once with the LMB on the box marked set</li>
+<li>Repeat for each parameter to be monitored.</li>
+</ul></li>
+</ul></li>
+</ol>
+<p><div class="alert alert-note">
+  <div>
+    <strong>Note</strong>: you should not set a summary monitor until you are happy that convergence has been reached (see next section), since it is not possible to discard any of the pre-convergence (‘burn-in’) values from the running mean summary once it is set.
+  </div>
+</div>
+</p>
+</div>
+<div id="checking-convergence" class="section level2">
+<h2>Checking convergence</h2>
+<p>Checking convergence requires considerable care. It is very difficult to say conclusively that a chain (simulation) has converged, only to diagnose when it definitely hasn’t converged. The following are practical guidelines for assessing convergence:</p>
+<ul>
+<li>For models with many parameters, it is impractical to check convergence for every parameter, so just chose a random selection of relevant parameters to monitor.
+<ul>
+<li>For example, rather than checking convergence for every element of a vector of random effects, just chose a random subset (say, the first 5 or 10).</li>
+</ul></li>
+<li>Examine trace plots of the sample values versus iteration to look for evidence of when the simulation appears to have stabilised:
+<ul>
+<li>To obtain ‘live’ trace plots for a parameter:
+<ul>
+<li>Select <code>Samples</code> from the <code>Inference</code> menu.</li>
+<li>Type the name of the parameter in the white box marked node.</li>
+<li>Click once with the LMB on the box marked trace: an empty graphics window will appear on screen.</li>
+<li>Repeat for each parameter required.</li>
+<li>Once you start running the simulations (using the <code>Update Tool</code>, trace plots for these parameters will appear ‘live’ in the graphics windows.</li>
+</ul></li>
+<li>To obtain a trace plot showing the full history of the samples for any parameter for which you have previously set a sample monitor and carried out some updates:
+<ul>
+<li>Select <code>Samples</code> from the <code>Inference</code> menu.</li>
+<li>Type the name of the parameter in the white box marked node (or select name from pull down list).</li>
+<li>Click once with the LMB on the box marked history: a graphics window showing the sample trace will appear.</li>
+<li>Repeat for each parameter required.</li>
+</ul></li>
+<li>In the graph <a href="../../slides/03_MCMC/#31">here</a> (Panel a) the chain converges by about 250 iterations. Running the simulation for longer (5000 iterations) and discarding the first 1000 as a “burn-in” produces the history plot in (Panel b). This looks like a “fat hairy caterpillar”, the typical appearance of a chain which has converged to the target distribution, and can be treated as a sequence of independent samples from that distribution.</li>
+<li>The graph <a href="../../slides/03_MCMC/#31">here</a> (Panel c), is the typical appearance of a chain which has converged to the target posterior distribution, but is slow to mix around that distribution. That is, the successive draws from the distribution are highly autocorrelated. In this case we should run the chain for longer (as in (Panel d)) to get sufficiently precise summaries of the posterior — see the next section for more advice.</li>
+<li>If you are running more than 1 chain simultaneously, the trace and history plots will show each chain in a different colour. This is shown in <a href="../../slides/03_MCMC/#31">here</a> (Panel e). We can be reasonably confident that convergence has been achieved when all the chains appear to be overlapping one another.</li>
+</ul></li>
+</ul>
+</div>
+<div id="how-many-iterations-after-convergence" class="section level2">
+<h2>How many iterations after convergence?</h2>
+<p>Once you are happy that convergence has been achieved, you will need to run the simulation for a further number of iterations to obtain samples that can be used for posterior inference. The more samples you save, the more accurate will be your posterior estimates. Therefore the number of samples to run depends on how many significant figures, for example, you need in your results.</p>
+<p>To assess the accuracy of the posterior mean for each parameter, you can simply look at the Monte Carlo standard error, which is provided in the summaries given by <code>stats</code> (see the next section). This is an estimate of the difference between the mean of the sampled values (which we are using as our estimate of the posterior mean for each parameter) and the true posterior mean.</p>
+<p>To assess the accuracy of the whole distribution, you can compare the Monte Carlo standard error <span class="math inline">\(\mbox{SE}(\hat\mu)\)</span> to the sample standard deviation <span class="math inline">\(\hat\sigma\)</span> (also reported in the summary statistics table given by <code>stats</code>). There is some theory which suggests that for the reported 95% posterior quantiles to have about 94.5% to 95.5% true coverage, <span class="math inline">\(\mbox{SE}(\hat\mu)\)</span> should be 1% or less of <span class="math inline">\(\hat\sigma\)</span>. Equivalently the effective sample size of the chain<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> should be greater than about 4000.</p>
+<p>Alternatively you can just take an informal approach, and run a sufficient number of samples to ensure that the posterior summaries of interest don’t appear to change within the desired number of significant figures.</p>
+</div>
+<div id="obtaining-summary-statistics-of-the-posterior-distribution" class="section level2">
+<h2>Obtaining summary statistics of the posterior distribution</h2>
+<p>To obtain summaries of the monitored samples, to be used for posterior inference:</p>
+<ul>
+<li>Select <code>Samples</code> from the <code>Inference</code> menu.</li>
+<li>Type the name of the parameter to be summarised in the white box marked node (or select name from the pull down list, or type <code>*</code> to select all monitored parameters).</li>
+<li>Type the iteration number which you want to start your summary from in the white box marked <code>beg</code>: this allows the pre-convergence ‘burn-in’ samples to be discarded.</li>
+<li>Click once with LMB on box marked <code>stats</code>: a table reporting various summary statistics based on the sampled values of the selected parameter will appear.</li>
+</ul>
+</div>
+<div id="plotting-summaries-of-the-posterior" class="section level2">
+<h2>Plotting summaries of the posterior</h2>
+<p><code>OpenBUGS</code> includes options for producing various plots of posterior summary statistics. The plot options include:</p>
+<ol style="list-style-type: decimal">
+<li>Kernel density plot: plots an estimate of the shape of the (univariate) marginal posterior distribution of a parameter see online manual for further details (select <code>OpenBUGS User Manual</code> from the <code>Manuals</code> menu in <code>OpenBUGS</code> and then take a look at the subsection on <code>Density plots</code> in
+the <code>OpenBUGS Graphics</code> section).</li>
+<li>Box plots, caterpillar plots or density strips: these plots show a side-by-side comparison of the posterior distributions of each element of a vector of parameters summarised either as a point estimate and 95% interval (caterpillar plot), by the mean, interquartile range and 95% interval
+(box plot), or a representation of the whole distribution using varying shading (density strips). This is often used for random effects parameters. For example, suppose you have a vector of random effects called <code>p</code> in your model:
+<ul>
+<li>You should have already set a samples monitor on the appropriate vector (p) and carried out a suitable number of updates.</li>
+<li>Then select <code>Compare</code> from the <code>Inference</code> menu.</li>
+<li>Type the name of the parameter vector to be plotted (in this case <code>p</code>) in the white box marked node.</li>
+<li>If you want to discard any pre-convergence burn-in samples before plotting, type the appropriate iteration number in the white box marked <code>beg</code>.</li>
+<li>Click once with LMB on the button marked either box plot, caterpillar or density strips
+as required.</li>
+</ul></li>
+<li>Model fit: this option produces a ‘time series’ type plot and is suitable for plotting an ordered sequence of parameter estimates against corresponding values of a known variable, e.g. plotting posterior estimates of the fitted values of a growth curve against time. For example, in the <code>rats</code> model from the <code>OpenBUGS</code> examples Vol I, you could use this option to produce a plot of the vector of 5 fitted values for the weight of each rat (<code>mu[i,]</code>) against age (<code>x</code>), as follows:
+<ul>
+<li>You should have already set a samples monitor on the appropriate vector (i.e. <code>mu</code>, the mean of the normal distribution assumed for the responses, <code>Y</code>) and carried out an appropriate number of updates.</li>
+<li>Then select <code>Compare</code> from the <code>Inference</code> menu.</li>
+<li>Type the name of the (stochastic) parameter vector to be plotted on the vertical axis in the white box marked node (e.g. <code>mu[1,]</code> to produce the plot for rat 1).</li>
+<li>Type the name of the known (i.e. not stochastic) variable to be plotted on the horizontal axis in the white box marked axis (in this case, <code>x</code>, the name of the vector of ages at which each rat was measured).</li>
+<li>An optional argument is to type the name of another known (i.e. not stochastic) variable in the white box marked other (for example, <code>Y[1,]</code> — this would plot the observed measurements for rat 1 as well as the fitted values <code>mu[1,]</code>).</li>
+<li>If you want to discard any pre-convergence burn-in samples before plotting, type the appropriate iteration number in the white box marked <code>beg</code>.</li>
+<li>Click once with LMB on the button marked model fit. The resulting plot shows the posterior median (solid red line) and posterior 95% interval (dashed blue line) for the values of node (in this case, the fitted values <code>mu[1,]</code> for rat 1) against the values of the variable specified in
+the axis box (in this case, <code>x</code>, the age of the rat at each measurement). The black dots show the values of the variable specified in the other box (in this case,<code>Y[1,]</code>, the observed weights for rat 1).</li>
+</ul></li>
+<li>There are various options for customising all these plots (e.g. changing the order in which the elements of the vector are plotted, switching the <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> axis, etc.). To access these options, click on the window containing the plot to focus it, then place the mouse somewhere in the plot
+window and click once with the right mouse button. A menu will appear and you should select the <code>Properties</code> option. This will open another menu called <code>Plot Properties</code> which provides options for editing plot margins, axis labels and fonts etc. (these are generic options for all <code>OpenBUGS</code> plots), plus some special options specific only to certain plots (click on the <code>Special</code> button at the bottom of the <code>Plot Properties</code> menu). See the online manual for further details (select <code>OpenBUGS User Manual</code> from the <code>Manuals</code> menu in <code>OpenBUGS</code>, then go to <code>OpenBUGS Graphics</code>, or the <code>Inference</code> Menu then <code>Compare</code>).</li>
+</ol>
+</div>
+<div id="some-notes-on-the-bugs-language" class="section level2">
+<h2>Some notes on the <code>BUGS</code> language</h2>
+<div id="basic-syntax" class="section level3">
+<h3>Basic syntax</h3>
+<ul>
+<li><p>The symbol <code>&lt;-</code> represents <em>logical</em> dependence, ie <code>m &lt;- a + b*x</code> indicates that <code>m</code> has the same value as the expression to the right hand side.</p></li>
+<li><p>The symbol <code>~</code> represents <em>stochastic</em> dependence, eg <code>y ~ dunif(a,b)</code> indicates that the variable <code>y</code> is modelled using a Uniform(<span class="math inline">\(a,b\)</span>) distribution.</p></li>
+<li><p>Can use arrays and loops</p>
+<pre class="r"><code>for (i in 1:n){
+   r[i] ~ dbin(p[i],n[i])
+   p[i] ~ dunif(0,1)
+}</code></pre></li>
+<li><p>Some functions can appear on left-hand-side of an expression, e.g.</p>
+<pre class="r"><code>logit(p[i])&lt;- a + b*x[i]
+log(m[i]) &lt;- c + d*y[i]</code></pre></li>
+<li><p><code>mean(p[])</code> to take mean of whole array, or <code>mean(p[m:n])</code> to take mean of elements <code>m</code> to <code>n</code>. Also for <code>sum(p[])</code>.</p></li>
+<li><p><code>dnorm(0,1)I(0,)</code> means the distribution will be restricted to the range <span class="math inline">\((0,\infty)\)</span>.</p></li>
+</ul>
+</div>
+<div id="functions-in-the-bugs-language" class="section level3">
+<h3>Functions in the <code>BUGS</code> language</h3>
+<ul>
+<li><code>p &lt;- step(x - 0.7)</code> = 1 if <code>x</code> <span class="math inline">\(geq\)</span> 0.7 and 0 otherwise. Hence monitoring p and recording its mean will give the probability that <code>x</code> <span class="math inline">\(\geq\)</span> 0.7.</li>
+<li><code>p &lt;- equals(x, 0.7)</code> = 1 if <code>x</code> = 0.7 and 0 otherwise.</li>
+<li><code>tau &lt;- 1/pow(s,2)</code> sets <span class="math inline">\(\tau = 1/s^2\)</span>.</li>
+<li><code>s &lt;- 1/ sqrt(tau)</code> sets <span class="math inline">\(s=1/\tau\)</span>.</li>
+<li><code>p[i,k] &lt;- inprod(pi[], Lambda[i,,k])</code> sets <span class="math inline">\(p_{ik} = \sum_{j} \pi_j \Lambda_{ijk}\)</span></li>
+<li>Many other mathematical functions: see <code>Functions</code> under the <code>Help</code> menu in <code>OpenBUGS</code> for full syntax.</li>
+</ul>
+</div>
+<div id="openbugs-data-formats" class="section level3">
+<h3><code>OpenBUGS</code> data formats</h3>
+<p><code>OpenBUGS</code> accepts data files in:</p>
+<ol style="list-style-type: decimal">
+<li>Rectangular format</li>
+</ol>
+<pre class="r"><code>n[] r[]
+47 0
+148 18
+...
+360 24
+END</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li><code>R</code> / <code>S-Plus</code>-like ‘list’ format:</li>
+</ol>
+<pre class="r"><code>list(
+   N=12,
+   n = c(47,148,119,810,211,196,148,215,207,97,256,360),
+   r = c(0,18,8,46,8,13,9,31,14,8,29,24)
+)</code></pre>
+<p>The more flexible ‘list’ format is recommended, since data often consist of mixtures of scalars and vectors/arrays, or vectors/arrays of different lengths.</p>
+</div>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p> The Monte Carlo standard error is higher in chains which are autocorrelated (i.e. look less like independent samples from a posterior, and are slower to explore the posterior distribution, so give less accurate estimates of the posterior mean). The “effective sample size” <span class="math inline">\(n_{eff}\)</span> denotes that a chain of <span class="math inline">\(n &gt; n_{eff}\)</span> autocorrelated samples as much information as <span class="math inline">\(n_{eff}\)</span> independent samples. There are several ways of calculating <span class="math inline">\(n_{eff}\)</span> — three different methods are used in Bayesian Methods in Health Economics, The BUGS Book and <code>R2OpenBUGS</code>!<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+    </div>
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="/author/gianluca-baio/"><img class="avatar mr-3 avatar-circle" src="/author/gianluca-baio/avatar_hu6ed39de258007db8881b29c05d7845d1_70101_270x270_fill_q75_lanczos_center.jpg" alt="Gianluca Baio"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/author/gianluca-baio/">Gianluca Baio</a></h5>
+      <h6 class="card-subtitle">Professor of Statistics and Health Economics</h6>
+      
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:g.baio@ucl.ac.uk" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/gianlubaio" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=ro0QvGsAAAAJ&amp;hl=en" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/giabaio" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+    
+      &copy;  2022-2024 &middot;
+
+    Based on
+    <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a>
+    
+    
+    (version 5.3.0)
+    
+    for <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
+    
+    
+    <i><b>Latest update: 23 Jun 2022 </i></b>
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/en/js/wowchemy.min.50d3bf3df0c53b31631bb48a62b35f92.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

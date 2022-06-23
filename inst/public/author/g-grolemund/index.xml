@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>G Grolemund | Bayesian methods in health economics</title>
+    <link>/author/g-grolemund/</link>
+      <atom:link href="/author/g-grolemund/index.xml" rel="self" type="application/rss+xml" />
+    <description>G Grolemund</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Wed, 01 Jun 2016 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>G Grolemund</title>
+      <link>/author/g-grolemund/</link>
+    </image>
+    
+    <item>
+      <title>R for Data Science</title>
+      <link>/publication/wickham-etal-2020/</link>
+      <pubDate>Wed, 01 Jun 2016 00:00:00 +0000</pubDate>
+      <guid>/publication/wickham-etal-2020/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Hands-On Programming with R</title>
+      <link>/publication/gromelund-2014/</link>
+      <pubDate>Sun, 01 Jun 2014 00:00:00 +0000</pubDate>
+      <guid>/publication/gromelund-2014/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

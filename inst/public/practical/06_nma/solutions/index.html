@@ -1,0 +1,1916 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.3.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Gianluca Baio" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Fixed effects NMA The data from the smoking cessation studies discussed in the lecture are included in the file smoke.Rdata and can be loaded into the R workspace using the load command." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="/practical/06_nma/solutions/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+      
+    
+
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.3ef10ad94e43ba7ad3f08b0b007578ae.css" />
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="/practical/06_nma/solutions/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+  <meta property="og:site_name" content="Bayesian methods in health economics" />
+  <meta property="og:url" content="/practical/06_nma/solutions/" />
+  <meta property="og:title" content="Practical 6. Network meta-analysis — SOLUTIONS | Bayesian methods in health economics" />
+  <meta property="og:description" content="Fixed effects NMA The data from the smoking cessation studies discussed in the lecture are included in the file smoke.Rdata and can be loaded into the R workspace using the load command." /><meta property="og:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" />
+    <meta property="twitter:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2021-01-10T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2022-06-21T15:30:00&#43;00:00">
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Practical 6. Network meta-analysis — SOLUTIONS | Bayesian methods in health economics</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="a2bc3b9df525f8e794afe8136cd0a48e" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.da42964e270e05a6063fbca894d7ccff.js"></script>
+
+  
+
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container-xl">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+          
+          ></a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+        
+        ></a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#timetable"><span>Timetable</span></a>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Slides</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/slides/01_Intro"><span>Introduction</span></a>
+            
+              <a class="dropdown-item" href="/slides/02_MCMC"><span>Bayesian computation</span></a>
+            
+              <a class="dropdown-item" href="/slides/03_Intro_HE"><span>Introduction to Health Economics</span></a>
+            
+              <a class="dropdown-item" href="/slides/04_ILD"><span>Individual level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/05_ALD"><span>Aggregated level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/06_NMA"><span>Network meta-analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/07_Model_uncertainty"><span>Model error and structural analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/08_Survival"><span>Survival modelling in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/09_MM"><span>Markov models</span></a>
+            
+              <a class="dropdown-item" href="/slides/10_Missing"><span>Missing data in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/11_VoI"><span>Introduction to Value of information</span></a>
+            
+              <a class="dropdown-item" href="/slides/12_EVPPI"><span>Expected value of partial information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture13/13_EVSI.pdf"><span>Expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture14/14_Data_EVSI.pdf"><span>Generating data for the analysis of the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture15/15_EVSI_MC.pdf"><span>Calculating expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture16/16_EVSI_regression.pdf"><span>Regression-based EVSI</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Practicals</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/practical/01_monte-carlo"><span>Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/02_mcmc"><span>MCMC</span></a>
+            
+              <a class="dropdown-item" href="/practical/03_bcea"><span>Cost-effectiveness analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/04_ild"><span>HTA with individual level data</span></a>
+            
+              <a class="dropdown-item" href="/practical/05_ald"><span>Evidence synthesis and decision models</span></a>
+            
+              <a class="dropdown-item" href="/practical/06_nma"><span>NMA</span></a>
+            
+              <a class="dropdown-item" href="/practical/07_structural"><span>PSA to structural uncertainty</span></a>
+            
+              <a class="dropdown-item" href="/practical/08_survival"><span>Survival analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/09_mm"><span>Markov and multistate models</span></a>
+            
+              <a class="dropdown-item" href="/practical/10_missing"><span>Missing data</span></a>
+            
+              <a class="dropdown-item" href="/practical/11_intro_voi"><span>Computing the EVPI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/12_evppi"><span>Computing the EVPPI in BCEA and SAVI</span></a>
+            
+              <a class="dropdown-item" href="/practical/13_data_evsi"><span>Generating data for the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/practical/14_evsi_mc"><span>Computing the EVSI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/15_evsi_regression"><span>Computing the EVSI using regression</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Instructions</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/tips/computer-specification"><span>Computer specification</span></a>
+            
+              <a class="dropdown-item" href="/tips/using-bugs"><span>Using BUGS</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/publication"><span>Reading list</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          6. NMA
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <ul class="nav docs-sidenav">
+        <li class=""><a href="/practical/"></a></li>
+    
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/01_monte-carlo/">1. Monte Carlo</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/01_monte-carlo/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/02_mcmc/">2. MCMC</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/02_mcmc/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/covid/">Covid</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/tutorial/">MCMC Tutorial</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/03_bcea/">3. Intro-HE</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/03_bcea/solutions/">Solution</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/04_ild/">4. ILD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/04_ild/tutorial-regression/">Regression Tutorial</a></li>
+
+
+
+  <li class=""><a href="/practical/04_ild/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/05_ald/">5. ALD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/05_ald/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/06_nma/">6. NMA</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class="active"><a href="/practical/06_nma/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/07_structural/">7. PSA to structural uncertainty</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/07_structural/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/08_survival/">8. Survival</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/08_survival/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/09_mm/">9. Markov models</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/09_mm/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/09_mm/cohort-model/">Cohort discrete Markov model</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/10_missing/">10. Missing data</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/10_missing/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/11_intro_voi/">11. EVPI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/12_evppi/">12. EVPPI in BCEA &amp; SAVI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/13_data_evsi/">13 Generating data for EVSI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/14_evsi_mc/">14. EVSI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/15_evsi_regression/">15. EVSI using regression</a>
+    
+
+    
+      </div>
+    
+
+      
+    
+
+    
+      </ul>
+    
+
+  
+</nav>
+    </div>
+
+    <main class="col-10 docs-content" role="main">
+      <article class="article">
+
+        <div class="docs-article-container">
+          <h1>Practical 6. Network meta-analysis — SOLUTIONS</h1>
+          
+          
+          
+          
+          
+
+
+
+
+<div class="btn-links mb-3">
+  
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/slides/06_NMA" >
+    Lecture 6</a>
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/practical/06_nma/solutions6.pdf" >
+    <i class="fas fa-file-pdf mr-1"></i>PDF version</a>
+
+
+</div>
+
+
+          <br>
+          
+          <div class="article-style">
+            
+
+
+<div id="fixed-effects-nma" class="section level2">
+<h2>Fixed effects NMA</h2>
+<p>The data from the smoking cessation studies discussed in the lecture are
+included in the file <a href="smoke.Rdata"><code>smoke.Rdata</code></a> and can be loaded into the
+<tt>R</tt> workspace using the <code>load</code> command.</p>
+<pre class="r"><code># Loads the data (assuming they are in the current folder)
+load(&quot;smoke.Rdata&quot;)</code></pre>
+<p>We can also use other built-in <tt>R</tt> commands to
+inspect the object we have just loaded into our workspace to figure out
+what is stored in it, for example as in the following.</p>
+<pre class="r"><code># List the objects present in the workspace
+ls()</code></pre>
+<pre><code>## [1] &quot;current_repo&quot; &quot;smoke.list&quot;</code></pre>
+<pre class="r"><code># What type of object is &#39;smoke.list&#39;?
+class(smoke.list)</code></pre>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+<pre class="r"><code># What&#39;s in the data list?
+names(smoke.list)</code></pre>
+<pre><code>## [1] &quot;r&quot;  &quot;n&quot;  &quot;t&quot;  &quot;na&quot; &quot;NS&quot; &quot;NT&quot;</code></pre>
+<p>The command <code>ls()</code> simply lists all the objects currently present in the
+workspace. In this case, we only have an object <code>smoke.list</code>, which has
+been created when using the <code>load</code> command above. We can check its
+“class” (in this case, unsurprisingly, a list) and show the names of the
+elements contained in it, using the command <code>names</code>.</p>
+<p>We can ask <tt>R</tt> to tell us more about these
+variables; for instance, we can inspect each variable’s “class” (e.g.its nature) using the following helpful
+<tt>R</tt> command.</p>
+<pre class="r"><code>lapply(smoke.list,class)</code></pre>
+<pre><code>## $r
+## [1] &quot;matrix&quot; &quot;array&quot; 
+## 
+## $n
+## [1] &quot;matrix&quot; &quot;array&quot; 
+## 
+## $t
+## [1] &quot;matrix&quot; &quot;array&quot; 
+## 
+## $na
+## [1] &quot;integer&quot;
+## 
+## $NS
+## [1] &quot;integer&quot;
+## 
+## $NT
+## [1] &quot;numeric&quot;</code></pre>
+<p>The <tt>R</tt> function <code>lapply</code> can be used to apply
+a function to the elements of a list (such as <code>smoke.list</code>). In this
+case, we want <tt>R</tt> to tell us what class each of
+the elements of <code>smoke.list</code> belongs to, which is what the command
+returns — for instance, the object <code>r</code> inside the object <code>smoke.list</code> is
+a matrix, while the object <code>NS</code> is an integer. We can also visualise
+each, e.g. by using the following commands</p>
+<pre class="r"><code># Shows the first few elements of the object r included inside the object smoke.list
+head(smoke.list$r)</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]   79   77   NA   NA
+## [2,]   18   21   NA   NA
+## [3,]    8   19   NA   NA
+## [4,]   75   NA  363   NA
+## [5,]    2   NA    9   NA
+## [6,]   58   NA  237   NA</code></pre>
+<pre class="r"><code># Shows the first few elements of the object n included inside the object smoke.list
+head(smoke.list$n)</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]  702  694   NA   NA
+## [2,]  671  535   NA   NA
+## [3,]  116  149   NA   NA
+## [4,]  731   NA  714   NA
+## [5,]  106   NA  205   NA
+## [6,]  549   NA 1561   NA</code></pre>
+<p>More in details, the elements of <code>smoke.list</code> are:</p>
+<ul>
+<li><p><code>NS</code>: the total number of studies included in our analysis (24);</p></li>
+<li><p><code>NT</code>: the total number of interventions considered (4);</p></li>
+<li><p><code>na</code>: a vector containing the number of arms included in each of the
+studies;</p></li>
+<li><p><code>r</code>: a matrix with <code>NS</code> rows and <code>NT</code> columns, containing the number
+of subjects that in each study and under each treatment arms have
+been observed to quit smoking;</p></li>
+<li><p><code>n</code>: a matrix with <code>NS</code> rows and <code>NT</code> columns, containing the total
+number of subjects observed in each study and under each treatment
+arms;</p></li>
+<li><p><code>t</code>: a matrix with <code>NS</code> rows and 3 columns, identifying the label
+associated with the treatments included in each of the studies.
+Notice that there are 3 columns because all studies have at most 3
+treatment involved (i.e. all studies compare either 2 or 3
+treatments — cfr. the lecture slides). The treatments are labelled
+as 1 = No intervention; 2 = Self-help; 3 = Individual counselling; 4
+= Group counselling.</p></li>
+</ul>
+<p>Notice that some of the data will be associated with <code>NA</code> (i.e. “Not
+Available” or “missing”). In this case, these are not really <a href="https://egon.stats.ucl.ac.uk/static/stat0019/slides/08_Missing/">“missing
+data”</a>, but rather indicate that that particular column is not relevant.
+For example, in study 1 there are only two arms (you can confirm this by
+asking <tt>R</tt> to tell what <code>na[1]</code> is). The matrix
+<code>r</code> has values 79 and 77 in the first two columns and then <code>NA</code> in the
+third and fourth column — this is because study 1 only had data on arm 1
+and arm 2. Incidentally, you can check what these arms where by looking
+at the value of the first row in the matrix <code>t</code></p>
+<pre class="r"><code>smoke.list$t[1,]</code></pre>
+<pre><code>## t1 t2 t3 
+##  1  2 NA</code></pre>
+<p>which tells you that the first arm was treatment 1, the second arm was
+treatment 2 and the third arm was nothing.</p>
+<p>You can do a similar check on row (i.e. study) 4, using the following
+commands.</p>
+<pre class="r"><code># How many arms were used in study 4?
+smoke.list$na[4]</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code># What treatment arms were they?
+smoke.list$t[4,]</code></pre>
+<pre><code>## t1 t2 t3 
+##  1  3 NA</code></pre>
+<pre class="r"><code># Data on the number of subjects quitting smoke for study 4
+smoke.list$r[4,]</code></pre>
+<pre><code>## [1]  75  NA 363  NA</code></pre>
+<pre class="r"><code># Data on the total sample size in study 4
+smoke.list$n[4,]</code></pre>
+<pre><code>## [1] 731  NA 714  NA</code></pre>
+<p>As we can see, study 4 considered 2 arms (comparing interventions 1 and 3, i.e. No intervention vs Individual counselling) and the number of quitters out of the total number of subjects studied were 75/731 and 363/714, respectively</p>
+<p>Now we are ready to prepare to run the model. First, we consider the
+“fixed-effect” specification, whose model code is included in the file
+<a href="smokefix_model.txt"><code>smokefix_model.txt</code></a>. One of the complications of this model code is in
+the use of the <a href="https://egon.stats.ucl.ac.uk/static/stat0019/slides/09_NMA/#nested-index">“nested index”</a> notation. For example, the code</p>
+<pre class="r"><code>for(s in 1:NS) { # loop over studies
+      for (a in 1:na[s])  { # loop over arms
+         r[s,t[s,a]] ~ dbin(p[s,t[s,a]], n[s,t[s,a]])
+         ...</code></pre>
+<p>can be interpreted in this way. Let us consider <code>s</code> = 1, i.e. the first
+study in our dataset. This consists of <code>na[1]</code> = 2 arms, which means we
+will have two observed data points in terms of number of subjects who
+quit smoking. This also means that the index <code>a</code> will run from 1 to
+<code>na[s]</code> = <code>na[1]</code> = 2. Moreover, <code>t[s,a]</code> is in this case <code>t[1,1]</code> = 1
+and <code>t[s,a]</code> = <code>t[1,2]</code> = 2, which in turns means that the above code
+effectively means that we are using the following modelling assumptions.</p>
+<pre class="r"><code>r[1,1] ~ dbin(p[1,1], n[1,1])
+r[1,2] ~ dbin(p[1,2], n[1,2])</code></pre>
+<p>The use of the nested index notation is a clever shortcut for the full
+specification of all the cases (for all the studies and for all arms
+specified in each study) and it is particularly helpful for
+“non-rectangular” data (i.e. when not all the rows have data on the same
+number of columns).</p>
+<p>From a more substantial point of view, we are modelling the logit of the
+study- and arm-specific probability of quitting smoking using a linear
+term made by an overall study-specific mean (<code>mu[s]</code>) and an incremental
+term (<code>delta[s,t[s,a]]</code>), which accounts for the “treatment effect”.</p>
+<pre class="r"><code>logit(p[s,t[s,a]]) &lt;- mu[s] + delta[s,t[s,a]]</code></pre>
+<p>Again, we are using the nested index notation in exactly the same way as
+above. In addition, what characterises this model as a “fixed-effect”
+specification is the distributional assumption on the incremental
+effects <code>delta</code>. These are modelled as follows.</p>
+<pre class="r"><code>## log odds ratio compared to treatment in arm 1 of study s
+delta[s,t[s,1]] &lt;- 0
+for (a in 2:na[s])  {
+   delta[s,t[s,a]] &lt;- d[t[s,a]] - d[t[s,1]]
+}</code></pre>
+<p>Firstly, we set the “baseline” intervention for each study <code>s</code>. In
+particular, we arbitrarily assume that the first intervention
+(associated with the index identified by <code>t[s,1]</code>) is the reference one
+for study <code>s</code> and as such, we (again, arbitrarily) assign it an “extra”
+effect of 0. Obviously, this means that for the reference treatment, the
+study- and arm-specific probability of quitting smoking is simply
+<code>mu[s]</code>, because in that case we would be adding to the linear predictor
+a value for the corresponding <code>delta</code> equal to 0. Any other intervention
+(from 2 to <code>na[s]</code>) is modelled through the difference between its
+specific value <code>d[t[s,a]]</code> and the value associated with the
+study-specific reference intervention, <code>d[t[s,1]]</code>.</p>
+<p>Let us make a specific example: consider for example study <code>s</code> = 21. The
+details are as below.</p>
+<pre class="r"><code># How many arms?
+smoke.list$na[21]</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code># Which arms?
+smoke.list$t[21,]</code></pre>
+<pre><code>## t1 t2 t3 
+##  2  3  4</code></pre>
+<p>This means that this study compares interventions 2, 3 and 4 (Self-help,
+Individual and Group counselling) and that, arbitrarily, we assume that
+the one in the first column of <code>t[21,]</code> is the reference — in this case,
+that is Self-help. In line with the code above, we then set</p>
+<pre class="r"><code>delta[21,2] &lt;- 0
+delta[21,3] &lt;- d[21,3] - d[21,2]
+delta[21,4] &lt;- d[21,4] - d[21,2]</code></pre>
+<p>because <code>t[21,1]</code> = 2, <code>t[21,2]</code> = 3 and <code>t[21,3]</code> = 4 (cfr. with the
+code above describing the general definition of the variables
+<code>delta[s,t[s,a]]</code>). Again, the nested index notation allows us to use a
+single double loop to model all the possible cases.</p>
+<p>The log ORs <code>d</code> are then defined as follows.</p>
+<pre class="r"><code>d[1] &lt;- 0  # log odds ratio compared to treatment 1 (e.g. placebo)
+for (i in 2:NT) {
+    d[i] ~ dnorm(0, 0.0001)
+}</code></pre>
+<p>This again sets one reference category, which in this case is associated
+with intervention 1 (No intervention), by setting the corresponding log
+OR to 0. Then we assign a vague prior to all the other log ORs (the
+interventions labelled from 2 to <code>NT</code> = 4), using a Normal with mean
+equal to 0 and a very small precision.</p>
+<p>The next bit of the model code constructs the ORs for all potential
+treatment comparisons.</p>
+<pre class="r"><code>## odds ratios for all treatment comparisons
+for (c in 1:(NT-1)) {
+  for (k in (c+1):NT)  {
+    or[c,k] &lt;- exp(d[c] - d[k])
+    or[k,c] &lt;- 1/or[c,k]
+  }
+}</code></pre>
+<p>Again, there is some clever coding to use loops and compactly write down
+<em>all</em> the possible pairwise comparisons. Notice that the variables <code>d</code>
+define the log ORs and thus in order to obtain the OR on the natural
+scale, we need to exponentiate the difference between any two values.
+The line <code>or[k,c] &lt;- 1/or[c,k]</code> uses the fact that ORs for the
+comparison between two generic interventions <span class="math inline">\(k\)</span> and <span class="math inline">\(c\)</span> are simply the
+reciprocal of the ORs for the comparison between <span class="math inline">\(c\)</span> and <span class="math inline">\(k\)</span>.</p>
+<p>Finally, the model code has some additional definitions for other useful
+variables.</p>
+<pre class="r"><code>## Log odds of quitting successfully under no intervention (from published data)
+alpha ~ dnorm(-2.6, 6.925208) # = SD 0.38
+## Absolute probability of quitting successfully under each intervention
+for (i in 1:NT) {
+    logit(pq[i]) &lt;- alpha + d[i]
+}
+
+## Life years gained by quitting
+L ~ dnorm(15, 0.0625) # SD=4</code></pre>
+<p>Firstly, we define a model for the absolute probability of quitting
+smoking under each intervention. We do on the logit scale, by defining
+the baseline value <span class="math inline">\(\alpha \sim \mbox{Normal}(\mu_\alpha,\sigma_\alpha)\)</span>, to which we add
+the incremental effect of each treatment. Notice that because we set
+<code>d[1]</code> = 0, then <code>alpha</code> is equal to <code>logit(pq[1])</code>, which is the
+absolute “success rate” for No intervention. This is incremented by the
+value of the log OR for each active treatment (against the reference,
+i.e. No intervention). Notice also that we use an informative prior
+distribution to model the parameter <span class="math inline">\(\alpha\)</span>. We have information
+suggesting that a random smoker who is not undergoing any active
+treatment has an average chance of quitting smoking of about 7%, ranging
+between around 2% to 13.8%. We can map this information into a suitable
+prior on the logit scale by setting
+<span class="math display">\[\mu_\alpha = \mbox{logit}(0.07) = \log\left(\frac{0.07}{1-0.07}\right) = \log\left(\frac{0.07}{0.93}\right) \approx -2.6.\]</span>
+We can also use the fact that
+<span class="math display">\[\sigma_\alpha \approx \frac{\mbox{logit}(0.138)-\mbox{logit}(0.07)}{1.96} \approx 0.38\]</span>
+— this is reasonable if we assume some sort of symmetry in the interval
+estimate, whereby the upper extreme is 1.96 standard deviations away
+from the central point, which implies that
+<span class="math display">\[\mbox{logit}(0.07)+ 1.96\sigma_\alpha \approx \mbox{logit}(0.138).\]</span>
+Of course, we need to include in the
+<tt>OpenBUGS</tt> model the precision,
+i.e. <span class="math inline">\(1/(0.38)^2=6.925208\)</span>.</p>
+<p>The model for the life years gained by quitting smoking is constructed
+in a similar way: our best estimate is a gain of between 7 and 22 extra
+years, with an average of 15, which we turn into a Normal distribution
+with mean 15 and standard deviation of 4 (i.e. precision of
+<span class="math inline">\(1/16=0.0625\)</span>).</p>
+<p>The model is then run from <tt>R</tt>.</p>
+<pre class="r"><code>library(R2OpenBUGS)
+
+### Initial values
+inits &lt;- list(list(mu=rep(0,24), d=c(NA,0,0,0)),
+              list(mu=rep(-1,24), d=c(NA,1,1,1)))
+
+### Pilot run with no burn-in, to illustrate convergence using traceplots
+res0 &lt;- bugs(model=&quot;smokefix_model.txt&quot;, data=smoke.list, inits=inits,
+            parameters=c(&quot;d&quot;),
+            n.chains=2, n.burnin=0, n.iter=10000
+)</code></pre>
+<p>Here, we first define the initial values creating a suitable list made
+by two “sub-lists” — this implies we are prepared to run the model using
+two parallel chains. We initialise the variables <code>mu</code> and <code>d</code> — notice
+that because the first element of the vector <code>d</code> is in fact fixed at 0,
+we cannot initialise it. We overcome this issue by creating a vector of
+initial values, the first of which is set to <code>NA</code>.</p>
+<p>In addition, this time we run the model with no burn-in, to explore
+convergence in more details than we’ve done so far. The code below uses
+the results of the <tt>OpenBUGS</tt> model as stored
+in the <tt>R</tt> object <code>res0</code> to produce traceplots
+for the only variable monitored (the vector <code>d</code>). Notice in particular
+that we can use the object <code>res$sims.array</code>, which (as the name
+suggests) is an array of dimension <code>Number of iterations stored</code>
+<span class="math inline">\(\times\)</span> <code>Number of chains run</code> <span class="math inline">\(\times\)</span>
+<code>Number of parameters monitored</code>. In this case, the number of parameters
+is equal to 4, because there are 3 “active” elements in <code>d</code> (since
+<code>d[1]</code> is set to 0 and thus is not technically a random variable, in
+<tt>OpenBUGS</tt>), plus the model deviance, which
+<tt>OpenBUGS</tt> computes by default. You can check
+this by simply printing the summary statistics for your model</p>
+<pre class="r"><code>library(R2OpenBUGS)
+print(res0,digits=3)</code></pre>
+<pre><code>Inference for Bugs model at &quot;smokefix_model.txt&quot;, 
+Current: 2 chains, each with 10000 iterations (first 0 discarded)
+Cumulative: n.sims = 20000 iterations saved
+            mean     sd    2.5%     25%     50%     75%   97.5%  Rhat n.eff
+d[2]       0.225  0.126  -0.020   0.140   0.227   0.309   0.473 1.001 20000
+d[3]       0.765  0.063   0.650   0.727   0.766   0.805   0.879 1.001 20000
+d[4]       0.839  0.178   0.499   0.719   0.839   0.959   1.183 1.001 20000
+deviance 494.927 16.902 482.300 489.500 494.100 499.300 510.700 1.031 20000
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = Dbar-Dhat)
+pD = 27.220 and DIC = 522.100
+DIC is an estimate of expected predictive error (lower deviance is better).</code></pre>
+<p>The actual traceplot is produce using the built-in functions <code>plot</code> and
+<code>points</code> as below.</p>
+<pre class="r"><code># Splits the graphical output into a 2-by-2 panel (side-by-side graphs)
+par(mfrow=c(2,2))
+# First graph
+plot(res0$sims.array[,1,1],t=&quot;l&quot;,xlab=&quot;Iterations&quot;,ylab=&quot;d[2]&quot;,col=&quot;blue&quot;)
+points(res0$sims.array[,2,1],t=&quot;l&quot;,col=&quot;red&quot;)
+# Second graph
+plot(res0$sims.array[,1,2],t=&quot;l&quot;,xlab=&quot;Iterations&quot;,ylab=&quot;d[3]&quot;,col=&quot;blue&quot;)
+points(res0$sims.array[,2,2],t=&quot;l&quot;,col=&quot;red&quot;)
+# Third graph
+plot(res0$sims.array[,1,3],t=&quot;l&quot;,xlab=&quot;Iterations&quot;,ylab=&quot;d[4]&quot;,col=&quot;blue&quot;)
+points(res0$sims.array[,2,3],t=&quot;l&quot;,col=&quot;red&quot;)</code></pre>
+<p><img src="/practical/06_nma/solutions_files/figure-html/traceplots1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>As is possible to see, for all the three important parameters,
+convergence does not seem an issue and in fact the two chains seem to
+mix up almost immediately, despite being seen to start from rather
+different points (cfr. the red and blue lines). Notice that this
+strategy is not an absolute requirement! We can monitor all the relevant
+parameters and run the model for a large number of iterations in the
+first place. But, especially when there are many parameters, this course
+of action may be beneficial, because we are not stuck waiting for
+<tt>OpenBUGS</tt> to finish the simulations for a long
+time, before we can even assess how the model is working in terms of
+convergence.</p>
+<p>At this point, we can monitor all the model parameters (including <code>L</code>
+and <code>pq</code>) and re-run the model to produce the relevant estimates.</p>
+<pre class="r"><code>res &lt;- bugs(model=&quot;smokefix_model.txt&quot;, data=smoke.list, inits=inits,
+            parameters=c(&quot;d&quot;,&quot;L&quot;,&quot;pq&quot;),
+            n.chains=2, n.burnin=1000, n.iter=5000)
+
+# Show summary statistics
+print(res,digits=3)</code></pre>
+<pre><code>Inference for Bugs model at &quot;smokefix_model.txt&quot;, 
+Current: 2 chains, each with 5000 iterations (first 1000 discarded)
+Cumulative: n.sims = 8000 iterations saved
+            mean    sd    2.5%     25%     50%     75%   97.5%  Rhat n.eff
+d[2]       0.224 0.126  -0.023   0.139   0.225   0.309   0.470 1.001  8000
+d[3]       0.764 0.058   0.649   0.725   0.765   0.804   0.877 1.004   420
+d[4]       0.840 0.176   0.505   0.719   0.838   0.958   1.189 1.001  8000
+L         14.895 4.009   6.947  12.250  14.940  17.550  22.750 1.001  7300
+pq[1]      0.073 0.026   0.034   0.054   0.069   0.087   0.136 1.001  2700
+pq[2]      0.090 0.034   0.040   0.065   0.085   0.108   0.171 1.002  2300
+pq[3]      0.143 0.048   0.069   0.108   0.137   0.171   0.254 1.001  7500
+pq[4]      0.154 0.055   0.070   0.114   0.146   0.186   0.284 1.001  4900
+deviance 494.653 7.175 482.400 489.500 494.100 499.200 510.102 1.001  2700
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = Dbar-Dhat)
+pD = 26.940 and DIC = 521.600
+DIC is an estimate of expected predictive error (lower deviance is better).</code></pre>
+<p>Again, convergence is clearly reached (cfr. <code>Rhat</code> and <code>n.eff</code>). We
+could proceed with further analyses as well as with building the
+cost-effectiveness model, but we defer this to after we’ve run the
+random effects model (cfr. lecture slides for evidence of heterogeneity
+in individual studies; we can replicate the analysis monitoring the
+nodes <code>delta</code>, which are the study- and treatment-specific log ORs).</p>
+</div>
+<div id="random-effects-nma" class="section level2">
+<h2>Random effects NMA</h2>
+<p>The model code is fairly similar to the one discussed above for the
+fixed effects NMA. The only difference, really, is in how the study- and
+treatment-specific log ORs <code>delta</code> are modelled. In this case, we
+consider a simple specification, characterised by the following code
+lines</p>
+<pre class="r"><code>delta[s,t[s,a]] ~ dnorm(md[s,t[s,a]],taud[s,t[s,a]])
+
+# random effects means
+md[s,t[s,a]] &lt;- d[t[s,a]] - d[t[s,1]]
+
+## random effects 1/variance constrained to be the same for every comparison
+taud[s,t[s,a]] &lt;- tau
+
+# model for the standard deviation of the random effects
+sd ~ dunif(0, 10)
+# rescaling to the precision
+tau &lt;- 1/pow(sd, 2)</code></pre>
+<p>— notice that we can include more complexity, for instance by modelling
+the precision as dependent on the studies or the treatments, as well as
+by considering a more structured model accounting for correlation within
+trials with 3 arms or more (but we do not do this here!).</p>
+<p>The model is run again using the following code.</p>
+<pre class="r"><code>res2 &lt;- bugs(model=&quot;smokere_model.txt&quot;, data=smoke.list, inits=inits,
+            parameters=c(&quot;d&quot;, &quot;sd&quot;, &quot;pq&quot;, &quot;L&quot;),
+            n.chains=2, n.burnin=1000, n.iter=20000
+)
+print(res2,digits=3)</code></pre>
+<pre><code>Inference for Bugs model at &quot;smokere_model.txt&quot;, 
+Current: 2 chains, each with 20000 iterations (first 1000 discarded)
+Cumulative: n.sims = 38000 iterations saved
+            mean     sd    2.5%     25%     50%     75%   97.5%  Rhat n.eff
+d[2]       0.519  0.386  -0.230   0.267   0.514   0.766   1.305 1.001  6300
+d[3]       0.810  0.232   0.374   0.656   0.805   0.956   1.289 1.001  5900
+d[4]       1.169  0.455   0.304   0.867   1.156   1.460   2.098 1.001 38000
+sd         0.820  0.183   0.533   0.690   0.795   0.923   1.248 1.001 38000
+pq[1]      0.073  0.026   0.034   0.054   0.069   0.088   0.136 1.001 38000
+pq[2]      0.122  0.059   0.042   0.080   0.111   0.152   0.269 1.001  6500
+pq[3]      0.152  0.057   0.065   0.110   0.143   0.184   0.286 1.001  8400
+pq[4]      0.208  0.096   0.071   0.138   0.191   0.262   0.437 1.001 38000
+L         14.989  3.993   7.109  12.310  15.000  17.670  22.810 1.001 38000
+deviance 281.823 10.073 263.900 274.700 281.200 288.200 303.500 1.001 38000
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = Dbar-Dhat)
+pD = 44.870 and DIC = 326.700
+DIC is an estimate of expected predictive error (lower deviance is better).</code></pre>
+<p>Again, the model seems to do well in terms of convergence, although
+autocorrelation is possibly more of a concern (check the values of
+<code>n.eff</code>, which are slightly smaller than the nominal sample size of
+38000). This is not uncommon with hierarchical/random effect models.</p>
+<p>In terms of comparison with the results of the fixed effects version,
+there is generally an increase in the value of the mean for the log ORs
+<code>d</code>, coupled with larger uncertainty. On the other hand, the absolute
+probabilities of quitting <code>pq</code> are rather stable. The estimate for <code>L</code>
+does not change — but this is not surprising, as this node is modelled
+independently on the other variables in the code and based on an
+informative prior, which is not updated by any data. So, simply changing
+parts of the model that are effectively disconnected by the one in which
+we model <code>L</code> is not changing our estimates for this node.</p>
+<p>We can also complete the model to include the cost-effectiveness
+component. We do this by firstly defining a vector of unit costs
+associated with each intervention. Here we assume that No intervention
+does not involve any cost for the public payer, while Self-help,
+Individual and Group counselling do have some costs. We then define the
+measures of effectiveness as the overall life years gained (<code>L</code>)
+weighted by the absolute probability of quitting smoking (<code>pq</code>) for each
+intervention. We build the variables <code>e</code> and <code>c</code> in the loop over the 4
+interventions. Notably, in this case, we do not model the costs
+(although a variant of this model that does account for this is
+presented in the the <a href="https://gianluca.statistica.it/book/bcea/">BCEA Book</a>).</p>
+<pre class="r"><code>### Cost-effectiveness analysis
+library(BCEA)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;BCEA&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:graphics&#39;:
+## 
+##     contour</code></pre>
+<pre class="r"><code>unit.cost &lt;- c(0,200,6000,600)
+ints &lt;- c(&quot;No contact&quot;,&quot;Self help&quot;,&quot;Individual counselling&quot;,&quot;Group counselling&quot;)
+e &lt;- c &lt;- matrix(NA,res2$n.sims,4)
+# MCMC sample from distribution of life-years gained by quitting
+L &lt;- res2$sims.list$L 
+# ...and from distributions of probability of quitting for each of 4 interventions
+pq &lt;- res2$sims.list$pq 
+
+for (t in 1:4) {
+    e[,t] &lt;- L*pq[,t]
+    c[,t] &lt;- unit.cost[t]
+}
+colnames(e) &lt;- colnames(c) &lt;- ints</code></pre>
+<p>Finally, we can run <code>BCEA</code> to post-process the model output and produce
+the relevant summaries, e.g. summaries or the cost-effectiveness plane.</p>
+<pre class="r"><code>m &lt;- bcea(e,c,interventions=ints,Kmax=1000,ref=4)
+summary(m)</code></pre>
+<pre><code>## NB: k (wtp) is defined in the interval [0 - 1000]</code></pre>
+<pre><code>## </code></pre>
+<pre><code>## 
+## Cost-effectiveness analysis summary 
+## 
+## Reference intervention:  Group counselling
+## Comparator intervention(s): No contact
+##                           : Self help
+##                           : Individual counselling
+## 
+## Optimal decision: choose No contact for k &lt; 274
+##                          Self help for 274 &lt;= k &lt; 310
+##                          Group counselling for k &gt;= 310
+## 
+## 
+## Analysis for willingness to pay parameter k = 1000
+## 
+##                        Expected utility
+## No contact                       1096.7
+## Self help                        1629.9
+## Individual counselling          -3727.5
+## Group counselling                2523.5
+## 
+##                                                 EIB    CEAC     ICER
+## Group counselling vs No contact             1426.85 0.89945   296.03
+## Group counselling vs Self help               893.65 0.78947   309.20
+## Group counselling vs Individual counselling 6251.05 1.00000 -6345.08
+## 
+## Optimal intervention (max expected utility) for k = 1000: Group counselling
+##            
+## EVPI 97.442</code></pre>
+<p>Notice that, because this model involves multiple comparisons, the
+default output for the <code>plot</code> function in <code>BCEA</code> is not entirely
+satisfactory. There are ways in which we can modify this default
+behaviour to improve the look of the pictures (see the help for <code>BCEA</code>
+as well as the <a href="https://gianluca.statistica.it/book/bcea/">BCEA Book</a>).</p>
+<pre class="r"><code>plot(m)</code></pre>
+<p><img src="/practical/06_nma/solutions_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          
+          
+
+          
+
+
+          
+          
+          
+          
+          
+
+
+          
+
+
+
+
+          
+
+
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+    
+      &copy;  2022-2024 &middot;
+
+    Based on
+    <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a>
+    
+    
+    (version 5.3.0)
+    
+    for <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
+    
+    
+    <i><b>Latest update: 23 Jun 2022 </i></b>
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/en/js/wowchemy.min.50d3bf3df0c53b31631bb48a62b35f92.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+class: title-slide
+
+# `r rmarkdown::metadata$title`
+
+## `r rmarkdown::metadata$author`
+
+### `r rmarkdown::metadata$institute`    
+
+.title-small[
+`r icons::icon_style(icons::fontawesome("envelope",style = "solid"),scale=.8,fill="#00acee")`  [anna.heath@sickkids.ca](mailto:anna.heath@sickkids.ca)
+`r icons::icon_style(icons::fontawesome("firefox"),scale=.8,fill="#EA7600")`  [https://sites.google.com/site/annaheathstats/](https://sites.google.com/site/annaheathstats/)
+`r icons::icon_style(icons::fontawesome("firefox"),scale=.8,fill="#EA7600")`  [https://egon.stats.ucl.ac.uk/research/statistics-health-economics/](https://egon.stats.ucl.ac.uk/research/statistics-health-economics/)
+`r icons::icon_style(icons::fontawesome("github"),scale=.8,fill="black")`  [https://github.com/annaheath](https://github.com/annaheath)
+`r icons::icon_style(icons::fontawesome("github"),scale=.8,fill="black")`  [https://github.com/StatisticsHealthEconomics](https://github.com/StatisticsHealthEconomics)
+]
+
+### `r rmarkdown::metadata$params`
+
+---
+
+layout: true
+
+.my-footer[ 
+.alignleft[
+&nbsp; &copy; Anna Heath (Sick Kids) `r add_github(url="https://github.com/annaheath")` `r add_email(email="anna.heath@sickkids.ca")` `r add_website(url="https://sites.google.com/site/annaheathstats/")`
+]
+.aligncenter[
+.mydropdown[ 
+.mydropbtn[
+`r icons::icon_style(icons::fontawesome("chevron-circle-down",style = "solid"),scale=.8,fill="white")` 
+]
+.mydropdown-content[
+[1. Introduction](../01_Intro/index.html)
+[2. MCMC](../02_MCMC/index.html)
+[3. Intro HTA](../03_Intro_HE/index.html)
+[4. ILD](../04_ILD/index.html)
+[5. ALD](../05_ALD/index.html)
+[6. NMA](../06_NMA/index.html)
+[7. Model uncertainty](../07_Model_uncertainty/index.html)
+[8. Survival](../08_Survival/index.html)
+[9. Markov models](../09_MM/index.html)
+[10. Missing data](../10_Missing/index.html)
+[11. VoI](../11_VoI/index.html)
+[12. EVPPI](../12_EVPPI/index.html)
+[13. Intro EVSI](../13_EVSI/index.html)
+[14. Data EVSI](../14_Data_EVSI/index.html)
+[15. EVSI MC](../15_EVSI_MC/index.html)
+[16. EVSI Regression](../16_EVSI_regression/index.html)
+]
+]
+`r rmarkdown::metadata$title` 
+]
+.alignright[
+`r course_site()` &nbsp; BMHE 
+]
+] 
+
+---

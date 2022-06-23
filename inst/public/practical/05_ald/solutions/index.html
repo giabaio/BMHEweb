@@ -1,0 +1,1689 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.3.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Gianluca Baio" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Decision modelling Once you have checked the model code in the file EvSynth.txt, you can concentrate on the R script. The first part is fairly simple.
+# Influenza example --- source: Cooper et al (2004); Baio (2012) # Sets up the working directory to the current one working." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="/practical/05_ald/solutions/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+      
+    
+
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.3ef10ad94e43ba7ad3f08b0b007578ae.css" />
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="/practical/05_ald/solutions/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+  <meta property="og:site_name" content="Bayesian methods in health economics" />
+  <meta property="og:url" content="/practical/05_ald/solutions/" />
+  <meta property="og:title" content="Practical 5. Evidence synthesis and decision models — SOLUTIONS | Bayesian methods in health economics" />
+  <meta property="og:description" content="Decision modelling Once you have checked the model code in the file EvSynth.txt, you can concentrate on the R script. The first part is fairly simple.
+# Influenza example --- source: Cooper et al (2004); Baio (2012) # Sets up the working directory to the current one working." /><meta property="og:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" />
+    <meta property="twitter:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2022-06-21T12:15:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2022-06-21T12:15:00&#43;00:00">
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Practical 5. Evidence synthesis and decision models — SOLUTIONS | Bayesian methods in health economics</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="1655111bd5075f3d1bf66c5351768101" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.da42964e270e05a6063fbca894d7ccff.js"></script>
+
+  
+
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container-xl">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+          
+          ></a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+        
+        ></a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#timetable"><span>Timetable</span></a>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Slides</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/slides/01_Intro"><span>Introduction</span></a>
+            
+              <a class="dropdown-item" href="/slides/02_MCMC"><span>Bayesian computation</span></a>
+            
+              <a class="dropdown-item" href="/slides/03_Intro_HE"><span>Introduction to Health Economics</span></a>
+            
+              <a class="dropdown-item" href="/slides/04_ILD"><span>Individual level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/05_ALD"><span>Aggregated level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/06_NMA"><span>Network meta-analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/07_Model_uncertainty"><span>Model error and structural analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/08_Survival"><span>Survival modelling in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/09_MM"><span>Markov models</span></a>
+            
+              <a class="dropdown-item" href="/slides/10_Missing"><span>Missing data in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/11_VoI"><span>Introduction to Value of information</span></a>
+            
+              <a class="dropdown-item" href="/slides/12_EVPPI"><span>Expected value of partial information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture13/13_EVSI.pdf"><span>Expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture14/14_Data_EVSI.pdf"><span>Generating data for the analysis of the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture15/15_EVSI_MC.pdf"><span>Calculating expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture16/16_EVSI_regression.pdf"><span>Regression-based EVSI</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Practicals</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/practical/01_monte-carlo"><span>Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/02_mcmc"><span>MCMC</span></a>
+            
+              <a class="dropdown-item" href="/practical/03_bcea"><span>Cost-effectiveness analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/04_ild"><span>HTA with individual level data</span></a>
+            
+              <a class="dropdown-item" href="/practical/05_ald"><span>Evidence synthesis and decision models</span></a>
+            
+              <a class="dropdown-item" href="/practical/06_nma"><span>NMA</span></a>
+            
+              <a class="dropdown-item" href="/practical/07_structural"><span>PSA to structural uncertainty</span></a>
+            
+              <a class="dropdown-item" href="/practical/08_survival"><span>Survival analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/09_mm"><span>Markov and multistate models</span></a>
+            
+              <a class="dropdown-item" href="/practical/10_missing"><span>Missing data</span></a>
+            
+              <a class="dropdown-item" href="/practical/11_intro_voi"><span>Computing the EVPI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/12_evppi"><span>Computing the EVPPI in BCEA and SAVI</span></a>
+            
+              <a class="dropdown-item" href="/practical/13_data_evsi"><span>Generating data for the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/practical/14_evsi_mc"><span>Computing the EVSI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/15_evsi_regression"><span>Computing the EVSI using regression</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Instructions</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/tips/computer-specification"><span>Computer specification</span></a>
+            
+              <a class="dropdown-item" href="/tips/using-bugs"><span>Using BUGS</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/publication"><span>Reading list</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          5. ALD
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <ul class="nav docs-sidenav">
+        <li class=""><a href="/practical/"></a></li>
+    
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/01_monte-carlo/">1. Monte Carlo</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/01_monte-carlo/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/02_mcmc/">2. MCMC</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/02_mcmc/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/covid/">Covid</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/tutorial/">MCMC Tutorial</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/03_bcea/">3. Intro-HE</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/03_bcea/solutions/">Solution</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/04_ild/">4. ILD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/04_ild/tutorial-regression/">Regression Tutorial</a></li>
+
+
+
+  <li class=""><a href="/practical/04_ild/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/05_ald/">5. ALD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class="active"><a href="/practical/05_ald/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/06_nma/">6. NMA</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/06_nma/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/07_structural/">7. PSA to structural uncertainty</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/07_structural/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/08_survival/">8. Survival</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/08_survival/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/09_mm/">9. Markov models</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/09_mm/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/09_mm/cohort-model/">Cohort discrete Markov model</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/10_missing/">10. Missing data</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/10_missing/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/11_intro_voi/">11. EVPI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/12_evppi/">12. EVPPI in BCEA &amp; SAVI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/13_data_evsi/">13 Generating data for EVSI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/14_evsi_mc/">14. EVSI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/15_evsi_regression/">15. EVSI using regression</a>
+    
+
+    
+      </div>
+    
+
+      
+    
+
+    
+      </ul>
+    
+
+  
+</nav>
+    </div>
+
+    <main class="col-10 docs-content" role="main">
+      <article class="article">
+
+        <div class="docs-article-container">
+          <h1>Practical 5. Evidence synthesis and decision models — SOLUTIONS</h1>
+          
+          
+          
+          
+          
+
+
+
+
+<div class="btn-links mb-3">
+  
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/slides/05_ALD" >
+    Lecture 5</a>
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/practical/05_ald/solutions5.pdf" >
+    <i class="fas fa-file-pdf mr-1"></i>PDF version</a>
+
+
+</div>
+
+
+          <br>
+          
+          <div class="article-style">
+            
+
+
+<div id="decision-modelling" class="section level2">
+<h2>Decision modelling</h2>
+<p>Once you have checked the model code in the file <code>EvSynth.txt</code>, you can concentrate on the <tt>R</tt> script. The first part
+is fairly simple.</p>
+<pre class="r"><code># Influenza example --- source: Cooper et al (2004); Baio (2012)
+
+# Sets up the working directory to the current one
+working.dir &lt;- getwd()
+setwd(working.dir)
+
+# Defines the data
+# Number of interventions (t=0: control; t=1: prophylactic use of Neuramidase Inhibitors (NI) 
+T &lt;- 2                  
+
+# Evidence synthesis on effectiveness of NIs prophylaxis vs placebo
+r0 &lt;- r1 &lt;- n0 &lt;- n1 &lt;- numeric()   # defines observed cases &amp; sample sizes
+r0 &lt;- c(34,40,9,19,6,34)
+r1 &lt;- c(11,7,3,3,3,4)
+n0 &lt;- c(554,423,144,268,251,462)
+n1 &lt;- c(553,414,144,268,252,493)
+S &lt;- length(r0)             # number of relevant studies
+
+# Evidence synthesis on incidence of influenza in healthy adults (under t=0)
+x &lt;- m &lt;- numeric()         # defines observed values for baseline risk
+x &lt;- c(0,6,5,6,25,18,14,3,27)
+m &lt;- c(23,241,159,137,519,298,137,24,132)
+H &lt;- length(x)
+
+# Data on costs
+unit.cost.drug &lt;- 2.4       # unit (daily) cost of NI
+length.treat &lt;- 6*7     # 6 weeks course of treatment
+c.gp &lt;- 19          # cost of GP visit to administer prophylactic NI
+vat &lt;- 1.175            # VAT
+c.ni &lt;- unit.cost.drug*length.treat*vat 
+
+# Informative prior on cost of influenza 
+mu.inf &lt;- 16.78         # mean cost of influenza episode
+sigma.inf &lt;- 2.34       # sd cost of influenza episode
+tau.inf &lt;- 1/sigma.inf^2    # precision cost of influenza episode</code></pre>
+<p>The First couple of lines set up the working directory. In previous practicals, we have seen how you can do this by setting a path to the
+folder you want to use. In this case, we first define a variable <code>working.dir</code>, which we set equal to the current directory (accessed by
+the <tt>R</tt> command <code>getwd()</code>). The second line is actually not necessary, strictly speaking, because we already are in the
+current directory. But this shows, again, how we can use <code>getwd()</code> and <code>setwd()</code> to move across the folders in our computer. Notice that we are using in the script the assign “<code>-&gt;</code>” sign, while in previous practicals we have used the equal “<code>=</code>” sign. For all intents and purposes,
+<tt>R</tt> considers them as meaning the same thing.</p>
+<p>Then we start to define the data. Some of the variables we need to define are simple scalars, e.g. <code>T &lt;- 2</code>, the number of interventions.
+Others are vectors, in which case we need to first define them as <code>numeric()</code>. Notice that you can cascade the <code>-&gt;</code> operator as in
+<code>r0 &lt;- r1 &lt;- n0 &lt;- n1 &lt;- numeric()</code>, which defines several objects as equal to each other and to an empty vector.</p>
+<p>The next bit of code defines a <tt>R</tt> function that we will use to compute the value of the parameters to associate with a logNormal distribution so that the mean and standard deviation <em>on the natural scale</em> are (approximately) equal to some input values.</p>
+<pre class="r"><code># Informative prior on length of influenza episodes
+## Compute the value of parameters (mulog,sigmalog) for a logNormal 
+## distribution to have mean and sd (m,s)
+lognPar &lt;- function(m,s) {
+  s2 &lt;- s^2
+  mulog &lt;- log(m) - 0.5 * log(1+s2/m^2)
+  s2log &lt;- log(1+(s2/m^2))
+  sigmalog &lt;- sqrt(s2log)
+  list(mulog = mulog, sigmalog = sigmalog)
+}</code></pre>
+<p><tt>R</tt> functions are defined by the keyword <code>function</code> and may or may not have arguments. If you want to specify a function without argument, you can use the following code: <code>myfn &lt;- function()</code>. The commands included between the two curly brackets <code>{</code> and <code>}</code> are those that the function will execute.</p>
+<p>In this case, we are specifying that the function called <code>lognPar</code> has two inputs (arguments). <code>m</code> is the mean that you want your logNormal
+distribution to have on the natural scale, while <code>s</code> indicates its intended standard deviation. The function proceeds to first defining the
+variance <code>s2</code> by squaring the standard deviation; then it creates a new variable <code>mulog</code> defined as the mean on the log scale (cfr. <a href="https://egon.stats.ucl.ac.uk/static/stat0019/slides/07_ALD/">Lecture 7</a>) in terms of the mean and standard deviation on the natural scale; then
+it creates <code>s2log</code>, the variance on the log scale, as well as <code>sigmalog</code>, the standard deviation on the log scale. Finally, the variables that we want the function to output are included in a (named) list. When this code is “sourced” (or executed), <code>lognPar</code> becomes available to your <tt>R</tt> workspace and for example you can use it using a command like the following.</p>
+<pre class="r"><code>lognPar(3,2)</code></pre>
+<pre><code>$mulog
+[1] 0.9147499
+
+$sigmalog
+[1] 0.6064031</code></pre>
+<pre class="r"><code>x &lt;- rlnorm(10000,lognPar(3,2)$mulog,lognPar(3,2)$sigmalog)
+c(mean(x),sd(x),quantile(x,0.025),quantile(x,0.975))</code></pre>
+<pre><code>                         2.5%     97.5% 
+2.9924542 2.0223211 0.7648183 8.1689680 </code></pre>
+<p>which returns the values you should use to model a logNormal distribution so that its mean and standard deviation match your intended
+values. You can check that all works the way you want by simulating a variable <code>x</code> using the <tt>R</tt> built-in function <code>rlnorm</code> — in this case we can do 10000 simulations using <code>lognPar(3,2)$mulog</code> as the mean and <code>lognPar(3,2)$sigmalog</code> as the standard deviation. The summary statistics provided above shows that effectively this works perfectly.</p>
+<p>In fact, we can use the newly created function to complete the definition of the main data for our model, as shown below.</p>
+<pre class="r"><code>m.l &lt;- 8.2                              # original value in the paper: 8.2
+s.l &lt;- sqrt(2)                          # original value in the paper: sqrt(2)
+mu.l &lt;- lognPar(m.l,s.l)$mulog          # mean time to recovery (log scale)
+sigma.l &lt;- lognPar(m.l,s.l)$sigmalog    # sd time to recovery (log scale)
+tau.l &lt;- 1/sigma.l^2                    # precision time to recovery (log scale)
+
+# Parameters of unstructured effects
+mean.alpha &lt;- 0
+sd.alpha &lt;- sqrt(10)
+prec.alpha &lt;- 1/sd.alpha^2
+mean.mu.delta &lt;- 0
+sd.mu.delta &lt;- sqrt(10)
+prec.mu.delta &lt;- 1/sd.mu.delta^2
+mean.mu.gamma &lt;- 0
+sd.mu.gamma &lt;- 1000
+prec.mu.gamma &lt;- 1/sd.mu.gamma^2</code></pre>
+<p>All these are fairly simple. The only thing that is perhaps worth noticing is that the <tt>BUGS</tt> model will use some Normal and logNormal distributions and so we will need to use precisions. For this reason, we create for example the quantity <code>tau.l</code>, which is 1 divided by a variance (i.e. a precision), which we can directly use.</p>
+<p>We can now call <tt>BUGS</tt> and run the model.</p>
+<pre class="r"><code># Prepares to launch OpenBUGS
+library(R2OpenBUGS)
+
+# Creates the data list
+data &lt;- list(S=S,H=H,r0=r0,r1=r1,n0=n0,n1=n1,x=x,m=m,mu.inf=mu.inf,tau.inf=tau.inf,
+             mu.l=mu.l,tau.l=tau.l,mean.alpha=mean.alpha,prec.alpha=prec.alpha,
+             mean.mu.delta=mean.mu.delta,prec.mu.delta=prec.mu.delta,
+             mean.mu.gamma=mean.mu.gamma,prec.mu.gamma=prec.mu.gamma)
+
+# Points to the txt file where the OpenBUGS model is saved
+filein &lt;- &quot;EvSynth.txt&quot;
+
+# Defines the parameters list
+params &lt;- c(&quot;p1&quot;,&quot;p2&quot;,&quot;rho&quot;,&quot;l&quot;,&quot;c.inf&quot;,&quot;alpha&quot;,&quot;delta&quot;,&quot;gamma&quot;)
+
+# Creates a function to draw random initial values 
+inits &lt;- function(){
+    list(alpha=rnorm(S,0,1),delta=rnorm(S,0,1),mu.delta=rnorm(1),
+       sigma.delta=runif(1),gamma=rnorm(H,0,1),mu.gamma=rnorm(1),
+       sigma.gamma=runif(1),c.inf=rnorm(1))
+}
+
+# Sets the number of iterations, burnin and thinning
+n.iter &lt;- 10000
+n.burnin &lt;- 9500
+n.thin &lt;- 20
+
+# Finally calls OpenBUGS to do the MCMC run and saves results to the object &quot;es&quot;
+es &lt;- bugs(data=data,inits=inits,parameters.to.save=params,model.file=filein,
+    n.chains=2, n.iter, n.burnin, n.thin, DIC=TRUE, working.directory=working.dir)</code></pre>
+<p>Most of these commands should be fairly familiar by now. We first load <code>R2OpenBUGS</code>, then include all the relevant data in a list and define
+the path to the file where the model is saved (here we assume that the file is in the working directory) and then define the parameters to
+monitor.</p>
+<p>When it comes to defining the inital values, we use this time a bespoke function that we create to simulate suitable values for the variables we want to initialise. For example, the <tt>BUGS</tt> model defines</p>
+<pre class="r"><code>...
+# Evidence synthesis for efffectiveness of NIs
+    for (s in 1:S) { 
+        r0[s] ~ dbin(pi0[s],n0[s])
+      ...
+        delta[s] ~ dnorm(mu.delta,tau.delta)
+        alpha[s] ~ dnorm(mean.alpha,prec.alpha)
+    } 
+...</code></pre>
+<p>which implies that the node <code>alpha</code> is a vector with length <code>S</code>. Thus, when we initialise it, we need to provide <tt>R</tt> and <tt>BUGS</tt> with <code>S</code> values. We do this in our <code>inits</code> function by defining <code>alpha=rnorm(S,0,1)</code> — this creates <code>S</code> random draws from a Uniform(0,1)
+distribution.</p>
+<p>In fact, we are <em>not</em> initialising all the unobserved nodes associated with a probability distribution: if you look at the <tt>BUGS</tt> model code, you will notice that the nodes <code>phi</code> and <code>l</code> are also of this kind and so, technically, they need initialisation. If we do not do anything, <tt>BUGS</tt> will take care of it itself. But we can simply add them by simply modifying the <code>inits</code> function as following.</p>
+<pre class="r"><code># Creates a function to draw random initial values 
+inits &lt;- function(){
+    list(alpha=rnorm(S,0,1),delta=rnorm(S,0,1),mu.delta=rnorm(1),
+       sigma.delta=runif(1),gamma=rnorm(H,0,1),mu.gamma=rnorm(1),
+       sigma.gamma=runif(1),c.inf=rnorm(1)
+         # Now add the new variables
+         , # Make sure you include a &#39;comma&#39; between variables! 
+         l=runif(1),phi=rnorm(1)
+         )
+}</code></pre>
+<p>Notice that we need to separate the variables included in the list using commas. You can see what this function does by simply calling it,
+e.g. <code>inits()</code>.</p>
+<p>We instruct <tt>R</tt> and <tt>BUGS</tt> to run this model for 2 chains — notice we hard-code this in the call to the function <code>bugs</code>. You can always do this, although it is <em>not</em> best practice (and you are probably better off by creating suitable variables and then referring to them as inputs to functions). We select a burn-in of 9500 iterations and then do a further 10000 iterations, which we thin by 20. This means we run the model for a total of <span class="math inline">\(2\times (9500+10000)=39000\)</span> iterations and then because we throw away the first <span class="math inline">\(2\times 9500\)</span> and we only store 1 in 20 of the remaining, the final analysis is based on <span class="math inline">\(1000\)</span> iterations.</p>
+<p>Once <tt>BUGS</tt> has finished, we regain control of the <tt>R</tt> session and we can print the output.</p>
+<pre class="r"><code># Displays the summary statistics
+print(es,digits=2)</code></pre>
+<pre><code>Inference for Bugs model at &quot;EvSynth.txt&quot;, 
+Current: 2 chains, each with 10000 iterations (first 9500 discarded), n.thin = 20
+Cumulative: n.sims = 1000 iterations saved
+          mean   sd  2.5%   25%   50%   75%  97.5% Rhat n.eff
+p1        0.02 0.01  0.00  0.01  0.02  0.03   0.06 1.01   290
+p2        0.00 0.01  0.00  0.00  0.00  0.01   0.01 1.01   240
+rho       0.22 0.18  0.11  0.17  0.21  0.24   0.39 1.00  1000
+l         8.15 1.41  5.74  7.22  8.01  8.97  11.18 1.00   550
+c.inf    16.90 2.33 12.63 15.18 16.90 18.45  21.66 1.00   520
+alpha[1] -2.68 0.17 -3.06 -2.79 -2.67 -2.57  -2.39 1.00  1000
+alpha[2] -2.29 0.16 -2.63 -2.40 -2.29 -2.19  -1.98 1.00   590
+alpha[3] -2.65 0.32 -3.29 -2.86 -2.65 -2.44  -2.07 1.00   560
+alpha[4] -2.63 0.23 -3.09 -2.79 -2.63 -2.47  -2.21 1.00  1000
+alpha[5] -3.57 0.38 -4.34 -3.82 -3.55 -3.29  -2.91 1.01   290
+alpha[6] -2.62 0.18 -2.96 -2.73 -2.62 -2.50  -2.28 1.00   430
+delta[1] -1.41 0.30 -1.95 -1.63 -1.43 -1.22  -0.78 1.00  1000
+delta[2] -1.69 0.33 -2.40 -1.89 -1.66 -1.47  -1.13 1.00   710
+delta[3] -1.50 0.43 -2.36 -1.75 -1.52 -1.25  -0.54 1.01   540
+delta[4] -1.71 0.41 -2.68 -1.93 -1.66 -1.44  -1.03 1.02   140
+delta[5] -1.40 0.48 -2.22 -1.70 -1.45 -1.15  -0.37 1.00  1000
+delta[6] -1.89 0.43 -2.94 -2.13 -1.81 -1.58  -1.27 1.01   260
+gamma[1] -3.12 0.87 -4.89 -3.70 -3.05 -2.52  -1.63 1.01   290
+gamma[2] -4.59 0.62 -5.95 -4.94 -4.53 -4.17  -3.53 1.00   610
+gamma[3] -4.98 0.87 -7.11 -5.46 -4.87 -4.37  -3.63 1.01   260
+gamma[4] -3.23 0.43 -4.14 -3.51 -3.20 -2.95  -2.44 1.00  1000
+gamma[5] -5.24 0.57 -6.60 -5.56 -5.19 -4.85  -4.28 1.00  1000
+gamma[6] -4.00 0.43 -4.93 -4.26 -3.97 -3.71  -3.19 1.01   240
+gamma[7] -4.77 0.82 -6.55 -5.25 -4.70 -4.19  -3.42 1.00  1000
+gamma[8] -1.50 0.55 -2.66 -1.84 -1.46 -1.14  -0.51 1.01   330
+gamma[9] -4.68 0.81 -6.43 -5.15 -4.58 -4.13  -3.40 1.00   330
+deviance 93.98 5.87 84.56 89.65 93.39 97.90 107.00 1.00  1000
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = Dbar-Dhat)
+pD = 16.84 and DIC = 110.80
+DIC is an estimate of expected predictive error (lower deviance is better).</code></pre>
+<p>All seems reasonable — the value for <span class="math inline">\(\hat{R}\)</span> is below the 1.1 threshold for all the monitored nodes and the effective sample size is reasonably large (and close to the nominal value <code>n.sims</code>=1000). You can play around with reducing the level of thinning (to increase the sample size) or increasing the total number of iterations to see how the results are affected, but in general terms, the model seems to have
+reached convergence.</p>
+<p>One graphical way of confirming this is to create “traceplots” of the simulations, which you can do using the following code.</p>
+<pre class="r"><code># Convergence check through traceplots (example for node p1)
+plot(es$sims.list$p1[1:500],t=&quot;l&quot;,col=&quot;blue&quot;,ylab=&quot;p1&quot;)
+points(es$sims.list$p1[501:1000],t=&quot;l&quot;,col=&quot;red&quot;)</code></pre>
+<p><img src="/practical/05_ald/solutions_files/figure-html/bugs5-1.png" width="460.8" style="display: block; margin: auto;" /></p>
+<p>Here we first plot the first half of the simulations (in this case for the node <code>p1</code>). <tt>BUGS</tt> stores the simulations for all the different chains by stacking one chain after the other and thus we do this by accessing the first 500 values of the simulations for <code>p1</code>, which are stored inside the <tt>BUGS</tt> object as <code>es$sims.list$p1</code>. The <tt>R</tt> notation <code>[1:500]</code> instructs <tt>R</tt> to access the positions 1 to 500 of a vector. The options used in the <code>plot</code> function specify that we want to plot lines (<code>t=l</code>) in blue (<code>col=blue</code>) and use a <span class="math inline">\(y-\)</span>axis label “p1”. Then we add to the existing plot using the <tt>R</tt> built-in function <code>points</code>. This has a
+syntax very similar to <code>plot</code> but does not overwrite an existing graph. In this case, we superimpose the elements from position 501 to position 1000 of the vector <code>es$sims.list$p1</code> (the simulations for the second chain). We use the options <code>t=l</code> and <code>col=red</code> to instruct
+<tt>R</tt> to plot red lines.</p>
+<p>As is possible to see, the traceplot “looks good” — the two chains are well mixed and on top of each other, confirming convergence (which ties up with the analysis of <code>Rhat</code> and <code>n.eff</code> for this particular node). You can try and replicate this analysis for other nodes.</p>
+<p>Finally, we need to perform the full economic analysis. We could programme all the commands we need ourselves, but we can use <code>BCEA</code> to
+do most of the work for us.</p>
+<pre class="r"><code># Attaches the es object to the R workspace (to use the posteriors for the economic analysis)
+attach.bugs(es)
+
+# Runs economic analysis 
+# cost of treatment
+c &lt;- e &lt;- matrix(NA,n.sims,T)
+c[,1] &lt;- (1-p1)*(c.gp) + p1*(c.gp+c.inf)
+c[,2] &lt;- (1-p2)*(c.gp+c.ni) + p2*(c.gp+c.ni+c.inf)
+e[,1] &lt;- -l*p1
+e[,2] &lt;- -l*p2
+
+library(BCEA)</code></pre>
+<pre><code>
+Attaching package: &#39;BCEA&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:graphics&#39;:
+
+    contour</code></pre>
+<pre class="r"><code>treats &lt;- c(&quot;status quo&quot;,&quot;prophylaxis with NIs&quot;)
+m &lt;- bcea(e,c,ref=2,treats,Kmax=10000)</code></pre>
+<p>Notice that in this case we “attach” the <tt>BUGS</tt> object <code>es</code> to the <tt>R</tt> workspace. This will allow us to access all the relevant quantites stored inside of it directly by calling their name, i.e. we will not need to use the clunky notation <code>es$sims.list$p1</code> to access the simulated values for the parameter <span class="math inline">\(p_1\)</span>, but we will just need to call <code>p1</code>. This is handy, but, again, we need to be careful because attaching an object will overwrite any other object with the same name that already exists in the <tt>R</tt> workspace.</p>
+<p>Once we have done this, we define the suitable economic summaries. We can think of this step as moving from the “Statistical model” to the
+“Economic model” box (as in <a href="https://egon.stats.ucl.ac.uk/static/stat0019/slides/04_Intro_HE/#7">here</a>) — cfr. also the slides for <a href="https://egon.stats.ucl.ac.uk/static/stat0019/slides/07_ALD/">Lecture 7</a>. This step is fairly simple – we first create two matrices <code>e</code> and <code>c</code>, which we will then fill with the simulations for the effectiveness and cost variables for the <span class="math inline">\(T=2\)</span> treatments considered. Notice that we define <code>e</code> and <code>c</code> as matrices filled with <code>NA</code> (<tt>R</tt> notation for “null” or missing values), with <code>n.sims</code>=1000 rows and <code>T</code>=2 columns. The notation <code>c[,1]</code> should be clear by now. With this, we mean to talk all the rows and only the first column of the matrix <code>c</code>. We fill this with suitable values obtained by combining the probabilities of infection and the relevant
+costs.</p>
+<p>At this point, we are ready to load <code>BCEA</code> and then call the function <code>bcea</code>, which performs the basic economic analysis for us. Before we do
+so, we define for convenience a vector of names, to associate with the interventions we are considering. In this case, the index 1 is associated with the status quo (so the first column of <code>c</code> and <code>e</code> contains the simulations for this treatment), while the second is associated with the active intervention.</p>
+<p>Finally, we create an object <code>m</code> in which we store the output of the call to <code>bcea</code>. There are some mandatory and some optional inputs to
+this function — check <code>help(bcea)</code> as well as <em>BMHE</em> and <em>Bayesian Cost-Effectiveness Analysis with the R package BCEA</em> to see more
+details. At the very minimum, <code>bcea</code> expects that you pass as arguments the matrices including the simulations for effects and costs, in this
+order. Thus, unless you specify a name for the arguments, <tt>R</tt> will assume you are following the default. For example, the function <code>bcea</code> uses the following arguments in exactly this order.</p>
+<ul>
+<li><p><code>e</code> = a numeric matrix with simulations for the effectiveness
+variable, for all the treatments considered (must have more than 1
+column);</p></li>
+<li><p><code>c</code> = a numeric matrix with simulations for the cost variable, for
+all the treatments considered (must have more than 1 column);</p></li>
+<li><p><code>ref</code> = a number to identify the treatment to be considered as the
+“reference”, i.e. the one we are comparing against the other(s).
+This is an optional argument and unless specified differently, the
+default is <code>1</code>, in which case <tt>BCEA</tt> will
+assume that the intervention of interest is in the first column of
+<code>e</code> and <code>c</code>. In this case, however, we specify <code>ref=2</code>;</p></li>
+<li><p><code>interventions</code> = a vector of strings of length equal to the number
+of columns in <code>e</code>, giving names to the interventions. This is also
+an optional argument and unless otherwise specified,
+<tt>BCEA</tt> will create labels in the form
+<code>Intervention1</code>, <code>Intervention2</code>, …;</p></li>
+<li><p><code>Kmax</code> = a number specifying the maximum value for the willingness
+to pay to be considered. The default value is <code>k=50000</code>. The
+willingness to pay is then approximated on a discrete grid in the
+interval <code>[0,Kmax]</code>. The grid is equal to the argument <code>wtp</code> — see
+below — if that parameter is provided, or simply composed of 501
+elements if <code>wtp=NULL</code> (the default);</p></li>
+<li><p><code>wtp</code> = an optional vector containing specific values for the
+willingness to pay grid. If not specified then
+<tt>BCEA</tt> will construct a grid of 501 values
+from 0 to <code>Kmax</code> (see point above). This option is useful when
+performing intensive computations (e.g. for the EVPPI);</p></li>
+<li><p><code>plot</code> = a logical value (i.e. <code>TRUE</code> or <code>FALSE</code>), indicating
+whether the function should produce the summary plot or not. The
+default is set to <code>FALSE</code>.</p></li>
+</ul>
+</div>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          
+          
+
+          
+
+
+          
+          
+          
+          
+          
+
+
+          
+
+
+
+
+          
+
+
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+    
+      &copy;  2022-2024 &middot;
+
+    Based on
+    <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a>
+    
+    
+    (version 5.3.0)
+    
+    for <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
+    
+    
+    <i><b>Latest update: 23 Jun 2022 </i></b>
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/en/js/wowchemy.min.50d3bf3df0c53b31631bb48a62b35f92.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Anna Heath | Bayesian methods in health economics</title>
+    <link>/author/anna-heath/</link>
+      <atom:link href="/author/anna-heath/index.xml" rel="self" type="application/rss+xml" />
+    <description>Anna Heath</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Fri, 24 Jun 2022 13:45:00 +0000</lastBuildDate>
+    <image>
+      <url>/author/anna-heath/avatar_hub9ddf87f40c2a0bce661cced376a408e_28293_270x270_fill_q75_lanczos_center.jpeg</url>
+      <title>Anna Heath</title>
+      <link>/author/anna-heath/</link>
+    </image>
+    
+    <item>
+      <title>Lecture 16: Regression-based EVSI</title>
+      <link>/syllabus/lecture16/</link>
+      <pubDate>Fri, 24 Jun 2022 13:45:00 +0000</pubDate>
+      <guid>/syllabus/lecture16/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Regression-based methods for EVSI computation&lt;/li&gt;
+&lt;li&gt;Using SAVI to compute EVSI&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 15: Calculating expected value of sample information</title>
+      <link>/syllabus/lecture15/</link>
+      <pubDate>Fri, 24 Jun 2022 11:15:00 +0000</pubDate>
+      <guid>/syllabus/lecture15/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Efficient Computation methods for EVSI&lt;/li&gt;
+&lt;li&gt;Efficient Nested Monte Carlo&lt;/li&gt;
+&lt;li&gt;Using the EVSI Web App&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 14: Generating data for the analysis of the EVSI</title>
+      <link>/syllabus/lecture14/</link>
+      <pubDate>Fri, 24 Jun 2022 09:45:00 +0000</pubDate>
+      <guid>/syllabus/lecture14/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Variation in individual outcomes&lt;/li&gt;
+&lt;li&gt;Predictive distribution data simulation&lt;/li&gt;
+&lt;li&gt;Data generation in Excel and R&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 12: Expected value of partial information</title>
+      <link>/syllabus/lecture12/</link>
+      <pubDate>Thu, 23 Jun 2022 13:45:00 +0000</pubDate>
+      <guid>/syllabus/lecture12/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Theory behind the EVPPI&lt;/li&gt;
+&lt;li&gt;Computational methods: regression-based methods&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 11: Introduction to Value of Information</title>
+      <link>/syllabus/lecture11/</link>
+      <pubDate>Thu, 23 Jun 2022 11:00:00 +0000</pubDate>
+      <guid>/syllabus/lecture11/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Introduction to Research prioritisation&lt;/li&gt;
+&lt;li&gt;Value of Information and relevant measures&lt;/li&gt;
+&lt;li&gt;Applications/examples&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Lecture 4: Individual level data in health economics</title>
+      <link>/syllabus/lecture4/</link>
+      <pubDate>Tue, 21 Jun 2022 09:00:00 +0000</pubDate>
+      <guid>/syllabus/lecture4/</guid>
+      <description>
+
+
+&lt;div id=&#34;summary&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Summary:&lt;/h2&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Data &amp;amp; “standard” analysis&lt;/li&gt;
+&lt;li&gt;Example: UK700&lt;/li&gt;
+&lt;li&gt;Analysis of cost data&lt;/li&gt;
+&lt;li&gt;Analysis of cost-effectiveness data&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;a href=&#34;../&#34;&gt;Back to syllabus&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Bayesian Cost-Effectiveness Analysis with the R package BCEA</title>
+      <link>/publication/baioetal-2016/</link>
+      <pubDate>Sat, 01 Jul 2017 00:00:00 +0000</pubDate>
+      <guid>/publication/baioetal-2016/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>A Berardi | Bayesian methods in health economics</title>
+    <link>/author/a-berardi/</link>
+      <atom:link href="/author/a-berardi/index.xml" rel="self" type="application/rss+xml" />
+    <description>A Berardi</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Sat, 01 Jul 2017 00:00:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>A Berardi</title>
+      <link>/author/a-berardi/</link>
+    </image>
+    
+    <item>
+      <title>Bayesian Cost-Effectiveness Analysis with the R package BCEA</title>
+      <link>/publication/baioetal-2016/</link>
+      <pubDate>Sat, 01 Jul 2017 00:00:00 +0000</pubDate>
+      <guid>/publication/baioetal-2016/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

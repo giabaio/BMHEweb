@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practical 1. Monte Carlo in BUGS | Bayesian methods in health economics</title>
+    <link>/practical/01_monte-carlo/</link>
+      <atom:link href="/practical/01_monte-carlo/index.xml" rel="self" type="application/rss+xml" />
+    <description>Practical 1. Monte Carlo in BUGS</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Mon, 20 Jun 2022 11:15:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Practical 1. Monte Carlo in BUGS</title>
+      <link>/practical/01_monte-carlo/</link>
+    </image>
+    
+    <item>
+      <title>Practical 1. Monte Carlo in BUGS - SOLUTIONS</title>
+      <link>/practical/01_monte-carlo/solutions/</link>
+      <pubDate>Mon, 20 Jun 2022 11:15:00 +0000</pubDate>
+      <guid>/practical/01_monte-carlo/solutions/</guid>
+      <description>
+
+
+&lt;div id=&#34;coins-example-see-lectures&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;1. “Coins” example (see lectures)&lt;/h2&gt;
+&lt;p&gt;The first thing we need to do is to run the programme from the script
+provided in the file &lt;code&gt;coins-script.odc&lt;/code&gt;. The commands in the script make
+automatic the process of pointing-and-clicking that we would otherwise
+need to perform the analysis from &lt;tt&gt;BUGS&lt;/tt&gt;. We
+need to be careful in telling &lt;tt&gt;BUGS&lt;/tt&gt; what the
+“working directory” is. In the script, the default path is set as
+&lt;tt&gt;c:/bayes-hecourse/1_monte-carlo&lt;/tt&gt;, which grants a couple of comments.&lt;/p&gt;
+&lt;p&gt;Firstly, you may not have saved the script file onto this directory
+(which in fact may not even exist in your computer!). So you need to
+make sure you update this to the actual path to the folder in which the
+file &lt;code&gt;coins-script.odc&lt;/code&gt; is stored, or else
+&lt;tt&gt;BUGS&lt;/tt&gt; will complain that it can’t find the
+file. Secondly, the default text uses &lt;tt&gt;Unix&lt;/tt&gt; notation, where folders are
+separated using a “&lt;code&gt;/&lt;/code&gt;” symbol. Under other operating systems (notably
+&lt;tt&gt;MS Windows&lt;/tt&gt;), this is no longer valid and paths are indicated using a
+“&lt;code&gt;\&lt;/code&gt;” symbol. You then need to be careful in providing the correct
+string. For instance, suppose your file under &lt;tt&gt;MS Windows&lt;/tt&gt; is saved in
+the directory &lt;tt&gt;N:\DesktopSetting\Desktop\STAT0019&lt;/tt&gt;, then you would need
+to copy and paste this string into the model script.&lt;/p&gt;
+&lt;p&gt;In order to run the script, you need to click anywhere on the file
+&lt;code&gt;coins-script.odc&lt;/code&gt; (assuming you have opened it in
+&lt;tt&gt;BUGS&lt;/tt&gt;) and then click on the menu &lt;tt&gt;Model
+&lt;svg viewBox=&#34;0 0 448 512&#34; style=&#34;height:1em;position:relative;display:inline-block;top:.1em;&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt; &lt;path d=&#34;M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z&#34;&gt;&lt;/path&gt;&lt;/svg&gt; Script&lt;/tt&gt;&lt;/p&gt;
+&lt;p&gt;&lt;div class=&#34;alert alert-warning&#34;&gt;
+  &lt;div&gt;
+    &lt;strong&gt;NB&lt;/strong&gt;: we use the notation
+&lt;tt&gt;Command1 &lt;i class=&#34;fas fa-arrow-right&#34;&gt;&lt;/i&gt; Command2&lt;/tt&gt; to indicate that you need to click on the menu
+labelled as &lt;tt&gt;Command1&lt;/tt&gt; and then on the sub-menu labelled as &lt;tt&gt;Command2&lt;/tt&gt;).
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/p&gt;
+&lt;p&gt;Unlike the older version (&lt;tt&gt;WinBUGS&lt;/tt&gt;), &lt;tt&gt;OpenBUGS&lt;/tt&gt; does not open the log
+file automatically. Thus, if there is an error, only a message in the
+bottom-left corner of the window will appear (but it may not be very
+noticeable). To open the log file you can click on &lt;tt&gt;Info &lt;svg viewBox=&#34;0 0 448 512&#34; style=&#34;height:1em;position:relative;display:inline-block;top:.1em;&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt; &lt;path d=&#34;M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z&#34;&gt;&lt;/path&gt;&lt;/svg&gt;
+Open Log&lt;/tt&gt;. If you do this, before running the script, remember to click
+back on the part of the window occupied by the script file and then
+click on &lt;tt&gt;Model &lt;svg viewBox=&#34;0 0 448 512&#34; style=&#34;height:1em;position:relative;display:inline-block;top:.1em;&#34; xmlns=&#34;http://www.w3.org/2000/svg&#34;&gt; &lt;path d=&#34;M190.5 66.9l22.2-22.2c9.4-9.4 24.6-9.4 33.9 0L441 239c9.4 9.4 9.4 24.6 0 33.9L246.6 467.3c-9.4 9.4-24.6 9.4-33.9 0l-22.2-22.2c-9.5-9.5-9.3-25 .4-34.3L311.4 296H24c-13.3 0-24-10.7-24-24v-32c0-13.3 10.7-24 24-24h287.4L190.9 101.2c-9.8-9.3-10-24.8-.4-34.3z&#34;&gt;&lt;/path&gt;&lt;/svg&gt; Script&lt;/tt&gt;. In this case, you will see on
+the log file messages from &lt;tt&gt;OpenBUGS&lt;/tt&gt; informing you of what is
+happening. For instance, if all works, these messages will be printed.&lt;/p&gt;
+&lt;pre echo=&#34;TRUE,eval=FALSE&#34;&gt;&lt;code&gt;model is syntactically correct
+model compiled
+initial values generated, model initialized
+model is updating
+1000 updates took 0 s&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In addition, two more windows will automatically open, showing the
+output of the &lt;tt&gt;BUGS&lt;/tt&gt;procedure. The first one
+shows the “Node statistics, i.e. the summary of the simulations
+performed for the node monitored (you can check that the script
+instructs &lt;tt&gt;BUGS&lt;/tt&gt;to monitor the nodes &lt;code&gt;Y&lt;/code&gt; and
+&lt;code&gt;P8&lt;/code&gt; with the commands&lt;/p&gt;
+&lt;pre echo=&#34;TRUE,eval=FALSE&#34;&gt;&lt;code&gt;samplesSet(Y)
+samplesSet(P8)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The second window shows the graphs of the posterior densities for the
+nodes monitored. In this case, you will see the histograms of &lt;code&gt;P8&lt;/code&gt; and
+&lt;code&gt;Y&lt;/code&gt;. The latter represents the predictive distribution of &lt;span class=&#34;math inline&#34;&gt;\(Y\)&lt;/span&gt;, the
+number of coin tosses showing up “heads”. In line with the summary
+statistics, this distribution has a mean of approximately 5 and most of
+the probability mass (in fact, 95%) is between 2 and 8. As for &lt;span class=&#34;math inline&#34;&gt;\(P_8\)&lt;/span&gt;,
+which represents the probability of observing 8 or more “heads”, the
+histogram has mostly 0s, to indicate that in all the simulations it is
+most likely that this event does &lt;em&gt;not&lt;/em&gt; happen, than it does. Again, this
+is in line with the summary statistics, showing that the sample mean
+computed from the simulations
+&lt;span class=&#34;math display&#34;&gt;\[\mbox{E}[P_8] = \frac{1}{S}\sum_{s=1}^S P_8\]&lt;/span&gt; is just
+above 5%. Notice that because of how the node &lt;code&gt;P8&lt;/code&gt; is defined in the
+model code (see Lecture notes), it either takes value 0 (if the event is
+not true) or 1 (otherwise). Thus the mean effectively represents the
+estimated probability that the event (i.e. at least 8 “heads”) is true.&lt;/p&gt;
+&lt;p&gt;We can also run the model using the point-and-click facility of
+&lt;tt&gt;BUGS&lt;/tt&gt; (this can be done by simply following
+all the steps in the practical question). The output will be identical
+to the one just described.&lt;/p&gt;
+&lt;p&gt;Finally, we can modify the original model code to encode the assumption
+that the coin is actually unbalanced (with a probaility of “heads” equal
+to 0.7). To do so, we simply need to modify the model code as follows.&lt;/p&gt;
+&lt;pre echo=&#34;TRUE,&#34; eval=&#34;FALSE&#34;&gt;&lt;code&gt;model {
+  Y ~ dbin(0.7, 30)
+  P15 &amp;lt;- step(15.5 - Y)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and then re-run the &lt;tt&gt;BUGS&lt;/tt&gt;procedure. Of course
+you can either overwrite the original file and then run the script, or
+save the new code to another file, update the command &lt;tt&gt;modelCheck&lt;/tt&gt; to
+provide the new file name, or simply use the point-and-click procedure
+(this latter option does not require you to save the file).&lt;/p&gt;
+&lt;p&gt;The predictive distribution for &lt;span class=&#34;math inline&#34;&gt;\(Y\)&lt;/span&gt; in this new setting is centered
+around 20, with most of the mass between 16 and 26, while the
+probability of observing at most 15 “heads” is estimated to be around
+1.7%.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;drug-example-see-lectures&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;2. “Drug” example (see lectures)&lt;/h2&gt;
+&lt;p&gt;To run the model, you can again use the script provided or simply
+point-and-click to run the model code file, also provided. As discussed
+in the class, the model code instructs
+&lt;tt&gt;BUGS&lt;/tt&gt;on the assumptions underlying the model.&lt;/p&gt;
+&lt;pre echo=&#34;TRUE,eval=FALSE&#34;&gt;&lt;code&gt;model{
+  theta ~ dbeta(9.2, 13.8)
+  y ~ dbin(theta, 20)
+  P.crit &amp;lt;- step(y - 14.5)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The structure of the model is pretty much the same as in the previous
+example — except that in this case, we are not willing to assume a
+“fixed” and known value for the probability of the event of interest
+(e.g. “heads” in the previous example, or that the drug is successful,
+in the current one). So, instead of assigning it a value (e.g. 0.5 or
+0.7), we describe our knowledge using a distribution. Given that we
+believe the “true” success rate to be between 0.2 and 0.6, we can
+express this using a Beta distribution with parameters &lt;span class=&#34;math inline&#34;&gt;\(\alpha=9.2\)&lt;/span&gt; and
+&lt;span class=&#34;math inline&#34;&gt;\(\beta=13.8\)&lt;/span&gt;. As discussed in class, by the mathematical properties of
+the Beta distribution, this implies that we believe
+&lt;span class=&#34;math display&#34;&gt;\[\mbox{E}[\theta] = \frac{\alpha}{\alpha+\beta}=\frac{9.2}{23}=0.4\]&lt;/span&gt;
+and
+&lt;span class=&#34;math display&#34;&gt;\[\mbox{Var}[\theta] = \frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}=0.01\]&lt;/span&gt;
+(which implies &lt;span class=&#34;math inline&#34;&gt;\(\mbox{sd}[\theta]=\sqrt{0.001}=0.1\)&lt;/span&gt;, which in turn
+implies that, &lt;em&gt;approximately&lt;/em&gt;, 95% of the mass for &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; is included
+in &lt;span class=&#34;math inline&#34;&gt;\(0.4\pm 2(0.1)=[0.2; 0.6]\)&lt;/span&gt;, as required).&lt;/p&gt;
+&lt;p&gt;In the next part of the exercise, you are required to modify the prior
+distribution for &lt;span class=&#34;math inline&#34;&gt;\(\theta\)&lt;/span&gt; to a Uniform(0,1). This effectively means that
+you are not implying any specific prior knowledge on the “true” success
+rate, apart from the fact that it can take a value between 0 and 1.
+Graphically, a Uniform distribution in (0,1) looks like in the following
+graph.
+&lt;img src=&#34;/practical/01_monte-carlo/solutions_files/figure-html/unnamed-chunk-2-1.png&#34; width=&#34;35%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;This prior distribution is “non informative” in the sense that it does
+not provide much information or clue as to what value of the probability
+of success is more likely to generate the data. Consequently, it is not
+surprising that the resulting predictive distribution for &lt;span class=&#34;math inline&#34;&gt;\(Y\)&lt;/span&gt; is spread
+over the entire range of possible values (with a mean of around 10 and a
+95% interval covering 0 to 20 — i.e. the whole range). Basically, if all
+you’re prepared to say before seeing any data is that the true success
+rate is something between 0 and 1, then the prediction of the number of
+successes cannot be anything else than anything between 0 (no
+successes) and 20 (all patients are cured)…&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;simulating-functions-of-random-quantities&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;3. Simulating functions of random quantities&lt;/h2&gt;
+&lt;p&gt;One of the main features of Bayesian analysis using simulation methods
+(such as those underpinning &lt;tt&gt;BUGS&lt;/tt&gt;) is that it
+is possible to obtain, almost as a simple by-product of the estimation
+procedure, simulations for any function of the main model parameters. We
+shall see later that this is very helpful when using complex models,
+e.g. for economic evaluation.&lt;/p&gt;
+&lt;p&gt;In this case, we need to write a model for a variable
+&lt;span class=&#34;math inline&#34;&gt;\(y \sim \mbox{Normal}(\mbox{mean}=0, \mbox{ sd}=1)\)&lt;/span&gt;. As suggested in the
+practical exercise, we need to be careful and remember that
+&lt;tt&gt;BUGS&lt;/tt&gt;parameterise the Normal distribution in
+terms of mean and &lt;strong&gt;precision&lt;/strong&gt; (=1/variance). If we are imposing a sd
+of 1, then this is irrelevant because if &lt;span class=&#34;math inline&#34;&gt;\(\sigma=1\)&lt;/span&gt;, then
+&lt;span class=&#34;math inline&#34;&gt;\(\mbox{variance} = \mbox{precision} = \frac{1}{\mbox{variance}} = 1\)&lt;/span&gt;.
+The model can be written in &lt;tt&gt;BUGS&lt;/tt&gt;language as&lt;/p&gt;
+&lt;pre echo=&#34;TRUE,eval=FALSE&#34;&gt;&lt;code&gt;model {
+  y ~ dnorm(0, 1)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;and run using the same procedure described above (for such a simple
+model, we can just use the point-and-click approach).&lt;/p&gt;
+&lt;p&gt;This produces simulations from a Normal variable with 0 mean and unit
+variance. The summary statistics of this distribution are as follows
+(your output may vary, due to pseudo-random variation).&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    mean       sd     2.5%      25%      50%      75%    97.5% 
+-0.00153  1.00520 -1.95402 -0.67965  0.00295  0.66825  1.98802 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;based on a sample of 10000 simulations. The resulting density looks like
+the following (you can produce the graph in
+&lt;tt&gt;BUGS&lt;/tt&gt;using the &lt;tt&gt;density&lt;/tt&gt; button in the
+&lt;tt&gt;Sample monitor tool&lt;/tt&gt;).&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/01_monte-carlo/solutions_files/figure-html/unnamed-chunk-4-1.png&#34; width=&#34;35%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;If we want to assume that
+&lt;span class=&#34;math inline&#34;&gt;\(y\sim\mbox{Normal}(\mbox{mean}=1, \mbox{ sd=2})\)&lt;/span&gt;, then this implies
+that precision &lt;span class=&#34;math inline&#34;&gt;\(=1/2^2=0.25\)&lt;/span&gt;. So we need to modify the model code to&lt;/p&gt;
+&lt;pre echo=&#34;TRUE,eval=FALSE&#34;&gt;&lt;code&gt;model {
+  y ~ dnorm(1, 0.25)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can run this new model and obtain summaries and graphs for the
+predictive distribution of &lt;span class=&#34;math inline&#34;&gt;\(y\)&lt;/span&gt; (notice that the term “predictive” here
+highlights the fact that we have not actually observed &lt;span class=&#34;math inline&#34;&gt;\(y\)&lt;/span&gt; — we might in
+the future, but not just yet. In fact the most appropriate term here
+would be “&lt;em&gt;prior&lt;/em&gt; predictive” distribution, again to highlight the fact
+that this is only based on our prior knowledge about the parameters,
+i.e. mean and standard deviation).&lt;/p&gt;
+&lt;p&gt;The output of the analysis is as follows (again, if you see slight
+differences, these would be down to simulation error).&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;  mean     sd   2.5%    25%    50%    75%  97.5% 
+ 0.997  2.010 -2.909 -0.359  1.006  2.336  4.975 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/01_monte-carlo/solutions_files/figure-html/unnamed-chunk-6-1.png&#34; width=&#34;35%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As is reasonable, the second case (with a larger sd) gives estimates
+that are more spread out (as the variability is higher, by definition).&lt;/p&gt;
+&lt;p&gt;Now, we are asked to create a new variable &lt;span class=&#34;math inline&#34;&gt;\(Z=Y^3\)&lt;/span&gt; and estimate its
+distribution. We also need to compute the probability that &lt;span class=&#34;math inline&#34;&gt;\(Z&amp;gt;10\)&lt;/span&gt;. This
+is extremely easy in &lt;tt&gt;BUGS&lt;/tt&gt; — the model code
+needs to be modified simply to the following.&lt;/p&gt;
+&lt;pre echo=&#34;TRUE,eval=FALSE&#34;&gt;&lt;code&gt;model {
+  y ~ dnorm(1, 0.25)
+  z &amp;lt;- pow(y, 3)
+  # Alternatively, we can write
+  # z &amp;lt;- y * y * y
+  above10 &amp;lt;- step(z - 10)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;          mean    sd   2.5%     25%  50%   75%  97.5%
+y        0.997  2.01  -2.91 -0.3593 1.01  2.34   4.98
+z       13.089 39.75 -24.61 -0.0464 1.02 12.75 123.20
+above10  0.283  0.45   0.00  0.0000 0.00  1.00   1.00&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/01_monte-carlo/solutions_files/figure-html/unnamed-chunk-7-1.png&#34; width=&#34;35%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;img src=&#34;/practical/01_monte-carlo/solutions_files/figure-html/unnamed-chunk-7-2.png&#34; width=&#34;35%&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

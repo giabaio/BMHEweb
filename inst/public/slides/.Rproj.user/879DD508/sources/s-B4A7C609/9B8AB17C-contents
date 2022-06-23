@@ -1,0 +1,1137 @@
+---
+title: "&#8291;11. Value of information"
+author: Gianluca Baio
+institute: "[Department of Statistical Science](https://www.ucl.ac.uk/statistics/) | University College London"
+params: 
+   - conference: "STAT0019 - Bayesian Methods in Health Economics"
+   - location: "UCL"
+date: 
+output:
+  xaringan::moon_reader:
+    includes: 
+       in_header: "../assets/latex_macros.html" 
+       ## This line adds a logo based on the format selected in the file 'assets/THEME/include_logo.html'
+       ## NB: the actual options (eg placement of the logo and actual logo file) can be changed there
+       ## There's also a script to manipulate the colouring scheme for the UCL logo (from a basic black/white one)
+       after_body: "../assets/ucl-stats/insert-logo.html"
+    seal: false
+    yolo: no
+    lib_dir: libs
+    nature:
+      beforeInit: ["https://platform.twitter.com/widgets.js"]
+      highlightStyle: github
+      highlightLines: yes
+      highlightSpans: true
+      countIncrementalSlides: no
+      ratio: '16:9'
+      titleSlideClass:
+      - center
+      - middle
+    self_contained: false 
+    css:
+    - "../assets/ucl-stats.css"
+---
+
+```{r echo=F,message=FALSE,warning=FALSE,comment=NA}
+# Sources the R file with all the relevant setup and commands
+source("../assets/setup.R")
+
+# Stuff from 'xaringanExtra' (https://pkg.garrickadenbuie.com/xaringanExtra)
+# This allows the use of panels (from 'xaringanExtra')
+xaringanExtra::use_panelset()
+# This allows to copy code from the slides directly
+xaringanExtra::use_clipboard()
+# This freezes the frame for when there's a gif included
+xaringanExtra::use_freezeframe()
+
+# Defines the path to the file with the .bib entries (in case there are references)
+bibfile=ReadBib("~/Dropbox/Perso/Office/CV/mypubs.bib",check = FALSE)
+
+```
+
+class: title-slide
+
+# `r rmarkdown::metadata$title`
+
+## `r rmarkdown::metadata$author`
+
+### `r rmarkdown::metadata$institute`    
+
+.title-small[
+`r icons::icon_style(icons::fontawesome("envelope",style = "solid"),scale=.8,fill="#00acee")`  [g.baio@ucl.ac.uk](mailto:g.baio@ucl.ac.uk)
+`r icons::icon_style(icons::fontawesome("firefox"),scale=.8,fill="#EA7600")`  [https://gianluca.statistica.it/](https://gianluca.statistica.it/)
+`r icons::icon_style(icons::fontawesome("firefox"),scale=.8,fill="#EA7600")`  [https://egon.stats.ucl.ac.uk/research/statistics-health-economics/](https://egon.stats.ucl.ac.uk/research/statistics-health-economics/)
+`r icons::icon_style(icons::fontawesome("github"),scale=.8,fill="black")`  [https://github.com/giabaio](https://github.com/giabaio)
+`r icons::icon_style(icons::fontawesome("github"),scale=.8,fill="black")`  [https://github.com/StatisticsHealthEconomics](https://github.com/StatisticsHealthEconomics)
+`r icons::icon_style(icons::fontawesome("twitter"),scale=.8,fill="#00acee")`  [@gianlubaio](https://twitter.com/gianlubaio)     
+]
+
+### `r rmarkdown::metadata$params`
+
+<!--
+Adds a departmental logo on the right-bottom corner (Only with 'ucl-stats')
+-->
+.logo-stats[]
+
+<!--
+Can also add sticky notes:
+`r postit(text=paste0('Check out our departmental podcast "Random Talks" on Soundcloud!', add_podcast()),top="75%",left="2.5%",height="6.3em",width="6.3em")`
+
+`r postit(text=paste0("Follow our departmental social media accounts", add_twitter(url="https://twitter.com/stats_ucl",title="@stats_UCL",fill="#00acee"), add_linkedin(url="https://www.linkedin.com/in/statistical-science-ucl-906b9a201",title="LinkedIn")),top="53%",left="6.5%",height="6.3em",width="6.3em")`
+-->
+
+<!-- This adds a footer (optional and with other possibilities...) 
+     For example, can use `r samptux()` to add the Samp Tux log,
+     or change the bottom space to align the text, etc
+.footer-left[
+<span style="position: relative; bottom: 0px; color: #D5D5D5;"> &nbsp; &copy; Gianluca Baio (UCL)</span>
+]
+--> 
+
+
+---
+
+layout: true
+
+.my-footer[ 
+.alignleft[
+&nbsp; &copy; Gianluca Baio (UCL) `r add_twitter()` `r add_github()` `r add_email()` `r add_website()`
+]
+.aligncenter[
+.mydropdown[
+.mydropbtn[
+`r icons::icon_style(icons::fontawesome("chevron-circle-down",style = "solid"),scale=.8,fill="white")` 
+]
+.mydropdown-content[
+[1. Introduction](../01_Intro/index.html)
+[2. BUGS](../02_BUGS/index.html)
+[3. MCMC](../03_MCMC/index.html)
+[4. Intro HTA](../04_Intro_HE/index.html)
+[5. ILD](../05_ILD/index.html)
+[6. Survival](../06_Survival/index.html)
+[7. ALD](../07_ALD/index.html)
+[8. NMA](../08_NMA/index.html)
+[9. Markov models](../09_MM/index.html)
+[10. Missing data](../10_Missing/index.html)
+[11. VoI](../11_VoI/index.html)
+]
+]
+`r rmarkdown::metadata$title` 
+]
+.alignright[
+`r course_site()` &nbsp; STAT0019 
+]
+] 
+
+<!-- Could also add a dropdown somewhere else in the slide 
+.dropdown[
+.dropbtn[
+Other lectures `r icons::icon_style(icons::fontawesome("chevron-circle-down",style = "solid"),scale=.8,fill="white")`
+]
+.dropdown-content[
+[Lecture 1](../01_Intro/)
+[Lecture 2](../02_BUGS/)
+[Lecture 3](../03_MCMC/)
+[Lecture 4](../04_Intro_HE/)
+[Lecture 5](../05_ILD/)
+[Lecture 6](../06_Survival/)
+[Lecture 7](../07_ALD/)
+[Lecture 8](../08_NMA/)
+[Lecture 9](../09_MM/)
+[Lecture 10](../10_Missing/)
+[Lecture 11](../11_VoI/)
+]
+]
+-->
+
+
+---
+
+# Summary
+
+- What is Value of Information and stupid examples?
+
+- Summarising uncertainty and PSA
+
+- Research priorities
+
+`r vspace("4em")`
+
+.content-box-beamer[
+### **References** 
+
+`r vspace("20px")`
+
+`r bmhe(c("3.5.2","3.5.3"))`
+
+`r esdm(12)`
+
+`r bcea_book(4.3)` 
+
+]
+
+---
+
+# Knowledge is power?
+
+## (A tale of two stupid examples)
+
+```{css echo=FALSE}
+.left-column30 {
+  width: 30%;
+  height: 92%;
+  float: left;
+}
+.left-column30 h2, .left-column h3 {
+  color: #035AA699;
+}
+.left-column30 h2:last-of-type, .left-column h3:last-child {
+  color: #035AA6;
+}
+.right-column70 {
+  width: 65%;
+  float: right;
+  padding-top: 0em;
+}
+```
+
+.left-column30[
+`r include_fig("knowledge_power.jpg",width="75%")`
+]
+
+.right-columnt70[
+
+- **Example 1**: Intervention $t=1$ is more cost-effective, given current evidence
+   - $\class{myblue}{\Pr(t=1 `r sftext(" is cost-effective")`) = `r sftext("0.51")`}$
+   - If we get it wrong: 
+      - Increase in population average costs $=$ £3
+      - Decrease in population average effectiveness $=$ 0.000001 QALYs
+   - .red[Large uncertainty]/.traffic-light-green[negligible consequences] $\Rightarrow$ .traffic-light-green[**can afford uncertainty**!]
+
+]
+
+---
+
+count: false
+# Value of Information (VoI)
+
+## (A tale of two stupid examples)
+
+.left-column30[
+`r include_fig("knowledge_power.jpg",width="75%")`
+]
+
+.right-columnt70[
+
+- **Example 1**: Intervention $t=1$ is more cost-effective, given current evidence
+   - $\class{myblue}{\Pr(t=1 `r sftext(" is cost-effective")`) = `r sftext("0.51")`}$
+   - If we get it wrong: 
+      - Increase in population average costs $=$ £3
+      - Decrease in population average effectiveness $=$ 0.000001 QALYs
+   - .red[Large uncertainty]/.traffic-light-green[negligible consequences] $\Rightarrow$ .traffic-light-green[**can afford uncertainty**!]
+
+`r vspace("60px")`
+- **Example 2**: Intervention $t=1$ is more cost-effective, given current evidence
+   - $\class{myblue}{\Pr(t=1 `r sftext(" is cost-effective")`) = `r sftext("0.999")`}$
+   - If we get it wrong: 
+      - Increase in population average costs $=$ £1000000000
+      - Decrease in population average effectiveness $=$ 999999 QALYs
+   - .traffic-light-green[Tiny uncertainty]/.red[dire consequences] $\Rightarrow$ .traffic-light-amber[**probably should think about it...**!]
+
+]
+
+---
+
+# Evidence based decision-making and VoI
+
+`r include_fig("evi_process.png",width="75%")`
+
+--
+
+.blue[**Process inherently Bayesian!**]
+
+
+`r vspace("-5px")`
+.small[Slide stolen from [Nicky Welton](https://www.bristol.ac.uk/people/person/Nicky-Welton-9c4cd60d-0c6d-42b3-af4f-a1006a4e46ee/) &ndash; [Summer School *Bayesian methods in health economics*](http://www.statistica.it/gianluca/teaching/summer-school/)]
+
+---
+
+# VoI: Basic ideas
+
+- A new study will provide more data
+   - Reducing (or even eliminating?...) uncertainty in a subset of the model parameters
+   
+- Update the cost-effectiveness model
+   - If optimal decision changes, gain in monetary **.blue[net benefit]** (NB = utility) from using new optimal treatment
+   - If optimal decision doesn't change, no gain in NB
+   
+- .red[**Expected**] VoI is the average gain in NB
+
+---
+
+count: false
+# VoI: Basic ideas & relevant measures
+
+- A new study will provide more data
+   - Reducing (or even eliminating?...) uncertainty in a subset of the model parameters
+   
+- Update the cost-effectiveness model
+   - If optimal decision changes, gain in monetary net benefit (NB = utility) from using new optimal treatment
+   - If optimal decision doesn't change, no gain in NB
+   
+- .red[**Expected**] VoI is the average gain in NB
+
+`r vspace("-10px")`
+
+1. **Expected value of Perfect Information** (EVPI)    
+   - Value of completely resolving uncertainty in all input parameters to decision model 
+   - Infinite-sized, long-term follow up trial measuring everything!...
+   - Gives an upper bound on the value of the new study &ndash; low EVPI suggests we can make our decision based on existing information
+   
+---
+
+count: false
+# VoI: Basic ideas & relevant measures
+
+- A new study will provide more data
+   - Reducing (or even eliminating?...) uncertainty in a subset of the model parameters
+   
+- Update the cost-effectiveness model
+   - If optimal decision changes, gain in monetary net benefit (NB = utility) from using new optimal treatment
+   - If optimal decision doesn't change, no gain in NB
+   
+- .red[**Expected**] VoI is the average gain in NB
+
+`r vspace("-10px")`
+
+1. **Expected value of Perfect Information** (EVPI)    
+   - Value of completely resolving uncertainty in all input parameters to decision model 
+   - Infinite-sized, long-term follow up trial measuring everything!...
+   - Gives an upper bound on the value of the new study &ndash; low EVPI suggests we can make our decision based on existing information
+2. **Expected value of Partial Perfect Information** (EVPPI)     
+   - Value of eliminating uncertainty in subset of input parameters to decision model
+   - e.g.: Infinite-sized trial measuring relative effects on 1-year survival
+   - Useful to identify which parameters are responsible for decision uncertainty
+---
+
+count: false
+# VoI: Basic ideas & relevant measures
+
+- A new study will provide more data
+   - Reducing (or even eliminating?...) uncertainty in a subset of the model parameters
+   
+- Update the cost-effectiveness model
+   - If optimal decision changes, gain in monetary net benefit (NB = utility) from using new optimal treatment
+   - If optimal decision doesn't change, no gain in NB
+   
+- .red[**Expected**] VoI is the average gain in NB
+
+`r vspace("-10px")`
+
+1. **Expected value of Perfect Information** (EVPI)    
+   - Value of completely resolving uncertainty in all input parameters to decision model 
+   - Infinite-sized, long-term follow up trial measuring everything!...
+   - Gives an upper bound on the value of the new study &ndash; low EVPI suggests we can make our decision based on existing information
+2. **Expected value of Partial Perfect Information** (EVPPI)    
+   - Value of eliminating uncertainty in subset of input parameters to decision model
+   - e.g.: Infinite-sized trial measuring relative effects on 1-year survival
+   - Useful to identify which parameters are responsible for decision uncertainty
+3. **Expected value of Sample Information** (EVSI)    
+   - Value of reducing uncertainty by conducting a specific study of a given design
+   - Can compare the benefits and costs of a study with given design
+   - Is the proposed study likely to be a good use of resource? What is the optimal design?
+
+---
+
+count: false
+# VoI: Basic ideas & relevant measures
+
+`r icon::icon_style(icon::fontawesome("info-circle"),scale=1.7,fill="#035AA6",top=".45em")`  In general, VoI measures are always expressed as something like
+
+`r vspace("40px")`
+.center[
+.content-box-gray[
+
+.olive[**VoI measure**] $=$ .blue[**Some idealised decision-making process**] $-$ .magenta[**current decision-making process**]
+]
+]
+
+--
+
+`r vspace("40px")`
+
+## Complexity
+
+- There's no natural upper bound
+   - Voi measures are positive, but *how low is low?*...
+   
+- Need to account for other factors
+   - How much would it cost to get to the point when we can make the idealised decision-making process?
+   - Who would that affect?
+   - For how long?
+   - ...
+   
+- Computational & modelling issues
+   - You need to know what you're doing (again, modelling **fundamentally** Bayesian)
+   - And use suitable tools (basically, never use spreadsheets...)
+
+---
+
+exclude: false
+# Summarising uncertainty analysis (PSA)
+
+## Expected Value of Perfect Information
+
+.alignleft[
+```{r echo=FALSE}
+library(kableExtra)
+options(knitr.kable.NA = "\\(\\ldots\\)")
+set.seed(140873)
+nb0=9685*round(rnorm(10000,7.5,3))
+nb1=9685*round(rnorm(10000,8,3))
+mnb=pmax(nb1,nb0)
+ol=mnb-nb1
+show.col=4
+tab=tibble(
+   iter=c(format(seq(1,show.col),digits=0),NA,format(1000,digits=0)),
+   pi0=c(format(rbeta(show.col,1,2),digits=3,nsmall=0),NA,format(rbeta(1,1,2),digits=3,nsmall=0)),
+   rho=c(format(rbeta(show.col,1,2),digits=3,nsmall=0),NA,format(rbeta(1,1,2),digits=3,nsmall=0)),
+   dots=rep("\\(\\ldots\\)",show.col+2),
+   gamma=c(format(rbeta(show.col,1,2),digits=3,nsmall=0),NA,format(rbeta(1,1,2),digits=3,nsmall=0)),
+   nb0=c(nb0[1:show.col],NA,nb0[10000]),
+   nb1=c(nb1[1:show.col],NA,nb1[10000])
+)
+tab=tab %>% mutate(
+   mnb=c(mnb[1:show.col],NA,mnb[10000]),
+   ol=c(ol[1:show.col],NA,ol[10000])
+)
+
+tab[1:5] %>% kable(col.names=c(
+   "Iteration","\\(\\pi_0\\)","\\(\\rho\\)","\\(\\ldots\\)","\\(\\gamma\\)"
+   ##"\\(\\nb_0(\\boldsymbol\\theta)\\)","\\(\\nb_1(\\boldsymbol\\theta)\\)","Maximum net benefit","Opportunity loss"
+   ), align="c"
+   ) %>% kable_classic() %>%
+   column_spec(1:5,width="2cm") %>% 
+   #column_spec(c(8,9), width = "120px") %>% 
+   kable_styling(full_width=T) %>% 
+   # add_header_above(c(" "=1,"Parameter simulations"=4,"Expected utility"=2," "=2)) %>% 
+   add_header_above(c(" "=1,"Parameter simulations"=4)) %>% 
+   row_spec(nrow(tab),extra_css="border-bottom: 2px solid;") 
+
+```
+]
+
+`r vspace("9.5cm")`
+- Characterise uncertainty in the model parameters
+   - In a full Bayesian setting, these are drawings from the posterior distribution of $\boldsymbol\theta$
+   - In a frequentist setting, these are typically bootstrap draws from a set of univariate ditributions that describe some level of uncertainty around the MLEs
+
+---
+
+exclude: false
+count: false
+# Summarising uncertainty analysis (PSA)
+
+## Expected Value of Perfect Information
+
+.alignleft[
+```{r echo=FALSE}
+tab2=tab %>% add_row(
+   iter="",
+   pi0="",
+   rho="",
+   dots="",
+   gamma="Average",
+   nb0=mean(nb0),
+   nb1=mean(nb1),
+   mnb=mean(mnb,na.rm=T),
+   ol=mean(ol,na.rm=T)
+)
+
+italics1=tab$nb1>tab$nb0; italics1[is.na(italics1)]=FALSE
+italics0=tab$nb0>tab$nb1; italics0[is.na(italics0)]=FALSE
+tab2[1:7] %>% kable(col.names=c(
+   "Iteration","\\(\\pi_0\\)","\\(\\rho\\)","\\(\\ldots\\)","\\(\\gamma\\)",
+   "\\(\\nb_0(\\boldsymbol\\theta)\\)","\\(\\nb_1(\\boldsymbol\\theta)\\)"
+   #,"Maximum net benefit","Opportunity loss"
+   ), align="c"
+   ) %>% kable_classic() %>%
+   column_spec(1:5,width="2cm") %>% 
+   #column_spec(c(8,9), width = "120px") %>% 
+   kable_styling(full_width=T) %>% 
+   # add_header_above(c(" "=1,"Parameter simulations"=4,"Expected utility"=2," "=2)) %>% 
+   add_header_above(c(" "=1,"Parameter simulations"=4,"Expected utility"=2)) %>% 
+   row_spec(nrow(tab2),extra_css="border-bottom: 2px black solid;") %>% 
+   row_spec(nrow(tab2)-1,extra_css="border-bottom: 2px black solid;") %>% 
+   column_spec(7,color=c(rep("black",(nrow(tab))),"magenta"),italic=c(italics1,TRUE),width="2cm") %>% 
+   column_spec(6,italic=c(italics0,FALSE),width="2cm")
+
+```
+]
+
+`r vspace("9.5cm")`
+- Uncertainty in the parameters induces a distribution of decisions
+   - Typically based on the **net benefits**: $\class{myblue}{\nb_t(\boldsymbol\theta)=k\mu_{et}-\mu_{ct}}$
+   - In each parameter configuration can identify the *optimal strategy*
+   
+- Averaging over the uncertainty in $\boldsymbol\theta$ provides $t^*$, the overall optimal decision *given current uncertainty* (= choose the intervention associated with .magenta[*highest* **expected utility**])
+
+---
+
+exclude: false
+count: false
+# Summarising uncertainty analysis (PSA)
+
+## Expected Value of Perfect Information
+
+.alignleft[
+```{r echo=FALSE}
+tab2 %>% kable(col.names=c(
+   "Iteration","\\(\\pi_0\\)","\\(\\rho\\)","\\(\\ldots\\)","\\(\\gamma\\)",
+   "\\(\\nb_0(\\boldsymbol\\theta)\\)","\\(\\nb_1(\\boldsymbol\\theta)\\)",
+   "Maximum net benefit","Opportunity loss"), align="c"
+   ) %>% kable_classic() %>%
+   column_spec(1:5,width="2cm") %>% 
+#   column_spec(c(8,9), width = "120px") %>% 
+   kable_styling(full_width=T) %>% 
+   add_header_above(c(" "=1,"Parameter simulations"=4,"Expected utility"=2," "=2)) %>% 
+   row_spec(nrow(tab2),extra_css="border-bottom: 2px black solid;") %>% 
+   row_spec(nrow(tab2)-1,extra_css="border-bottom: 2px black solid;") %>% 
+   column_spec(7,color=c(rep("black",(nrow(tab))),"magenta"),italic=c(italics1,TRUE),width="2cm") %>% 
+   column_spec(6,italic=c(italics0,FALSE),width="2cm") %>% 
+   column_spec(8,bold=c(rep(FALSE,nrow(tab)),TRUE),color=c(rep("black",nrow(tab)),"blue")) %>% 
+   column_spec(9,color=c(rep("black",nrow(tab)),"olive"),bold=c(rep(FALSE,nrow(tab)),TRUE))
+
+```
+]
+
+`r vspace("9.5cm")`
+- **Expected value of "Perfect" Information** (EVPI) summarises uncertainty in the decision
+   - Defined as the .olive[**average Opportunity Loss**], or .blue[**average maximum expected utility under "perfect" information**] $-$ .magenta[**maximum expected utility overall**]:
+   `r vspace("-20px")`
+   $$\class{olive}{\evpi} = \class{blue}{\E_\boldsymbol{\theta}\left[\max_t \nb_t(\boldsymbol\theta) \right]} - \class{magenta}{\max_t \E_\boldsymbol\theta \left[\nb_t(\boldsymbol\theta)\right]}$$
+
+---
+
+exclude: false
+count: false
+# Summarising PSA 
+
+```{r echo=FALSE,opts=list(width="53%")}
+library(BCEA)
+data(Vaccine)
+evi.plot(bcea(e,c,ref=2))
+```
+
+---
+
+# Summarising PSA + Research priority
+
+```{css echo=FALSE}
+<!-- https://www.garrickadenbuie.com/blog/better-progressive-xaringan/?panelset=r-markdown -->
+.shading > li {
+  color: gray;
+}
+.shading > li:last-of-type {
+  color: #24568c;
+  font-weight: normal;
+}
+```
+
+## Expected Value of Partial Perfect Information
+
+- $\class{blue}{\bm\theta} =$ all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", $\class{myblue}{\bm\phi}$, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], $\class{olive}{\bm\psi}$, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on $\class{myblue}{\bm\phi}$, while leaving current level of uncertainty on $\class{olive}{\bm\psi}$ unchanged
+
+--
+   
+<ul class="shading">
+<li>First, consider the expected utility (EU) <b>if</b> we were able to learn \(\class{myblue}{\bm\phi}\) but not \(\class{myblue}{\bm\psi}\)</li>
+</ul>
+
+
+`r vspace("3cm")`
+$$\class{myblue}{\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]}$$
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- $\class{blue}{\bm\theta} =$ all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", $\class{myblue}{\bm\phi}$, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], $\class{olive}{\bm\psi}$, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on $\class{myblue}{\bm\phi}$, while leaving current level of uncertainty on $\class{olive}{\bm\psi}$ unchanged
+
+<ul class="shading">
+<li>First, consider the expected utility (EU) <b>if</b> we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)</li>
+<li><b>If</b> we knew \(\class{myblue}{\bm\phi}\) perfectly, best decision = the maximum of this EU</li>
+</ul>
+
+`r vspace("2.25cm")`
+$$\class{myblue}{\max_t}\class{gray}{\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]}$$
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- $\class{blue}{\bm\theta} =$ all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", $\class{myblue}{\bm\phi}$, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], $\class{olive}{\bm\psi}$, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on $\class{myblue}{\bm\phi}$, while leaving current level of uncertainty on $\class{olive}{\bm\psi}$ unchanged
+
+<ul class="shading">
+<li>First, consider the expected utility (EU) <b>if</b> we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)</li>
+<li><b>If</b> we knew \(\class{gray}{\bm\phi}\) perfectly, best decision = the maximum of this EU</li>
+<li>Of course, we cannot know \(\class{myblue}{\bm\phi}\) <b>perfectly</b>, so take the expected value</li>
+</ul>
+
+`r vspace("1.1cm")`
+$$\class{myblue}{\E_{\bm\phi}}\class{myblue}{\left [\class{gray}{\max_t\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]}\right]}$$
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- $\class{blue}{\bm\theta} =$ all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", $\class{myblue}{\bm\phi}$, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], $\class{olive}{\bm\psi}$, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on $\class{myblue}{\bm\phi}$, while leaving current level of uncertainty on $\class{olive}{\bm\psi}$ unchanged
+
+<ul class="shading">
+<li>First, consider the expected utility (EU) <b>if</b> we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)</li>
+<li><b>If</b> we knew \(\class{gray}{\bm\phi}\) perfectly, best decision = the maximum of this EU</li>
+<li>Of course, we cannot know \(\class{gray}{\bm\phi}\) <b>perfectly</b>, so take the expected value</li>
+<li>And compare this with the <b>maximum expected utility overall</b></li>
+</ul>
+
+`r vspace(".5cm")`
+$$\class{gray}{\E_{\bm\phi}\left[\max_t\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]\right]}\class{myblue}{-\max_t \E_{\bm\theta}[\nb_t(\bm\theta)]}$$
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- $\class{blue}{\bm\theta} =$ all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", $\class{myblue}{\bm\phi}$, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], $\class{olive}{\bm\psi}$, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on $\class{myblue}{\bm\phi}$, while leaving current level of uncertainty on $\class{olive}{\bm\psi}$ unchanged
+
+<ul class="shading">
+<li>First, consider the expected utility (EU) <b>if</b> we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)</li>
+<li><b>If</b> we knew \(\class{gray}{\bm\phi}\) perfectly, best decision = the maximum of this EU</li>
+<li>Of course, we cannot know \(\class{gray}{\bm\phi}\) <b>perfectly</b>, so take the expected value</li>
+<li>And compare this with the <b>maximum expected utility overall</b></li>
+<li>This is the EVPPI</li>
+</ul>
+
+`r vspace("-.55cm")`
+$$\class{myblue}{\evppi = \E_{\bm\phi}\left[\max_t\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]\right]-\max_t \E_{\bm\theta}[\nb_t(\bm\theta)]}$$
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+## Expected Value of Partial Perfect Information
+
+- $\class{blue}{\bm\theta} =$ all the model parameters; can be split into two subsets
+   - The ".myblue[**parameters of interest**]", $\class{myblue}{\bm\phi}$, e.g. prevalence of a disease, HRQL measures, length of stay in hospital, ...
+   - The ".olive[**remaining parameters**], $\class{olive}{\bm\psi}$, e.g. cost of treatment with other established medications, ...
+
+- We are interested in quantifying the value of gaining more information on $\class{myblue}{\bm\phi}$, while leaving current level of uncertainty on $\class{olive}{\bm\psi}$ unchanged
+
+<ul class="shading">
+<li>First, consider the expected utility (EU) <b>if</b> we were able to learn \(\class{gray}{\bm\phi}\) but not \(\class{gray}{\bm\psi}\)</li>
+<li><b>If</b> we knew \(\class{gray}{\bm\phi}\) perfectly, best decision = the maximum of this EU</li>
+<li>Of course, we cannot know \(\class{gray}{\bm\phi}\) <b>perfectly</b>, so take the expected value</li>
+<li>And compare this with the <b>maximum expected utility overall</b></li>
+<li>This is the EVPPI</li>
+</ul>
+
+`r vspace("-.55cm")`
+$$\class{myblue}{\evppi = \E_{\bm\phi}\left[\class{red}{\max_t\E_{\bm\psi\mid\bm\phi}[\nb_t(\bm\theta)]}\right]-\max_t \E_{\bm\theta}[\nb_t(\bm\theta)]}$$
+
+- .red[**That**] is the difficult part!
+   - Can do nested Monte Carlo, but takes for ever to get accurate results
+   - .orange[**Recent methods**] based on **GAMs**/**Gaussian Process regression**/**spatial modelling** very efficient and quick! 
+   
+`r vspace("-17px")`
+.alignright[.small[`r icon::academicons("doi")` [Strong et al (2014)](https://journals.sagepub.com/doi/full/10.1177/0272989x13505910) and `r icon::academicons("doi")`  [Heath et al (2016)](https://onlinelibrary.wiley.com/doi/full/10.1002/sim.6983)]]
+---
+
+exclude: false
+# EVPPI &ndash; Brute force/nested MC
+
+Assuming there are only two interventions, can consider $\class{myblue}{\ib(\bm\theta)=\nb_1(\bm\theta)-\nb_0(\bm\theta)}$
+
+`r include_fig("brute-force-1_25.png",width="44%")`
+
+`r vspace("-5px")`
+.small[Slide stolen from [Mark Strong](https://www.sheffield.ac.uk/scharr/people/staff/mark-strong) &ndash; [Summer School *Bayesian methods in health economics*](http://www.statistica.it/gianluca/teaching/summer-school/)]
+---
+
+exclude: false
+count: false
+# EVPPI &ndash; Brute force/nested MC
+
+Assuming there are only two interventions, can consider $\class{myblue}{\ib(\bm\theta)=\nb_1(\bm\theta)-\nb_0(\bm\theta)}$
+
+`r include_fig("brute-force-2_26.png",width="44%")`
+
+---
+
+exclude: false
+# EVPPI &ndash; model as a regression problem...
+
+Can model as a **regression** problem
+\begin{align}
+\nb_t(\bm\theta) =& \E_{\bm\psi\mid\bm\theta}[\nb_t(\bm\theta)] + \varepsilon, \qquad `r sftext(" with ")` \varepsilon \sim \dnorm(0,\sigma^2_\varepsilon) \\
+=& \class{olive}{g(\bm\phi)} + \class{myblue}{\varepsilon}
+\end{align}
+`r vspace("-20px")`
+
+"Data" 
+   - **Simulations** for $\nb_t(\bm\theta)$ as ".myblue[response]"
+   - **Simulations** for $\bm\phi$ as ".olive[covariates]"
+   - **NB**: Only need $S$ data points (=PSA simulations), instead of $S_\bm\phi \times S_\bm\psi$!
+   
+.center[
+```{r echo=FALSE}
+library(kableExtra)
+options(knitr.kable.NA = "\\(\\ldots\\)")
+set.seed(140873)
+nb0=9685*round(rnorm(10000,7.5,3))
+nb1=9685*round(rnorm(10000,8,3))
+mnb=pmax(nb1,nb0)
+ol=mnb-nb1
+show.col=4
+tab=tibble(
+   iter=c(format(seq(1,show.col),digits=0),NA,"\\(S\\)"), #format(1000,digits=0)
+   pi0=c(format(rbeta(show.col,1,2),digits=3,nsmall=0),NA,format(rbeta(1,1,2),digits=3,nsmall=0)),
+   rho=c(format(rbeta(show.col,1,2),digits=3,nsmall=0),NA,format(rbeta(1,1,2),digits=3,nsmall=0)),
+   dots=rep("\\(\\ldots\\)",show.col+2),
+   gamma=c(format(rbeta(show.col,1,2),digits=3,nsmall=0),NA,format(rbeta(1,1,2),digits=3,nsmall=0)),
+   nb0=c(nb0[1:show.col],NA,nb0[10000]),
+   nb1=c(nb1[1:show.col],NA,nb1[10000])
+)
+
+
+tab %>% kable(col.names=c(
+   "Iteration","\\(\\pi_0\\)","\\(\\rho\\)","\\(\\ldots\\)","\\(\\gamma\\)",
+   "\\(\\nb_0(\\boldsymbol\\theta)\\)","\\(\\nb_1(\\boldsymbol\\theta)\\)"
+   ), align="c"
+   ) %>% kable_classic() %>%
+   column_spec(1:7,width="2.5cm") %>% 
+   #column_spec(c(8,9), width = "120px") %>% 
+   kable_styling(full_width=F,font_size = 18) %>% 
+   add_header_above(c(" "=1,"Parameter simulations ('covariates')"=4,"'Responses'"=2)) %>% 
+   row_spec(nrow(tab),extra_css="border-bottom: 2px solid;") 
+
+```
+]
+
+---
+
+exclude: false
+count: false
+# EVPPI &ndash; model as a regression problem...
+
+`r include_fig("brute-force-3_28.png",width="48%")`
+
+---
+
+exclude: false
+count: false
+# EVPPI &ndash; model as a regression problem...
+
+`r include_fig("brute-force-4_29.png",width="48%")`
+
+---
+
+exclude: false
+count: false
+# EVPPI &ndash; model as a regression problem...
+
+`r include_fig("brute-force-5_30.png",width="51%")`
+
+---
+
+exclude: false
+count: false
+# EVPPI &ndash; model as a regression problem...
+
+- Once the functions $\class{olive}{g_t(\bm\phi)}$ are estimated, can approximate
+\begin{align}
+\evppi&=\E_\bm\phi \left[ \max_t \E_{\bm\psi\mid\bm\phi} [\nb_t(\bm\theta)] \right] - \max_t \E_\bm\theta [\nb_t(\bm\theta)] \\
+&\approx\frac{1}{S}\sum_{s=1}^S \max_t \hat{g}_t(\bm\phi_s) - \max_t \frac{1}{S}\sum_{s=1}^S \hat{g}_t(\bm\phi_s)
+\end{align}
+
+
+--
+
+exclude: false
+- **NB**: $\class{olive}{g_t(\bm\phi)}$ can be complex, so need to use .orange[**flexible**] regression methods
+   - **GAMs**: $\displaystyle g_t(\bm\phi)=\sum_{q=1}^{Q_\bm\phi} h_t(\phi_{sq})$ with $h_t(\cdot)=$ smooth functions (cubic polynomials) 
+   
+   - very fast, but only if number of important parameters $Q_\bm\phi\leq 5$ (interactions increase model size exponentially)
+   
+   - If $Q_\bm\phi >5$ then use .blue[**Gaussian Process**] regression (GPR)
+   
+      - [Strong et al](https://journals.sagepub.com/doi/full/10.1177/0272989x13505910): original GPR method
+      - [Heath et al](https://onlinelibrary.wiley.com/doi/full/10.1002/sim.6983): based on spatial modelling; can be more computationally efficient
+      
+- Other methods based on alternative approaches 
+   
+   - Most are implemented in the `r icon::fontawesome("r-project")` package [BCEA](http://www.statistica.it/gianluca/software/bcea/)  (see also: `r icon::fontawesome("github")` [https://github.com/giabaio/BCEA](https://github.com/giabaio/BCEA/tree/dev)) 
+
+---
+
+count: false
+# Summarising PSA + Research priority
+
+```{r evppi-plot, echo=FALSE,include=FALSE,eval=FALSE}
+library(BCEA)
+data(Vaccine, package = "BCEA")
+treats <- c("Status quo", "Vaccination")
+m <- bcea(e.pts, c.pts, ref = 2, interventions = treats)
+inp <- createInputs(vaccine,print_is_linear_comb = FALSE)
+x=evppi(m,c("beta.1.","beta.2.","beta.3."),inp$mat)
+plot(x,graph="gg")
+```
+
+```{r info-rank, echo=FALSE, include=FALSE,eval=FALSE}
+info.rank(m,inp,graph="gg")
+```
+
+.pull-left[
+`r include_fig("evppi-plot-1.png",width="100%",title="")`
+]
+.pull-right[
+`r include_fig("info-rank-1.png",width="100%",title="")`
+]
+
+`r vspace("-20px")`
+.small[`r icon::fontawesome("r-project")` package [BCEA](http://www.statistica.it/gianluca/software/bcea/)]    
+.small[`r icon::fontawesome("github")` [https://github.com/giabaio/BCEA](https://github.com/giabaio/BCEA/tree/dev)]    
+.small[`r icon::fontawesome("laptop")` [https://egon.stats.ucl.ac.uk/projects/BCEAweb](https://egon.stats.ucl.ac.uk/projects/BCEAweb/)]
+
+---
+
+```{css echo=FALSE}
+.right25 {
+  width: 25%;
+  height: 92%;
+  float: right;
+  margin-left: 50px;
+}
+```
+
+# "*Can **we** do it?...*"
+
+### [https://savi.shef.ac.uk/SAVI/](http://savi.shef.ac.uk/SAVI/) 
+
+<iframe frameborder="no" src="http://savi.shef.ac.uk/SAVI/"
+style="
+    position: fixed;
+    top: -15px;
+    bottom: 0px;
+    right: 0px;
+    left: -200px;
+    width: 100%;
+    border: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    z-index: 999999;
+    height: 120%;
+    ms-transform: scale(0.45);
+   -moz-transform: scale(0.45);
+   -o-transform: scale(0.45);
+   -webkit-transform: scale(0.45);
+   transform: scale(0.65);
+  "></iframe>
+
+.right25[
+`r vspace("70px")`
+`r include_fig("bob-the-builder.jpg",width="90%",title="")`
+]
+
+---
+
+# Research priority 
+
+## Expected value of **sample** information
+
+`r vspace("0px")`
+
+`r include_fig("voi_scheme1.png",width="65%")`
+
+---
+
+count: false
+
+# Research priority
+
+## Expected value of **sample** information
+
+`r vspace("-0px")`
+
+`r include_fig("voi_scheme2.png",width="65%")`
+
+`r vspace("10px")`
+
+.small[Stolen from various presentations by [Anna Heath](https://sites.google.com/site/annaheathstats/)]
+
+---
+
+count: false
+
+```{css echo=FALSE}
+/* Some ad-hoc text boxes */
+.box-left {
+    position: fixed;
+    /* if I leave the top spacing then Chrome cuts out the bottom-left part of the footer
+    top: 96.6%;
+    */
+    bottom: 56.8%;
+    left: 43%;
+    text-align: left;
+    width: 12%;
+    font-size: 60%;
+    text-align: center;
+    color: blue;
+}
+.box-right {
+    position: fixed;
+    /* if I leave the top spacing then Chrome cuts out the bottom-left part of the footer
+    top: 96.6%;
+    */
+    bottom: 57.2%;
+    left: 60%;
+    text-align: left;
+    width: 12%;
+    font-size: 60%;
+    text-align: center;
+    color: magenta;
+}
+
+.arrow1 {
+  position: fixed;
+  top: 20.0%;
+  left: 25%;
+  width: 12%;
+  text-align: center;
+  color: black;
+}
+
+.arrow2 {
+  position: fixed;
+  top: 20.0%;
+  left: 60%;
+  width: 12%;
+  text-align: center;
+  color: black;
+}
+```
+
+# Research priority
+
+## Expected value of **sample** information .alignright[.small[`r icon::academicons$doi` [Jackson et al (2021)](https://www.annualreviews.org/doi/pdf/10.1146/annurev-statistics-040120-010730)]]
+
+-  EVSI measures the value of reducing uncertainty by running a study of **a given design**
+
+$$\evsi = \E_{\boldsymbol{X}} \left[ \max_t\ \color{blue}{\E_{\boldsymbol\theta \mid \boldsymbol{X}} \left[ \nb_t(\boldsymbol\theta) \right]} \right] - \max_{t}\color{magenta}{\E_{\boldsymbol\theta}\left[\nb_{t}(\boldsymbol\theta)\right]}$$
+
+.box-left[
+↑    
+Value of decision based on **sample** information (for a given study design)
+]
+.box-right[
+↑    
+Value of decision based on **current** information
+]
+
+`r vspace("85px")`
+
+-  Can compare the benefits and costs of a study with given design
+
+   - To see if a proposed study likely to be a good use of resources
+   - To find the optimal study design
+
+---
+
+count: false
+# Research priority
+
+## Expected value of **sample** information .alignright[.small[`r icon::academicons$doi` [Jackson et al (2021)](https://www.annualreviews.org/doi/pdf/10.1146/annurev-statistics-040120-010730)]]
+
+-  EVSI measures the value of reducing uncertainty by running a study of **a given design**
+
+$$\evsi = \E_{\boldsymbol{X}} \left[ \max_t\ \color{blue}{\E_{\boldsymbol\theta \mid \boldsymbol{X}} \left[ \nb_t(\boldsymbol\theta) \right]} \right] - \max_{t}\color{magenta}{\E_{\boldsymbol\theta}\left[\nb_{t}(\boldsymbol\theta)\right]}$$
+
+.box-left[
+↑    
+Value of decision based on **sample** information (for a given study design)
+]
+.box-right[
+↑    
+Value of decision based on **current** information
+]
+
+`r vspace("85px")`
+
+-  Can compare the benefits and costs of a study with given design
+
+   - To see if a proposed study likely to be a good use of resources
+   - To find the optimal study design
+
+- Computationally complex
+    - Requires specific knowledge of the model for (future/hypothetical) data collection
+
+- Again, recent methods have improved efficiency .alignright[.small[`r icon::academicons$doi` [Heath et al (2021)](https://doi.org/10.1177/0272989X20912402)]]
+   - Regression-based .small[(`r icon::academicons$pubmed` [Strong et al, 2015](https://pubmed.ncbi.nlm.nih.gov/25810269/))]
+   - Importance Sampling .small[(`r icon::academicons$pubmed` [Menzies et al, 2016](https://pubmed.ncbi.nlm.nih.gov/25911600/))]
+   - Gaussian approximation .small[(`r icon::academicons$pubmed` [Jalal et al, 2015](https://pubmed.ncbi.nlm.nih.gov/25840900/); `r icon::academicons$pubmed` [Jalal and Alarid-Escudero, 2018](https://pubmed.ncbi.nlm.nih.gov/28735563/))]
+   - Moment matching .small[(`r icon::academicons$pubmed` [Heath et al, 2018](https://pubmed.ncbi.nlm.nih.gov/29126364/))]
+
+- Can be used to drive design of new study (eg sample size calculations)
+
+---
+
+count: false 
+
+# Research priority 
+
+## Expected value of **sample** information
+
+`r vspace("-35px")`
+
+.pull-left[
+`r include_fig("voi1.png",width="85%")`
+]
+.pull-right[
+`r include_fig("voi2.png",width="85%")`
+]
+
+`r vspace("-25px")`
+
+.small[
+`r icon::fontawesome("github")` [https://github.com/giabaio/EVSI](https://github.com/giabaio/EVSI) and [https://github.com/chjackson/voi](https://github.com/chjackson/voi)    
+`r icon::fontawesome("laptop")` [https://egon.stats.ucl.ac.uk/projects/EVSI](https://egon.stats.ucl.ac.uk/projects/EVSI)
+
+`r vspace("10px")`
+
+`r icon::academicons$doi`  [Heath et al (2019)](https://doi.org/10.1177/0272989X19837983)     
+]
+
+---
+
+count: false 
+
+# Research priority
+
+## Expected value of **sample** information
+
+`r include_fig("voi3.png",width="63%")`
+
+---
+
+# *"Tell me a sad story in just one slide..."*
+
+### [NICE HTA evaluation methods update](https://www.nice.org.uk/about/what-we-do/our-programmes/nice-guidance/nice-technology-appraisal-guidance/changes-to-health-technology-evaluation) (2021)
+.medium[
+> *2.16. The use of Expected Value of Perfect Information (EVPI) will .red[**not**] be adopted into the NICE methods. Stakeholders raised concerns about this proposal and the majority disagreed with it. It was noted that the added value of EVPI and how it would be used in decision-making was unclear as experiences from other countries suggested that its added value to decision making is minimal. There were concerns that it would add complexity to decision making, and the additional burden for analysts and reviewers may not be worth it. On the other hand, .blue[some stakeholders argued that the proposal did not go far enough and should include expected value of partially perfect information (EVPPI) and expected value of sample information (EVSI)].* 
+]
+
+---
+
+count: false 
+
+```{css echo=FALSE}
+.medium { font-size: 90% }
+```
+
+# *"Tell me a sad story in just one slide..."*
+
+### [NICE HTA evaluation methods update](https://www.nice.org.uk/about/what-we-do/our-programmes/nice-guidance/nice-technology-appraisal-guidance/changes-to-health-technology-evaluation) (2021)
+.medium[
+> *2.16. The use of Expected Value of Perfect Information (EVPI) will .red[**not**] be adopted into the NICE methods. Stakeholders raised concerns about this proposal and the majority disagreed with it. It was noted that the added value of EVPI and how it would be used in decision-making was unclear as experiences from other countries suggested that its added value to decision making is minimal. There were concerns that it would add complexity to decision making, and the additional burden for analysts and reviewers may not be worth it. On the other hand, .blue[some stakeholders argued that the proposal did not go far enough and should include expected value of partially perfect information (EVPPI) and expected value of sample information (EVSI)].* 
+]
+
+`r vspace("30px")`
+
+.pull-left[
+
+<center><img width="580!important;" src="img/careless-whisper.gif" title=""></center>
+
+]
+
+.pull-right[
+.medium[
+- Push from industrial representatives, despite attempts at clarifying/simplyfing concepts/guidelines
+
+- CADHT actually say
+
+> *When the decision problem includes consideration of further research to inform future decisions, .blue[a value-of-information analysis should be undertaken as part of the reference case]. [...] To identify these critical values and correctly quantify the impact of a parameter taking a specific value (on both the probability of an intervention being cost-effective and the expected net benefit), .blue[recent methodological work suggests that a two-stage expected value of perfect parameter information analysis may be useful]*
+
+]
+]
+
+---
+
+# Conclusions
+
+- HTA is fundamentally based on statistical modelling &ndash; and statisticians should be much more heavily involved in the whole process
+
+   - More modellers with stronger statistical background &ndash; often (**though not always!**) use of suboptimal tools is a red flag for lack of necessary sophistication in statistical modelling
+   
+   - More statisticians developing methods, sitting on panels and creating critical mass
+
+---
+
+count: false
+# Conclusions
+
+- HTA is fundamentally based on statistical modelling &ndash; and statisticians should be much more heavily involved in the whole process
+
+   - More modellers with stronger statistical background &ndash; often (**though not always!**) use of suboptimal tools is a red flag for lack of necessary sophistication in statistical modelling
+   
+   - More statisticians developing methods, sitting on panels and creating critical mass
+
+`r vspace("40px")`
+
+.pull-left[
+- VoI methods can be very helpful 
+
+   - The can address multiple questions, including research prioritisation
+   
+   - Vital in issues such as managed entry/conditional reimbursment
+
+- Still a battle...
+] 
+
+---
+
+class: end-of-course
+background-image: url("img/euro2020.gif")
+background-size: cover
+

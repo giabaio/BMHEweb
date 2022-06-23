@@ -1,0 +1,1692 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.3.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Gianluca Baio" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Website for Bayesian methods in health economics" />
+
+  
+  <link rel="alternate" hreflang="en-us" href="/practical/15_evsi_regression/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+      
+    
+
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.3ef10ad94e43ba7ad3f08b0b007578ae.css" />
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+    <link rel="alternate" href="/practical/15_evsi_regression/index.xml" type="application/rss+xml" title="Bayesian methods in health economics" />
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="/practical/15_evsi_regression/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+  <meta property="og:site_name" content="Bayesian methods in health economics" />
+  <meta property="og:url" content="/practical/15_evsi_regression/" />
+  <meta property="og:title" content="Practical 15: Computing EVSI using regression | Bayesian methods in health economics" />
+  <meta property="og:description" content="Website for Bayesian methods in health economics" /><meta property="og:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" />
+    <meta property="twitter:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+  
+
+  
+
+
+
+  
+
+  
+
+
+
+
+
+  <title>Practical 15: Computing EVSI using regression | Bayesian methods in health economics</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="2bae6c085ee582d720fee7b8ac94e1d8" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.da42964e270e05a6063fbca894d7ccff.js"></script>
+
+  
+
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container-xl">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+          
+          ></a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+        
+        ></a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#timetable"><span>Timetable</span></a>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Slides</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/slides/01_Intro"><span>Introduction</span></a>
+            
+              <a class="dropdown-item" href="/slides/02_MCMC"><span>Bayesian computation</span></a>
+            
+              <a class="dropdown-item" href="/slides/03_Intro_HE"><span>Introduction to Health Economics</span></a>
+            
+              <a class="dropdown-item" href="/slides/04_ILD"><span>Individual level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/05_ALD"><span>Aggregated level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/06_NMA"><span>Network meta-analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/07_Model_uncertainty"><span>Model error and structural analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/08_Survival"><span>Survival modelling in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/09_MM"><span>Markov models</span></a>
+            
+              <a class="dropdown-item" href="/slides/10_Missing"><span>Missing data in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/11_VoI"><span>Introduction to Value of information</span></a>
+            
+              <a class="dropdown-item" href="/slides/12_EVPPI"><span>Expected value of partial information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture13/13_EVSI.pdf"><span>Expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture14/14_Data_EVSI.pdf"><span>Generating data for the analysis of the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture15/15_EVSI_MC.pdf"><span>Calculating expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture16/16_EVSI_regression.pdf"><span>Regression-based EVSI</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Practicals</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/practical/01_monte-carlo"><span>Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/02_mcmc"><span>MCMC</span></a>
+            
+              <a class="dropdown-item" href="/practical/03_bcea"><span>Cost-effectiveness analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/04_ild"><span>HTA with individual level data</span></a>
+            
+              <a class="dropdown-item" href="/practical/05_ald"><span>Evidence synthesis and decision models</span></a>
+            
+              <a class="dropdown-item" href="/practical/06_nma"><span>NMA</span></a>
+            
+              <a class="dropdown-item" href="/practical/07_structural"><span>PSA to structural uncertainty</span></a>
+            
+              <a class="dropdown-item" href="/practical/08_survival"><span>Survival analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/09_mm"><span>Markov and multistate models</span></a>
+            
+              <a class="dropdown-item" href="/practical/10_missing"><span>Missing data</span></a>
+            
+              <a class="dropdown-item" href="/practical/11_intro_voi"><span>Computing the EVPI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/12_evppi"><span>Computing the EVPPI in BCEA and SAVI</span></a>
+            
+              <a class="dropdown-item" href="/practical/13_data_evsi"><span>Generating data for the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/practical/14_evsi_mc"><span>Computing the EVSI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/15_evsi_regression"><span>Computing the EVSI using regression</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Instructions</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/tips/computer-specification"><span>Computer specification</span></a>
+            
+              <a class="dropdown-item" href="/tips/using-bugs"><span>Using BUGS</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/publication"><span>Reading list</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <ul class="nav docs-sidenav">
+        <li class=""><a href="/practical/"></a></li>
+    
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/01_monte-carlo/">1. Monte Carlo</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/01_monte-carlo/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/02_mcmc/">2. MCMC</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/02_mcmc/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/covid/">Covid</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/tutorial/">MCMC Tutorial</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/03_bcea/">3. Intro-HE</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/03_bcea/solutions/">Solution</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/04_ild/">4. ILD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/04_ild/tutorial-regression/">Regression Tutorial</a></li>
+
+
+
+  <li class=""><a href="/practical/04_ild/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/05_ald/">5. ALD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/05_ald/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/06_nma/">6. NMA</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/06_nma/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/07_structural/">7. PSA to structural uncertainty</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/07_structural/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/08_survival/">8. Survival</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/08_survival/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/09_mm/">9. Markov models</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/09_mm/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/09_mm/cohort-model/">Cohort discrete Markov model</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/10_missing/">10. Missing data</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/10_missing/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/11_intro_voi/">11. EVPI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/12_evppi/">12. EVPPI in BCEA &amp; SAVI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/13_data_evsi/">13 Generating data for EVSI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/14_evsi_mc/">14. EVSI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link  active" href="/practical/15_evsi_regression/">15. EVSI using regression</a>
+    
+
+    
+      </div>
+    
+
+      
+    
+
+    
+      </ul>
+    
+
+  
+</nav>
+    </div>
+
+    <main class="col-10 docs-content" role="main">
+      <article class="article">
+
+        <div class="docs-article-container">
+          <h1>Practical 15: Computing EVSI using regression</h1>
+          
+          
+          
+          
+          
+
+
+
+
+<div class="btn-links mb-3">
+  
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/slides/16_EVSI_regression" >
+    Lecture 16</a>
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/practical/15_evsi_regression/practical15.pdf" >
+    <i class="fas fa-file-pdf mr-1"></i>PDF version</a>
+
+
+</div>
+
+
+          <br>
+          
+          <div class="article-style">
+            
+
+
+<div id="relevant-literature" class="section level2">
+<h2>Relevant literature</h2>
+<blockquote>
+<p><em>Partial EVPI:</em></p>
+<p>Strong M, Oakley JE, Brennan A. <a href="http://mdm.sagepub.com/content/34/3/311">Estimating multi-parameter partial Expected Value of Perfect Information from a
+probabilistic sensitivity analysis sample: a non-parametric regression approach</a> <em>Medical Decision Making</em>. 2014; <strong>34(3)</strong>:311-26.</p>
+<p><em>EVSI:</em></p>
+<p>Strong M, Oakley JE, Brennan A, Breeze P. <a href="http://mdm.sagepub.com/content/35/5/570">Estimating the Expected Value of Sample Information using the Probabilistic Sensitivity Analysis Sample. A Fast Non-Parametric Regression Based Method.</a> <em>Medical Decision Making</em>. 2015; <strong>35(5)</strong>:570-583.</p>
+</blockquote>
+</div>
+<div id="import-psa-sample" class="section level2">
+<h2>Import PSA sample</h2>
+<p>This example is the hypothetical model used in the first case study in Strong et al (2013). There are two decision options, and 19 parameters. The file <a href="psa_model_3.csv"><code>psa_model_3.csv</code></a> contains the PSA.</p>
+<p>Read in the PSA and create objects for costs, effects and parameters:</p>
+<pre class="r"><code>psa &lt;- read.csv(&quot;psa_model_3.csv&quot;)
+head(psa)
+dim(psa)
+
+costs &lt;- psa[, grep(&quot;costs&quot;, names(psa))]
+effects &lt;- psa[, grep(&quot;effects&quot;, names(psa))]
+theta &lt;- psa[, grep(&quot;theta&quot;, names(psa))]
+
+dim(costs)
+dim(effects)
+dim(theta)
+
+K &lt;- 10000 # set K to 10000 </code></pre>
+<p>Calculate absolute net benefits and incremental net benefits versus option 1.</p>
+<pre class="r"><code>nb &lt;- effects * K - costs
+inb &lt;- nb[, 2] - nb[, 1]
+colMeans(nb)
+mean(inb)</code></pre>
+<p>Which is the best option, and what is the overall EVPI?</p>
+<p>We use the function again to find the maximum net benefit for each row of the PSA. The allows us to use the function with an arbitrary number of columns (here, there are two). It is very fast and efficient, but don’t worry about the syntax (unless you are interested!).</p>
+<pre class="r"><code>nb &lt;- as.data.frame(nb) # convert to data.frame so do.call works
+mean(do.call(pmax, nb)) - max(colMeans(nb))</code></pre>
+</div>
+<div id="calculate-partial-evpi-for-each-parameter" class="section level2">
+<h2>Calculate Partial EVPI for each parameter</h2>
+<p>To calculate EVPPI for each parameter we can use the following loop:</p>
+<pre class="r"><code>library(mgcv) # to get gam function
+    
+# initialise a vector to hold the results. 
+evppi_vector &lt;- numeric(19)
+        
+for (i in 1:19) {
+    print(i)
+    parameter_of_interest &lt;- theta[, i]
+    model &lt;- gam(inb ~ s(parameter_of_interest))
+    fittedValues &lt;- data.frame(0, fitted(model))
+    evppi_vector[i] &lt;- mean(do.call(pmax, fittedValues)) - max(colMeans(fittedValues))
+}
+    
+names(evppi_vector) &lt;- paste(&quot;theta&quot;, 1:19)
+print(round(evppi_vector, 1))</code></pre>
+</div>
+<div id="calculate-evsi-for-some-study-designs" class="section level2">
+<h2>Calculate EVSI for some study designs</h2>
+<div id="binom" class="section level3">
+<h3>A simple binomial example</h3>
+<p>In order to compute EVSI for some proposed trial, or data collection exercise we need to make a judgement about what the data generating mechanism is. So, if one of the model parameters, <span class="math inline">\(\theta_{14}\)</span>, is a proportion (e.g. the number of patients who respond to some intervention), and if we are trying to estimate this with a cross sectional study, we might suppose that the number of responses observed in a sample of size <span class="math inline">\(N\)</span> is binomially distributed with parameter <span class="math inline">\(\theta_{14}\)</span>, where
+<span class="math display">\[
+X \sim \textrm{Binomial}(\theta_{14}, N).
+\]</span></p>
+<p>When we compute EVSI, we first have to generate a set of simulated datasets. So, in this example above we would have to generate a set of simulated cross sectional study outcomes.</p>
+<p>To fix ideas let’s have a look at our sample from the distribution of <span class="math inline">\(\theta_{14}\)</span> in the PSA.</p>
+<pre class="r"><code># create an object called theta14 that holds the 14th column of theta
+theta14 &lt;- theta[, 14]
+theta14[1:10]
+summary(theta14)</code></pre>
+<p>You could also do, for example,</p>
+<pre class="r"><code>hist(theta14)</code></pre>
+<p>Conditional on the first value of <span class="math inline">\(\theta_{14}\)</span> in the PSA sample, we could generate a simulated number of responses in a sample of size 100:</p>
+<pre class="r"><code>set.seed(1)
+N &lt;- 100
+x &lt;- rbinom(1, N, theta14[1])
+x</code></pre>
+<p>Now, we could calculate a summary statistic for this study. The natural summary would be the sample proportion,
+<span class="math inline">\(p = x / N\)</span>.</p>
+<pre class="r"><code>summary.statistics &lt;- x / N
+summary.statistics</code></pre>
+<p>Now, conditional on the first, say 10 values of <span class="math inline">\(\theta_{14}\)</span> in the PSA sample, we can generate 10 sample datasets (each with sample size 100):</p>
+<pre class="r"><code>set.seed(1)
+N &lt;- 100
+x &lt;- rbinom(10, N, theta14[1:10])
+summary.statistics &lt;- x / N
+summary.statistics</code></pre>
+<p>To sample a dataset for all the sampled values of <span class="math inline">\(\theta_{14}\)</span> in the PSA we do:</p>
+<pre class="r"><code>N &lt;- 100
+x &lt;- rbinom(length(theta14), N, theta14)
+summary.statistics &lt;- x / N</code></pre>
+<p>Now that we have our simulated study outcomes, we do the regression step, simply replacing the parameter of interest with the simulated study outcome.</p>
+<pre class="r"><code>model &lt;- gam(inb ~ s(summary.statistics))
+fittedValues &lt;- data.frame(0, fitted(model))
+evsi &lt;- mean(do.call(pmax, fittedValues)) - max(colMeans(fittedValues))
+evsi</code></pre>
+<p>Check the diagnostics:</p>
+<pre class="r"><code>gam.check(model)</code></pre>
+<p>We could look at a range of study sizes:</p>
+<pre class="r"><code>set.seed(1)
+
+evsi_values &lt;- c() # initialise empty vector for results
+study_sizes &lt;- c(10, 20, 50, 100, 200, 500, 1000)
+for (N in study_sizes) {
+    print(N)
+    x &lt;- rbinom(length(theta14), N, theta14)
+    summary.statistics &lt;- x / N
+    model &lt;- gam(inb ~ s(summary.statistics))
+    fittedValues &lt;- data.frame(0, fitted(model))
+    evsi &lt;- mean(do.call(pmax, fittedValues)) - max(colMeans(fittedValues))
+    evsi_values &lt;- c(evsi_values, evsi)
+}
+data.frame(study_sizes, evsi_values)
+plot(study_sizes, evsi_values, type = &quot;b&quot;)</code></pre>
+<p>We can compare these values with the partial EVPI for <span class="math inline">\(\theta_{14}\)</span>, which we can get via</p>
+<pre class="r"><code>evppi_vector[14]</code></pre>
+<p>Note how the EVSI converges to the partial EVPI.</p>
+<p>Let’s now compute EVSI for a similar study to inform <span class="math inline">\(\theta_{5}\)</span>, again for a range of study sizes.</p>
+<pre class="r"><code>set.seed(1)
+theta5 &lt;- theta[, 5]
+
+evsi_values &lt;- NULL
+study_sizes &lt;- c(10, 20, 50, 100, 200, 500, 1000)
+for (N in study_sizes) {
+    print(N)
+    x &lt;- rbinom(length(theta5), N, theta5)
+    summary.statistics &lt;- x / N
+    model &lt;- gam(inb ~ s(summary.statistics))
+    fittedValues &lt;- data.frame(0, fitted(model))
+    evsi &lt;- mean(do.call(pmax, fittedValues)) - max(colMeans(fittedValues))
+    evsi_values &lt;- c(evsi_values, evsi)
+}
+data.frame(study_sizes, evsi_values)
+plot(study_sizes, evsi_values, type = &quot;b&quot;)</code></pre>
+<p>The partial EVPI for <span class="math inline">\(\theta_{5}\)</span> is</p>
+<pre class="r"><code>evppi_vector[5]</code></pre>
+<p>Again, note how EVSI converges to partial EVPI.</p>
+<p>If we examine the EVSI values in the last example we notice that they are not monotonically increasing with study size. This is due to Monte Carlo sampling noise.
+We can reduce this Monte Carlo sampling noise by calculating EVSI using a replicated PSA. To do this we generate replicate parameter sets and corresponding replicate sets of incremental net benefits. We then calculate EVSI values using these replicated sets.</p>
+<p>Doing this is <code>R</code> is straightforward.</p>
+<p>First we generate replicated parameters and incremental net benefits. Let’s generate 100 sets.</p>
+<pre class="r"><code>theta5_rep &lt;- rep(theta5, 100)
+inb_rep &lt;- rep(inb, 100)</code></pre>
+<p>Then, we repeat the analysis above with the replicated PSA, and replicated</p>
+<pre class="r"><code>set.seed(1)
+
+evsi_values &lt;- NULL
+study_sizes &lt;- c(10, 20, 50, 100, 200, 500, 1000)
+for (N in study_sizes) {
+    print(N)
+    x &lt;- rbinom(length(theta5_rep), N, theta5_rep)
+    summary.statistics &lt;- x / N
+    model &lt;- gam(inb_rep ~ s(summary.statistics))
+    fittedValues &lt;- data.frame(0, fitted(model))
+    evsi &lt;- mean(do.call(pmax, fittedValues)) - max(colMeans(fittedValues))
+    evsi_values &lt;- c(evsi_values, evsi)
+}
+data.frame(study_sizes, evsi_values)
+plot(study_sizes, evsi_values, type = &quot;b&quot;)</code></pre>
+</div>
+<div id="simulating-an-rct" class="section level3">
+<h3>Simulating an RCT</h3>
+<p>Now, for something a little more complex. The parameters <span class="math inline">\(\theta_5\)</span> and <span class="math inline">\(\theta_{14}\)</span> represent response proportions under the decision option 1 intervention and the decision option intervention 2 respectively. We would usually learn about a difference between these response proportions in an RCT.
+So, we can simulate RCT outcomes as follows:
+<span class="math display">\[
+X_1 \sim \textrm{Binomial}(\theta_{5}, 100).
+\]</span>
+<span class="math display">\[
+X_2 \sim \textrm{Binomial}(\theta_{14}, 100).
+\]</span></p>
+<p>With <code>R</code> code:</p>
+<pre class="r"><code>set.seed(1)
+
+N_arm1 &lt;- 100
+N_arm2 &lt;- 100
+    
+x_arm1 &lt;- rbinom(length(theta5), N_arm1, theta5)
+x_arm2 &lt;- rbinom(length(theta14), N_arm2, theta14)</code></pre>
+<p>Now, we have to decide how we summarise the data. Usually, we would only expect an RCT to update knowledge about the relative treatment effect. So, we could summarise each trial as a log odds ratio. We need to be careful about division by zero, so if <span class="math inline">\(x\)</span> is equal to <span class="math inline">\(0\)</span> or <span class="math inline">\(N\)</span> we would usually add a half to <span class="math inline">\(x\)</span>,
+and 1 to <span class="math inline">\(N\)</span>. So</p>
+<pre class="r"><code>N_arm1_adj &lt;- ifelse(x_arm1 == 0 | x_arm1 == N_arm1, N_arm1 + 1, N_arm1)
+N_arm2_adj &lt;- ifelse(x_arm2 == 0 | x_arm2 == N_arm2, N_arm2 + 1, N_arm2)
+x_arm1_adj &lt;- ifelse(x_arm1 == 0 | x_arm1 == N_arm1, x_arm1 + 0.5, x_arm1)
+x_arm2_adj &lt;- ifelse(x_arm2 == 0 | x_arm2 == N_arm2, x_arm2 + 0.5, x_arm2)
+
+p_arm1_adj &lt;- x_arm1_adj / N_arm1_adj
+p_arm2_adj &lt;- x_arm2_adj / N_arm2_adj
+odds_ratio &lt;- (p_arm1_adj / (1 - p_arm1_adj) ) / (p_arm2_adj / (1 - p_arm2_adj))
+l_OR &lt;- log(odds_ratio)</code></pre>
+<p>The regression step would then be</p>
+<pre class="r"><code>model_OR &lt;- gam(inb ~ s(l_OR))
+fittedValues &lt;- data.frame(0, fitted(model_OR))
+evsi &lt;- mean(do.call(pmax, fittedValues)) - max(colMeans(fittedValues))
+evsi</code></pre>
+<p>Check the diagnostics:</p>
+<pre class="r"><code>gam.check(model_OR)</code></pre>
+<p>If we expect that we would use the RCT to tell us about the absolute risks <span class="math inline">\(\theta_{5}\)</span> and <span class="math inline">\(\theta_{14}\)</span> directly then we could do this regression instead.</p>
+<pre class="r"><code>model_p1_p2 &lt;- gam(inb ~ te(p_arm1_adj, p_arm2_adj))
+fittedValues &lt;- data.frame(0, fitted(model_p1_p2))
+evsi &lt;- mean(do.call(pmax, fittedValues)) - max(colMeans(fittedValues))
+evsi</code></pre>
+<pre class="r"><code>gam.check(model_p1_p2)</code></pre>
+<p>Notice that this gives us more information, and therefore the EVSI is higher. Now try adding in the odds ratio:</p>
+<pre class="r"><code>model_p1_p2_OR &lt;- gam(inb ~ te(p_arm1_adj, p_arm2_adj, l_OR))
+fittedValues &lt;- data.frame(0, fitted(model_p1_p2_OR))
+evsi &lt;- mean(do.call(pmax, fittedValues)) - max(colMeans(fittedValues))
+evsi</code></pre>
+<pre class="r"><code>gam.check(model_p1_p2_OR)</code></pre>
+<p>Adding in the log(OR) doesn’t change the EVSI. This gives us no extra information.</p>
+</div>
+<div id="t3" class="section level3">
+<h3>Simulating time to event data</h3>
+<p>Finally, let’s have a look at <span class="math inline">\(\theta_{16}\)</span>. This is the duration of response for someone under treatment option 2. We think that if we were to observe duration of response in a follow up study of some sort, the duration would have a Weibull distribution with shape parameter <span class="math inline">\(k=0.8\)</span>. Conditional on a value of <span class="math inline">\(\theta_{16}\)</span>, we could then simulalate the duration for a sample size of, say, 10 patients. We could ensure that this has expectation equal to <span class="math inline">\(\theta_{16}\)</span> by choosing the
+scale parameter to be equal to <span class="math inline">\(\theta_{16}/\Gamma(1 + 1 / k)\)</span>, where <span class="math inline">\(\Gamma(\cdot)\)</span> is the gamma function.</p>
+<pre class="r"><code>theta16 &lt;- theta[, 16]
+set.seed(1)
+
+shape &lt;- 0.8
+scale &lt;- theta16[1] / gamma(1 + 1 / shape)
+duration &lt;- rweibull(10, shape, scale)
+duration</code></pre>
+<p>We then need to decide how we would summarise the data. We could use the mean duration, or perhaps the median. This would the value we would use in the regression.</p>
+<p>So the whole set up would be as follows. First, simulate datasets for each of the values of <span class="math inline">\(\theta_{16}\)</span> in the PSA sample, and in each case, calculate the median. Let’s say that we follow up 50 patients.</p>
+<pre class="r"><code>x &lt;- numeric(length(theta16))
+sample_size &lt;- 20
+set.seed(1)
+
+for (i in 1:length(theta16)) {
+    shape &lt;- 0.8
+    scale &lt;- theta16[i] / gamma(1 + 1 / shape)
+    duration &lt;- rweibull(sample_size, shape, scale)
+    x[i] &lt;- median(duration) 
+}</code></pre>
+<pre class="r"><code>model &lt;- gam(inb ~ s(x))
+fittedValues &lt;- data.frame(0, fitted(model))
+evsi &lt;- mean(do.call(pmax, fittedValues)) - max(colMeans(fittedValues))
+evsi</code></pre>
+<p>Check the diagnostics:</p>
+<pre class="r"><code>gam.check(model)</code></pre>
+<p>The partial EVPI for <span class="math inline">\(\theta_{16}\)</span> is</p>
+<pre class="r"><code>evppi_vector[16]</code></pre>
+<p>You could try the same for some different sample sizes, e.g.</p>
+<pre class="r"><code>x &lt;- numeric(length(theta16))
+sample_size &lt;- 50
+set.seed(1)
+
+for (i in 1:length(theta16)) {
+    shape &lt;- 0.8
+    scale &lt;- theta16[i] / gamma(1 + 1 / shape)
+    duration &lt;- rweibull(sample_size, shape, scale)
+    x[i] &lt;- median(duration) 
+}</code></pre>
+<pre class="r"><code>model &lt;- gam(inb ~ s(x))
+fittedValues &lt;- data.frame(0, fitted(model))
+evsi &lt;- mean(do.call(pmax, fittedValues)) - max(colMeans(fittedValues))
+evsi</code></pre>
+<p>Write a loop to calculate EVSI for a range of sample sizes. Plot these against sample size.</p>
+<p>More complex data generating scenarios can be developed. For example, we may want to incorporate a censoring process in the data generating step. For time to event measures, censoring of outcome due to completion of the study follow up period is common. If we include this censoring process in the EVSI data generation step we can then compute the EVSI for a range of study durations.</p>
+</div>
+</div>
+<div id="calculating-evsi-using-savi-bceaweb" class="section level2">
+<h2>Calculating EVSI using <code>SAVI</code> / <code>BCEAweb</code></h2>
+<p><a href="http://savi.shef.ac.uk/SAVI/"><code>SAVI</code></a> or <a href="https://egon.stats.ucl.ac.uk/projects/BCEAweb/"><code>BCEAweb</code></a> can be used to calculate EVSI, once the trial datasets have been generated.</p>
+<p>To calculate EVSI using <code>Excel</code> and <code>SAVI</code> / <code>BCEAweb</code> do the following.</p>
+<ol style="list-style-type: decimal">
+<li>Run the usual PSA and store parameters, costs and health effects. We assume that there are <span class="math inline">\(n\)</span> rows in the PSA,</li>
+<li>Select the parameter(s) that will be updated by the proposed study,</li>
+<li>Generate simulated trial data for each row of the PSA by sampling from the study data likelihood<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>, conditional on the value(s) of the parameter(s) in the row in question,</li>
+<li>Summarise the trial data for each row of the PSA to give <span class="math inline">\(n\)</span> summary statistics,</li>
+<li>Include these summary statistics as an extra column in the parameter spreadsheet. The partial EVPI of this new “parameter” is the EVSI for the study.</li>
+</ol>
+<p>So, to replicate the first example above, a cross-sectional survey to learn about <span class="math inline">\(\theta_{14}\)</span>, we would generate binomial random variables in a new column in the Excel spreadsheet. Have a look at the <code>Excel</code> file <code>parameters_for_evsi.xslx</code> to see how we’ve done this for trials of size 10 and 20. Do the same for a range of trial sizes up to 1000.</p>
+<p>Then, save the parameter file in .csv format and import into <code>SAVI</code> / <code>BCEAweb</code>. Compare results with the EVSI calculated above. Note again the Monte Carlo noise. Replicated PSA sets would reduce this noise.</p>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>This likelihood that should be sampled is that which would be assumed in the analysis of the trial data. The trial statistician should know what this is. This step is required in the usual Monte Carlo approach to computing EVSI.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          
+          
+
+          
+
+
+          
+          
+          
+          
+          
+
+
+          
+
+
+
+
+          
+
+
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+    
+      &copy;  2022-2024 &middot;
+
+    Based on
+    <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a>
+    
+    
+    (version 5.3.0)
+    
+    for <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
+    
+    
+    <i><b>Latest update: 23 Jun 2022 </i></b>
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/en/js/wowchemy.min.50d3bf3df0c53b31631bb48a62b35f92.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,525 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Practical 6. Network meta-analysis | Bayesian methods in health economics</title>
+    <link>/practical/06_nma/</link>
+      <atom:link href="/practical/06_nma/index.xml" rel="self" type="application/rss+xml" />
+    <description>Practical 6. Network meta-analysis</description>
+    <generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 21 Jun 2022 15:30:00 +0000</lastBuildDate>
+    <image>
+      <url>/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png</url>
+      <title>Practical 6. Network meta-analysis</title>
+      <link>/practical/06_nma/</link>
+    </image>
+    
+    <item>
+      <title>Practical 6. Network meta-analysis — SOLUTIONS</title>
+      <link>/practical/06_nma/solutions/</link>
+      <pubDate>Tue, 21 Jun 2022 15:30:00 +0000</pubDate>
+      <guid>/practical/06_nma/solutions/</guid>
+      <description>
+
+
+&lt;div id=&#34;fixed-effects-nma&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Fixed effects NMA&lt;/h2&gt;
+&lt;p&gt;The data from the smoking cessation studies discussed in the lecture are
+included in the file &lt;a href=&#34;smoke.Rdata&#34;&gt;&lt;code&gt;smoke.Rdata&lt;/code&gt;&lt;/a&gt; and can be loaded into the
+&lt;tt&gt;R&lt;/tt&gt; workspace using the &lt;code&gt;load&lt;/code&gt; command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Loads the data (assuming they are in the current folder)
+load(&amp;quot;smoke.Rdata&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;We can also use other built-in &lt;tt&gt;R&lt;/tt&gt; commands to
+inspect the object we have just loaded into our workspace to figure out
+what is stored in it, for example as in the following.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# List the objects present in the workspace
+ls()&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;current_repo&amp;quot; &amp;quot;smoke.list&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# What type of object is &amp;#39;smoke.list&amp;#39;?
+class(smoke.list)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;list&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# What&amp;#39;s in the data list?
+names(smoke.list)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] &amp;quot;r&amp;quot;  &amp;quot;n&amp;quot;  &amp;quot;t&amp;quot;  &amp;quot;na&amp;quot; &amp;quot;NS&amp;quot; &amp;quot;NT&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The command &lt;code&gt;ls()&lt;/code&gt; simply lists all the objects currently present in the
+workspace. In this case, we only have an object &lt;code&gt;smoke.list&lt;/code&gt;, which has
+been created when using the &lt;code&gt;load&lt;/code&gt; command above. We can check its
+“class” (in this case, unsurprisingly, a list) and show the names of the
+elements contained in it, using the command &lt;code&gt;names&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;We can ask &lt;tt&gt;R&lt;/tt&gt; to tell us more about these
+variables; for instance, we can inspect each variable’s “class” (e.g.its nature) using the following helpful
+&lt;tt&gt;R&lt;/tt&gt; command.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;lapply(smoke.list,class)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## $r
+## [1] &amp;quot;matrix&amp;quot; &amp;quot;array&amp;quot; 
+## 
+## $n
+## [1] &amp;quot;matrix&amp;quot; &amp;quot;array&amp;quot; 
+## 
+## $t
+## [1] &amp;quot;matrix&amp;quot; &amp;quot;array&amp;quot; 
+## 
+## $na
+## [1] &amp;quot;integer&amp;quot;
+## 
+## $NS
+## [1] &amp;quot;integer&amp;quot;
+## 
+## $NT
+## [1] &amp;quot;numeric&amp;quot;&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The &lt;tt&gt;R&lt;/tt&gt; function &lt;code&gt;lapply&lt;/code&gt; can be used to apply
+a function to the elements of a list (such as &lt;code&gt;smoke.list&lt;/code&gt;). In this
+case, we want &lt;tt&gt;R&lt;/tt&gt; to tell us what class each of
+the elements of &lt;code&gt;smoke.list&lt;/code&gt; belongs to, which is what the command
+returns — for instance, the object &lt;code&gt;r&lt;/code&gt; inside the object &lt;code&gt;smoke.list&lt;/code&gt; is
+a matrix, while the object &lt;code&gt;NS&lt;/code&gt; is an integer. We can also visualise
+each, e.g. by using the following commands&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Shows the first few elements of the object r included inside the object smoke.list
+head(smoke.list$r)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##      [,1] [,2] [,3] [,4]
+## [1,]   79   77   NA   NA
+## [2,]   18   21   NA   NA
+## [3,]    8   19   NA   NA
+## [4,]   75   NA  363   NA
+## [5,]    2   NA    9   NA
+## [6,]   58   NA  237   NA&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Shows the first few elements of the object n included inside the object smoke.list
+head(smoke.list$n)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;##      [,1] [,2] [,3] [,4]
+## [1,]  702  694   NA   NA
+## [2,]  671  535   NA   NA
+## [3,]  116  149   NA   NA
+## [4,]  731   NA  714   NA
+## [5,]  106   NA  205   NA
+## [6,]  549   NA 1561   NA&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;More in details, the elements of &lt;code&gt;smoke.list&lt;/code&gt; are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;NS&lt;/code&gt;: the total number of studies included in our analysis (24);&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;NT&lt;/code&gt;: the total number of interventions considered (4);&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;na&lt;/code&gt;: a vector containing the number of arms included in each of the
+studies;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;r&lt;/code&gt;: a matrix with &lt;code&gt;NS&lt;/code&gt; rows and &lt;code&gt;NT&lt;/code&gt; columns, containing the number
+of subjects that in each study and under each treatment arms have
+been observed to quit smoking;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;n&lt;/code&gt;: a matrix with &lt;code&gt;NS&lt;/code&gt; rows and &lt;code&gt;NT&lt;/code&gt; columns, containing the total
+number of subjects observed in each study and under each treatment
+arms;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;code&gt;t&lt;/code&gt;: a matrix with &lt;code&gt;NS&lt;/code&gt; rows and 3 columns, identifying the label
+associated with the treatments included in each of the studies.
+Notice that there are 3 columns because all studies have at most 3
+treatment involved (i.e. all studies compare either 2 or 3
+treatments — cfr. the lecture slides). The treatments are labelled
+as 1 = No intervention; 2 = Self-help; 3 = Individual counselling; 4
+= Group counselling.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Notice that some of the data will be associated with &lt;code&gt;NA&lt;/code&gt; (i.e. “Not
+Available” or “missing”). In this case, these are not really &lt;a href=&#34;https://egon.stats.ucl.ac.uk/static/stat0019/slides/08_Missing/&#34;&gt;“missing
+data”&lt;/a&gt;, but rather indicate that that particular column is not relevant.
+For example, in study 1 there are only two arms (you can confirm this by
+asking &lt;tt&gt;R&lt;/tt&gt; to tell what &lt;code&gt;na[1]&lt;/code&gt; is). The matrix
+&lt;code&gt;r&lt;/code&gt; has values 79 and 77 in the first two columns and then &lt;code&gt;NA&lt;/code&gt; in the
+third and fourth column — this is because study 1 only had data on arm 1
+and arm 2. Incidentally, you can check what these arms where by looking
+at the value of the first row in the matrix &lt;code&gt;t&lt;/code&gt;&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;smoke.list$t[1,]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## t1 t2 t3 
+##  1  2 NA&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;which tells you that the first arm was treatment 1, the second arm was
+treatment 2 and the third arm was nothing.&lt;/p&gt;
+&lt;p&gt;You can do a similar check on row (i.e. study) 4, using the following
+commands.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# How many arms were used in study 4?
+smoke.list$na[4]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 2&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# What treatment arms were they?
+smoke.list$t[4,]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## t1 t2 t3 
+##  1  3 NA&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Data on the number of subjects quitting smoke for study 4
+smoke.list$r[4,]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1]  75  NA 363  NA&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Data on the total sample size in study 4
+smoke.list$n[4,]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 731  NA 714  NA&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As we can see, study 4 considered 2 arms (comparing interventions 1 and 3, i.e. No intervention vs Individual counselling) and the number of quitters out of the total number of subjects studied were 75/731 and 363/714, respectively&lt;/p&gt;
+&lt;p&gt;Now we are ready to prepare to run the model. First, we consider the
+“fixed-effect” specification, whose model code is included in the file
+&lt;a href=&#34;smokefix_model.txt&#34;&gt;&lt;code&gt;smokefix_model.txt&lt;/code&gt;&lt;/a&gt;. One of the complications of this model code is in
+the use of the &lt;a href=&#34;https://egon.stats.ucl.ac.uk/static/stat0019/slides/09_NMA/#nested-index&#34;&gt;“nested index”&lt;/a&gt; notation. For example, the code&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;for(s in 1:NS) { # loop over studies
+      for (a in 1:na[s])  { # loop over arms
+         r[s,t[s,a]] ~ dbin(p[s,t[s,a]], n[s,t[s,a]])
+         ...&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;can be interpreted in this way. Let us consider &lt;code&gt;s&lt;/code&gt; = 1, i.e. the first
+study in our dataset. This consists of &lt;code&gt;na[1]&lt;/code&gt; = 2 arms, which means we
+will have two observed data points in terms of number of subjects who
+quit smoking. This also means that the index &lt;code&gt;a&lt;/code&gt; will run from 1 to
+&lt;code&gt;na[s]&lt;/code&gt; = &lt;code&gt;na[1]&lt;/code&gt; = 2. Moreover, &lt;code&gt;t[s,a]&lt;/code&gt; is in this case &lt;code&gt;t[1,1]&lt;/code&gt; = 1
+and &lt;code&gt;t[s,a]&lt;/code&gt; = &lt;code&gt;t[1,2]&lt;/code&gt; = 2, which in turns means that the above code
+effectively means that we are using the following modelling assumptions.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;r[1,1] ~ dbin(p[1,1], n[1,1])
+r[1,2] ~ dbin(p[1,2], n[1,2])&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The use of the nested index notation is a clever shortcut for the full
+specification of all the cases (for all the studies and for all arms
+specified in each study) and it is particularly helpful for
+“non-rectangular” data (i.e. when not all the rows have data on the same
+number of columns).&lt;/p&gt;
+&lt;p&gt;From a more substantial point of view, we are modelling the logit of the
+study- and arm-specific probability of quitting smoking using a linear
+term made by an overall study-specific mean (&lt;code&gt;mu[s]&lt;/code&gt;) and an incremental
+term (&lt;code&gt;delta[s,t[s,a]]&lt;/code&gt;), which accounts for the “treatment effect”.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;logit(p[s,t[s,a]]) &amp;lt;- mu[s] + delta[s,t[s,a]]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Again, we are using the nested index notation in exactly the same way as
+above. In addition, what characterises this model as a “fixed-effect”
+specification is the distributional assumption on the incremental
+effects &lt;code&gt;delta&lt;/code&gt;. These are modelled as follows.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## log odds ratio compared to treatment in arm 1 of study s
+delta[s,t[s,1]] &amp;lt;- 0
+for (a in 2:na[s])  {
+   delta[s,t[s,a]] &amp;lt;- d[t[s,a]] - d[t[s,1]]
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Firstly, we set the “baseline” intervention for each study &lt;code&gt;s&lt;/code&gt;. In
+particular, we arbitrarily assume that the first intervention
+(associated with the index identified by &lt;code&gt;t[s,1]&lt;/code&gt;) is the reference one
+for study &lt;code&gt;s&lt;/code&gt; and as such, we (again, arbitrarily) assign it an “extra”
+effect of 0. Obviously, this means that for the reference treatment, the
+study- and arm-specific probability of quitting smoking is simply
+&lt;code&gt;mu[s]&lt;/code&gt;, because in that case we would be adding to the linear predictor
+a value for the corresponding &lt;code&gt;delta&lt;/code&gt; equal to 0. Any other intervention
+(from 2 to &lt;code&gt;na[s]&lt;/code&gt;) is modelled through the difference between its
+specific value &lt;code&gt;d[t[s,a]]&lt;/code&gt; and the value associated with the
+study-specific reference intervention, &lt;code&gt;d[t[s,1]]&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Let us make a specific example: consider for example study &lt;code&gt;s&lt;/code&gt; = 21. The
+details are as below.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# How many arms?
+smoke.list$na[21]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## [1] 3&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Which arms?
+smoke.list$t[21,]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## t1 t2 t3 
+##  2  3  4&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This means that this study compares interventions 2, 3 and 4 (Self-help,
+Individual and Group counselling) and that, arbitrarily, we assume that
+the one in the first column of &lt;code&gt;t[21,]&lt;/code&gt; is the reference — in this case,
+that is Self-help. In line with the code above, we then set&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;delta[21,2] &amp;lt;- 0
+delta[21,3] &amp;lt;- d[21,3] - d[21,2]
+delta[21,4] &amp;lt;- d[21,4] - d[21,2]&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;because &lt;code&gt;t[21,1]&lt;/code&gt; = 2, &lt;code&gt;t[21,2]&lt;/code&gt; = 3 and &lt;code&gt;t[21,3]&lt;/code&gt; = 4 (cfr. with the
+code above describing the general definition of the variables
+&lt;code&gt;delta[s,t[s,a]]&lt;/code&gt;). Again, the nested index notation allows us to use a
+single double loop to model all the possible cases.&lt;/p&gt;
+&lt;p&gt;The log ORs &lt;code&gt;d&lt;/code&gt; are then defined as follows.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;d[1] &amp;lt;- 0  # log odds ratio compared to treatment 1 (e.g. placebo)
+for (i in 2:NT) {
+    d[i] ~ dnorm(0, 0.0001)
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This again sets one reference category, which in this case is associated
+with intervention 1 (No intervention), by setting the corresponding log
+OR to 0. Then we assign a vague prior to all the other log ORs (the
+interventions labelled from 2 to &lt;code&gt;NT&lt;/code&gt; = 4), using a Normal with mean
+equal to 0 and a very small precision.&lt;/p&gt;
+&lt;p&gt;The next bit of the model code constructs the ORs for all potential
+treatment comparisons.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## odds ratios for all treatment comparisons
+for (c in 1:(NT-1)) {
+  for (k in (c+1):NT)  {
+    or[c,k] &amp;lt;- exp(d[c] - d[k])
+    or[k,c] &amp;lt;- 1/or[c,k]
+  }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Again, there is some clever coding to use loops and compactly write down
+&lt;em&gt;all&lt;/em&gt; the possible pairwise comparisons. Notice that the variables &lt;code&gt;d&lt;/code&gt;
+define the log ORs and thus in order to obtain the OR on the natural
+scale, we need to exponentiate the difference between any two values.
+The line &lt;code&gt;or[k,c] &amp;lt;- 1/or[c,k]&lt;/code&gt; uses the fact that ORs for the
+comparison between two generic interventions &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(c\)&lt;/span&gt; are simply the
+reciprocal of the ORs for the comparison between &lt;span class=&#34;math inline&#34;&gt;\(c\)&lt;/span&gt; and &lt;span class=&#34;math inline&#34;&gt;\(k\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Finally, the model code has some additional definitions for other useful
+variables.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## Log odds of quitting successfully under no intervention (from published data)
+alpha ~ dnorm(-2.6, 6.925208) # = SD 0.38
+## Absolute probability of quitting successfully under each intervention
+for (i in 1:NT) {
+    logit(pq[i]) &amp;lt;- alpha + d[i]
+}
+
+## Life years gained by quitting
+L ~ dnorm(15, 0.0625) # SD=4&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Firstly, we define a model for the absolute probability of quitting
+smoking under each intervention. We do on the logit scale, by defining
+the baseline value &lt;span class=&#34;math inline&#34;&gt;\(\alpha \sim \mbox{Normal}(\mu_\alpha,\sigma_\alpha)\)&lt;/span&gt;, to which we add
+the incremental effect of each treatment. Notice that because we set
+&lt;code&gt;d[1]&lt;/code&gt; = 0, then &lt;code&gt;alpha&lt;/code&gt; is equal to &lt;code&gt;logit(pq[1])&lt;/code&gt;, which is the
+absolute “success rate” for No intervention. This is incremented by the
+value of the log OR for each active treatment (against the reference,
+i.e. No intervention). Notice also that we use an informative prior
+distribution to model the parameter &lt;span class=&#34;math inline&#34;&gt;\(\alpha\)&lt;/span&gt;. We have information
+suggesting that a random smoker who is not undergoing any active
+treatment has an average chance of quitting smoking of about 7%, ranging
+between around 2% to 13.8%. We can map this information into a suitable
+prior on the logit scale by setting
+&lt;span class=&#34;math display&#34;&gt;\[\mu_\alpha = \mbox{logit}(0.07) = \log\left(\frac{0.07}{1-0.07}\right) = \log\left(\frac{0.07}{0.93}\right) \approx -2.6.\]&lt;/span&gt;
+We can also use the fact that
+&lt;span class=&#34;math display&#34;&gt;\[\sigma_\alpha \approx \frac{\mbox{logit}(0.138)-\mbox{logit}(0.07)}{1.96} \approx 0.38\]&lt;/span&gt;
+— this is reasonable if we assume some sort of symmetry in the interval
+estimate, whereby the upper extreme is 1.96 standard deviations away
+from the central point, which implies that
+&lt;span class=&#34;math display&#34;&gt;\[\mbox{logit}(0.07)+ 1.96\sigma_\alpha \approx \mbox{logit}(0.138).\]&lt;/span&gt;
+Of course, we need to include in the
+&lt;tt&gt;OpenBUGS&lt;/tt&gt; model the precision,
+i.e. &lt;span class=&#34;math inline&#34;&gt;\(1/(0.38)^2=6.925208\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;The model for the life years gained by quitting smoking is constructed
+in a similar way: our best estimate is a gain of between 7 and 22 extra
+years, with an average of 15, which we turn into a Normal distribution
+with mean 15 and standard deviation of 4 (i.e. precision of
+&lt;span class=&#34;math inline&#34;&gt;\(1/16=0.0625\)&lt;/span&gt;).&lt;/p&gt;
+&lt;p&gt;The model is then run from &lt;tt&gt;R&lt;/tt&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(R2OpenBUGS)
+
+### Initial values
+inits &amp;lt;- list(list(mu=rep(0,24), d=c(NA,0,0,0)),
+              list(mu=rep(-1,24), d=c(NA,1,1,1)))
+
+### Pilot run with no burn-in, to illustrate convergence using traceplots
+res0 &amp;lt;- bugs(model=&amp;quot;smokefix_model.txt&amp;quot;, data=smoke.list, inits=inits,
+            parameters=c(&amp;quot;d&amp;quot;),
+            n.chains=2, n.burnin=0, n.iter=10000
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here, we first define the initial values creating a suitable list made
+by two “sub-lists” — this implies we are prepared to run the model using
+two parallel chains. We initialise the variables &lt;code&gt;mu&lt;/code&gt; and &lt;code&gt;d&lt;/code&gt; — notice
+that because the first element of the vector &lt;code&gt;d&lt;/code&gt; is in fact fixed at 0,
+we cannot initialise it. We overcome this issue by creating a vector of
+initial values, the first of which is set to &lt;code&gt;NA&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;In addition, this time we run the model with no burn-in, to explore
+convergence in more details than we’ve done so far. The code below uses
+the results of the &lt;tt&gt;OpenBUGS&lt;/tt&gt; model as stored
+in the &lt;tt&gt;R&lt;/tt&gt; object &lt;code&gt;res0&lt;/code&gt; to produce traceplots
+for the only variable monitored (the vector &lt;code&gt;d&lt;/code&gt;). Notice in particular
+that we can use the object &lt;code&gt;res$sims.array&lt;/code&gt;, which (as the name
+suggests) is an array of dimension &lt;code&gt;Number of iterations stored&lt;/code&gt;
+&lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt; &lt;code&gt;Number of chains run&lt;/code&gt; &lt;span class=&#34;math inline&#34;&gt;\(\times\)&lt;/span&gt;
+&lt;code&gt;Number of parameters monitored&lt;/code&gt;. In this case, the number of parameters
+is equal to 4, because there are 3 “active” elements in &lt;code&gt;d&lt;/code&gt; (since
+&lt;code&gt;d[1]&lt;/code&gt; is set to 0 and thus is not technically a random variable, in
+&lt;tt&gt;OpenBUGS&lt;/tt&gt;), plus the model deviance, which
+&lt;tt&gt;OpenBUGS&lt;/tt&gt; computes by default. You can check
+this by simply printing the summary statistics for your model&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;library(R2OpenBUGS)
+print(res0,digits=3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Inference for Bugs model at &amp;quot;smokefix_model.txt&amp;quot;, 
+Current: 2 chains, each with 10000 iterations (first 0 discarded)
+Cumulative: n.sims = 20000 iterations saved
+            mean     sd    2.5%     25%     50%     75%   97.5%  Rhat n.eff
+d[2]       0.225  0.126  -0.020   0.140   0.227   0.309   0.473 1.001 20000
+d[3]       0.765  0.063   0.650   0.727   0.766   0.805   0.879 1.001 20000
+d[4]       0.839  0.178   0.499   0.719   0.839   0.959   1.183 1.001 20000
+deviance 494.927 16.902 482.300 489.500 494.100 499.300 510.700 1.031 20000
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = Dbar-Dhat)
+pD = 27.220 and DIC = 522.100
+DIC is an estimate of expected predictive error (lower deviance is better).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;The actual traceplot is produce using the built-in functions &lt;code&gt;plot&lt;/code&gt; and
+&lt;code&gt;points&lt;/code&gt; as below.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;# Splits the graphical output into a 2-by-2 panel (side-by-side graphs)
+par(mfrow=c(2,2))
+# First graph
+plot(res0$sims.array[,1,1],t=&amp;quot;l&amp;quot;,xlab=&amp;quot;Iterations&amp;quot;,ylab=&amp;quot;d[2]&amp;quot;,col=&amp;quot;blue&amp;quot;)
+points(res0$sims.array[,2,1],t=&amp;quot;l&amp;quot;,col=&amp;quot;red&amp;quot;)
+# Second graph
+plot(res0$sims.array[,1,2],t=&amp;quot;l&amp;quot;,xlab=&amp;quot;Iterations&amp;quot;,ylab=&amp;quot;d[3]&amp;quot;,col=&amp;quot;blue&amp;quot;)
+points(res0$sims.array[,2,2],t=&amp;quot;l&amp;quot;,col=&amp;quot;red&amp;quot;)
+# Third graph
+plot(res0$sims.array[,1,3],t=&amp;quot;l&amp;quot;,xlab=&amp;quot;Iterations&amp;quot;,ylab=&amp;quot;d[4]&amp;quot;,col=&amp;quot;blue&amp;quot;)
+points(res0$sims.array[,2,3],t=&amp;quot;l&amp;quot;,col=&amp;quot;red&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/06_nma/solutions_files/figure-html/traceplots1-1.png&#34; width=&#34;672&#34; style=&#34;display: block; margin: auto;&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;As is possible to see, for all the three important parameters,
+convergence does not seem an issue and in fact the two chains seem to
+mix up almost immediately, despite being seen to start from rather
+different points (cfr. the red and blue lines). Notice that this
+strategy is not an absolute requirement! We can monitor all the relevant
+parameters and run the model for a large number of iterations in the
+first place. But, especially when there are many parameters, this course
+of action may be beneficial, because we are not stuck waiting for
+&lt;tt&gt;OpenBUGS&lt;/tt&gt; to finish the simulations for a long
+time, before we can even assess how the model is working in terms of
+convergence.&lt;/p&gt;
+&lt;p&gt;At this point, we can monitor all the model parameters (including &lt;code&gt;L&lt;/code&gt;
+and &lt;code&gt;pq&lt;/code&gt;) and re-run the model to produce the relevant estimates.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;res &amp;lt;- bugs(model=&amp;quot;smokefix_model.txt&amp;quot;, data=smoke.list, inits=inits,
+            parameters=c(&amp;quot;d&amp;quot;,&amp;quot;L&amp;quot;,&amp;quot;pq&amp;quot;),
+            n.chains=2, n.burnin=1000, n.iter=5000)
+
+# Show summary statistics
+print(res,digits=3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Inference for Bugs model at &amp;quot;smokefix_model.txt&amp;quot;, 
+Current: 2 chains, each with 5000 iterations (first 1000 discarded)
+Cumulative: n.sims = 8000 iterations saved
+            mean    sd    2.5%     25%     50%     75%   97.5%  Rhat n.eff
+d[2]       0.224 0.126  -0.023   0.139   0.225   0.309   0.470 1.001  8000
+d[3]       0.764 0.058   0.649   0.725   0.765   0.804   0.877 1.004   420
+d[4]       0.840 0.176   0.505   0.719   0.838   0.958   1.189 1.001  8000
+L         14.895 4.009   6.947  12.250  14.940  17.550  22.750 1.001  7300
+pq[1]      0.073 0.026   0.034   0.054   0.069   0.087   0.136 1.001  2700
+pq[2]      0.090 0.034   0.040   0.065   0.085   0.108   0.171 1.002  2300
+pq[3]      0.143 0.048   0.069   0.108   0.137   0.171   0.254 1.001  7500
+pq[4]      0.154 0.055   0.070   0.114   0.146   0.186   0.284 1.001  4900
+deviance 494.653 7.175 482.400 489.500 494.100 499.200 510.102 1.001  2700
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = Dbar-Dhat)
+pD = 26.940 and DIC = 521.600
+DIC is an estimate of expected predictive error (lower deviance is better).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Again, convergence is clearly reached (cfr. &lt;code&gt;Rhat&lt;/code&gt; and &lt;code&gt;n.eff&lt;/code&gt;). We
+could proceed with further analyses as well as with building the
+cost-effectiveness model, but we defer this to after we’ve run the
+random effects model (cfr. lecture slides for evidence of heterogeneity
+in individual studies; we can replicate the analysis monitoring the
+nodes &lt;code&gt;delta&lt;/code&gt;, which are the study- and treatment-specific log ORs).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;random-effects-nma&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Random effects NMA&lt;/h2&gt;
+&lt;p&gt;The model code is fairly similar to the one discussed above for the
+fixed effects NMA. The only difference, really, is in how the study- and
+treatment-specific log ORs &lt;code&gt;delta&lt;/code&gt; are modelled. In this case, we
+consider a simple specification, characterised by the following code
+lines&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;delta[s,t[s,a]] ~ dnorm(md[s,t[s,a]],taud[s,t[s,a]])
+
+# random effects means
+md[s,t[s,a]] &amp;lt;- d[t[s,a]] - d[t[s,1]]
+
+## random effects 1/variance constrained to be the same for every comparison
+taud[s,t[s,a]] &amp;lt;- tau
+
+# model for the standard deviation of the random effects
+sd ~ dunif(0, 10)
+# rescaling to the precision
+tau &amp;lt;- 1/pow(sd, 2)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;— notice that we can include more complexity, for instance by modelling
+the precision as dependent on the studies or the treatments, as well as
+by considering a more structured model accounting for correlation within
+trials with 3 arms or more (but we do not do this here!).&lt;/p&gt;
+&lt;p&gt;The model is run again using the following code.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;res2 &amp;lt;- bugs(model=&amp;quot;smokere_model.txt&amp;quot;, data=smoke.list, inits=inits,
+            parameters=c(&amp;quot;d&amp;quot;, &amp;quot;sd&amp;quot;, &amp;quot;pq&amp;quot;, &amp;quot;L&amp;quot;),
+            n.chains=2, n.burnin=1000, n.iter=20000
+)
+print(res2,digits=3)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;Inference for Bugs model at &amp;quot;smokere_model.txt&amp;quot;, 
+Current: 2 chains, each with 20000 iterations (first 1000 discarded)
+Cumulative: n.sims = 38000 iterations saved
+            mean     sd    2.5%     25%     50%     75%   97.5%  Rhat n.eff
+d[2]       0.519  0.386  -0.230   0.267   0.514   0.766   1.305 1.001  6300
+d[3]       0.810  0.232   0.374   0.656   0.805   0.956   1.289 1.001  5900
+d[4]       1.169  0.455   0.304   0.867   1.156   1.460   2.098 1.001 38000
+sd         0.820  0.183   0.533   0.690   0.795   0.923   1.248 1.001 38000
+pq[1]      0.073  0.026   0.034   0.054   0.069   0.088   0.136 1.001 38000
+pq[2]      0.122  0.059   0.042   0.080   0.111   0.152   0.269 1.001  6500
+pq[3]      0.152  0.057   0.065   0.110   0.143   0.184   0.286 1.001  8400
+pq[4]      0.208  0.096   0.071   0.138   0.191   0.262   0.437 1.001 38000
+L         14.989  3.993   7.109  12.310  15.000  17.670  22.810 1.001 38000
+deviance 281.823 10.073 263.900 274.700 281.200 288.200 303.500 1.001 38000
+
+For each parameter, n.eff is a crude measure of effective sample size,
+and Rhat is the potential scale reduction factor (at convergence, Rhat=1).
+
+DIC info (using the rule, pD = Dbar-Dhat)
+pD = 44.870 and DIC = 326.700
+DIC is an estimate of expected predictive error (lower deviance is better).&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Again, the model seems to do well in terms of convergence, although
+autocorrelation is possibly more of a concern (check the values of
+&lt;code&gt;n.eff&lt;/code&gt;, which are slightly smaller than the nominal sample size of
+38000). This is not uncommon with hierarchical/random effect models.&lt;/p&gt;
+&lt;p&gt;In terms of comparison with the results of the fixed effects version,
+there is generally an increase in the value of the mean for the log ORs
+&lt;code&gt;d&lt;/code&gt;, coupled with larger uncertainty. On the other hand, the absolute
+probabilities of quitting &lt;code&gt;pq&lt;/code&gt; are rather stable. The estimate for &lt;code&gt;L&lt;/code&gt;
+does not change — but this is not surprising, as this node is modelled
+independently on the other variables in the code and based on an
+informative prior, which is not updated by any data. So, simply changing
+parts of the model that are effectively disconnected by the one in which
+we model &lt;code&gt;L&lt;/code&gt; is not changing our estimates for this node.&lt;/p&gt;
+&lt;p&gt;We can also complete the model to include the cost-effectiveness
+component. We do this by firstly defining a vector of unit costs
+associated with each intervention. Here we assume that No intervention
+does not involve any cost for the public payer, while Self-help,
+Individual and Group counselling do have some costs. We then define the
+measures of effectiveness as the overall life years gained (&lt;code&gt;L&lt;/code&gt;)
+weighted by the absolute probability of quitting smoking (&lt;code&gt;pq&lt;/code&gt;) for each
+intervention. We build the variables &lt;code&gt;e&lt;/code&gt; and &lt;code&gt;c&lt;/code&gt; in the loop over the 4
+interventions. Notably, in this case, we do not model the costs
+(although a variant of this model that does account for this is
+presented in the the &lt;a href=&#34;https://gianluca.statistica.it/book/bcea/&#34;&gt;BCEA Book&lt;/a&gt;).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;### Cost-effectiveness analysis
+library(BCEA)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Attaching package: &amp;#39;BCEA&amp;#39;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## The following object is masked from &amp;#39;package:graphics&amp;#39;:
+## 
+##     contour&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;unit.cost &amp;lt;- c(0,200,6000,600)
+ints &amp;lt;- c(&amp;quot;No contact&amp;quot;,&amp;quot;Self help&amp;quot;,&amp;quot;Individual counselling&amp;quot;,&amp;quot;Group counselling&amp;quot;)
+e &amp;lt;- c &amp;lt;- matrix(NA,res2$n.sims,4)
+# MCMC sample from distribution of life-years gained by quitting
+L &amp;lt;- res2$sims.list$L 
+# ...and from distributions of probability of quitting for each of 4 interventions
+pq &amp;lt;- res2$sims.list$pq 
+
+for (t in 1:4) {
+    e[,t] &amp;lt;- L*pq[,t]
+    c[,t] &amp;lt;- unit.cost[t]
+}
+colnames(e) &amp;lt;- colnames(c) &amp;lt;- ints&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Finally, we can run &lt;code&gt;BCEA&lt;/code&gt; to post-process the model output and produce
+the relevant summaries, e.g. summaries or the cost-effectiveness plane.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m &amp;lt;- bcea(e,c,interventions=ints,Kmax=1000,ref=4)
+summary(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## NB: k (wtp) is defined in the interval [0 - 1000]&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## &lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;## 
+## Cost-effectiveness analysis summary 
+## 
+## Reference intervention:  Group counselling
+## Comparator intervention(s): No contact
+##                           : Self help
+##                           : Individual counselling
+## 
+## Optimal decision: choose No contact for k &amp;lt; 274
+##                          Self help for 274 &amp;lt;= k &amp;lt; 310
+##                          Group counselling for k &amp;gt;= 310
+## 
+## 
+## Analysis for willingness to pay parameter k = 1000
+## 
+##                        Expected utility
+## No contact                       1096.7
+## Self help                        1629.9
+## Individual counselling          -3727.5
+## Group counselling                2523.5
+## 
+##                                                 EIB    CEAC     ICER
+## Group counselling vs No contact             1426.85 0.89945   296.03
+## Group counselling vs Self help               893.65 0.78947   309.20
+## Group counselling vs Individual counselling 6251.05 1.00000 -6345.08
+## 
+## Optimal intervention (max expected utility) for k = 1000: Group counselling
+##            
+## EVPI 97.442&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Notice that, because this model involves multiple comparisons, the
+default output for the &lt;code&gt;plot&lt;/code&gt; function in &lt;code&gt;BCEA&lt;/code&gt; is not entirely
+satisfactory. There are ways in which we can modify this default
+behaviour to improve the look of the pictures (see the help for &lt;code&gt;BCEA&lt;/code&gt;
+as well as the &lt;a href=&#34;https://gianluca.statistica.it/book/bcea/&#34;&gt;BCEA Book&lt;/a&gt;).&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;plot(m)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;img src=&#34;/practical/06_nma/solutions_files/figure-html/unnamed-chunk-11-1.png&#34; width=&#34;672&#34; /&gt;&lt;/p&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

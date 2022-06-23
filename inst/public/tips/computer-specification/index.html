@@ -1,0 +1,1183 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.3.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Gianluca Baio" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="On your own machine Since both R and BUGS (or JAGS, which is an alternative Bayesian software) are free, you can install them on your own laptop/desktop, if you want." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="/tips/computer-specification/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+      
+    
+
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.3ef10ad94e43ba7ad3f08b0b007578ae.css" />
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="/tips/computer-specification/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+  <meta property="og:site_name" content="Bayesian methods in health economics" />
+  <meta property="og:url" content="/tips/computer-specification/" />
+  <meta property="og:title" content="Computer specification | Bayesian methods in health economics" />
+  <meta property="og:description" content="On your own machine Since both R and BUGS (or JAGS, which is an alternative Bayesian software) are free, you can install them on your own laptop/desktop, if you want." /><meta property="og:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" />
+    <meta property="twitter:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2020-12-15T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2020-12-15T00:00:00&#43;00:00">
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Computer specification | Bayesian methods in health economics</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="8c16d398a963ec4949cfc90916633b90" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.da42964e270e05a6063fbca894d7ccff.js"></script>
+
+  
+
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container-xl">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+          
+          ></a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+        
+        ></a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#timetable"><span>Timetable</span></a>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Slides</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/slides/01_Intro"><span>Introduction</span></a>
+            
+              <a class="dropdown-item" href="/slides/02_MCMC"><span>Bayesian computation</span></a>
+            
+              <a class="dropdown-item" href="/slides/03_Intro_HE"><span>Introduction to Health Economics</span></a>
+            
+              <a class="dropdown-item" href="/slides/04_ILD"><span>Individual level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/05_ALD"><span>Aggregated level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/06_NMA"><span>Network meta-analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/07_Model_uncertainty"><span>Model error and structural analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/08_Survival"><span>Survival modelling in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/09_MM"><span>Markov models</span></a>
+            
+              <a class="dropdown-item" href="/slides/10_Missing"><span>Missing data in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/11_VoI"><span>Introduction to Value of information</span></a>
+            
+              <a class="dropdown-item" href="/slides/12_EVPPI"><span>Expected value of partial information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture13/13_EVSI.pdf"><span>Expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture14/14_Data_EVSI.pdf"><span>Generating data for the analysis of the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture15/15_EVSI_MC.pdf"><span>Calculating expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture16/16_EVSI_regression.pdf"><span>Regression-based EVSI</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Practicals</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/practical/01_monte-carlo"><span>Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/02_mcmc"><span>MCMC</span></a>
+            
+              <a class="dropdown-item" href="/practical/03_bcea"><span>Cost-effectiveness analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/04_ild"><span>HTA with individual level data</span></a>
+            
+              <a class="dropdown-item" href="/practical/05_ald"><span>Evidence synthesis and decision models</span></a>
+            
+              <a class="dropdown-item" href="/practical/06_nma"><span>NMA</span></a>
+            
+              <a class="dropdown-item" href="/practical/07_structural"><span>PSA to structural uncertainty</span></a>
+            
+              <a class="dropdown-item" href="/practical/08_survival"><span>Survival analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/09_mm"><span>Markov and multistate models</span></a>
+            
+              <a class="dropdown-item" href="/practical/10_missing"><span>Missing data</span></a>
+            
+              <a class="dropdown-item" href="/practical/11_intro_voi"><span>Computing the EVPI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/12_evppi"><span>Computing the EVPPI in BCEA and SAVI</span></a>
+            
+              <a class="dropdown-item" href="/practical/13_data_evsi"><span>Generating data for the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/practical/14_evsi_mc"><span>Computing the EVSI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/15_evsi_regression"><span>Computing the EVSI using regression</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Instructions</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/tips/computer-specification"><span>Computer specification</span></a>
+            
+              <a class="dropdown-item" href="/tips/using-bugs"><span>Using BUGS</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/publication"><span>Reading list</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    <article class="article">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  
+  
+<div class="article-container pt-3">
+  <h1>Computer specification</h1>
+
+  
+
+  
+    
+
+
+<div class="article-metadata">
+
+  
+  
+
+  
+  <span class="article-date">
+    
+    
+      
+    
+    Tuesday, 15 December 2020.
+  </span>
+  
+
+  
+
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+  
+
+</div>
+
+    
+
+
+
+
+
+  
+</div>
+
+
+
+  <div class="article-container">
+
+    <div class="article-style">
+      <h2 id="on-your-own-machine">On your own machine</h2>
+<p>Since both <code>R</code> and <code>BUGS</code> (or <code>JAGS</code>, which is an alternative Bayesian software) are free, you can install them on your own laptop/desktop, if you want.</p>
+<p>The following gives you a quick guide on how you install the software that is required for the analyses that we will go through in the practicals:</p>
+<ul>
+<li><code>OpenBUGS</code></li>
+<li><code>JAGS</code> (optional)</li>
+<li><code>R</code> and specifically the packages <code>R2OpenBUGS</code> and <code>BCEA</code>. Other optional packages (e.g. <code>reshape</code>, <code>dplyr</code>, <code>INLA</code> and <code>R2jags</code>) may need to be installed</li>
+<li>The <code>R</code> front-end <code>Rstudio</code> (optional)</li>
+<li>A spreadsheet calculator; if you have a valid license for <code>MS Excel</code> on your machine that is OK. If not, you can download the freely available <code>LibreOffice</code>, which is a decent surrogate (at least for the tasks that we will require in the practicals).</li>
+</ul>
+<div class="alert alert-note">
+  <div>
+    <p>The file <a href="install.R"><code>install.R</code></a> can be used to install <em><strong>all</strong></em> the necessary packages (in line with the specification of the <a href="#virtual-machine">Binder Virtual Machine</a>).</p>
+<p>You can also download a <code>.zip</code> file with the code and scripts for <strong>all</strong> the practicals, <a href="practicals.zip">here</a>.</p>
+  </div>
+</div>
+<div class="alert alert-warning">
+  <div>
+    Notice that you don&rsquo;t have to install both <code>OpenBUGS</code> <strong>and</strong> <code>JAGS</code> &mdash; the former is sufficient for the purposes of this course.
+  </div>
+</div>
+<h3 id="specific-installation-instructions">Specific installation instructions</h3>
+<div class="alert alert-help">
+  <div>
+    <details class="spoiler "  id="spoiler-0">
+  <summary><strong>MS Windows users</strong></summary>
+  <p><p>If you are a <code>Windows</code> user, your setting should be fairly easy.</p>
+<ol>
+<li>Download the file <code>OpenBUGS323setup.exe</code> from the webpage <a href="https://www.mrc-bsu.cam.ac.uk/wp-content/uploads/2014/07/OpenBUGS323setup.zip">https://www.mrc-bsu.cam.ac.uk/wp-content/uploads/2014/07/OpenBUGS323setup.zip</a>, extract the <code>exe</code> file from the downloaded <code>zip</code> file and run it by double-clicking on it.</li>
+<li>Download <code>R</code> from <a href="http://cran.r-project.org/bin/windows/">http://cran.r-project.org/bin/windows/</a> (click on the link &ldquo;install R for the first time&rdquo;&quot;).</li>
+<li>Once you have installed <code>R</code>, open it and type in the terminal the command <code>install.packages(&quot;R2OpenBUGS&quot;)</code>. This command will download the package <code>R2OpenBUGS</code>, which is needed to interface <code>OpenBUGS</code> with <code>R</code>. Follow the on-screen instructions (you will be asked to select a &ldquo;mirror from which to obtain the file).</li>
+<li>Make sure that the download has worked by typing in the terminal the command <code>library(R2OpenBUGS)</code>. If you do not see any error message, then the package has been successfully installed.</li>
+<li>Install the <code>BCEA</code> package that we will use throughout the practicals, by typing <code>install.packages(&quot;BCEA&quot;)</code>.</li>
+<li>Repeat the installation process for the other packages that are used in the practicals (e.g. <code>reshape</code> and <code>dplyr</code>). Since this is optional, you can leave this final step to when it is actually needed.</li>
+</ol>
+<p>If you like, you can also install <code>JAGS</code>, following these steps.</p>
+<ol>
+<li>Go to <a href="http://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/">http://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/</a> and click on the latest available executable file (currently, <a href="https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Windows/JAGS-4.3.0.exe/download"><code>JAGS-4.3.0.exe</code></a>). Running this file will install <code>JAGS</code> on your machine.</li>
+<li>If you do so, then in the <code>R</code> terminal type the command <code>install.packages(&quot;R2jags&quot;)</code>. This will allow you to use <code>JAGS</code> (instead of <code>OpenBUGS</code>) when doing the practicals &mdash; notice that to make a package available you will have to load it to the workspace by using the <code>library(name_package)</code> command.</li>
+</ol>
+</p>
+</details>
+  </div>
+</div>
+<br>
+<div class="alert alert-help">
+  <div>
+    <details class="spoiler "  id="spoiler-0">
+  <summary><strong>Linux or Mac OS users</strong></summary>
+  <p><h3 id="installing-r-and-bcea">Installing <code>R</code> and <code>BCEA</code></h3>
+<p><code>Linux</code> or <code>Mac OS</code> users should follow slightly different approaches. The installation of <code>R</code> is pretty much the same as for <code>MS WIndows</code> users. From the webpage <a href="http://cran.r-project.org/">http://cran.r-project.org/</a> select your operating system (<code>Linux</code> or <code>Mac OS</code>) and then your version (eg <code>debian</code>, <code>redhat</code>, <code>suse</code> or <code>ubuntu</code>, for <code>Linux</code>). Follow the instructions to install the software. Once this is done, open <code>R</code> and install the package <code>BCEA</code> by typing at the terminal the command <code>install.packages(&quot;BCEA&quot;)</code>. You can use similar commands to install other packages.</p>
+<h3 id="installing-openbugs-and-jags-in-linux">Installing <code>OpenBUGS</code> and <code>JAGS</code> in <code>Linux</code></h3>
+<p>While both <code>OpenBUGS</code> and <code>JAGS</code> run natively in <code>Linux</code> (see below for details on how to install them directly), the graphical interface is not available for <code>OpenBUGS</code>. Because we will use it for at least the first few practicals, it is advisable to install <code>wine</code>, a &ldquo;compatibility layer&rdquo;&quot; that allows to run <code>Windows</code> applications from <code>Linux</code> or <code>Mac</code>. Instructions are available at <a href="https://www.winehq.org/download/">https://www.winehq.org/download/</a>.</p>
+<p>When you have installed <code>wine</code>, you can also install <code>OpenBUGS</code>, which you will be then able to access using the graphical interface, by following these steps.</p>
+<ol>
+<li>Go to the webpage <a href="https://www.mrc-bsu.cam.ac.uk/wp-content/uploads/2014/07/OpenBUGS323setup.zip">https://www.mrc-bsu.cam.ac.uk/wp-content/uploads/2014/07/OpenBUGS323setup.zip</a>, extract from the <code>.zip</code> file the windows executable file <code>OpenBUGS323setup.exe</code> and place it in your default directory for <code>wine</code> programs (usually <code>~/.wine/drive_c</code>).</li>
+<li>Run the <code>OpenBUGS</code> installer
+<ul>
+<li>Open a terminal window;</li>
+<li>Move to the directory where you placed the <code>OpenBUGS</code> executable you downloaded in step 1, something like: <code>cd ~/.wine/drive_c</code></li>
+<li>Type: <code>wine OpenBUGS323setup.exe</code>;</li>
+<li>Wait for a while and then follow the prompts to install &mdash; by default, the installation folder is <code>~/.wine/drive_c/Program Files/OpenBUGS323</code></li>
+<li>NB: There may be an error at the end, this is OK. Close down the Terminal Window</li>
+</ul>
+</li>
+<li>Test <code>OpenBUGS</code> by opening a new terminal window typing the command: <code>wine ~/.wine/drive_c/Program Files/OpenBUGS323/OpenBUGS.exe</code></li>
+<li>Download the <code>R2OpenBUGS</code> package from <a href="http://www.openbugs.info/w/UserContributedCode">http://www.openbugs.info/w/UserContributedCode</a></li>
+<li>Open <code>R</code> and install <code>R2OpneBUGS</code> by typing the command <code>install.packages(&quot;R2OpenBUGS&quot;)</code></li>
+</ol>
+<p>You can also install the <code>Linux</code> version of <code>OpenBUGS</code> (available from <a href="https://www.mrc-bsu.cam.ac.uk/wp-content/uploads/2018/04/OpenBUGS-3.2.3.tar.gz">here</a>) by following the instructions given at <a href="https://www.mrc-bsu.cam.ac.uk/software/bugs/openbugs/building-and-packaging-openbugs/openbugs-linux-installation/">https://www.mrc-bsu.cam.ac.uk/software/bugs/openbugs/building-and-packaging-openbugs/openbugs-linux-installation/</a>. This will work just as well, but you won&rsquo;t be able to access the graphical interface.</p>
+<div class="alert alert-note">
+  <div>
+    <p><strong>NB</strong>: Under <code>Linux</code>, you may need to also install additional packages to support the <code>OpenBUGS</code> installation. For instance, under <code>Debian</code> or <code>Ubuntu</code>, you may need to also run in your terminal</p>
+<pre><code>sudo apt-get install g++-multilib
+</code></pre>
+<p>to install the library <code>g++multilib</code>.</p>
+  </div>
+</div>
+<p>In addition, you can also install <code>JAGS</code>, following these steps.</p>
+<ol>
+<li>Go to <a href="http://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Source/">http://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Source/</a> and download the latest <code>tar.gz</code> file (currently, <a href="https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Source/JAGS-4.3.0.tar.gz/download"><code>JAGS-4.3.0.tar.gz</code></a>)</li>
+<li>Open a terminal window and extract the content of the archive file by typing the command <code>tar xzvf JAGS-4.3.0.tar.gz</code></li>
+<li>Move to the directory (which has just been created) using the command <code>cd JAGS-4.3.0</code></li>
+<li>Run the configuration by typing <code>sudo ./configure --prefix=/us &amp;&amp; sudo make &amp;&amp; sudo make install</code></li>
+<li>Clean up the unnecessary files and folder by typing <code>cd .. &amp;&amp; sudo rm -fr JAGS-4.3.0 &amp;&amp; rm JAGS-4.3.0.tar.gz</code></li>
+</ol>
+<p>If you decide to do so, then open <code>R</code> and install the package <code>R2JAGS</code> (using the same command as for the installation of the package <code>R2OpneBUGS</code>). Notice that you don&rsquo;t have to install both <code>OpenBUGS</code> and <code>JAGS</code> &mdash; the former is sufficient for the purposes of this course.</p>
+<h3 id="installing-openbugs-and-jags-in-mac-os">Installing <code>OpenBUGS</code> and <code>JAGS</code> in <code>Mac OS</code></h3>
+<p>While similar in spirit, installation under <code>Mac OS</code> is slightly more complex, because the process requires some extra software that is not automatically installed. Basically, you need to follow this procedure, as detailed at the website <a href="http://www.jkarreth.net/bayes-icpsr.html#bugsmac">http://www.jkarreth.net/bayes-icpsr.html#bugsmac</a>.</p>
+<ol>
+<li>Update your <code>Mac OS</code> to the newest version.</li>
+<li>Install <code>Xcode</code> through the <a href="https://apps.apple.com/us/app/xcode/id497799835?mt=12">App Store</a>.</li>
+<li>Check if you have <code>X11</code> installed (this is a a windowing system, common on <code>Unix</code>-like operating systems, which, believe it or not, <code>MaxOs</code> is!): hit Command-Space, type <code>X11</code>, and see if the program shows up. If not, install it from <a href="http://xquartz.macosforge.org/">here</a>.</li>
+<li>Download a the stable pre-compiled version of <a href="https://dl.winehq.org/wine-builds/macosx/download.html"><code>wine</code></a>. Instructions to install <code>wine</code> on <code>Mac OS</code> are available <a href="https://www.embird.net/sw/embird/tutorial/wine/wine.htm">here</a>.</li>
+<li>Download <code>OpenBUGS323setup.exe</code> (windows executable) and place it in your default directory for <code>wine</code> programs (usually <code>~/.wine/drive_c</code>).</li>
+<li>Run the <code>OpenBUGS</code> installer:
+<ul>
+<li>Open <code>XQuartz</code> and a Terminal Window;</li>
+<li>Move to the directory where you placed the <code>OpenBUGS</code> executable you downloaded in step 2;</li>
+<li>Type: <code>wine OpenBUGS323setup.exe</code>;</li>
+<li>Wait for a while and then follow the prompts to install &mdash; remember the directory you created to install it (default is <code>~/[username]/.wine/drive_c/Program Files/OpenBUGS323</code>)</li>
+<li>NB: There may be an error at the end, this is OK. Close down the Terminal Window</li>
+</ul>
+</li>
+<li>It is possible that you need to specify the installation directory to tell your system specifically where to look for <code>BUGS</code>. Typically this will mean adding the option <code>bugs.directory = &quot;/Users/yourusername/.wine/drive_c/Program Files/OpenBUGS232&quot;</code> (or similar, depending on where you have installed the software!) to the call to the <code>bugs</code> function under <code>R2OpenBUGS</code>. Note that you need to replace &ldquo;yourusername&rdquo; with your Mac&rsquo;s user name.</li>
+</ol>
+<p>Notice that, if you like, you can install <code>R</code> under <code>wine</code> (rather than natively in <code>Mac OS</code>).  Download the <code>MS Windows</code> executable file from <code>CRAN</code> and repeat the instructions above, replacing the command <code>wine OpenBUGS323setup.exe</code> with the command <code>wine R-XXXX.exe</code>, where <code>R-XXXX.exe</code> is the name of the executable file.</p>
+<div class="alert alert-note">
+  <div>
+    <p>There are some reports that <code>OpenBUGS</code> may fail to work on some <code>Mac OS</code> versions. Sometimes, when trying to use <code>OpenBUGS</code> from <code>R</code>, it will complain that it can&rsquo;t find the programme. The <code>bugs</code> function in the <code>R2OpenBUGS</code> package takes an additional input <code>OpenBUGS.pgm</code>, which should be set to the full path to the <code>OpenBUGS</code> executable file. You can try and issue the <code>R</code> command <code>Sys.which(&quot;OpenBUGS&quot;)</code> at a <code>R</code> terminal and see whether it returns a full path and then pass <em>that</em> string as value for <code>OpenBUGS.pgm</code>, eg if <code>Sys.which(&quot;OpenBUGS&quot;)</code> returns the string <code>/usr/local/bin/OpenBUGS</code>, then set</p>
+<pre><code class="language-{r">bugs(..., OpenBUGS.pgm=&quot;/usr/local/bin/OpenBUGS&quot;)
+</code></pre>
+  </div>
+</div>
+<p>In addition, you can also install <code>JAGS</code>, following these steps, as detailed at the webpage <a href="http://www.jkarreth.net/bayes-icpsr.html#jagsmac">http://www.jkarreth.net/bayes-icpsr.html#jagsmac</a>.</p>
+<ol>
+<li>Install the most recent version of <code>R</code> from the <a href="https://cran.r-project.org/bin/macosx/"><code>CRAN</code> website</a>.</li>
+<li>(Optional) Download and install <a href="https://rstudio.com/products/rstudio/download/#download">RStudio</a> (NB: select the version for the your release of <code>MacOS</code>!).</li>
+<li>Install <code>Clang</code> (currently <code>clang-8.0.0.pkg</code>) and GNU Fortran (currently, <code>gfortran-6.1.pkg.dmg</code>) from the <a href="http://cran.r-project.org/bin/macosx/tools/">CRAN tools directory</a>. Note that the most updated release for these may vary so check you select the correct one.</li>
+<li>Now install <code>JAGS</code> version 4.3.0 (<code>JAGS-4.3.0.dmg</code>) from <a href="http://sourceforge.net/projects/mcmc-jags/files/JAGS/">here</a>. Detailed instructions quoted from the <code>JAGS</code> readme file:
+<ul>
+<li>Download the disk image from the <code>JAGS</code> website.</li>
+<li>Double click on the disk image to mount (this may not be required).</li>
+<li>Double click on the <code>JAGS-4.3.0.mpkg</code> file within the mounted disk image.</li>
+<li>Follow the instructions in the installer. If you receive a warning that this software cannot be installed because it comes from an unidentified developer, you need to go to &ldquo;System Preferences&rdquo;&quot; &gt; &ldquo;Security &amp; Privacy&rdquo;&quot;, and authorize the installation there before proceeding.</li>
+<li>Authenticate as the administrative user. The first user you create when setting up <code>Mac OS X</code> has administrator privileges by default.</li>
+</ul>
+</li>
+<li>Start the Terminal and type <code>jags</code> to see if you receive the message: Welcome to <code>JAGS 4.3.0</code>.</li>
+<li>Open <code>R</code> and install the packages <code>R2jags</code>, <code>coda</code>, <code>R2WinBUGS</code>, <code>lattice</code>, and <code>rjags</code>, by typing <code>install.packages(c(&quot;R2jags&quot;, &quot;coda&quot;, &quot;R2WinBUGS&quot;, &quot;lattice&quot;, &quot;rjags&quot;))</code> in the <code>R</code> command line.</li>
+</ol>
+<div class="alert alert-warning">
+  <div>
+    <strong>NB</strong>: <a href="https://sourceforge.net/p/mcmc-jags/discussion/610037/thread/07e08a3605/?limit=25#1160" target="_blank" rel="noopener">This</a> post may be helpful in finding instructions to install <code>JAGS</code> under <code>MacOs</code>. In general, the <a href="https://sourceforge.net/projects/mcmc-jags/" target="_blank" rel="noopener"><code>JAGS</code></a> <code>sourceforge</code> page has several posts/requests for help that you may find very similar to your own.
+  </div>
+</div>
+</p>
+</details>
+  </div>
+</div>
+<br>
+<h2 id="virtual-machine">Virtual machine</h2>
+<p>It is of course helpful to set up your own machine with all the relevant software, so you can re-use it later in life. However, you can also use a virtual machine (VM) we have created for you (specifically using <a href="https://mybinder.readthedocs.io/en/latest/" target="_blank" rel="noopener">binder</a>).</p>
+<p>We have set up a VM (if you are interested, it is based on Linux), in which we have installed:</p>
+<ul>
+<li>A stable version of <code>R</code> and <code>Rstudio</code>. Specifically, the current installation uses <code>R 4.1.2 (2021-11-01)</code> and <code>Rstudio 2022.02.0 Build 443</code>;</li>
+<li>OpenBUGS 3.2.3;</li>
+<li>JAGS 4.3.0;</li>
+<li>The packages <code>R2jags</code>, <code>R2OpenBUGS</code>, <code>BCEA</code>, <code>tidyverse</code> and all the relevant &ldquo;dependencies&rdquo;.</li>
+<li>The package <code>bmhe</code>, which contains a set of utility functions to be used specifically for the practicals.</li>
+</ul>
+<div class="alert alert-warning">
+  <div>
+    <p>If you want to install the package <code>bmhe</code> so you can use it on your local machine, you need to type the following command on your <code>R</code> terminal:</p>
+<pre><code class="language-{r">install.packages(&quot;remotes&quot;)
+remotes::install_github(&quot;giabaio/bmhe_utils&quot;)
+</code></pre>
+<p>This will first install the package <code>remotes</code> from the main <code>R</code> repository (CRAN) and then use it to install <code>bmhe</code> from its <a href="https://github.com/giabaio/bmhe_utils">GitHub repository</a>. Installing packages from a GitHub repository is becoming a very popular and at times very efficient alternative, so it&rsquo;s helpful to know how to do it&hellip;</p>
+<p><strong>NB</strong> The full list of packages installed in the binder VM is given in the file <code>install.R</code> that is available under the root (the main, landing folder: this is your working directory when you switch the binder VM on).</p>
+  </div>
+</div>
+<p>This means that when you access the VM, you won&rsquo;t have to fiddle with the setting and will be able to use it for the practicals without further issues with installation.</p>
+<p>To use the binder VM, simply go to the <a href="https://github.com/StatisticsHealthEconomics/stat0019_binder/tree/bmhe" target="_blank" rel="noopener">GitHub repository</a> (note that this is the &ldquo;branch&rdquo; named <code>bmhe</code> and this is the one you need to use &mdash; not the other branches!) and click on the button in the bottom-left corner (marked with the text &ldquo;launch binder&rdquo;). This will open the &ldquo;BinderHub&rdquo; allowing us to share the GitHub repository in the form of a remote <code>Rstudio</code> environment, with all the relevant files already installing. Alternatively, simply direct your browser to this <a href="https://mybinder.org/v2/gh/StatisticsHealthEconomics/stat0019_binder/bmhe?urlpath=rstudio" target="_blank" rel="noopener">URL</a>.</p>
+<p>This should load up fairly quickly (as it&rsquo;s been compiled already &mdash; it is possible, though unlikely, that it may need to recompile the binder VM, but even then, it should not take more than a minute or so&hellip;). Once it&rsquo;s done, your browser will have a <code>Rstudio</code> instance open.</p>
+<p>You can use the bottom-right corner window as a file-navigator. The tab labelled as <code>Files</code> will show the file system for the VM. You don&rsquo;t need to worry about all the files and can click to <code>practical</code>, which will navigate to the folder containing the files for the various practicals. If you keep navigating the files, you can reach the relevant path and open the various <code>R</code> scripts, for instance moving to <code>practical/01_monte-carlo/</code> shows four <code>.R</code> files that can be used to do the first practical (effectively only using <code>R</code>).</p>
+<div class="alert alert-note">
+  <div>
+    <p>The only drawback of using the binder VM is that <strong>for now</strong> it is not &ldquo;<em>persistent</em>&rdquo;. This means that the changes you make to the files are not saved from one session to the next (a <a href="https://notebooks.gesis.org/">tool</a> existed to turn the binder into a persistent VM, but it has been temporarily discontinued).</p>
+<p>In addition, it can also be a bit slow (it is after all a remote machine&hellip;), although this obviously depends on how fast/powerful your computer is and you need to be online while working on <code>Rstudio</code>, which you don&rsquo;t on a local installation.</p>
+<p>For these reasons, I probably would recommend <em>against</em> using it, if you were doing &ldquo;serious&rdquo; work.</p>
+<p><strong>But</strong>: it may be very helpful in terms of getting on the right track without having to worry about the subtleties of the software installation. In addition, tools such as <a href="https://docs.docker.com/"><code>docker</code></a> and <a href="https://mybinder.readthedocs.io/en/latest/"><code>binder</code></a> are generally very helpful to share your work and guarantee reproducible research, so it is probably worth spending a little time investigating how they work&hellip;</p>
+  </div>
+</div>
+<br>
+<h2 id="helpful-tools">Helpful tools</h2>
+<p>Here&rsquo;s a list of some other helpful tools for (Bayesian) modelling in HTA applications</p>
+<ol>
+<li>
+<p><a href="http://www.jeremy-oakley.staff.shef.ac.uk/shelf/" target="_blank" rel="noopener">SHELF</a>: a package of documents, templates and software to carry out elicitation of probability distributions for uncertain quantities from a group of experts</p>
+</li>
+<li>
+<p><a href="https://savi.shef.ac.uk/SAVI/" target="_blank" rel="noopener">SAVI</a>: a web-app to do Value of Information computations</p>
+</li>
+<li>
+<p><a href="https://egon.stats.ucl.ac.uk/projects/BCEAweb/" target="_blank" rel="noopener">BCEAweb</a>: a web-app to run <code>BCEA</code> with PSA and VoI applications</p>
+</li>
+</ol>
+
+    </div>
+
+    
+
+
+
+
+<div class="article-tags">
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+  
+  
+  
+  <div class="media author-card content-widget-hr">
+    
+      
+      <a href="/author/gianluca-baio/"><img class="avatar mr-3 avatar-circle" src="/author/gianluca-baio/avatar_hu6ed39de258007db8881b29c05d7845d1_70101_270x270_fill_q75_lanczos_center.jpg" alt="Gianluca Baio"></a>
+    
+
+    <div class="media-body">
+      <h5 class="card-title"><a href="/author/gianluca-baio/">Gianluca Baio</a></h5>
+      <h6 class="card-subtitle">Professor of Statistics and Health Economics</h6>
+      
+      <ul class="network-icon" aria-hidden="true">
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+    <li>
+      <a href="mailto:g.baio@ucl.ac.uk" >
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://twitter.com/gianlubaio" target="_blank" rel="noopener">
+        <i class="fab fa-twitter"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://scholar.google.com/citations?user=ro0QvGsAAAAJ&amp;hl=en" target="_blank" rel="noopener">
+        <i class="ai ai-google-scholar"></i>
+      </a>
+    </li>
+  
+    
+    
+    
+      
+    
+    
+    
+    
+    
+      
+    
+    <li>
+      <a href="https://github.com/giabaio" target="_blank" rel="noopener">
+        <i class="fab fa-github"></i>
+      </a>
+    </li>
+  
+</ul>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+</article>
+  </div>
+
+  <div class="page-footer">
+    
+    
+    <div class="container">
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+    
+      &copy;  2022-2024 &middot;
+
+    Based on
+    <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a>
+    
+    
+    (version 5.3.0)
+    
+    for <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
+    
+    
+    <i><b>Latest update: 23 Jun 2022 </i></b>
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+
+</footer>
+
+    </div>
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/en/js/wowchemy.min.50d3bf3df0c53b31631bb48a62b35f92.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>

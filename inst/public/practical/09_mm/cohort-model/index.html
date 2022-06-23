@@ -1,0 +1,1617 @@
+<!DOCTYPE html><html lang="en-us" >
+
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  
+  
+    <meta name="generator" content="Wowchemy 5.3.0 for Hugo" />
+  
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  
+
+  
+  
+  
+    
+      
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Inconsolata:wght@400;500;600;700&display=swap&display=swap" media="print" onload="this.media='all'">
+    
+  
+
+  
+  
+  
+  
+  
+    
+    
+    
+  
+  
+
+  <meta name="author" content="Gianluca Baio" />
+
+  
+  
+  
+    
+  
+  <meta name="description" content="Instructions The following exercise helps you run the Markov model and the underlying Bayesian model to estimate the transition probabilities in Rand BUGS. You should also look specifically at BMHE and actually run through the calculations to make sure you understand how the process works." />
+
+  
+  <link rel="alternate" hreflang="en-us" href="/practical/09_mm/cohort-model/" />
+
+  
+  
+  
+    <meta name="theme-color" content="#1565c0" />
+  
+
+  
+  
+    
+    <script src="/js/mathjax-config.js"></script>
+  
+
+  
+
+  <link rel="stylesheet" href="/css/vendor-bundle.min.f1ecf783c14edc00c9320c205831ad8e.css" media="print" onload="this.media='all'">
+
+  
+  
+  
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.1/css/academicons.min.css" integrity="sha512-b1ASx0WHgVFL5ZQhTgiPWX+68KjS38Jk87jg7pe+qC7q9YkEtFq0z7xCglv7qGIs/68d3mAp+StfC8WKC5SSAg==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+    
+    
+    
+      
+      
+    
+    
+    
+
+    
+    
+    
+      
+    
+    
+      
+      
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-light" media="print" onload="this.media='all'">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/styles/github.min.css" crossorigin="anonymous" title="hl-dark" media="print" onload="this.media='all'" disabled>
+      
+    
+
+    
+    
+    
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.css" integrity="sha512-1xoFisiGdy9nvho8EgXuXvnpR5GAMSjFwp40gSRE3NwdUdIMIKuPa7bqoUhLD0O/5tPNhteAsE5XyyMi5reQVA==" crossorigin="anonymous" media="print" onload="this.media='all'">
+    
+
+    
+
+    
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" integrity="" crossorigin="anonymous" async></script>
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+      
+      
+
+      
+      
+
+      
+    
+  
+
+  
+  
+  
+  
+  
+  <link rel="stylesheet" href="/css/wowchemy.3ef10ad94e43ba7ad3f08b0b007578ae.css" />
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+  
+  
+  
+
+  
+
+  
+    <link rel="manifest" href="/manifest.webmanifest" />
+  
+
+  <link rel="icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_32x32_fill_lanczos_center_3.png" />
+  <link rel="apple-touch-icon" type="image/png" href="/media/icon_hu62751289ff52b250e581ec75f909b74a_9702_180x180_fill_lanczos_center_3.png" />
+
+  <link rel="canonical" href="/practical/09_mm/cohort-model/" />
+
+  
+  
+  
+  
+  
+  
+  
+  
+    
+    
+  
+  
+
+  
+  
+    
+    
+  
+  <meta property="twitter:card" content="summary" />
+  
+  <meta property="og:site_name" content="Bayesian methods in health economics" />
+  <meta property="og:url" content="/practical/09_mm/cohort-model/" />
+  <meta property="og:title" content="Cohort discrete Markov model | Bayesian methods in health economics" />
+  <meta property="og:description" content="Instructions The following exercise helps you run the Markov model and the underlying Bayesian model to estimate the transition probabilities in Rand BUGS. You should also look specifically at BMHE and actually run through the calculations to make sure you understand how the process works." /><meta property="og:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" />
+    <meta property="twitter:image" content="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_300x300_fit_lanczos_3.png" /><meta property="og:locale" content="en-us" />
+  
+    
+      <meta
+        property="article:published_time"
+        content="2021-01-10T00:00:00&#43;00:00"
+      />
+    
+    <meta property="article:modified_time" content="2022-06-22T15:15:00&#43;00:00">
+  
+
+  
+
+
+
+  
+
+  
+
+  
+
+
+
+
+
+  <title>Cohort discrete Markov model | Bayesian methods in health economics</title>
+</head>
+
+
+<body id="top" data-spy="scroll" data-offset="70" data-target="#TableOfContents" class="page-wrapper   " data-wc-page-id="d2125aab84ba71e170d46ac82dc6f8b7" >
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script src="/js/wowchemy-init.min.da42964e270e05a6063fbca894d7ccff.js"></script>
+
+  
+
+
+
+
+  <div class="page-header">
+    
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<nav class="navbar navbar-expand-lg navbar-light compensate-for-scrollbar" id="navbar-main">
+  <div class="container-xl">
+
+    
+    <div class="d-none d-lg-inline-flex">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+          
+          ></a>
+    </div>
+    
+
+    
+    <button type="button" class="navbar-toggler" data-toggle="collapse"
+            data-target="#navbar-content" aria-controls="navbar-content" aria-expanded="false" aria-label="Toggle navigation">
+    <span><i class="fas fa-bars"></i></span>
+    </button>
+    
+
+    
+    <div class="navbar-brand-mobile-wrapper d-inline-flex d-lg-none">
+      <a class="navbar-brand" href="/"><img src="/media/logo_hu1963fc62d5b8fe503cce6274f5cb00c3_9765_0x70_resize_lanczos_3.png" alt="Bayesian methods in health economics"
+        
+        ></a>
+    </div>
+    
+
+    
+    
+    <div class="navbar-collapse main-menu-item collapse justify-content-end" id="navbar-content">
+
+      
+      <ul class="navbar-nav d-md-inline-flex">
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#timetable"><span>Timetable</span></a>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Slides</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/slides/01_Intro"><span>Introduction</span></a>
+            
+              <a class="dropdown-item" href="/slides/02_MCMC"><span>Bayesian computation</span></a>
+            
+              <a class="dropdown-item" href="/slides/03_Intro_HE"><span>Introduction to Health Economics</span></a>
+            
+              <a class="dropdown-item" href="/slides/04_ILD"><span>Individual level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/05_ALD"><span>Aggregated level data</span></a>
+            
+              <a class="dropdown-item" href="/slides/06_NMA"><span>Network meta-analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/07_Model_uncertainty"><span>Model error and structural analysis</span></a>
+            
+              <a class="dropdown-item" href="/slides/08_Survival"><span>Survival modelling in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/09_MM"><span>Markov models</span></a>
+            
+              <a class="dropdown-item" href="/slides/10_Missing"><span>Missing data in HTA</span></a>
+            
+              <a class="dropdown-item" href="/slides/11_VoI"><span>Introduction to Value of information</span></a>
+            
+              <a class="dropdown-item" href="/slides/12_EVPPI"><span>Expected value of partial information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture13/13_EVSI.pdf"><span>Expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture14/14_Data_EVSI.pdf"><span>Generating data for the analysis of the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture15/15_EVSI_MC.pdf"><span>Calculating expected value of sample information</span></a>
+            
+              <a class="dropdown-item" href="/syllabus/lecture16/16_EVSI_regression.pdf"><span>Regression-based EVSI</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Practicals</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/practical/01_monte-carlo"><span>Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/02_mcmc"><span>MCMC</span></a>
+            
+              <a class="dropdown-item" href="/practical/03_bcea"><span>Cost-effectiveness analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/04_ild"><span>HTA with individual level data</span></a>
+            
+              <a class="dropdown-item" href="/practical/05_ald"><span>Evidence synthesis and decision models</span></a>
+            
+              <a class="dropdown-item" href="/practical/06_nma"><span>NMA</span></a>
+            
+              <a class="dropdown-item" href="/practical/07_structural"><span>PSA to structural uncertainty</span></a>
+            
+              <a class="dropdown-item" href="/practical/08_survival"><span>Survival analysis</span></a>
+            
+              <a class="dropdown-item" href="/practical/09_mm"><span>Markov and multistate models</span></a>
+            
+              <a class="dropdown-item" href="/practical/10_missing"><span>Missing data</span></a>
+            
+              <a class="dropdown-item" href="/practical/11_intro_voi"><span>Computing the EVPI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/12_evppi"><span>Computing the EVPPI in BCEA and SAVI</span></a>
+            
+              <a class="dropdown-item" href="/practical/13_data_evsi"><span>Generating data for the EVSI</span></a>
+            
+              <a class="dropdown-item" href="/practical/14_evsi_mc"><span>Computing the EVSI using Monte Carlo</span></a>
+            
+              <a class="dropdown-item" href="/practical/15_evsi_regression"><span>Computing the EVSI using regression</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"><span>Instructions</span><span class="caret"></span>
+          </a>
+          <div class="dropdown-menu">
+            
+              <a class="dropdown-item" href="/tips/computer-specification"><span>Computer specification</span></a>
+            
+              <a class="dropdown-item" href="/tips/using-bugs"><span>Using BUGS</span></a>
+            
+          </div>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/publication"><span>Reading list</span></a>
+        </li>
+
+        
+        
+
+        
+
+        
+        
+        
+          
+        
+
+        
+
+        
+        
+        
+        
+
+        
+          
+            
+            
+          
+          
+            
+            
+            
+            
+          
+        
+
+        <li class="nav-item">
+          <a class="nav-link " href="/#people"><span>People</span></a>
+        </li>
+
+        
+        
+
+      
+
+        
+      </ul>
+    </div>
+
+    <ul class="nav-icons navbar-nav flex-row ml-auto d-flex pl-md-2">
+
+      
+      
+        
+      
+        
+      
+        
+      
+        
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+    </ul>
+
+  </div>
+</nav>
+
+
+  </div>
+
+  <div class="page-body">
+    
+
+<div class="container-fluid docs">
+  <div class="row flex-xl-nowrap">
+    <div class="col-12 col-md-3 col-xl-2 docs-sidebar">
+      <form class="docs-search d-flex align-items-center">
+  <button class="btn docs-toggle d-md-none p-0 mr-md-3 w-100" type="button" data-toggle="collapse" data-target="#docs-nav" aria-controls="docs-nav" aria-expanded="false" aria-label="Toggle section navigation">
+    <div class="d-flex">
+      <span class="d-md-none pl-1 flex-grow-1 text-left overflow-hidden">
+        
+          9. Markov models
+        
+      </span>
+      <span><i class="fas fa-chevron-down"></i></span>
+    </div>
+  </button>
+
+  
+</form>
+
+<nav class="collapse docs-links" id="docs-nav">
+  
+  
+  
+  
+  
+  
+
+  
+  
+    
+
+    
+      
+
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <ul class="nav docs-sidenav">
+        <li class=""><a href="/practical/"></a></li>
+    
+      
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/01_monte-carlo/">1. Monte Carlo</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/01_monte-carlo/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/02_mcmc/">2. MCMC</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/02_mcmc/solutions/">Solutions</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/covid/">Covid</a></li>
+
+
+
+  <li class=""><a href="/practical/02_mcmc/tutorial/">MCMC Tutorial</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/03_bcea/">3. Intro-HE</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/03_bcea/solutions/">Solution</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/04_ild/">4. ILD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/04_ild/tutorial-regression/">Regression Tutorial</a></li>
+
+
+
+  <li class=""><a href="/practical/04_ild/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/05_ald/">5. ALD</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/05_ald/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/06_nma/">6. NMA</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/06_nma/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/07_structural/">7. PSA to structural uncertainty</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/07_structural/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/08_survival/">8. Survival</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/08_survival/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/09_mm/">9. Markov models</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/09_mm/solutions/">Solutions</a></li>
+
+
+
+  <li class="active"><a href="/practical/09_mm/cohort-model/">Cohort discrete Markov model</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/10_missing/">10. Missing data</a>
+    
+      
+        <ul class="nav docs-sidenav">
+      
+
+
+  <li class=""><a href="/practical/10_missing/solutions/">Solutions</a></li>
+
+      
+        </ul>
+      
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/11_intro_voi/">11. EVPI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/12_evppi/">12. EVPPI in BCEA &amp; SAVI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/13_data_evsi/">13 Generating data for EVSI</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/14_evsi_mc/">14. EVSI using MC</a>
+    
+
+    
+      </div>
+    
+
+
+
+  
+    
+    
+    
+    
+      
+    
+    
+
+    
+      <div class="docs-toc-item">
+        <a class="docs-toc-link " href="/practical/15_evsi_regression/">15. EVSI using regression</a>
+    
+
+    
+      </div>
+    
+
+      
+    
+
+    
+      </ul>
+    
+
+  
+</nav>
+    </div>
+
+    <main class="col-10 docs-content" role="main">
+      <article class="article">
+
+        <div class="docs-article-container">
+          <h1>Cohort discrete Markov model</h1>
+          
+          <p style="color:grey;"><i>Wednesday, 22 June 2022</i></p>
+          
+          
+          
+
+
+
+
+<div class="btn-links mb-3">
+  
+  
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/slides/09_MM" >
+    Lecture 9</a>
+
+  
+  
+  
+    
+  
+  
+  
+  
+  
+    
+    
+      
+    
+  
+  <a class="btn btn-outline-primary btn-page-header" href="/practical/09_mm/cohort-model/tutorial.pdf" >
+    <i class="fas fa-file-pdf mr-1"></i>PDF version</a>
+
+
+</div>
+
+
+          <br>
+          
+          <div class="article-style">
+             
+
+
+
+<div id="instructions" class="section level2">
+<h2>Instructions</h2>
+<p>The following exercise helps you run the Markov model and the underlying Bayesian model to estimate the transition probabilities in <span><span><code>R</code></span></span>and <span><span><code>BUGS</code></span></span>. You should also look specifically at BMHE and actually run through the calculations to make sure you understand how the process works. In particular, look at the part relative to discounting and how you do that, which is very prevelent in real applied work.</p>
+<ol style="list-style-type: decimal">
+<li><p>Open the file <a href="MarkovModel1.txt"><code>MarkovModel1.txt</code></a> and inspect the <code>BUGS</code> model code.
+Make sure you understand the assumptions encoded in the model.</p></li>
+<li><p>Follow the script <a href="MarkovModel1.R"><code>MarkovModel1.R</code></a>, which will guide you through the
+necessary steps to create the data, run the MCMC model and then
+perform the relevant economic analysis from <code>R</code>.</p></li>
+</ol>
+</div>
+<div id="solutions" class="section level2">
+<h2>Solutions</h2>
+<p>The <tt>R</tt> script guides you through the process of running the Markov model analysis for the asthma problem seen in the lecture.</p>
+<div class="figure">
+<img src="images/5state.png" width="500" alt="" />
+<p class="caption">The graphical representation of the Markov model for the ‘asthma’ problem discussed in section 5.4 of BMHE</p>
+</div>
+<p>The script first sets up the number of states <span class="math inline">\(S=5\)</span> and the number of time points <span class="math inline">\(J=12\)</span> weeks in the virtual follow up. Also, we load the data, given in the form of matrices with the observed transitions across the states, during the actual follow up in the trial. The code is relatively straightforward — we use the <tt>R</tt> command <code>matrix</code> to define the data. Notice that the numbers included in the matrix are read by row (as the command <code>byrow=TRUE</code> suggests).</p>
+<pre class="r"><code>S = 5
+r.0 = (matrix(c(
+66,32,0,0,2, 
+42,752,0,5,20, 
+0,4,0,1,0, 
+0,0,0,0,0, 
+0,0,0,0,156),c(S,S),byrow=TRUE))
+
+r.0</code></pre>
+<pre><code>     [,1] [,2] [,3] [,4] [,5]
+[1,]   66   32    0    0    2
+[2,]   42  752    0    5   20
+[3,]    0    4    0    1    0
+[4,]    0    0    0    0    0
+[5,]    0    0    0    0  156</code></pre>
+<p>You can check that these tie up with the matrix presented in the lecture slides — notice that <code>r.0</code> indicates the data for the control arm.</p>
+<p>Perhaps more interestingly, the script also defines the prior distribution for the parameters <span class="math inline">\(\boldsymbol\lambda\)</span> in terms of a Dirichlet distribution.</p>
+<details class="spoiler "  id="spoiler-0">
+  <summary>Click to view more details on the Dirichlet distribution</summary>
+  <p><p>The Dirichlet distribution is a multivariate generalisation of the Beta. Specifically, where the Beta$(\alpha,\beta)$ is a good model for a single parameter ranging between 0 and 1, the Dirichlet can be used to model $S$ parameters $\lambda_1,\ldots,\lambda_S$ that are all constrained in the range $[0;1]$ and such that $\sum_{s=1}^S \lambda_s = 1$. This fits nicely the property that transition probabilites off a given state $s$ are **exhaustive and mutually exclusive**, meaning that all are between 0 and 1 and that they must sum to 1.</p>
+<p>Like the Beta distribution is related to the Binomial sampling distribution, so the Dirichlet is to the multivariate generalisation of the Binomial, i.e. the <em>Multinomial</em> distribution. So, if our situation involves $S$ possible outcomes each of which occurs in $y_1,\ldots,y_S$ counts out of the total sample size $n$, we can model the sampling distribution as $y_1,\ldots,y_S \sim {\sf Multinomial}(\boldsymbol\lambda)$, where $\boldsymbol\lambda=(\lambda_1,\ldots,\lambda_S)$ is the vector of probabilities associated with each possible outcome.</p>
+<p>Modelling $\boldsymbol\lambda \sim {\sf Dirichlet}(\boldsymbol{a})$ for a vector of parameters $\boldsymbol{a}=(a_1,\ldots,a_S)$ is the equivalent of the <em>conjugated</em> Beta-Binomial model &mdash; with the added benefit that the posterior distribution is also a Dirichlet:
+$$\boldsymbol\lambda\mid \boldsymbol{y}\sim {\sf Dirichlet}(a_1+y_1, \ldots, a_S+y_S).$$</p>
+<p>In a Dirichlet distribution, the parameters $\boldsymbol{a}$ have a relatively intuitive interpretation, as they are proportional to the expected probability associated with the various outcomes. So if $a_S$ is very large in comparison to the other parameters $a_1,\ldots,a_{s-1},a_{s+1},\ldots,a_S$, then we are encoding the fact that outcome $s$ is much more likely to occur than the others. The scale of the parameters indicates the precision. So for example, a Dirichlet$(1,1,1)$ encodes the assumption that the three possible categories are all equally likely (because the underlying parameters $a_1,a_2,a_3$ are all the same). But in the same way, so would a Dirichlet$(100,100,100)$, or for that matter a Dirichlet$(0.01,0.01,0.01)$. In all cases the three parameters have the same value. The third distribution implies the lowest level of precision, while the second one implies large precision: intuitively, the larger the value, the more prior knowledge we consider.</p>
+<p><img src="images/dirichlets.png" alt=""></p>
+<p>The graph above shows four <a href="https://en.wikipedia.org/wiki/Simplex"><em>symplexes</em></a>: each side of the triangles represent one of the Dirichlet parameters (in this case we assume an underlying variable with three possible categories). When $a_1=a_2=a_3=1$, the mass of points (representing simulations from the underlying Dirichlet distribution) is spread all over the area in the triangle. This is the equivalent of a vague prior where the probability mass is spread all over the range of the variable. Conversely, when $a_1=a_2=a_3=50$, the mass is concentrated in a small, central part of the triangle &mdash; intuitively, this means that the three dimensions carry the same weight (because the parameters have the same value); because that value is large, then the variance of the points is relatively low. When one of the dimensions has a much larger value than the others, the points tend to be pulled towards that area, as happens when we consider a Dirichlet$(2,5,10)$.</p>
+</p>
+</details>
+<p>In this case, the “scale” parameter of the Dirichlet distribution is assumed to be <span class="math inline">\(\alpha_0=\alpha_1=10\)</span>. This assumption implies:</p>
+<ul>
+<li>We effectively assume the same prior distribution in both arms of the trial. <span class="math inline">\(\alpha_0\)</span> governs the behaviour of the control arm, while <span class="math inline">\(\alpha_1\)</span> is the parameter defining how the probabilities <span class="math inline">\(\lambda_1,\ldots,\lambda_S\)</span> act in the treatment arm.<br />
+</li>
+<li>We define <code>alpha.0 = alpha.1 = rep(scale, S)</code>; this implies that</li>
+</ul>
+<pre class="r"><code>scale=10
+alpha.0 = alpha.1 = rep(scale,S)    
+alpha.1</code></pre>
+<pre><code>[1] 10 10 10 10 10</code></pre>
+<p>i.e. that <em>in the prior</em>, each of the <span class="math inline">\(S=5\)</span> categories (STW, UTW, Pex, Hex, TF) is assumed to have the same probability <code>scale</code>/ <span class="math inline">\(\sum_{s=1}^S\)</span> <code>scale</code>. Intuitively, we specify our prior by imagining a “thought experiment” in which the sample size is <span class="math inline">\(\sum_{s=1}^S\)</span> <code>scale</code>=50, in this case. This sample size is assumed in our prior to be distributed equally across the <span class="math inline">\(S=5\)</span> states, so that we think that there are <code>scale</code>=10 individuals in each of the states. This is a relatively strong prior. For example, a Dirichlet(0.1,0,1,0.1,0.1,0.1) would indicate the same thought experiment with a sample size of just <span class="math inline">\(5\times 0.1=0.5\)</span> individuals, of which <span class="math inline">\(0.1\)</span> is allocated to each of the states.</p>
+<p>Of course, there’s nothing special about this construction — in fact simply convenience. We may have thought about this problem much more carefully and determined that in fact we would expect, in the prior, more individuals to be in the STW state, say twice as many as in UTW, three times as many as in Pex, four times as many as in Hex and 10 times as many as in TF. This could translate, for example, into a Dirichlet(10,5,3.3,2.5,1) prior. If we felt very confident about this, we may even express our prior into a Dirichlet(1000,500,330,250,100) prior — i.e. with the same proportionality but much larger numbers, to imply bigger precision.</p>
+<p>The script also proceeds to define the initial values. This is also interesting. We use the mathematical results whereby we can simulate from a Dirichlet distribution by first constructing independent Gamma variables and then rescaling the simulated values by their sum. In <tt>R</tt>, we create the <code>inits</code> function, in which we first simulate a matrix of Gamma(scale, 1) values using the command <code>rgamma(4*S,scale,1)</code>; then we place the resulting vector of <span class="math inline">\(4\times S\)</span> values into a matrix of dimension <span class="math inline">\(4\times S\)</span>, e.g. the object <code>temp.0</code>. Notice that because TF is assumed to be an <em>absorbing</em> state, by definition <span class="math inline">\(\boldsymbol\lambda_{S}=(0,0,0,0,1)\)</span>. Thus, we do not need to initialise this row of the matrix of parameters <span class="math inline">\(\boldsymbol\lambda\)</span> and therefore, we only need a matrix of size <span class="math inline">\(4\times S\)</span>. Next, we create the variable <code>sum.temp.0</code> in which we record the row totals of <code>temp.0</code> and then construct the matrix <code>mat.0</code> by rescaling <code>temp.0</code> by these totals. Finally, we use the command <code>list</code> to store the named variables we want to output in the function <code>inits</code>, i.e. <code>lambda.0</code> and <code>lambda.1</code>.</p>
+<pre class="r"><code>inits &lt;- function(){
+    temp.0 &lt;- matrix(rgamma(4*S,scale,1),4,S)
+    sum.temp.0 &lt;- apply(temp.0,1,sum)
+    mat.0 &lt;- temp.0/sum.temp.0
+    temp.1 &lt;- matrix(rgamma(4*S,scale,1),4,S)
+    sum.temp.1 &lt;- apply(temp.1,1,sum)
+    mat.1 &lt;- temp.1/sum.temp.1 
+    list(lambda.0=rbind(mat.0,rep(NA,S)),lambda.1=rbind(mat.1,rep(NA,S)))
+}
+
+inits()</code></pre>
+<pre><code>$lambda.0
+          [,1]      [,2]      [,3]      [,4]      [,5]
+[1,] 0.2620049 0.1656849 0.1735277 0.1906087 0.2081738
+[2,] 0.1721008 0.1694657 0.3168546 0.1709276 0.1706513
+[3,] 0.2621914 0.2312971 0.2281732 0.1588414 0.1194969
+[4,] 0.1646739 0.1817589 0.2073144 0.1667142 0.2795386
+[5,]        NA        NA        NA        NA        NA
+
+$lambda.1
+          [,1]      [,2]      [,3]      [,4]      [,5]
+[1,] 0.1258738 0.1952657 0.3466712 0.1115298 0.2206596
+[2,] 0.1677436 0.1495265 0.2917020 0.2010646 0.1899634
+[3,] 0.2207405 0.1171875 0.2113657 0.2074268 0.2432796
+[4,] 0.1412204 0.1312841 0.2364687 0.1709408 0.3200860
+[5,]        NA        NA        NA        NA        NA</code></pre>
+<p>Once the <code>BUGS</code> model has run, we have estimates for the transition probabilities <span class="math inline">\(\boldsymbol\lambda\)</span>. Given these simulations, we can construct the Markov model “virtual” follow up, using the following code.</p>
+<pre class="r"><code># Now run the Markov model from R
+start &lt;- c(1,0,0,0,0)   # NB analysis for 1 single patient!
+                        # (can create a &quot;virtual&quot; population of N individuals
+                        #  and allocate them across the states at time j=0)
+
+# Markov transitions
+m.0 &lt;- m.1 &lt;- array(NA,c(n.sims,S,(J+1)))
+for (s in 1:S){
+    m.0[,s,1] &lt;- start[s]
+    m.1[,s,1] &lt;- start[s]
+}
+
+lam0=lam1=array(NA,c(n.sims,S,S))
+for (i in 1:n.sims) {
+  lam0[i,,]=rbind(lambda.0[i,,],c(0,0,0,0,1))
+  lam1[i,,]=rbind(lambda.1[i,,],c(0,0,0,0,1))
+    for (j in 2:(J+1)){
+        for (s in 1:S){
+           # Use the new matrices lam0 and lam1 to do the matrix multiplication
+            m.0[i,s,j] &lt;- sum(m.0[i,,j-1]*lam0[i,,s])
+            m.1[i,s,j] &lt;- sum(m.1[i,,j-1]*lam1[i,,s])
+        }
+    }
+}</code></pre>
+<p>For simplicity, we run the MM for a single patient and we initialise the “cohort” so that the patient is in state <span class="math inline">\(s=1\)</span> (STW) at the beginning of the follow up (<span class="math inline">\(j=0\)</span>). There’s no special reason for this; we could have a larger size of the cohort (e.g. the sum of the vector <code>start</code>); or we may have a different initial distribution across the states.</p>
+<p>Then we construct the arrays <code>m.0</code> and <code>m.1</code> in which we will store the total transitions in each state and for each time. We use the recursive relationship <span class="math inline">\(\boldsymbol{m}_{j+1}=\boldsymbol{m}_j \boldsymbol\Lambda_j\)</span>, where <span class="math inline">\(\boldsymbol\Lambda_j\)</span> is the <span class="math inline">\(S\times S\)</span> matrix storing the transition probabilities for all the states, at time <span class="math inline">\(j\)</span>. Notice that because the objects <code>lambda.0</code> and <code>lambda.1</code> are obtained as output from <tt>bugs</tt>, they are arrays where the first dimension is the number of simulations produced.</p>
+<p>Notice that <code>BUGS</code> stores the simulations for the “random” part of the matrix <span class="math inline">\(\boldsymbol\Lambda_j\)</span>. In fact, because the last row (containing the transition probabilities off the absorbing state TF) is deterministically defined, <code>BUGS</code> doesn’t consider it a parameter. Thus, before we can apply the matrix multiplication, we need to construct a matrix, which we call <code>lam0</code> and <code>lam1</code> respectively for the control and active treatment arm, in the code above, in which we stack up the <span class="math inline">\(i-\)</span> MCMC simulated values for the first <span class="math inline">\((S-1)\)</span> rows of the transition probability matrix (estimating the transitions off the states STW, UTW, Pex and Hex) and a row vector of values <span class="math inline">\((0 0 0 0 1)\)</span>, which indicates that for the state TF, the only possible movement is to remain in it.</p>
+<p>The rest of the script post-process the output of the Bayesian model to create a “Markov trace”, i.e. a barplot displaying the number/proportion of patients transitioning in each state at each time point. This is a useful graph, as it allows us to try and make sense of the underlying population dynamics that is implied by the Markov model we have constructed. In real-life applications, we would want to produce this graph and validate it with the help of the wider research team (including clinicians and experts of the subject matter).</p>
+<p><img src="images/barplot-1.png" style="width:45.0%" /></p>
+<p><img src="images/barplot-2.png" style="width:45.0%" /></p>
+<p>In the above barplots, the darker bar indicates the proportion of individuals in STW and increasingly lighter colours indicate, respectively, the proportion of people in UTW, Pex, Hex and TF. As is possible to see, the active treatment (SFC) seems to be associated with a population dynamics in which more people tend to remain in the most favourable outcome (STW).</p>
+<p>Finally, we define and apply discounting to the resulting costs and effects and then use <code>BCEA</code> to produce the economic analysis. The code is fairly straighforward. Firstly, we define the discount rate, set at 3.5% for both benefits and costs. Notice that this is the “standard” <em>annual</em> discount rate suggested by NICE. In this particular example, the virtual follow up is set at <span class="math inline">\(J=12\)</span> weeks, so technically we don’t really need to discount the output (as 12 weeks is barely 4 months, let alone more than one year!). Then we fill in the elements of the vectors <code>disc.b</code> and <code>disc.c</code> with the discounted series of values.</p>
+<pre class="r"><code>## General formulation to apply discount
+delta.b &lt;- 0.035    # discount rate for benefits (3.5%)
+delta.c &lt;- 0.035    # discount rate for costs (3.5%)
+# Defines the discount factors
+disc.b &lt;- numeric(); disc.c &lt;- numeric()
+disc.b[1] &lt;- 1; disc.c[1] &lt;- 1
+for (j in 2:J) {
+    disc.b[j] &lt;- (1+delta.b)^(j-1)
+    disc.c[j] &lt;- (1+delta.c)^(j-1)
+}
+
+disc.b</code></pre>
+<pre><code> [1] 1.000000 1.035000 1.071225 1.108718 1.147523 1.187686 1.229255 1.272279
+ [9] 1.316809 1.362897 1.410599 1.459970</code></pre>
+<p>Essentially, the discounted multiplier for time <span class="math inline">\(j=0\)</span> is simply 1 (no discounting); at time <span class="math inline">\(j=1\)</span> it is 1.035; and at the end of follow up is 1.45997.</p>
+<p>Then, we actually apply these discounting multipliers to the estimated effects and costs.</p>
+<pre class="r"><code>disc.cost0 &lt;- disc.eff0 &lt;- disc.cost1 &lt;- disc.eff1 &lt;- matrix(NA,mm1$n.sims,J)
+for (j in 1:J) {
+    disc.cost0[,j] &lt;- cost0[,j]/disc.c[j]
+    disc.cost1[,j] &lt;- cost1[,j]/disc.c[j]
+    disc.eff0[,j] &lt;- m.0[,1,j]/disc.b[j]
+    disc.eff1[,j] &lt;- m.1[,1,j]/disc.b[j]
+}
+
+# Shows difference between raw and discounted costs (for 1st simulation)
+cost0[1,]</code></pre>
+<pre><code> [1] 100.23659 104.27436  89.77322  76.01900  66.42544  60.41060  56.81619
+ [8]  54.71874  53.50987  52.81776  52.42299  52.19835</code></pre>
+<pre class="r"><code>disc.cost0[1,]</code></pre>
+<pre><code> [1] 100.23659 100.74817  83.80426  68.56478  57.88594  50.86410  46.22001
+ [8]  43.00843  40.63601  38.75402  37.16364  35.75304</code></pre>
+<p>As is possible to see, the raw costs are actually higher than the discounted counterparts (apart from the first element, for which the discounting multiplier is 1 and so, effectively, no discounting occurs).</p>
+<p>At this point, we define the economic outcome as the sum of the discounted series of values for benefits and costs, over the <span class="math inline">\(J=12\)</span> time points, using the following code.</p>
+<pre class="r"><code># Sums the values across all time points and creates matrix of costs
+c &lt;- matrix(NA,n.sims,2)
+c[,1] &lt;- apply(cost0,1,sum)
+c[,2] &lt;- apply(cost1,1,sum)
+
+# Effectiveness
+e &lt;- matrix(NA,n.sims,2)
+e[,1] &lt;- apply(m.0[,1,],1,sum)
+e[,2] &lt;- apply(m.1[,1,],1,sum)</code></pre>
+<p>And to complete the analysis, we run <code>BCEA</code></p>
+<pre class="r"><code># Cost-effectiveness analysis
+library(BCEA)
+ints &lt;- c(&quot;FP&quot;,&quot;SFC&quot;)
+m &lt;- bcea(e,c,ref=2,interventions=ints,Kmax=300)</code></pre>
+<p>which can be used to summarise the economic model.</p>
+<pre class="r"><code>summary(m)</code></pre>
+<pre><code>NB: k (wtp) is defined in the interval [0 - 300]
+
+Cost-effectiveness analysis summary 
+
+Reference intervention:  SFC
+Comparator intervention: FP
+
+SFC dominates for all k in [0 - 300] 
+
+
+Analysis for willingness to pay parameter k = 300
+
+    Expected utility
+FP           -250.17
+SFC           523.57
+
+             EIB   CEAC   ICER
+SFC vs FP 773.74 0.9995 -94.31
+
+Optimal intervention (max expected utility) for k = 300: SFC
+             
+EVPI 0.018456</code></pre>
+</div>
+
+          </div>
+
+          
+
+
+
+          
+          
+          <div class="article-widget">
+            
+<div class="post-nav">
+  
+  
+  
+  <div class="post-nav-item">
+    <div class="meta-nav">Previous</div>
+    <a href="/practical/09_mm/solutions/" rel="next">Practical 9. Markov models — SOLUTIONS</a>
+  </div>
+  
+  
+</div>
+
+          </div>
+          
+        </div>
+
+        <div class="body-footer">
+          
+          
+
+          
+
+
+          
+          
+          
+          
+          
+
+
+          
+
+
+
+
+          
+
+
+
+
+        </div>
+
+      </article>
+
+      <footer class="site-footer">
+  
+
+  <p class="powered-by">
+    
+    
+      &copy;  2022-2024 &middot;
+
+    Based on
+    <a href="https://wowchemy.com/?utm_campaign=poweredby" target="_blank" rel="noopener">Wowchemy</a>
+    
+    
+    (version 5.3.0)
+    
+    for <a href="https://gohugo.io" target="_blank" rel="noopener">Hugo</a> &middot;
+    
+    
+    <i><b>Latest update: 23 Jun 2022 </i></b>
+    
+
+    
+    <span class="float-right" aria-hidden="true">
+      <a href="#" class="back-to-top">
+        <span class="button_icon">
+          <i class="fas fa-chevron-up fa-2x"></i>
+        </span>
+      </a>
+    </span>
+    
+  </p>
+
+</footer>
+
+
+    </main>
+  </div>
+</div>
+
+  </div>
+
+  <div class="page-footer">
+    
+    
+  </div>
+
+  
+<div id="modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cite</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pre><code class="tex hljs"></code></pre>
+      </div>
+      <div class="modal-footer">
+        <a class="btn btn-outline-primary my-1 js-copy-cite" href="#" target="_blank">
+          <i class="fas fa-copy"></i> Copy
+        </a>
+        <a class="btn btn-outline-primary my-1 js-download-cite" href="#" target="_blank">
+          <i class="fas fa-download"></i> Download
+        </a>
+        <div id="modal-error"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+
+    
+    <script src="/js/vendor-bundle.min.b73dfaac3b6499dc997741748a7c3fe2.js"></script>
+
+    
+    
+    
+      
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/4.1.4/imagesloaded.pkgd.min.js" integrity="sha256-lqvxZrPLtfffUl2G/e7szqSvPBILGbwmsGE1MKlOi0Q=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js" integrity="sha256-CBrpuqrMhXwcLLUd5tvQ4euBHCdh7wGlDfNz8vbu/iI=" crossorigin="anonymous"></script>
+      
+
+      
+      
+
+      
+
+      
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/highlight.min.js" integrity="sha512-TDKKr+IvoqZnPzc3l35hdjpHD0m+b2EC2SrLEgKDRWpxf2rFCxemkgvJ5kfU48ip+Y+m2XVKyOCD85ybtlZDmw==" crossorigin="anonymous"></script>
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.2.0/languages/r.min.js" crossorigin="anonymous"></script>
+        
+      
+
+    
+
+    
+    
+    
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.min.js" integrity="sha512-SeiQaaDh73yrb56sTW/RgVdi/mMqNeM2oBwubFHagc5BkixSpP1fvqF47mKzPGWYSSy4RwbBunrJBQ4Co8fRWA==" crossorigin="anonymous"></script>
+    
+
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.2/anchor.min.js" integrity="sha512-I7w3ZdSFzw5j3jU3ZkNikBNeIrl3i+hEuEdwNmqUJvwNcaBUNcijnP2gd9DtGlgVYDplfjGoD8vTNsID+lCjqg==" crossorigin="anonymous"></script>
+    <script>
+      anchors.add();
+    </script>
+    
+
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <script src="/en/js/wowchemy.min.50d3bf3df0c53b31631bb48a62b35f92.js"></script>
+
+    
+
+
+
+
+
+
+</body>
+</html>
