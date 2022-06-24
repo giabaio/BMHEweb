@@ -3,7 +3,7 @@
     "path": "~/Dropbox/EcSan/ShortCourses/Lausanne/static/slides/12_EVPPI/index.Rmd",
     "project_path": "12_EVPPI/index.Rmd",
     "type": "r_markdown",
-    "hash": "3412034379",
+    "hash": "466056511",
     "contents": "",
     "dirty": false,
     "created": 1654726059391.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "763,65",
-        "scrollLine": "745"
+        "cursorPosition": "0,0",
+        "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1655989128,
+    "lastKnownWriteTime": 1656023332,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1655989128886,
+    "last_content_update": 1656023332520,
     "read_only": false,
     "read_only_alternatives": []
 }

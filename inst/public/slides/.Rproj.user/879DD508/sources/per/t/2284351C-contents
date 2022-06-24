@@ -142,3 +142,50 @@
   text-align: center;
   width: 95%;
 }
+
+/* Some ad-hoc text boxes */
+.box-left {
+    position: fixed;
+    /* if I leave the top spacing then Chrome cuts out the bottom-left part of the footer
+    top: 96.6%;
+    */
+    bottom: 52.8%;
+    left: 43%;
+    text-align: left;
+    width: 12%;
+    font-size: 60%;
+    text-align: center;
+    color: blue;
+}
+
+.box-right {
+    position: fixed;
+    /* if I leave the top spacing then Chrome cuts out the bottom-left part of the footer
+    top: 96.6%;
+    */
+    bottom: 53.0%;
+    left: 60%;
+    text-align: left;
+    width: 12%;
+    font-size: 60%;
+    text-align: center;
+    color: magenta;
+}
+
+.arrow1 {
+  position: fixed;
+  top: 20.0%;
+  left: 25%;
+  width: 12%;
+  text-align: center;
+  color: black;
+}
+
+.arrow2 {
+  position: fixed;
+  top: 20.0%;
+  left: 60%;
+  width: 12%;
+  text-align: center;
+  color: black;
+}

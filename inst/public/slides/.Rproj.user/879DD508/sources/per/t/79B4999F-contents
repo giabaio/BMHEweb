@@ -784,3 +784,4 @@ style="
    transform: scale(0.65);
   "></iframe>
 
+.alignright[.small[`r icon::fontawesome("arrow-circle-right")` [Next lecture](../13_EVSI/index.html)]]
