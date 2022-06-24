@@ -14,6 +14,14 @@ When the `zip` file is downloaded on your computer, navigate to the directory in
 ```
 devtools::install_local("BMHEweb.zip")
 ```
+Alternatively, you can provide the full path to the `zip` file, e.g.
+```
+devtools::install_local("/home/gianluca/BMHEweb.zip")
+```
+or
+```
+devtools::install_local("C:\\gianluca\\BMHEweb.zip")
+```
 
 At this point, `R` will install the package `bmheWeb` on your computer --- this is what you need to visualise the entire course website. Once the installation has completed, you can then browse the course website anytime you like by simply going on your `R` terminal and typing the following command.
 ```
