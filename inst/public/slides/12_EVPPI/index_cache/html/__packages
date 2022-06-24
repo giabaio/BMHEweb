@@ -1,0 +1,17 @@
+base
+methods
+datasets
+utils
+grDevices
+graphics
+stats
+BCEA
+icons
+tikzDevice
+knitr
+kableExtra
+dplyr
+ggplot2
+xaringanExtra
+RefManageR
+INLA
